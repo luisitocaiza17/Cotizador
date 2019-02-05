@@ -1,0 +1,13 @@
+diff --git a/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java b/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java
+--- a/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java
++++ b/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java
+@@ -812,6 +812,9 @@
+ 				double valorTotaL = 0.0;
+ 				try {
+ 					valorTotaL = costoProduccionL * NumeroHectareasL;
++					BigDecimal T = new BigDecimal(""+valorTotaL);
++					BigDecimal roundOffT = T.setScale(2, BigDecimal.ROUND_HALF_UP);
++					valorTotaL=Double.parseDouble(""+roundOffT);
+ 				} catch (Exception e) {
+ 					throw new Exception("Error se puede calcular valor Total");
+ 				}

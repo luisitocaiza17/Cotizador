@@ -1,0 +1,503 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 5.6.2.final using JasperReports Library version 5.6.1  -->
+<!-- 2014-11-24T16:44:39 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="autorizacionDebitoTodoCertificado" pageWidth="539" pageHeight="842" columnWidth="539" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="70f4b099-23da-40f9-80ea-bc7970f7f53a">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="cotizador"/>
+	<property name="com.jaspersoft.studio.unit." value="cm"/>
+	<parameter name="COTIZACION_ID" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT 
+    INF.nombre INSTITUCION,
+    ENT.nombre_completo CLIENTE,
+    ENT.identificacion RUC,
+    (SELECT 
+            CIU.nombre
+        from
+            CIUDAD CIU
+        where
+            CIU.id = DIR.ciudad_id) CIUDAD,
+    (SELECT 
+            PAR.nombre
+        from
+            PARROQUIA PAR
+        where
+            PAR.id = DIR.ciudad_id) PARROQUIA,
+    P.numero_cuenta_tarjeta TARJETA_CUENTA,
+    P.plazon_en_mes MESES,
+    FP.id FORMA_PAGO,
+    P.tipo_cuenta TIPO_CUENTA,
+    (SELECT 
+            dayofmonth(CUO.fecha_pago)
+        FROM
+            CUOTAS CUO
+        WHERE
+            CUO.pago_id = P.id AND CUO.orden = 1) DIA,
+    (SELECT CUO.valor
+        FROM
+            CUOTAS CUO
+        WHERE
+            CUO.pago_id = P.id AND CUO.orden = 1) VALOR_CUOTA,
+    if(isnull(P.mes_expiracion_tarjeta),0,P.mes_expiracion_tarjeta) MES_EXPIRA,
+	if(isnull(P.anio_expiracion_tarjeta),0,P.anio_expiracion_tarjeta) ANIO_EXPIRA,
+	S.nombre SUCURSAL
+FROM
+    COTIZACION C,
+    PAGO P,
+    FORMA_PAGO FP,
+    INSTITUCION_FINANCIERA INF,
+    CLIENTE CLI,
+    ENTIDAD ENT,
+    UPLA U,
+    DIRECCION DIR,
+	SUCURSAL S,
+	PUNTO_VENTA PV
+WHERE
+    C.pago_id = P.id
+        AND FP.id = P.forma_pago_id
+        AND INF.id = P.institucion_financiera_id
+        AND C.cliente_id = CLI.id
+        AND ENT.id = CLI.entidad_id
+        AND U.cliente_id = CLI.id
+        AND U.direccion_id = DIR.id
+		AND PV.id=C.punto_venta_id
+		AND PV.sucursal_id=S.id
+        AND C.id= $P{COTIZACION_ID}]]>
+	</queryString>
+	<field name="INSTITUCION" class="java.lang.String"/>
+	<field name="CLIENTE" class="java.lang.String"/>
+	<field name="RUC" class="java.lang.String"/>
+	<field name="CIUDAD" class="java.lang.String"/>
+	<field name="PARROQUIA" class="java.lang.String"/>
+	<field name="TARJETA_CUENTA" class="java.lang.String"/>
+	<field name="MESES" class="java.lang.String"/>
+	<field name="FORMA_PAGO" class="java.lang.Long"/>
+	<field name="DIA" class="java.lang.Long"/>
+	<field name="VALOR_CUOTA" class="java.lang.Double"/>
+	<field name="ANIO_EXPIRA" class="java.lang.Integer"/>
+	<field name="MES_EXPIRA" class="java.lang.Integer"/>
+	<field name="SUCURSAL" class="java.lang.String"/>
+	<field name="TIPO_CUENTA" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="801" splitType="Stretch">
+			<textField>
+				<reportElement x="10" y="5" width="210" height="55" isRemoveLineWhenBlank="true" uuid="d77c35db-de8a-486d-88cb-1c3ca75b3eec"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["AUTORIZACIONES DE DÉBITOS PARA PAGO DE PRIMAS A TRAVÉS DE INSTITUCIONES FINANCIERAS"]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="285" y="0" width="215" height="60" isRemoveLineWhenBlank="true" uuid="cce00043-00f0-4c59-9eb8-912a4da869da"/>
+				<imageExpression><![CDATA["QBE_blanco.png"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="380" y="70" width="100" height="20" isRemoveLineWhenBlank="true" uuid="e14e32c8-f3df-4750-99b3-243ba28d8a21"/>
+				<textFieldExpression><![CDATA["No "+$P{COTIZACION_ID}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="380" y="90" width="70" height="15" isRemoveLineWhenBlank="true" uuid="1c58f42a-5431-48a0-bab4-17a2f6fe8a61"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{SUCURSAL}+", "]]></textFieldExpression>
+			</textField>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="450" y="90" width="88" height="15" isRemoveLineWhenBlank="true" uuid="7afd0f7f-6830-4187-b3df-4bd80b7c7fc5"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="10" y="70" width="100" height="20" isRemoveLineWhenBlank="true" uuid="f219b260-e023-445d-9851-97bb79705fcf"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Señores: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="90" width="200" height="20" isRemoveLineWhenBlank="true" uuid="ba398c22-0251-4efb-b5f4-74e2a6f2ded1"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{INSTITUCION}+""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="120" width="100" height="20" isRemoveLineWhenBlank="true" uuid="63b55ba5-6998-4e2d-9c72-726df0997b96"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Presente.- "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="150" width="30" height="20" isRemoveLineWhenBlank="true" uuid="7943d8ae-68b2-4816-a770-8dd5e51f9ead"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Yo, "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="30" y="150" width="220" height="20" isRemoveLineWhenBlank="true" uuid="ee642e42-32b2-40c4-adff-23dbef5b2e48"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CLIENTE}+""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="250" y="150" width="180" height="20" isRemoveLineWhenBlank="true" uuid="9f3aa7ed-5906-422b-9e26-61f4f9444e9c"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" portador de Cédula de Identidad No. "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="430" y="150" width="108" height="20" isRemoveLineWhenBlank="true" uuid="08560ddb-2be2-47a0-a1d9-cc1ee84776dd"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{RUC}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="170" width="90" height="20" isRemoveLineWhenBlank="true" uuid="9781e7ba-b373-49dc-8519-0da7832a8fee"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" y con domicilio en "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="170" width="150" height="20" isRemoveLineWhenBlank="true" uuid="5cf7db16-5a05-41f0-8138-0326b5a5b049"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[IF(($F{CIUDAD}==null||$F{CIUDAD}.equals("")),$F{PARROQUIA},$F{CIUDAD})+""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="240" y="170" width="298" height="20" isRemoveLineWhenBlank="true" uuid="1c3b811d-60d2-44c4-b05f-8d5e70eaa21e"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" , como titular de la cuenta/tarjeta de crédito autorizo a QBE Seguros"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="190" width="410" height="19" isRemoveLineWhenBlank="true" uuid="26ee0e6e-3086-4372-8d9a-29cb5fcd6a8a"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Seguros Colonial a ordenar en mi nombre, que se debite de mi cuenta:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="213" width="14" height="14" isRemoveLineWhenBlank="true" uuid="8a4c0f52-ffa7-4df6-a8d5-42d4ffa2e698"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[IF($F{TIPO_CUENTA}.equals( "C" ),"X","")+""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="16" y="210" width="50" height="20" isRemoveLineWhenBlank="true" uuid="17e466b2-d937-416f-8e37-194f4963dfd0"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Corriente"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="85" y="210" width="50" height="20" isRemoveLineWhenBlank="true" uuid="4526bed1-e53f-496f-ab5e-a7283c9f9fca"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Ahorros"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="69" y="213" width="14" height="14" isRemoveLineWhenBlank="true" uuid="18a59d23-5b4f-436b-a78b-378aa2063d21"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[IF($F{TIPO_CUENTA}.equals( "A" ),"X","")+""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="156" y="210" width="43" height="20" isRemoveLineWhenBlank="true" uuid="954944b8-4998-4382-b362-0b59e52620dd"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Tarjeta  Nro"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="140" y="213" width="14" height="14" isRemoveLineWhenBlank="true" uuid="000e7d89-0ba0-4cc5-9ebf-c55b08d5ef70"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[IF($F{TIPO_CUENTA}.equals( "T" ),"X","")+""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="199" y="210" width="123" height="20" isRemoveLineWhenBlank="true" uuid="d50c24c6-66f1-4918-b782-8649743c12ee"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TARJETA_CUENTA}+""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="322" y="210" width="107" height="20" isRemoveLineWhenBlank="true" uuid="0cf9b252-613a-4f57-bf22-9fac49105656">
+					<printWhenExpression><![CDATA[$F{MES_EXPIRA}!=0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Fecha de Caducidad"]]></textFieldExpression>
+			</textField>
+			<textField pattern="MMMM">
+				<reportElement x="430" y="210" width="70" height="20" isRemoveLineWhenBlank="true" uuid="df7cf6df-0093-4179-9b70-633840dd8853">
+					<printWhenExpression><![CDATA[$F{MES_EXPIRA}!=0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[IF($F{MES_EXPIRA}!=0,(new java.util.Date(2014,$F{MES_EXPIRA}-1,1)),"")+""]]></textFieldExpression>
+			</textField>
+			<textField pattern="MMMM">
+				<reportElement x="504" y="210" width="35" height="20" isRemoveLineWhenBlank="true" uuid="9a0bf620-54da-489d-9b3a-9e4d54067a78">
+					<printWhenExpression><![CDATA[$F{MES_EXPIRA}!=0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" / "+IF($F{ANIO_EXPIRA}!=0,(new java.util.Date(2014,$F{ANIO_EXPIRA},1)),"")+""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="230" width="70" height="20" isRemoveLineWhenBlank="true" uuid="73324af6-ff37-402a-aa77-b14decb2fefa"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["El valor de "]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00">
+				<reportElement x="70" y="230" width="55" height="20" isRemoveLineWhenBlank="true" uuid="960c6a9b-ff7a-4347-b020-9bc5edc4153b"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{VALOR_CUOTA}+""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="126" y="230" width="64" height="20" isRemoveLineWhenBlank="true" uuid="bf2743c7-ca6f-44ad-9f40-7dbfb1ec83dd"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" mensual, durante "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="190" y="230" width="28" height="20" isRemoveLineWhenBlank="true" uuid="b8fccd19-6f55-4f5b-802b-2bb4acf17da6"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MESES}+""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="218" y="230" width="48" height="20" isRemoveLineWhenBlank="true" uuid="44911622-4a0d-4844-8dce-05761d12efc9"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" meses"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="266" y="230" width="44" height="20" isRemoveLineWhenBlank="true" uuid="f980ed3d-ab4f-46ea-97a4-31149bb2f604">
+					<printWhenExpression><![CDATA[$F{TIPO_CUENTA}.equals( "C" )||$F{TIPO_CUENTA}.equals( "A" )]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[", el dia"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="310" y="230" width="28" height="20" isRemoveLineWhenBlank="true" uuid="1612ca74-3fca-433e-9a37-0c233d73c02e">
+					<printWhenExpression><![CDATA[$F{TIPO_CUENTA}.equals( "C" )||$F{TIPO_CUENTA}.equals( "A" )]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DIA}+""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="340" y="230" width="198" height="20" isRemoveLineWhenBlank="true" uuid="61b2a058-839b-4a50-bae5-15bc7d4a99d3"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[IF($F{TIPO_CUENTA}.equals( "C" )||$F{TIPO_CUENTA}.equals( "A" )," de cada mes,","")+" correspondiente "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="250" width="152" height="20" isRemoveLineWhenBlank="true" uuid="4531d6a0-2eef-4c38-bdbc-b6a0727c9cc0"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" a la póliza a favor de favor de "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="154" y="250" width="236" height="20" isRemoveLineWhenBlank="true" uuid="7c4605ae-2f1f-4cab-8e6b-d15d58b3a935"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CLIENTE}+""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="390" y="250" width="50" height="20" isRemoveLineWhenBlank="true" uuid="c2e7be83-51aa-4683-a665-4d5617f9f118"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" con C.I. "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="440" y="250" width="98" height="20" isRemoveLineWhenBlank="true" uuid="c2adfc16-8171-4409-aaae-06a950f9c17f"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{RUC}+""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="280" width="538" height="70" isRemoveLineWhenBlank="true" uuid="9e142f73-f015-4db4-82ae-4e7b812d8e91"/>
+				<textElement textAlignment="Justified"/>
+				<text><![CDATA[Desde ya me comprometo a mantener en mi cuenta, el monto suficiente para cubrir los valores que autorizo se me debiten en las fechas acordadas. Así mismo, acepto y autorizo a que los valores antes referidos me sean desconectados en otras fechas, en el evento de carecer de fondos en los días programados o si por razones de fuerza mayor no se pueda efectuar el débito en las fechas pactadas. En caso de no poderse efectuar el débito y se acumulen varias cuotas, autorizo a que las mencionadas cuotas se debiten de la cuenta o tarjeta de mi propiedad.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="350" width="539" height="39" isRemoveLineWhenBlank="true" uuid="f149faf1-a71d-42d4-9b15-28b047d2517f"/>
+				<textElement textAlignment="Justified"/>
+				<text><![CDATA[Por otra parte, expresamente declaro que conozco y acepto que se dé por terminado el contrato de seguro y sea retirada la cobertura, si después de que la Aseguradora haga los intentos de débito por dos meses seguidos o cualquier otra causa no imputable a la Aseguradora.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="400" width="539" height="70" isRemoveLineWhenBlank="true" uuid="21a96710-8746-48d4-aaa8-4cc0d607915c"/>
+				<textElement textAlignment="Justified"/>
+				<text><![CDATA[Cualquier instrucción para que se invalide esta autorización, la presentaré con treinta días de anticipación a la Aseguradora y a la Institución Financiera. Cabe indicar que la retención en la fuente debe ser entregada en un lapso de 5 días una vez entregada la factura, caso contrario acepto que se debite el valor total de la factura. Eximo a la institución Financiera de cualquier responsabilidad por las cuotas reportadas como pendientes por la Aseguradora, por lo cual desde ya renuncio a cualquier acción en contra de la Institución Financiera por este hecho.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="510" width="100" height="20" isRemoveLineWhenBlank="true" uuid="a1b6a629-4205-4e57-bf5c-00b58fe616d2"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Atentamente,  "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="620" width="220" height="20" uuid="157e3fcd-0db9-461c-bd3e-70d827143ee6"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="69" y="680" width="251" height="19" isRemoveLineWhenBlank="true" uuid="a21940ab-d0ec-4be0-aa8e-eae6844f3740">
+					<property name="local_mesure_unitheight" value="cm"/>
+					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+				</reportElement>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CLIENTE}+""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="680" width="66" height="20" isRemoveLineWhenBlank="true" uuid="9693b198-5430-4d33-b262-86d05842d081"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Nombre "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="70" y="710" width="251" height="19" isRemoveLineWhenBlank="true" uuid="9feae181-fa3f-411a-acc2-5b01b03059fa">
+					<property name="local_mesure_unitheight" value="cm"/>
+					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+				</reportElement>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{RUC}+""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="710" width="66" height="20" isRemoveLineWhenBlank="true" uuid="21369893-bee8-43fe-8ec3-c3be3e433bff"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["C.I. "]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

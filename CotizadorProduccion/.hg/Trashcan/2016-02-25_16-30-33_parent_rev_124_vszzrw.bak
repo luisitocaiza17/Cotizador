@@ -1,0 +1,152 @@
+diff --git a/WebContent/dashboard/AgriParametrosPuntoVenta.jsp b/WebContent/dashboard/AgriParametrosPuntoVenta.jsp
+--- a/WebContent/dashboard/AgriParametrosPuntoVenta.jsp
++++ b/WebContent/dashboard/AgriParametrosPuntoVenta.jsp
+@@ -53,7 +53,7 @@
+ 	var sucursalEmisionId="";
+ 	var beneficiarioId="";
+ 	var tieneEmisionObligatoria="";
+-
++    var canalIdList="";
+ 	var puntoVentaList = "";
+ 	var tipoCalculoList = "";
+ 
+@@ -69,6 +69,13 @@
+ 							maxSelectedItems : 1
+ 						});
+ 						
++						$("#canalId").kendoMultiSelect({
++							dataTextField : "nombre",
++							dataValueField : "id",
++							animation : false,
++							maxSelectedItems : 1
++						});
++						
+ 						puntoVentaList = $("#puntoVentaId").data(
+ 						"kendoMultiSelect");
+ 						
+@@ -72,6 +79,9 @@
+ 						puntoVentaList = $("#puntoVentaId").data(
+ 						"kendoMultiSelect");
+ 						
++						canalIdList= $("#canalId").data(
++						"kendoMultiSelect");
++						
+ 						$("#tipoCalculoId").kendoMultiSelect({
+ 							dataTextField : "tipoCalculoNombre",
+ 							dataValueField : "tipoCalculoId",
+@@ -104,6 +114,7 @@
+ 								});
+ 							}else{							
+ 										puntoVentaId = $("#puntoVentaId option:selected").val();
++										canalId=$("#canalId option:selected").val();
+ 										tipoCalculoId = $("#tipoCalculoId option:selected").val();
+ 										contenedorEnsuranceId = $("#contenedorEnsuranceId").val();
+ 										plantillaEnsuranceId = $("#plantillaEnsuranceId").val();
+@@ -159,6 +170,27 @@
+ 			}
+ 		});
+ 
++		//cargar los canales
++		$.ajax({
++			url : '../AgriCanalController',
++			data : {
++				"tipoConsulta" : "encontrarTodos"
++			},
++			async : false,
++			type : 'POST',
++			datatype : 'json',
++			success : function(data) {
++				/*Activo los select*/
++				canalIdList.enable(true);
++
++				/*Cargo el select puntoVenta*/
++				canalIdList.dataSource.filter({});
++				canalIdList.setDataSource(data.canalesJSONArray);
++
++			}
++		});
++		
++		
+ 		//Carga los beneficiarios
+ 		$.ajax({
+ 		url : '../BeneficiarioController',
+@@ -281,5 +313,6 @@
+ 			datatype : 'json',
+ 			success : function(data) {				
+ 				$("#puntoVentaId").data("kendoMultiSelect").value(data.puntoVentaId);
++				$("#canalId").data("kendoMultiSelect").value(data.canalId);
+ 				$("#tipoCalculoId").data("kendoMultiSelect").value(data.tipoCalculoId);
+ 				$("#codigoIntegracion").val(data.codigoIntegracion);
+@@ -284,6 +317,6 @@
+ 				$("#tipoCalculoId").data("kendoMultiSelect").value(data.tipoCalculoId);
+ 				$("#codigoIntegracion").val(data.codigoIntegracion);
+-				
++				$("#canalId").data("kendoMultiSelect").value(data.canalId);
+ 				$("#emailPuntoVenta").val(data.emailPuntoVenta);
+ 				$("#formaNotificacion").val(data.formaNotificacion);
+ 				$("#sucursalId").val(data.sucursalEmisionId);
+@@ -329,7 +362,10 @@
+ 
+ 	function enviarDatos(puntoVentaId,tipoCalculoId,codigoIntegracion,tieneEmisionDirecta,tipoConsulta,
+ 			emailPuntoVenta,formaNotificacion,sucursalEmisionId,beneficiarioId,tieneEmisionObligatoria,excepcionesCultivos) {
++		
++		canalId=$("#canalId option:selected").val();
++		
+ 		$.ajax({
+ 			url : '../AgriParametrosPuntoVentaController',
+ 			async : false,
+ 			data : {
+@@ -332,7 +368,8 @@
+ 		$.ajax({
+ 			url : '../AgriParametrosPuntoVentaController',
+ 			async : false,
+ 			data : {
++				"canalId":canalId,
+ 				"tipoConsulta" : tipoConsulta,
+ 				"puntoVentaId" : puntoVentaId,
+ 				"tipoCalculoId" : tipoCalculoId,
+@@ -390,6 +427,14 @@
+ 								<input type="hidden" class="form-control" id="parametroPPVId">
+ 								<table style="width: 100%">
+ 									<tr>
++										<td colspan="2"><label style="width: 100%">Sponsor:</label></td>
++									</tr>
++									<tr>
++										<td colspan="2"><select id="canalId" name="canalId" style ="width: 450px"
++											data-placeholder="Seleccione una opción..." validationMessage="Campo requerido!!!" required>											
++										</select></td>
++									</tr>
++									<tr>
+ 										<td colspan="2"><label style="width: 100%">Punto
+ 												de Venta:</label></td>
+ 									</tr>
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriParametrosPuntoVentaController.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriParametrosPuntoVentaController.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriParametrosPuntoVentaController.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriParametrosPuntoVentaController.java
+@@ -65,6 +65,8 @@
+ 			String codigoIntegracion = request.getParameter("codigoIntegracion")== null ? "" : request.getParameter("codigoIntegracion");
+ 			String tieneEmisionDirecta = request.getParameter("tieneEmisionDirecta")== null ? "" : request.getParameter("tieneEmisionDirecta");
+ 			String tieneEmisionObligatoria = request.getParameter("tieneEmisionObligatoria")== null ? "" : request.getParameter("tieneEmisionObligatoria");
++			String canalId = request.getParameter("canalId")== null ? "" : request.getParameter("canalId");
++			
+ 			
+ 			AgriParametroXPuntoVenta parametroPymeXPV = new AgriParametroXPuntoVenta();
+ 			AgriParametroXPuntoVentaDAO parametroPymeXPVDAO = new AgriParametroXPuntoVentaDAO();
+@@ -106,6 +108,9 @@
+ 			
+ 			if(!excepcionesCultivos.equals(""))
+ 				parametroPymeXPV.setExcepcionesDirectasCultivos(excepcionesCultivos);
++			
++			if(!canalId.equals(""))
++				parametroPymeXPV.setCanalId(new BigInteger(canalId));
+ 				
+ 			if(tipoConsulta.equals("buscarTodos")){
+ 				List<AgriParametroXPuntoVenta> listParametro = parametroPymeXPVDAO.buscarTodos();
+@@ -138,6 +143,7 @@
+ 			if(tipoConsulta.equals("buscarPorId")){
+ 				parametroPymeXPV = parametroPymeXPVDAO.buscarPorId(new BigInteger(puntoVentaId));			 
+ 				result.put("puntoVentaId", parametroPymeXPV.getPuntoVentaId());
++				result.put("canalId", parametroPymeXPV.getCanalId());
+ 				result.put("tipoCalculoId", parametroPymeXPV.getTipoCalculoId());
+ 				result.put("tieneEmisionDirecta", parametroPymeXPV.getEmisionDirecta());
+ 				result.put("tieneEmisionObligatoria", parametroPymeXPV.isEmisionObligatoria());

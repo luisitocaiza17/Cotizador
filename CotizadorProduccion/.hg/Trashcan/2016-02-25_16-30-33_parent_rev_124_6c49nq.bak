@@ -1,0 +1,32 @@
+diff --git a/src/com/qbe/cotizador/model/AgriCotizacionAprobacion.java b/src/com/qbe/cotizador/model/AgriCotizacionAprobacion.java
+--- a/src/com/qbe/cotizador/model/AgriCotizacionAprobacion.java
++++ b/src/com/qbe/cotizador/model/AgriCotizacionAprobacion.java
+@@ -195,8 +195,11 @@
+ 	@Column(name = "costo_produccionQBE")
+ 	private float costoProduccionQBE;
+ 	
++	@Column(name = "ID_COTIZACION_2")
++	private BigInteger idCotizacion2;
++	
+ 	
+ 	
+ 	//	@Column(name = "porcentajeComision")
+ 	//	private float PorcentajeComision;
+ 	
+@@ -198,8 +201,16 @@
+ 	
+ 	
+ 	//	@Column(name = "porcentajeComision")
+ 	//	private float PorcentajeComision;
+ 	
++	public BigInteger getIdCotizacion2() {
++		return idCotizacion2;
++	}
++
++	public void setIdCotizacion2(BigInteger idCotizacion2) {
++		this.idCotizacion2 = idCotizacion2;
++	}
++
+ 	public float getCostoProduccionQBE() {
+ 		return costoProduccionQBE;
+ 	}

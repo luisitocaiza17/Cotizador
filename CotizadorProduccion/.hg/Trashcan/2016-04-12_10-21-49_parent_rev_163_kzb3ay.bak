@@ -1,0 +1,441 @@
+diff --git a/src/com/qbe/cotizador/dao/entidad/CantonDAO.java b/src/com/qbe/cotizador/dao/entidad/CantonDAO.java
+--- a/src/com/qbe/cotizador/dao/entidad/CantonDAO.java
++++ b/src/com/qbe/cotizador/dao/entidad/CantonDAO.java
+@@ -72,4 +72,13 @@
+ 			canton =  query.get(0);
+ 		return canton;		
+ 	}
++	
++	public Canton buscarPorCantonProvincia(String nombre, Provincia provincia){
++		Canton canton = new Canton();
++		List<Canton> query = getEntityManager().createNamedQuery("Canton.buscarCantonProvincia").setParameter("nombre", nombre).setParameter("provincia", provincia).getResultList();
++		if(!query.isEmpty())
++			canton =  query.get(0);
++		return canton;		
++	}
++	
+ }
+\ No newline at end of file
+diff --git a/src/com/qbe/cotizador/model/AgriParroquia.java b/src/com/qbe/cotizador/model/AgriParroquia.java
+--- a/src/com/qbe/cotizador/model/AgriParroquia.java
++++ b/src/com/qbe/cotizador/model/AgriParroquia.java
+@@ -13,7 +13,9 @@
+ @Table(name="AGRI_PARROQUIAS")
+ @NamedQueries({
+ 	@NamedQuery(name="AgriParroquia.buscarTodos", query="SELECT a FROM AgriParroquia a"),
+-	@NamedQuery(name="AgriParroquia.obtenerPorSBS", query="SELECT a FROM AgriParroquia a where a.parroquiaSbs=:CodigoSBS")
++	@NamedQuery(name="AgriParroquia.obtenerPorSBS", query="SELECT a FROM AgriParroquia a where a.parroquiaSbs=:CodigoSBS"),
++	@NamedQuery(name="AgriParroquia.obtenerPorNombre", query="SELECT a FROM AgriParroquia a where a.parroquiaNombre=:nombre"),
++	@NamedQuery(name="AgriParroquia.obtenerPorNombreYCanton", query="SELECT a FROM AgriParroquia a where a.parroquiaNombre LIKE :nombre AND a.cantonId=:canton")
+ })
+ 
+ public class AgriParroquia implements Serializable {
+diff --git a/src/com/qbe/cotizador/servicios/QBE/archivoPlano/GeneradorReporte.java b/src/com/qbe/cotizador/servicios/QBE/archivoPlano/GeneradorReporte.java
+--- a/src/com/qbe/cotizador/servicios/QBE/archivoPlano/GeneradorReporte.java
++++ b/src/com/qbe/cotizador/servicios/QBE/archivoPlano/GeneradorReporte.java
+@@ -316,7 +316,12 @@
+ 			parametersHeader.put("Endoso", "FIDEICOMISO AGROINVERSIONES DOS");
+ 		}
+ 		else{
+-			parametersHeader.put("Endoso", "BANCO PICHINCHA C.A");
++			if(cotizacion.getPuntoVenta().getNombre().equals("AGRIPAC")){
++				parametersHeader.put("Endoso", "AGRIPAC S.A");
++			}else{
++				parametersHeader.put("Endoso", "BANCO PICHINCHA C.A");
++			}
++			
+ 		}
+ 		parametersHeader.put("FechaEmision", Fecha.format(fechaActual.getTime()));
+ 		
+diff --git a/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java b/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java
+--- a/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java
++++ b/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java
+@@ -558,6 +558,14 @@
+ 					Observacion=Observacion+" Tasas Diferentes: tasa BC:"+tasa+" Tasa QBE:"+nuestraTasa;
+ 				}
+ 				
++				//si la tasa es 0
++				
++				if(nuestraTasa==0){
++					AgriTipoCultivoDAO agriTipoCultivoDAO= new AgriTipoCultivoDAO();
++					AgriTipoCultivo agriTipoCultivo=agriTipoCultivoDAO.BuscarPorId(new BigInteger( CodigoTipoCultivoProcesado));
++					tasa = agriTipoCultivo.getTasa();
++				}
++				
+ 				//Calculamos el monto del credito en base la inf que nos llega el numero de hectares por nuestro costo de produccion
+ 				double sumaAseguradaQBE= (Double.parseDouble(nuestroCosto))*in0.getNumeroHectareasAsegurables();
+ 				variableControl=variableControl+" || SumaAsegurada QBE "+sumaAseguradaQBE;
+@@ -580,7 +588,7 @@
+ 				cotizacion.setPrimaNetaTotal(""+roundOff);	
+ 				cotizacion.setPrimaOrigen(Double.parseDouble(""+roundOff));
+ 				
+-				//valores que revibimos por banca comunal
++				//valores que recibimos por banca comunal
+ 				double valorPrima = in0.getMontoPrima();//verificar tomamos la que nos envian
+ 				variableControl=variableControl+" || valorPrimaCalculadaQBE "+roundOff;
+ 				variableControl=variableControl+" || valorPrima BC: "+valorPrima;
+@@ -606,7 +614,6 @@
+ 		        double valorTotal=0;
+ 		        if(variablesistema.size() > 0) {
+ 		        	for(VariableSistema variable : variablesistema) {
+-		        		if(variable.getNombre().equals("DERECHOS_EMISION")){
+-		        			 valorBase = Double.parseDouble(variable.getValor())+ valorFinalPrima;
+-		                     valorDerechosEmision = Double.parseDouble(variable.getValor());
++		        		if(variable.getNombre().equals("DERECHOS_EMISION_AGRICOLA")){
++		        			 valorDerechosEmision = Double.parseDouble(variable.getValor());
+ 		                     cotizacion.setImpDerechoEmision(valorDerechosEmision);
+@@ -612,4 +619,5 @@
+ 		                     cotizacion.setImpDerechoEmision(valorDerechosEmision);
++		                     valorBase = Double.parseDouble(variable.getValor())+valorBase;
+ 		        		}
+ 		        		else if(variable.getNombre().equals("SEGURO_CAMPESINO")){
+ 		        			valorSeguroCampesino = Math.rint(Double.parseDouble(variable.getValor())*valorFinalPrima/100*100)/100;
+@@ -621,19 +629,7 @@
+ 		                    cotizacion.setImpSuperBancos(valorSuperBancos);
+ 		                    valorBase = valorBase + valorSuperBancos;
+ 		        		}
+-		        		else if(variable.getNombre().equals("SUBTOTAL")){
+-		                    valorSubTotal = Math.rint(valorBase*100)/100;
+-		                }
+-		                else if(variable.getNombre().equals("IVA")){
+-		                	//Proces de exoneracion del iva del 14% LEY DE SOLIDARIDAD provincia ESMERANLDAS Y MANABI
+-		                	if(provincia.getNombre().equals("MANABI")||provincia.getNombre().equals("ESMERALDAS")){
+-		                		valorIva = Math.rint(Double.parseDouble("12")*valorSubTotal/100*100)/100;
+-			                    cotizacion.setImpIva(valorIva);
+-		                	}else{
+-		                		valorIva = Math.rint(Double.parseDouble(variable.getValor())*valorSubTotal/100*100)/100;
+-			                    cotizacion.setImpIva(valorIva);
+-		                	}		                    
+-		                }
++		        		
+ 		        		if(variable.getNombre().equals("COMISION_BANCACOMUNAL")){
+ 		        			 cotizacion.setPorcentajeComision(Double.parseDouble(variable.getValor()));//%COMISION DE AGENTE
+ 		        		}
+@@ -642,5 +638,12 @@
+ 		        			cotizacion.setAgenteId(new BigInteger(variable.getValor()));//AGENTE AL QUE SE ATA
+ 		        			
+ 		        		}
++		        		else if(variable.getNombre().equals("SUBTOTAL")){
++		                    valorSubTotal = Math.rint(valorBase*100)/100;
++		                }
++		                else if(variable.getNombre().equals("IVA")){
++		                	//Proces de exoneracion del iva del 14% LEY DE SOLIDARIDAD provincia ESMERANLDAS Y MANABI
++		                		                    
++		                }
+ 		        		
+ 		        	}
+@@ -645,7 +648,27 @@
+ 		        		
+ 		        	}
+-		        	valorTotal = Math.rint((valorBase+valorIva)*100)/100;
+-		            cotizacion.setTotalFactura(valorTotal);
++		        	
++		        	VariableSistema variableIva= variableDAO.buscarPorNombre("IVA");					
++					valorSubTotal=valorBase+valorFinalPrima;
++					//calculamos el Iva
++					String PorcentajeIva="";
++					//exceocion temporal Manabi y esmeraldas
++					if(provincia.getNombre().equals("MANABI")||provincia.getNombre().equals("ESMERALDAS")){
++						 PorcentajeIva="12";
++                	}else{
++                		 PorcentajeIva=variableIva.getValor();
++                	}	
++					
++					valorIva = Math.rint(Double.parseDouble(PorcentajeIva) * valorSubTotal / 100 * 100) / 100;
++					a = new BigDecimal(""+valorIva);
++					roundOff = a.setScale(2, BigDecimal.ROUND_HALF_UP);
++					cotizacion.setImpIva(Double.parseDouble(""+roundOff));
++					//calculamos el valor total
++					double valorFactura=valorSubTotal+valorIva;
++					a = new BigDecimal(""+valorFactura);
++					roundOff = a.setScale(2, BigDecimal.ROUND_HALF_UP);
++					cotizacion.setTotalFactura(Double.parseDouble(""+roundOff));
++					
+ 		        }
+ 		        cotizacion.setTasaProductoValor(nuestraTasa);//tasa QBE
+ 		        cotizacion.setEtapaWizard(3);
+@@ -684,6 +707,16 @@
+ 				agriObjetoCotizacion.setHectareasLote(Float.parseFloat(""+in0.getNumeroHectareas()));
+ 				agriObjetoCotizacion.setLatitud(0);
+ 				agriObjetoCotizacion.setLongitud(0);
++				if(in0.getEsTecnificado().trim().equalsIgnoreCase("SI")||in0.getEsTecnificado().trim().equalsIgnoreCase("S")
++						||in0.getEsTecnificado().trim().equalsIgnoreCase("TRUE")){
++					agriObjetoCotizacion.setAgricultorTecnificado(true);
++					agriObjetoCotizacion.setDisponeRiego(true);
++				}
++				else{
++					agriObjetoCotizacion.setAgricultorTecnificado(false);
++					agriObjetoCotizacion.setDisponeRiego(false);
++				}
++				
+ 				agriObjetoCotizacion.setCodEntidadFinanciera(""+in0.getCodigoEntidadFinanciera());
+ 				agriObjetoCotizacion.setHectareasAsegurables(Float.parseFloat(""+in0.getNumeroHectareasAsegurables()));
+ 				agriObjetoCotizacion.setMontoCredito(Float.parseFloat(""+sumaAseguradaQBE));
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java
+@@ -383,7 +383,12 @@
+ 			parametersHeader.put("Endoso", "FIDEICOMISO AGROINVERSIONES DOS");
+ 		}
+ 		else{
+-			parametersHeader.put("Endoso", "BANCO PICHINCHA C.A");
++			if(cotizacion.getPuntoVenta().getNombre().equals("AGRIPAC")){
++				parametersHeader.put("Endoso", "AGRIPAC S.A");
++			}else{
++				parametersHeader.put("Endoso", "BANCO PICHINCHA C.A");
++			}
++			
+ 		}
+ 		parametersHeader.put("FechaEmision", Fecha.format(fechaActual.getTime()));
+ 		parametersHeader.put("CultivoDias", ""+VigenciaCoberura);
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriObjetoCotizacionController.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriObjetoCotizacionController.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriObjetoCotizacionController.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriObjetoCotizacionController.java
+@@ -1,6 +1,7 @@
+ package com.qbe.cotizador.servlets.producto.agricola;
+ 
+ import java.io.IOException;
++import java.math.BigDecimal;
+ import java.math.BigInteger;
+ import java.text.SimpleDateFormat;
+ import java.util.Date;
+@@ -20,6 +21,7 @@
+ import com.qbe.cotizador.dao.cotizacion.TipoObjetoDAO;
+ import com.qbe.cotizador.dao.entidad.ClienteDAO;
+ import com.qbe.cotizador.dao.entidad.DerechoEmisonDAO;
++import com.qbe.cotizador.dao.entidad.ProvinciaDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriCicloDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriCotizacionMaxDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriObjetoCotizacionDAO;
+@@ -37,6 +39,7 @@
+ import com.qbe.cotizador.model.CotizacionDetalle;
+ import com.qbe.cotizador.model.DerechoEmision;
+ import com.qbe.cotizador.model.Estado;
++import com.qbe.cotizador.model.Provincia;
+ import com.qbe.cotizador.model.TipoVariable;
+ import com.qbe.cotizador.model.VariableSistema;
+ import com.qbe.cotizador.transaction.cotizacion.CotizacionDetalleTransaction;
+@@ -835,7 +838,13 @@
+ 
+ 				Cotizacion cotizacion = cotizacionDAO.buscarPorId(request.getParameter("cotizacionId"));
+ 				List<CotizacionDetalle> cotizacionesDetalle = cotizacionDetalleDAO.buscarCotizacionDetallePorCotizacion(cotizacion);								
+-
++				AgriObjetoCotizacionDAO agriObjetoCotizacionDAO = new AgriObjetoCotizacionDAO();
++				AgriObjetoCotizacion agriObjetoCotizacion = agriObjetoCotizacionDAO.buscarPorObjetoOfflineId(cotizacionesDetalle.get(0).getObjetoId()).get(0);
++				
++				Provincia provincia = new Provincia();
++				ProvinciaDAO  provinciaDAO= new ProvinciaDAO();
++				provincia=provinciaDAO.buscarPorId(""+agriObjetoCotizacion.getProvinciaId());
++				
+ 				double valorPrima = 0;
+ 				double valorAsegurado = 0;
+ 				double valorFinalPrima = 0;
+@@ -839,6 +848,8 @@
+ 				double valorPrima = 0;
+ 				double valorAsegurado = 0;
+ 				double valorFinalPrima = 0;
++				BigDecimal a = new BigDecimal(""+valorPrima);
++				BigDecimal roundOff = a.setScale(2, BigDecimal.ROUND_HALF_UP);
+ 				if(cotizacionesDetalle.size()!=0)
+ 				{
+ 					//Calculo los valores
+@@ -864,72 +875,62 @@
+ 					result.put("valorPrima", valorFinalPrima);
+ 					result.put("valorAsegurado", valorAsegurado);
+ 					if(variablesistema.size() > 0) {
+-						for(VariableSistema variable : variablesistema) {
+-							if(variable.getNombre().equals("DERECHOS_EMISION")){
+-								/*valorBase = Double.parseDouble(variable.getValor())+ valorFinalPrima;
+-								valorDerechosEmision = Double.parseDouble(variable.getValor());
+-								cotizacion.setImpDerechoEmision(valorDerechosEmision);
+-								result.put("valorDerechosEmision", valorDerechosEmision);*/
+-								//Proceso de Calculo de Derechos de emision dependiendo del valor de la prima
+-								DerechoEmisonDAO derechoEmisonDAO= new DerechoEmisonDAO();
+-								List<DerechoEmision> derechoEmision= derechoEmisonDAO.buscarTodos();
+-								for(DerechoEmision rs:derechoEmision){
+-									Double valorDesde=Double.parseDouble(rs.getPrimaDesde());
+-									Double valorHasta=Double.parseDouble(rs.getPrimaHasta());
+-									if(valorPrima>=valorDesde &&valorPrima<=valorHasta){
+-										valorBase = Double.parseDouble(rs.getValor())+ valorFinalPrima;
+-										valorDerechosEmision = Double.parseDouble(rs.getValor());
+-										cotizacion.setImpDerechoEmision(valorDerechosEmision);
+-										result.put("valorDerechosEmision", valorDerechosEmision);
+-										break;
+-									}
+-								}
+-
+-							}
+-							else if(variable.getNombre().equals("SEGURO_CAMPESINO")){
+-								valorSeguroCampesino = Math.rint(Double.parseDouble(variable.getValor())*valorFinalPrima/100*100)/100;
+-								valorBase = valorBase + valorSeguroCampesino;
+-								cotizacion.setImpSeguroCampesino(valorSeguroCampesino);
+-								result.put("valorSeguroCampesino", valorSeguroCampesino);
+-							}
+-							else if(variable.getNombre().equals("SUPER_DE_BANCOS")){
+-								valorSuperBancos = Math.rint(Double.parseDouble(variable.getValor())*valorFinalPrima/100*100)/100;
+-								result.put("valorSuperBancos", valorSuperBancos);
+-								cotizacion.setImpSuperBancos(valorSuperBancos);
+-								valorBase = valorBase + valorSuperBancos;
+-
+-							}
+-
+-							else if(variable.getNombre().equals("SUBTOTAL")){
+-								valorSubTotal = Math.rint(valorBase*100)/100;
+-								result.put("valorSubTotal", valorSubTotal);
+-							}
+-							else if(variable.getNombre().equals("IVA")){
+-								//proceso de identificacion de la provincia a la que pertence aplicar el iva por ley de solidaridad
+-								//iva 14% excepto manabi y esmeraldas
+-								
+-								CotizacionDetalleDAO cotizacionDetalleDAO1 = new CotizacionDetalleDAO();
+-								CotizacionDetalle cotizacionDetalle=cotizacionDetalleDAO1.buscarCotizacionDetallePorCotizacion(cotizacion).get(0);
+-								AgriObjetoCotizacionDAO agriObjetoCotizacionDAO = new AgriObjetoCotizacionDAO();
+-								AgriObjetoCotizacion agriObjetoCotizacion=agriObjetoCotizacionDAO.buscarPorObjetoOfflineId(cotizacionDetalle.getObjetoId()).get(0);
+-								String Provincia=agriObjetoCotizacion.getProvinciaId().toString();
+-								
+-								if(Provincia.equals("14")||Provincia.equals("8")){//manabi y esmeraldas
+-									valorIva = Math.rint(Double.parseDouble("12")*valorSubTotal/100*100)/100;
+-									cotizacion.setImpIva(valorIva);
+-									result.put("valorIva", valorIva);
+-								}else{
+-									valorIva = Math.rint(Double.parseDouble(variable.getValor())*valorSubTotal/100*100)/100;
+-									cotizacion.setImpIva(valorIva);
+-									result.put("valorIva", valorIva);
+-								}
+-								
+-							}
+-
+-						}
+-						valorTotal = Math.rint((valorBase+valorIva)*100)/100;
+-						cotizacion.setValorDescuento(0);
+-						cotizacion.setTotalFactura(valorTotal);
++			        	for(VariableSistema variable : variablesistema) {
++			        		if(variable.getNombre().equals("DERECHOS_EMISION_AGRICOLA")){
++			        			 valorDerechosEmision = Double.parseDouble(variable.getValor());
++			                     cotizacion.setImpDerechoEmision(valorDerechosEmision);
++			                     valorBase = Double.parseDouble(variable.getValor())+valorBase;
++			        		}
++			        		else if(variable.getNombre().equals("SEGURO_CAMPESINO")){
++			        			valorSeguroCampesino = Math.rint(Double.parseDouble(variable.getValor())*valorFinalPrima/100*100)/100;
++			                    valorBase = valorBase + valorSeguroCampesino;
++			                    cotizacion.setImpSeguroCampesino(valorSeguroCampesino);
++			        		}
++			        		else if(variable.getNombre().equals("SUPER_DE_BANCOS")){
++			        			valorSuperBancos = Math.rint(Double.parseDouble(variable.getValor())*valorFinalPrima/100*100)/100;
++			                    cotizacion.setImpSuperBancos(valorSuperBancos);
++			                    valorBase = valorBase + valorSuperBancos;
++			        		}
++			        		
++			        		if(variable.getNombre().equals("COMISION_BANCACOMUNAL")){
++			        			 cotizacion.setPorcentajeComision(Double.parseDouble(variable.getValor()));//%COMISION DE AGENTE
++			        		}
++			        		 	
++			        		if(variable.getNombre().equals("AGENTE_BANCACOMUNAL")){
++			        			cotizacion.setAgenteId(new BigInteger(variable.getValor()));//AGENTE AL QUE SE ATA
++			        			
++			        		}
++			        		else if(variable.getNombre().equals("SUBTOTAL")){
++			                    valorSubTotal = Math.rint(valorBase*100)/100;
++			                }
++			                else if(variable.getNombre().equals("IVA")){
++			                	//Proces de exoneracion del iva del 14% LEY DE SOLIDARIDAD provincia ESMERANLDAS Y MANABI
++			                		                    
++			                }
++			        		
++			        	}
++			        	
++			        	VariableSistema variableIva= variableDAO.buscarPorNombre("IVA");					
++						valorSubTotal=valorBase+valorFinalPrima;
++						//calculamos el Iva
++						String PorcentajeIva="";
++						//exceocion temporal Manabi y esmeraldas
++						if(provincia.getNombre().equals("MANABI")||provincia.getNombre().equals("ESMERALDAS")){
++							 PorcentajeIva="12";
++	                	}else{
++	                		 PorcentajeIva=variableIva.getValor();
++	                	}	
++						
++						valorIva = Math.rint(Double.parseDouble(PorcentajeIva) * valorSubTotal / 100 * 100) / 100;
++						a = new BigDecimal(""+valorIva);
++						roundOff = a.setScale(2, BigDecimal.ROUND_HALF_UP);
++						cotizacion.setImpIva(Double.parseDouble(""+roundOff));
++						//calculamos el valor total
++						double valorFactura=valorSubTotal+valorIva;
++						a = new BigDecimal(""+valorFactura);
++						roundOff = a.setScale(2, BigDecimal.ROUND_HALF_UP);
++						cotizacion.setTotalFactura(Double.parseDouble(""+roundOff));
++						
+ 						result.put("valorTotal", valorTotal);
+ 						cotizacionTransaction.editar(cotizacion);
+ 					}
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/ReadExelFile.java b/src/com/qbe/cotizador/servlets/producto/agricola/ReadExelFile.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/ReadExelFile.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/ReadExelFile.java
+@@ -153,6 +153,67 @@
+ 		}
+ 		return cotizacionArray;
+ 	}
++	
++	public static List<CotizacionArchivoPlano> readXLSXFileAgriPac(String rutaArchivo) throws IOException, ParseException
++	{
++
++		List<CotizacionArchivoPlano> cotizacionArray = new ArrayList<CotizacionArchivoPlano>();
++		InputStream ExcelFileToRead = new FileInputStream(rutaArchivo);
++		XSSFWorkbook  wb = new XSSFWorkbook(ExcelFileToRead);	
++
++		XSSFSheet sheet = wb.getSheetAt(0);
++		XSSFRow row; 
++		XSSFCell cell;
++
++		Iterator rows = sheet.rowIterator();
++		int i = 0;
++
++		while (rows.hasNext())
++		{
++
++			if(i<1){
++				rows.next();
++				i++;				
++				continue;				
++			}				
++			
++			row=(XSSFRow) rows.next();
++			String existeSiguiente=(readCell(row.getCell(0)));
++			if(existeSiguiente==""||existeSiguiente.equals("")||existeSiguiente==null||existeSiguiente.equals(null))
++				break;
++			//Iterator cells = row.cellIterator();
++			CotizacionArchivoPlano cotizacion = new CotizacionArchivoPlano();
++
++			//cotizacion.setCanal(row.getCell(0).getStringCellValue());
++			cotizacion.setCanal(readCell(row.getCell(0)).trim());
++			cotizacion.setClienteApellido(readCell(row.getCell(1)).trim());
++			cotizacion.setClienteNombre(readCell(row.getCell(2)).trim());			
++			if(readCell(row.getCell(3)).trim().length() > 0 )
++				row.getCell(3).setCellType(Cell.CELL_TYPE_STRING);
++			cotizacion.setClienteIdentificacion(readCell(row.getCell(3)).trim());
++			cotizacion.setMontoAsegurado(Double.parseDouble(readCell(row.getCell(4)).trim()));
++			cotizacion.setFechaSolicitud(stringToTimestamp(readCell(row.getCell(5)).trim()));
++			cotizacion.setFechaSiembra(stringToTimestamp(readCell(row.getCell(6)).trim()));
++			cotizacion.setTipoCultivoNombre(readCell(row.getCell(7)).trim());
++			cotizacion.setNumeroHectareasAseguradas(Double.parseDouble(readCell(row.getCell(8)).trim()));
++			cotizacion.setNumeroHectareasLote(Double.parseDouble(readCell(row.getCell(9)).trim()));
++			if(readCell(row.getCell(10)).trim().equalsIgnoreCase("SI"))
++				cotizacion.setEsTecnificado(true);
++			else
++				cotizacion.setEsTecnificado(false);
++			cotizacion.setProvinciaNombre(readCell(row.getCell(11)).trim());
++			cotizacion.setCantonNombre(readCell(row.getCell(12)).trim());
++			cotizacion.setParroquiaNombre(readCell(row.getCell(13)).trim());
++			cotizacion.setUbicacionCultivo(readCell(row.getCell(14)).trim());
++			if(readCell(row.getCell(15)).trim().length() > 0) 
++				row.getCell(15).setCellType(Cell.CELL_TYPE_STRING);
++			cotizacion.setTelefono(readCell(row.getCell(15)).trim());
++			cotizacion.setGpsX(readCell(row.getCell(16)).trim());
++			cotizacion.setGpsY(readCell(row.getCell(17)).trim());
++			cotizacionArray.add(cotizacion);
++		}
++		return cotizacionArray;
++	}
+ 
+ 	public static String readCell (XSSFCell cell){		
+ 		String val = "";

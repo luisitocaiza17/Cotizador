@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="coberturasAdicionalesConCosto" pageWidth="554" pageHeight="842" columnWidth="554" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" whenResourceMissingType="Empty" isIgnorePagination="true" uuid="865b7234-28f9-4335-884c-a04399415e28">
+	<property name="com.jaspersoft.studio.unit." value="cm"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="cm"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="cotizadorPruebas"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="COTIZACION" class="java.lang.String"/>
+	<parameter name="COBERTURA" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[-- Metodo para obtener las coberturas adicionales con costo
+select co.texto_cotizador as texto_cobertura,co.orden,co.id,co.nombre  from COTIZACION c,PRODUCTO_COBERTURA pc,COBERTURA co
+where c.id=$P{COTIZACION} and c.grupo_por_producto_id = pc.grupo_por_producto_id
+      and pc.cobertura_id = co.id and co.id not in (
+select co.id
+from COTIZACION_DETALLE cd, COTIZACION_COBERTURA cc,COBERTURA co
+where cd.cotizacion_id=$P{COTIZACION} and cd.id=cc.cotizacion_detalle_id
+and cc.cobertura_id=co.id and co.mostrar_cotizador='1') and  co.mostrar_cotizador='1']]>
+	</queryString>
+	<field name="texto_cobertura" class="java.lang.String"/>
+	<field name="orden" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="22" splitType="Immediate">
+			<printWhenExpression><![CDATA[$P{COBERTURA}.equals("PT") || $P{COBERTURA}.equals("TR") || $P{COBERTURA}.equals("PT,RC") ||  $P{COBERTURA}.equals("RC,PT")]]></printWhenExpression>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="0" y="0" width="554" height="22" isRemoveLineWhenBlank="true" uuid="b5222fdb-88fe-4729-bcfc-870e36627b7d">
+					<property name="local_mesure_unitwidth" value="cm"/>
+					<property name="local_mesure_unitheight" value="cm"/>
+					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+				</reportElement>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["- "+ $F{nombre}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="22" splitType="Immediate">
+			<printWhenExpression><![CDATA[$P{COBERTURA}.equals("PT") || $P{COBERTURA}.equals("TR") || $P{COBERTURA}.equals("PT,RC") ||  $P{COBERTURA}.equals("RC,PT")]]></printWhenExpression>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="0" y="0" width="554" height="22" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="85bc7f6a-0843-4798-9923-4f8d5ec66bf7">
+					<property name="local_mesure_unitwidth" value="cm"/>
+					<property name="local_mesure_unitheight" value="cm"/>
+					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+				</reportElement>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{texto_cobertura}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Prevent"/>
+	</summary>
+</jasperReport>

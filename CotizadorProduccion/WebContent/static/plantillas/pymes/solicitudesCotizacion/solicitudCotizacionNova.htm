@@ -1,0 +1,408 @@
+﻿<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+    <title>Cotiza</title>
+    <style type="text/css">
+        .style1
+        {
+            font-size: larger;
+        }
+        .style3
+        {
+            width: 5%;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <table cellspacing='2' cellpadding='2' width='100%'>
+            <tr>
+                <td colspan="4">
+                    <table width="100%">
+                        <tr>
+                            <td>
+                                <span style="font-family: Times New Roman; font-weight: bold; font-size: larger">Cotizaci&oacute;n
+                                    Nro.: [CotizacionId]</span>
+                                <br />
+                                <br />
+                                <span style="font-family: Arial; font-size: small">Fecha: [FechaCotizacion] </span>
+                            </td>
+                            <td colspan='3' style='text-align: right; font-family: Verdana'>
+                                <img alt="" src= [Logo]
+                                    style="height: 100px; width: 254px" />
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style='background-color: #192C65; font-family: Verdana; font-size: medium; font-weight: bold;
+                    color: White; height: 30px' colspan='4'>
+                    <strong>INFORMACI&Oacute;N GENERAL</strong>
+                </td>
+            </tr>
+            <tr>
+                <td style='font-family: Verdana; font-size: small; font-weight: bold; width: 30%;'>
+                    Punto de Venta:
+                </td>
+                <td colspan='3' style='font-family: Verdana; font-size: small; width: 70%;'>
+                    [PuntoVenta]
+                </td>
+            </tr>
+            <tr>
+                <td style='font-family: Verdana; font-size: small; font-weight: bold'>
+                    Cliente:
+                </td>
+                <td colspan='3' style='font-family: Verdana; font-size: small;'>
+                    [ClienteNombre]
+                </td>
+            </tr>
+            <tr>
+                <td style='font-family: Verdana; font-size: small; font-weight: bold'>
+                    Tel&eacute;fono:
+                </td>
+                <td colspan="3" style='font-family: Verdana; font-size: small;'>
+                    [TelefonoCliente]
+                </td>
+            </tr>
+            <tr>
+                <td style='font-family: Verdana; font-size: small; font-weight: bold' class="style1">
+                    Broker:
+                </td>
+                <td colspan="3" style='font-family: Verdana; font-size: small;'>
+                    [BrokerNombre]
+                </td>
+            </tr>
+            <tr>
+                <td style='background-color: #192C65; font-family: Verdana; font-size: medium; font-weight: bold;
+                    color: White; height: 30px' colspan='4'>
+                    INFORMACI&Oacute;N DEL RIESGO
+                </td>
+                
+            </tr>
+            <tr>
+                <td style='font-family: Verdana;' colspan="4">
+                    DIRECCI&Oacute;N OBJETO ASEGURADO
+                </td>
+            </tr>
+            <tr>
+                <td colspan='4' style='font-family: Verdana; font-size: small'>
+                    [DireccionesAseguradas]
+                </td>
+            </tr>
+            <tr>
+                <td colspan='4' style='font-family: Verdana; font-size: small'>
+                    &nbsp;&nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td colspan='4' style='text-align: justify; font-family: Verdana; font-size: small;'>
+                    <table>
+                        <tr>
+                            <td style='background-color: #192C65; font-family: Verdana; font-size: small; font-weight: bold;
+                                color: White; width: 50%'>
+                                P&Oacute;LIZA MULTIRIESGO QUE INCLUYE
+                            </td>
+                            <td style='background-color: #192C65; font-family: Verdana; font-size: small; font-weight: bold;
+                                color: White; width: 25%'>
+                                VALORES
+                                <br />
+                                ASEGURADOS
+                            </td>
+                            <td style='background-color: #192C65; font-family: Verdana; font-size: small; font-weight: bold;
+                                color: White; width: 25%'>
+                                COSTOS
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan='4'>
+                                [ValoresCoberturas]
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan='4' style='border: thin none #CEE9EF'>
+                                <br />
+                                <br />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan='4' style='border: thin none #CEE9EF'>
+                                <table width="100%">
+                                    <tr>
+                                        <td style='width: 58%'>
+                                            <table width="100%">
+                                                <tr>
+                                                    <td colspan="2" style='background-color: #192C65; font-family: Verdana; font-size: medium;
+                                                        font-weight: bold; color: White; vertical-align: middle; height: 30px'>
+                                                        DESGLOSE DE VALORES
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='width: 90%; font-weight: bold; font-size: medium; border-style: none none solid none;
+                                                        border-width: medium; border-color: #00ACEF;'>
+                                                        PRIMAS :
+                                                    </td>
+                                                    <td style='border-style: none none solid none; border-width: medium; border-color: #00ACEF;
+                                                        text-align: right; font-weight: bold; font-size: medium;'>
+                                                        [ValorPrimaNeta]
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='border-style: none none solid none; border-width: thin; border-color: #D2D2D2;'>
+                                                        Superintendencia de Bancos 3.50% :
+                                                    </td>
+                                                    <td style='border-style: none none solid none; border-width: thin; border-color: #D2D2D2;
+                                                        text-align: right'>
+                                                        [ValorSuperintendenciaBancos]
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='border-style: none none solid none; border-width: thin; border-color: #D2D2D2;'>
+                                                        Seguro Campesino 0.50% :
+                                                    </td>
+                                                    <td style='border-style: none none solid none; border-width: thin; border-color: #D2D2D2;
+                                                        text-align: right'>
+                                                        [ValorSeguroCampesino]
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='border-style: none none solid none; border-width: thin; border-color: #D2D2D2;'>
+                                                        Derechos de Emisi&oacute;n :
+                                                    </td>
+                                                    <td style='border-style: none none solid none; border-width: thin; border-color: #D2D2D2;
+                                                        text-align: right'>
+                                                        [ValorDerechos]
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='border-style: none none solid none; border-width: thin; border-color: #D2D2D2;'>
+                                                        Subtotal :
+                                                    </td>
+                                                    <td style='border-style: none none solid none; border-width: thin; border-color: #D2D2D2;
+                                                        text-align: right'>
+                                                        [ValorSubtotal]
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='border-style: none none solid none; border-width: thin; border-color: #D2D2D2;'>
+                                                        IVA [PorcetajeIva]% :
+                                                    </td>
+                                                    <td style='border-style: none none solid none; border-width: thin; border-color: #D2D2D2;
+                                                        text-align: right'>
+                                                        [ValorIva]
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='border-style: none none solid none; border-width: thin; border-color: #D2D2D2;'>
+                                                        Compensaci&oacute;n del IVA [PorcetajeCompensacion]% :
+                                                    </td>
+                                                    <td style='border-style: none none solid none; border-width: thin; border-color: #D2D2D2;
+                                                        text-align: right'>
+                                                        [ValorCompensacionIva]
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style='border-style: solid solid solid solid; border-width: medium; border-color: #00ACEF;
+                                                        background-color: #00ACEF; color: White; font-weight: bold'>
+                                                        TOTAL :
+                                                    </td>
+                                                    <td style='border-style: solid solid solid solid; border-width: medium; border-color: #00ACEF;
+                                                        background-color: #00ACEF; border-style: none none none none; text-align: right;
+                                                        font-weight: bold; color: White'>
+                                                        [ValorTotal]
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan='2'>
+                                                        &nbsp;&nbsp;
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan='2' style='font-weight: bold'>
+                                                        FORMAS DE PAGO
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan='2'>
+                                                        - De contado en efectivo.
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan='2'>
+                                                        - Con tarjeta de cr&eacute;dito, corriente y diferido desde 3 hasta 10 meses sin
+                                                        intereses y a 12 meses con intereses.
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan='2'>
+                                                        - Mediante d&eacute;bito bancario, diferido hasta en 10 cuotas mensuales sin intereses.
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td style='width: 2%'>
+                                        </td>
+                                        <td style='width: 40%; vertical-align: top'>
+                                            <table width="100%">
+                                                <tr>
+                                                    <td colspan="2" style='background-color: #192C65; font-family: Verdana; font-size: medium;
+                                                        font-weight: bold; color: White; vertical-align: middle; height: 30px'>
+                                                        PAGO CUOTAS
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        [TablaDePagos]
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan='4' style='border: thin none #CEE9EF'>
+                                &nbsp;
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style='background-color: #192C65; font-family: Verdana; font-size: medium; font-weight: bold;
+                                color: White; height: 30px' colspan='4'>
+                                <strong>COBERTURAS</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan='4' style='border: thin none #CEE9EF'>
+                                [HtmlCoberturas]
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan='4' style='border: thin none #CEE9EF'>
+                                &nbsp;<br />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style='background-color: #192C65; font-family: Verdana; font-size: medium; font-weight: bold;
+                                color: White; height: 30px' colspan='4'>
+                                <strong>BENEFICIOS INCLU&Iacute;DOS EN TU P&Oacute;LIZA/ASISTENCIAS</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan='4' style='border: thin none #CEE9EF'>
+                                [HtmlAsistencias]
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan='4' style='border: thin none #CEE9EF'>
+                                &nbsp;<br />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style='background-color: #192C65; font-family: Verdana; font-size: medium; font-weight: bold;
+                                color: White; height: 30px' colspan='4'>
+                                <strong>DEDUCIBLES</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan='4' style='border: thin none #CEE9EF'>
+                                [HtmlDeducibles]
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan='4' style='border: thin none #CEE9EF'>
+                                &nbsp;<br />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style='background-color: #192C65; font-family: Verdana; font-size: medium; font-weight: bold;
+                                color: White; height: 30px' colspan='4'>
+                                <strong>CONSIDERACIONES DE LA COTIZACI&Oacute;N</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan='4' style='border: thin none #CEE9EF'>
+                                Esta cotizaci&oacute;n, no implica aceptaci&oacute;n de riesgo ni otorgamiento de
+                                cobertura. La presente cotizaci&oacute;n es v&aacute;lida por 15 d&iacute;as.En
+                                caso de aceptaci&oacute;n de la presente cotizaci&oacute;n, o si necesita mayor
+                                informaci&oacute;n o detalle por favor cont&aacute;ctenos a los tel&eacute;fonos
+                                de referencia.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan='4' style='border: thin none #CEE9EF'>
+                                <br />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style='background-color: #192C65; font-family: Verdana; font-size: medium; color: White;
+                                height: 80px' colspan='4'>
+                                <table width='100%'>
+                                    <tr>
+                                        <td style='width: 30%'>
+                                            Agente de seguros:
+                                        </td>
+                                        <td class="style3">
+                                            &nbsp;
+                                        </td>
+                                        <td style='width: 70%;'>
+                                            <span style='font-weight: bold'>[NombreUsuario] </span>/ Ejecutivo Comercial
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style='width: 30%'>
+                                            &nbsp;
+                                        </td>
+                                        <td class="style3">
+                                            &nbsp;
+                                        </td>
+                                        <td style='width: 70%;'>
+                                            &nbsp;
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style='font-weight: bold'>
+                                            QBE SEGUROS COLONIAL S.A.
+                                        </td>
+                                        <td style='font-weight: bold' class="style3">
+                                            &nbsp;
+                                        </td>
+                                        <td>
+                                            Email: [EmailUsuario] / Telf.: 3989800
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan='4'>
+                                <br />
+                                <br />
+                            </td>
+                        </tr>
+						<br>
+						<br>
+						<tr>
+					   		<td style='background-color: #192C65; font-family: Verdana; font-size: medium; font-weight: bold;
+								color: White; height: 30px' colspan='4'>
+								<strong>¿Necesita m&aacute;s informaci&oacute;n?</strong>
+							</td>
+						</tr>
+						<tr>
+
+							<td style='width: 80%;'>
+								<p>Comun&iacute;quese con su asesor de seguros.
+								al 3994949 o a la dirección de correo elect&oacaute; nico <a href="cotizame@novaecuador.com">cotizame@novaecuador.com</a>
+								</p>
+							</td>
+							<td style='width: 20%'>
+								<img alt="" src=[Nova] />
+							</td>
+						</tr>                          
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

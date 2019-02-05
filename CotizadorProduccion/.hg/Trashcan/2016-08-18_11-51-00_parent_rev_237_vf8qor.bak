@@ -1,0 +1,100 @@
+diff --git a/WebContent/dashboard/AgriUsuariosOffline.jsp b/WebContent/dashboard/AgriUsuariosOffline.jsp
+--- a/WebContent/dashboard/AgriUsuariosOffline.jsp
++++ b/WebContent/dashboard/AgriUsuariosOffline.jsp
+@@ -169,6 +169,10 @@
+ 	            type: "json",
+ 	            serverPaging: true,
+ 	            serverSorting: true,
++	            serverFiltering: true,
++	            filterable: {
++                    mode: "row"
++                },
+ 	            pageSize: 20,
+ 	            transport:{
+ 	            	read: {
+@@ -357,6 +361,7 @@
+ 		<!-- Button trigger modal -->
+ 		<button class="btn btn-primary" data-toggle="modal" data-target="#add" id="addButton">
+ 			<span class="glyphicon glyphicon-plus"></span> &nbsp; Nuevo
++			
+ 		</button>
+ 
+ 		<!-- Modal -->
+diff --git a/src/com/qbe/cotizador/dao/producto/agricola/AgriReglaDAO.java b/src/com/qbe/cotizador/dao/producto/agricola/AgriReglaDAO.java
+--- a/src/com/qbe/cotizador/dao/producto/agricola/AgriReglaDAO.java
++++ b/src/com/qbe/cotizador/dao/producto/agricola/AgriReglaDAO.java
+@@ -41,7 +41,7 @@
+ 	}
+ 	public AgriRegla BuscarPorId (BigInteger ReglaId){
+ 		AgriRegla agriRegla = new AgriRegla();
+-		List<AgriRegla> result = getEntityManager().createNamedQuery("AgriRegla.obtenerPorId").setParameter("reglaId", ReglaId).getResultList();
++		List<AgriRegla> result = getEntityManager().createNamedQuery("AgriRegla.obtenerPorId").setParameter("reglaId", ReglaId).setParameter("estado", 1).getResultList();
+ 		if (result.size()>0)
+ 			agriRegla = result.get(0);
+ 		return agriRegla;
+@@ -51,7 +51,8 @@
+ 	}
+ 	
+ 	public List<AgriRegla> BuscarPorParametros(BigInteger provinciaId, BigInteger cantonId, BigInteger tipoCultivoId){
+-		return getEntityManager().createNamedQuery("AgriRegla.obtenerPorParametros").setParameter("estado", 1)
++		return getEntityManager().createNamedQuery("AgriRegla.obtenerPorParametros")
++				.setParameter("estado", 1)
+ 				.setParameter("provinciaId", provinciaId)
+ 				.setParameter("cantonId", cantonId)
+ 				.setParameter("tipoCultivoId", tipoCultivoId).getResultList();
+@@ -71,7 +72,7 @@
+ 			AgriTipoCalculo tipoCalculo = calculoDAO.BuscarPorNombre(TipoCalculoNombre);
+ 			BigInteger tipoCalculoId = tipoCalculo.getTipoCalculoId();
+ 			TypedQuery<AgriRegla>query = null;
+-			String stringQuery= "SELECT c FROM AgriRegla c where (c.tipoCalculoId =:tipoCalculoId)";					
++			String stringQuery= "SELECT c FROM AgriRegla c where (c.tipoCalculoId =:tipoCalculoId) and c.estado =:estado";					
+ 			query = getEntityManager().createQuery(stringQuery, AgriRegla.class);
+ 			query.setParameter("tipoCalculoId",tipoCalculoId).setParameter("estado", 1);
+ 			results = query.getResultList();
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriExportarDatos.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriExportarDatos.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriExportarDatos.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriExportarDatos.java
+@@ -92,7 +92,7 @@
+ 	 */
+ 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+ 		
+-		//Cotizador 1.- Credife 2.- Cooprogreso
++		//Cotizador 1.- Credife 2.- Cooprogreso 3.- Agripac
+ 		String Cotizador = request.getParameter("cotizador") == null ? "" : request.getParameter("cotizador");
+ 		
+ 		//JSONObject retorno=new JSONObject();
+@@ -179,6 +179,24 @@
+ 				listadoTipoCultivo.add(nuevoTipo);
+ 			}
+ 			break;
++		case "3":
++			
++			List<AgriCultivoCanal> agriCultivoCanalAgripac= agriCultivoCanalDAO.buscarTipoCalculo(new BigInteger("31"));
++			for (AgriCultivoCanal tipoCultivo: agriCultivoCanalAgripac)
++			{
++				TipoCultivo nuevoTipo=new TipoCultivo();
++				nuevoTipo.setTipoCultivoId(tipoCultivo.getTipoCultivoId());
++				nuevoTipo.setNombre(tipoCultivo.getNombre());
++				nuevoTipo.setTipo(tipoCultivo.getTipo());
++				nuevoTipo.setVigenciaDias(tipoCultivo.getVigenciaDias());
++				//TODO: se agrega el precio de ajuste y nombre de plantilla 
++				nuevoTipo.setPrecioAjuste(tipoCultivo.getPrecioAjuste());
++				nuevoTipo.setPrecioAjuste2(tipoCultivo.getPrecioAjuste2());
++				nuevoTipo.setUnidadMedida(tipoCultivo.getUnidadMedida());
++				nuevoTipo.setUnidadMedida2(tipoCultivo.getUnidadMedida2());
++				listadoTipoCultivo.add(nuevoTipo);
++			}
++			break;
+ 		default:
+ 			break;
+ 		}
+@@ -194,6 +212,9 @@
+ 		case "2":
+ 			NombreCotizado="COOPROGRESO";
+ 			break;
++		case "3":
++			NombreCotizado="AGRIPAC";
++			break;
+ 		default:
+ 			break;
+ 		}

@@ -1,0 +1,12 @@
+diff --git a/WebContent/dashboard/CotizacionEmisionAgricola.jsp b/WebContent/dashboard/CotizacionEmisionAgricola.jsp
+--- a/WebContent/dashboard/CotizacionEmisionAgricola.jsp
++++ b/WebContent/dashboard/CotizacionEmisionAgricola.jsp
+@@ -351,7 +351,7 @@
+ 			template: "<input type='checkbox' id='#=id#'  class='checkbox' onclick=\"MarcarCheck('#=id#')\"/>"  },
+ 			{ command: { text: "Ver Detalle", click: fnEventoClick }, title: " ", width: "100px"}],
+             height: 500,
+-            selectable: "multiple",
++            selectable: true,
+             resizable: true,
+             pageable: {
+                 info: true,

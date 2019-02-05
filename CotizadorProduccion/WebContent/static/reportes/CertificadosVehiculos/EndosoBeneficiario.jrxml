@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2015-02-13T08:16:35 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="EndosoBeneficiario" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d090c72a-2704-4b8f-99e7-d6b275519e30">
+	<property name="com.jaspersoft.studio.unit." value="cm"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="cm"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="cotizador"/>
+	<parameter name="cotizacionId" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[select 
+    C.id COTIZACION_ID,
+    R.nombre RAMO,
+    A.nombre_completo ASEGURADO,
+    CL.nombre_completo CLIENTE,
+    B.nombre BENEFICIARIO,
+    EB.monto MONTO,
+    C.suma_asegurada_total SUMA_ASEGURADA,
+    C.vigencia_desde VIGENCIA_DESDE,
+    DATE_ADD(C.vigencia_desde, INTERVAL VP.valor YEAR) VIGENCIA_HASTA,
+	CON.numero NUMERO_CONTENEDOR,
+	FD.firma FIRMA
+from
+    COTIZACION C,
+    ENDOSO_BENEFICIARIO EB,
+    BENEFICIARIO B,
+    RAMO R,
+    PRODUCTO P,
+    ENTIDAD A,
+    ENTIDAD CL,
+    CLIENTE CLI,
+	VIGENCIA_POLIZA VP,
+    PRODUCTO_X_PUNTO_VENTA PPPV,
+	FIRMAS_DIGITALES FD,
+	PUNTO_VENTA PV,
+	CONTENEDOR CON,
+	UNIDAD_PRODUCCION UP
+WHERE
+    C.id = EB.cotizacion_id
+		AND C.punto_venta_id=PV.id
+        AND EB.beneficiario_id = B.id
+        AND C.producto_id = P.id
+        AND P.ramo_id = R.id
+        AND A.id = C.asegurado_id
+        AND C.cliente_id = CLI.id
+        AND CLI.entidad_id = CL.id
+		AND C.vigencia_poliza_id=VP.id
+		AND C.producto_x_punto_venta_id=PPPV.id
+		AND FD.ramo_id=R.id
+		AND FD.sucursal_id=PV.sucursal_id
+		AND CON.id=PPPV.contenedor_id
+		AND FD.entidad_id=UP.entidad_id
+        AND C.id= $P{cotizacionId}]]>
+	</queryString>
+	<field name="COTIZACION_ID" class="java.lang.Long"/>
+	<field name="RAMO" class="java.lang.String"/>
+	<field name="ASEGURADO" class="java.lang.String"/>
+	<field name="CLIENTE" class="java.lang.String"/>
+	<field name="BENEFICIARIO" class="java.lang.String"/>
+	<field name="MONTO" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="SUMA_ASEGURADA" class="java.lang.Double"/>
+	<field name="VIGENCIA_DESDE" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="VIGENCIA_HASTA" class="java.sql.Date"/>
+	<field name="NUMERO_CONTENEDOR" class="java.lang.String"/>
+	<field name="FIRMA" class="java.sql.Blob">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="691" splitType="Stretch">
+			<frame>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="555" height="691" uuid="84ca7c0c-97dc-4bee-94ac-9cdfc290ffad"/>
+				<box leftPadding="0">
+					<topPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<image>
+					<reportElement x="1" y="1" width="119" height="39" uuid="0b33a7c0-8c7f-4634-b0e2-afb06223810b"/>
+					<imageExpression><![CDATA["QBE_blanco.png"]]></imageExpression>
+				</image>
+				<staticText>
+					<reportElement x="131" y="6" width="329" height="14" uuid="b7d7504f-3997-4130-83f1-c42361a4084d"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[ANEXO PARA DESIGNACIÓN DE BENEFICIARIO ACREEDOR]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="131" y="20" width="120" height="19" uuid="526f212e-0e92-4363-890e-574058aa46fa"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["Endoso No. "+$F{COTIZACION_ID}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="261" y="20" width="49" height="19" uuid="88c99f8f-f238-4e09-81e0-5e507d321646"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["Vigencia: "]]></textFieldExpression>
+				</textField>
+				<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
+					<reportElement x="312" y="21" width="70" height="19" uuid="c9186a5b-339d-4749-ab5c-e21623f45362"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{VIGENCIA_DESDE}]]></textFieldExpression>
+				</textField>
+				<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
+					<reportElement x="401" y="21" width="89" height="19" uuid="b7eec361-2f25-4b1e-bf0d-a1a3614bc278"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{VIGENCIA_HASTA}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="382" y="21" width="19" height="19" uuid="9f7d2a2d-0019-4605-ab5a-5d0c2ba7d435"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["al"]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="8" y="55" width="303" height="15" uuid="fa5785fa-760c-43de-9bdc-2752fefec496"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="11"/>
+					</textElement>
+					<text><![CDATA[PARA ADHERIRSE Y FORMAR PARTE DE LA PÓLIZA DE:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="311" y="55" width="239" height="15" uuid="b308b8f2-28c9-43fa-988e-1d6a164470be"/>
+					<box>
+						<bottomPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{RAMO}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="8" y="77" width="22" height="15" uuid="2aab75de-c35b-4dfd-a031-d237f5ca6caf"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="11"/>
+					</textElement>
+					<text><![CDATA[Nº]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="31" y="77" width="139" height="15" uuid="902ec36d-3c96-4dba-a186-8cd313e5e1fe"/>
+					<box>
+						<bottomPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{NUMERO_CONTENEDOR}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="181" y="78" width="128" height="15" uuid="ce242ea1-9e81-4782-9d54-231f5315d65d"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="11"/>
+					</textElement>
+					<text><![CDATA[EMITIDA A FAVOR DE:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="312" y="78" width="239" height="15" uuid="83ced5c2-94e8-46e9-b744-afb74b051a7b"/>
+					<box>
+						<bottomPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{ASEGURADO}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="9" y="101" width="540" height="15" uuid="b3932d37-53d2-49c2-accc-30a3283b3735"/>
+					<textElement>
+						<font size="10"/>
+					</textElement>
+					<text><![CDATA[Se hace constar mediante el presente endoso que la póliza arriba citada se designa Beneficiario Acreedor a:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="10" y="121" width="539" height="15" uuid="55b13749-cb3b-4c80-ac11-8cd22b585e3d"/>
+					<box>
+						<bottomPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{BENEFICIARIO}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="11" y="144" width="139" height="15" uuid="3656cde1-5cd0-4a13-bfe5-f4668489eafe"/>
+					<textElement>
+						<font size="10"/>
+					</textElement>
+					<text><![CDATA[Hasta por el monto de US$]]></text>
+				</staticText>
+				<textField pattern="">
+					<reportElement x="166" y="145" width="354" height="15" uuid="c0792469-c02e-4ab9-9ba4-fb49675cb2cf"/>
+					<box>
+						<bottomPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{MONTO}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="11" y="171" width="529" height="119" uuid="f92cbf6e-e3a9-4d64-abd6-345c18e06e92"/>
+					<textElement textAlignment="Justified">
+						<font size="10"/>
+					</textElement>
+					<text><![CDATA[En caso de siniestro la compañía aseguradora cancelará al beneficiario acreedor el valor del crédito pendiente, sin necesidad de notificación, hasta por la suma arriba establecida, pago que estará sujeto a la regla proporcional señalada en la póliza. El saldo de los beneficiarios de la póliza, si lo hubiere, será pagado al asegurado. En caso de siniestro la compañía aseguradora cancelará al beneficiario acreedor el valor del crédito pendiente, sin necesidad de notificación, hasta por la suma arriba establecida, pago que estará sujeto a la regla proporcional señalada en la póliza. El saldo de los beneficiarios de la póliza, si lo hubiere, será pagado al asegurado.
+Toda modificación posterior a las disposiciones establecidas en la póliza, solicitada por el asegurado y que afecte el interés del beneficiario acreedor, deberá hacerse con el consentimiento expreso de éste.
+Las demás condiciones constantes en la póliza se mantienen inalterables.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="11" y="296" width="39" height="15" uuid="10c071a8-0dcd-4ad4-bcb7-fb379d55ffe1"/>
+					<textElement>
+						<font size="10"/>
+					</textElement>
+					<text><![CDATA[Fecha:]]></text>
+				</staticText>
+				<textField pattern="MMMMM dd, yyyy">
+					<reportElement x="51" y="297" width="100" height="14" uuid="c27d9041-494a-42ff-ba7f-5965cce666f7"/>
+					<textElement textAlignment="Left">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+				<subreport>
+					<reportElement x="11" y="349" width="529" height="4" uuid="6e9ed6d0-2bf6-4309-afea-95a4aca9ee0e">
+						<property name="local_mesure_unitwidth" value="cm"/>
+					</reportElement>
+					<subreportParameter name="cotizacionId">
+						<subreportParameterExpression><![CDATA[$P{cotizacionId}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["VehiculosEndosoBeneficiario.jasper"]]></subreportExpression>
+				</subreport>
+				<staticText>
+					<reportElement positionType="Float" x="209" y="454" width="139" height="15" uuid="b75c2658-8231-48cd-9872-da26f20b78b8"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<text><![CDATA[LA COMPAÑÍA]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" x="11" y="582" width="139" height="15" uuid="dda9930f-0d33-4420-b19a-de4dec867945"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<text><![CDATA[EL ASEGURADO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" x="190" y="582" width="170" height="15" uuid="c507ab4c-4717-40fe-b3f6-2f586140aa19"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<text><![CDATA[FIRMA AUTORIZADA]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" x="402" y="582" width="139" height="29" uuid="76c235e1-8fa9-45b7-b3e2-79237cfb08fb"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<text><![CDATA[EL BENEFICIARIO
+ACREEDOR]]></text>
+				</staticText>
+				<image hAlign="Center" vAlign="Middle">
+					<reportElement positionType="Float" x="190" y="521" width="169" height="55" uuid="83ae03a9-2abf-4aca-951b-78f1c90fc05f"/>
+					<imageExpression><![CDATA[javax.imageio.ImageIO.read( $F{FIRMA}.getBinaryStream() )]]></imageExpression>
+				</image>
+				<staticText>
+					<reportElement positionType="Float" x="9" y="650" width="540" height="29" uuid="cffee483-83d3-4688-943f-40f8c781cb3d"/>
+					<box>
+						<topPen lineWidth="0.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<text><![CDATA[NOTA: El presente formulario fue aprobado por la Superintendencia de Bancos, con Resolución Nº 84-029-S del
+24 de enero de 1984]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</summary>
+</jasperReport>

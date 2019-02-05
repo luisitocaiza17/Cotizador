@@ -1,0 +1,90 @@
+diff --git a/WebContent/dashboard/AgriParametroPorCanal.jsp b/WebContent/dashboard/AgriParametroPorCanal.jsp
+--- a/WebContent/dashboard/AgriParametroPorCanal.jsp
++++ b/WebContent/dashboard/AgriParametroPorCanal.jsp
+@@ -74,10 +74,7 @@
+ 							animation : false,
+ 							maxSelectedItems : 1
+ 						});
+-						canalList = $("#canal").data("kendoMultiSelect");
+-						
+-						$("#canal").hide();
+-						
++										
+ 						$("#tipoCultivo").kendoMultiSelect({
+ 							dataTextField : "Nombre",
+ 							dataValueField : "TipoCultivoId",
+@@ -87,7 +84,7 @@
+ 						
+ 						
+ 						tipoCultivoList = $("#tipoCultivo").data("kendoMultiSelect");
+-
++						canalList = $("#canal").data("kendoMultiSelect");
+ 						cargar();
+ 						cargarCombos();
+ 
+@@ -134,32 +131,6 @@
+ 										});
+ 						/*Fin controloes grabar*/
+ 						
+-						$("#canal").change(
+-								function() {
+-								canalId = $("#canal option:selected").val();
+-								tipoCultivoId = $("#tipoCultivo option:selected").val();
+-								$("#id").val("");
+-								$("#plantillaNombre").val("");
+-								$("#plantillaId").val("");
+-								$("#contenedorId").val("");
+-								if ((canalId === '' || typeof canalId === 'undefined') || (tipoCultivoId === '' || typeof tipoCultivoId === 'undefined'))
+-									return false;
+-								actualizarPorCanalCultivo(canalId,tipoCultivoId);
+-						});
+-
+-						$("#tipoCultivo").change(
+-								function() {
+-								canalId = $("#canal option:selected").val();
+-								tipoCultivoId = $("#tipoCultivo option:selected").val();
+-								$("#id").val("");
+-								$("#plantillaNombre").val("");
+-								$("#plantillaId").val("");
+-								$("#contenedorId").val("");
+-								if ((canalId === '' || typeof canalId === 'undefined') || (tipoCultivoId === '' || typeof tipoCultivoId === 'undefined'))
+-									return false;
+-								actualizarPorCanalCultivo(canalId,tipoCultivoId);
+-						});
+-						
+ 						$("#addButton").click(function(){
+ 							$("#soloActulizar").hide();
+ 							limpiar();
+@@ -297,5 +268,5 @@
+ 	}
+ 
+ 	function actualizar(parametroId) {
+-
++		$("#soloActulizar").show();
+ 		limpiar();
+@@ -301,5 +272,5 @@
+ 		limpiar();
+-		$("#canal").show();
++		
+ 		if (typeof parametroId === 'undefined')
+ 			return false;
+ 
+@@ -374,7 +345,8 @@
+ 	}
+ 	
+ 	function actualizarPorCanalCultivo(parametroCanalId,parametroCultivoId) {
+-	
++		$("#soloActulizar").show();
++		limpiar();
+ 		if ((parametroCanalId === '' || typeof parametroCanalId === 'undefined') || (parametroCultivoId === '' || typeof parametroCultivoId === 'undefined'))
+ 			return false;
+ 
+@@ -395,7 +367,7 @@
+ 						return false;
+ 					}	
+ 					
+-					limpiar();
++					
+ 					
+ 					$("#id").val(data.id);
+ 					tipoCultivoList.value(data.tipoCultivoId);

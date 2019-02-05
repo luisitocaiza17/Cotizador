@@ -1,0 +1,288 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>QBE Cotizaci&oacute;n</title>
+    <style>
+        .tabla
+        {
+            background-color: #FFFFFF;
+            margin-left: auto;
+            margin-right: auto;
+            border: 1px solid #BBBBBB;
+        }
+        .tit_tabla
+        {
+            text-align: left;
+            font: bold 12px Arial;
+            color: #FFFFFF;
+            padding-top: 6px;
+            padding-right: 6px;
+            padding-bottom: 6px;
+            padding-left: 6px;
+            background-color: #00205B;
+            display: block;
+        }
+        .head_tabla
+        {
+            font: bold 12px Arial;
+            color: #009AE4;
+            text-align: left;
+            padding-top: 4px;
+            border-bottom: thin solid #E0E0E0;
+        }
+        .texto
+        {
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            display: block;
+            margin-left: 10px;
+            margin-right: 10px;
+            margin-top: 10px;
+            margin-bottom: 3px;
+        }
+        .textobold
+        {
+            font: bold 14px Helvetica, Arial, sans-serif;
+            display: block;
+            margin-left: 20px;
+            margin-right: 10px;
+            margin-top: 3px;
+            margin-bottom: 10px;
+        }
+        .notes
+        {
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 10px;
+            text-align: center;
+            color: #777777;
+            margin-left: 10px;
+            margin-right: 10px;
+            margin-top: 3px;
+            margin-bottom: 3px;
+        }
+        .bodytext
+        {
+            font: 14px/15pt Helvetica, Arial, sans-serif;
+            display: block;
+            margin-left: 20px;
+            margin-right: 10px;
+            margin-top: 7px;
+            margin-bottom: 7px;
+        }
+        .table_data
+        {
+            font: 12px Arial;
+            text-align: left;
+            border-bottom: thin solid #D6D6D6;
+            padding-top: 3px;
+            padding-bottom: 3px;
+        }
+        .table_text
+        {
+            font: 12px Arial;
+            text-align: left;
+            padding-top: 3px;
+            padding-bottom: 3px;
+        }
+        .nombre
+        {
+            font-family: Helvetica, Arial, sans-serif;
+            display: block;
+            margin-top: 1px;
+            margin-right: 10px;
+            margin-bottom: 1px;
+            margin-left: 20px;
+        }
+        .endtable
+        {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .inner_table
+        {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .solicitante
+        {
+            font-family: Arial;
+            font-weight: bold;
+            font-size: 14px;
+            color: #009ae4;
+        }
+    </style>
+</head>
+<body>
+    <table width="520" border="0" cellpadding="0" cellspacing="0" class="tabla">
+        <tbody>
+            <tr>
+                <td>
+                    <img src="[urlImagenes]/notificacion_solicitud_inspeccion.png" width="520" height="200"
+                        alt="" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="textobold">Se&ntilde;or (a).</span>
+                    <p class="nombre" style="font-size: 18px; color: #009AE4; font-weight: bold;">
+                        [ClienteNombre]</p>
+                    <span class="textobold">Presente.-<br />
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p class="bodytext">
+                        Estimado, para completar con el proceso de emisi&oacute;n de su p&oacute;liza de seguro,
+                        solicitamos a usted su atenci&oacute;n para realizar la siguiente inspecci&oacute;n:</p>
+                    <table width="400" border="0" cellpadding="5" cellspacing="0" class="inner_table">
+                        <tbody>
+                            <tr>
+                                <td colspan="2">
+                                    <span class="tit_tabla">DATOS DEL CLIENTE</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="110" class="head_tabla">
+                                    Cotizaci&oacute;n Nro.
+                                </td>
+                                <td width="290" class="table_data">
+                                    [CotizacionID]
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="110" class="head_tabla">
+                                    ID del Cliente:
+                                </td>
+                                <td class="table_data">
+                                    [ClienteIdentificacion]
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="110" class="head_tabla">
+                                    Nombre:
+                                </td>
+                                <td class="table_data">
+                                    [ClienteNombre]
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="110" class="head_tabla">
+                                    Tel&eacute;fono:
+                                </td>
+                                <td class="table_data">
+                                    [ClienteTelefono]
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="110" class="head_tabla">
+                                    Email:
+                                </td>
+                                <td class="table_data">
+                                    [ClienteEmail]
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table width="400" border="0" cellpadding="5" cellspacing="0" class="inner_table">
+                        <tbody>
+                            <tr>
+                                <td colspan="2">
+                                    <span class="tit_tabla">DATOS DEL BIEN ASEGURADO</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="110" class="head_tabla">
+                                    Nro.:
+                                </td>
+                                <td width="110" class="head_tabla">
+                                    Ubicaci&oacute;n:
+                                </td>
+                                <td width="110" class="head_tabla">
+                                    Direcci&oacute;n:
+                                </td>
+                            </tr>
+                            [DatosBienes]
+                        </tbody>
+                    </table>
+                    <table width="400" border="0" cellpadding="0" cellspacing="0" class="inner_table">
+                        <tbody>
+                            <tr>
+                                <td class="table_text">
+                                    &nbsp;
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="table_text">
+                                    Inspecci&oacute;n solicitada por:
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="solicitante">
+                                    [UsuarioNombre]
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="table_text">
+                                    Para mayor informaci&oacute;n por favor puede contactarnos en <a href="mailto:[UsuarioEmail]">
+                                        [UsuarioEmail]</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    &nbsp;
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="http://www.qbe.com.ec">
+                        <img src="[urlImagenes]/footer.png" width="520" height="62" alt="" /></a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table width="520" border="0" cellpadding="0" cellspacing="0" class="endtable">
+        <tbody>
+            <tr>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p class="notes">
+                        QBE Seguros Colonial - 2015</p>
+                    <p class="notes">
+                        Av. Eloy Alfaro N40-270 y Jos&eacute; Queri. Quito, Ecuador</p>
+                    <p class="notes">
+                        Telf: 1800 222 000. Email: <a href="maito:xxx@qbe.com.ec" style="color: #434242">xxx@qbe.com.ec</a></p>
+                    <p class="notes">
+                        Política de privacidad | Cancelar subscripción</p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

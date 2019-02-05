@@ -1,0 +1,6 @@
+Nota: Servicios expuestos con JAX-WS. (Servicio /CotizadorWS que permite la creación de cotizaciones desde otros sistemas) 
+1. En la carpeta implementación se llama a los métodos de las clases DAO
+2. En la carpeta interfaces, solo las llamadas a los metodos de la implementacion
+3. En la carpeta sistema la informacion de los los archivos .csv con los datos para realizar 
+   las cotizaciones() 
+ 

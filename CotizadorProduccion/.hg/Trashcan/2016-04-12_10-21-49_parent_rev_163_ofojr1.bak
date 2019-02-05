@@ -1,0 +1,96 @@
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java
+@@ -1238,6 +1238,10 @@
+ 							////////////////////////////////////////////////////////////////
+ 							else {
+ 								// / Actualiza estado tabla cotizacion
++								Estado nuevoAprodo = new Estado();
++								EstadoDAO estadoDAo = new EstadoDAO();
++								nuevoAprodo=estadoDAo.buscarPorNombre("Pendiente de Emitir","Cotizacion");
++								cotizacionC.setEstado(nuevoAprodo);
+ 								cotizacionC.setVigenciaDesde(VigenciaDesde);
+ 								cotizacionC = cotizacionTransaction.editar(cotizacionC);
+ 
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriEmisionPoliza.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriEmisionPoliza.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriEmisionPoliza.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriEmisionPoliza.java
+@@ -327,7 +327,7 @@
+ 	private static AgriResultadoEmision generarXML(Cotizacion cotizacion){
+ 		AgriResultadoEmision resultado=new AgriResultadoEmision();
+ 		AgriSucreAuditoria agriSucreAuditoria = new AgriSucreAuditoria();
+-		
++		try{
+ 		if(cotizacion.getAsegurado()==null)
+ 		{
+ 			resultado.setGeneradoXMLCorrectamente(false);
+@@ -679,5 +679,18 @@
+ 		resultado.setGeneradoXMLCorrectamente(true);
+ 		resultado.setXmlEmision(xml.toString());
+ 		return resultado;
++		}
++		catch(Exception e){	
++			resultado.setMensaje("Error: "+e.getMessage());
++			agriSucreAuditoria.setCanal("EMISION");
++			agriSucreAuditoria.setTramite(cotizacion.getNumeroTramite());
++			agriSucreAuditoria.setObjeto("ERROR:"+e.getMessage());
++			Date fechaActual = new Date();
++			agriSucreAuditoria.setFecha(fechaActual);
++			agriSucreAuditoria.setEstado("Correcto");
++			AgriSucreAuditoriaTransaction agriSucreAuditoriaTransaction= new AgriSucreAuditoriaTransaction();
++			agriSucreAuditoriaTransaction.crear(agriSucreAuditoria);
++			return resultado;
++		}
+ 	}
+ }
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriProcesarCotizacionOffline.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriProcesarCotizacionOffline.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriProcesarCotizacionOffline.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriProcesarCotizacionOffline.java
+@@ -2,6 +2,7 @@
+ 
+ import java.math.BigDecimal;
+ import java.math.BigInteger;
++import java.util.List;
+ 
+ import com.qbe.cotizador.dao.cotizacion.EndosoBeneficiarioDAO;
+ import com.qbe.cotizador.dao.cotizacion.EstadoDAO;
+@@ -18,6 +19,8 @@
+ import com.qbe.cotizador.dao.entidad.UsuarioDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriCotizacionMaxDAO;
+ import com.qbe.cotizador.dao.producto.vehiculocerrado.GrupoPorProductoDAO;
++import com.qbe.cotizador.dao.seguridad.TipoVariableDAO;
++import com.qbe.cotizador.dao.seguridad.VariableSistemaDAO;
+ import com.qbe.cotizador.model.ActividadEconomica;
+ import com.qbe.cotizador.model.AgriAuditoriaCotizacion;
+ import com.qbe.cotizador.model.AgriCotizacionMax;
+@@ -31,6 +34,8 @@
+ import com.qbe.cotizador.model.GrupoPorProducto;
+ import com.qbe.cotizador.model.ProductoXPuntoVenta;
+ import com.qbe.cotizador.model.PuntoVenta;
++import com.qbe.cotizador.model.TipoVariable;
++import com.qbe.cotizador.model.VariableSistema;
+ import com.qbe.cotizador.transaction.cotizacion.CotizacionDetalleTransaction;
+ import com.qbe.cotizador.transaction.cotizacion.CotizacionTransaction;
+ import com.qbe.cotizador.transaction.cotizacion.EndosoBeneficiarioTransaction;
+@@ -174,6 +179,21 @@
+ 
+ 		cotizacion.setValorDescuento(0);
+ 		
++		//PORCENTAJE DE COMISION PARA LA EMISIONS DEL AGENTE
++		/*PROCESO DE CALCULO DE COMPONENTES*/
++		TipoVariableDAO tipoVariableDao = new TipoVariableDAO();
++        TipoVariable tipoVariable = tipoVariableDao.buscarPorId("3");
++        VariableSistemaDAO variableDAO= new VariableSistemaDAO();
++        List<VariableSistema> variablesistema = variableDAO.buscarTipoVariable(tipoVariable);
++       
++        if(variablesistema.size() > 0) {
++        	for(VariableSistema variable : variablesistema) {
++        		
++        		if(variable.getNombre().equals("COMISION_BANCACOMUNAL")){
++        			 cotizacion.setPorcentajeComision(Double.parseDouble(variable.getValor()));//%COMISION DE AGENTE
++        		}      		 	
++        	}
++        }		
+ 		
+ 		if (nuevaCotizacion.getAnalisisMontoAsegurado()==null)
+ 			cotizacion.setSumaAseguradaTotal(0.0);

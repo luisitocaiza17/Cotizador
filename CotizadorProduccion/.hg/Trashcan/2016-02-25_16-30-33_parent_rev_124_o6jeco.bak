@@ -1,0 +1,30 @@
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriParametrosPuntoVentaController.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriParametrosPuntoVentaController.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriParametrosPuntoVentaController.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriParametrosPuntoVentaController.java
+@@ -65,6 +65,8 @@
+ 			String codigoIntegracion = request.getParameter("codigoIntegracion")== null ? "" : request.getParameter("codigoIntegracion");
+ 			String tieneEmisionDirecta = request.getParameter("tieneEmisionDirecta")== null ? "" : request.getParameter("tieneEmisionDirecta");
+ 			String tieneEmisionObligatoria = request.getParameter("tieneEmisionObligatoria")== null ? "" : request.getParameter("tieneEmisionObligatoria");
++			String canalId = request.getParameter("canalId")== null ? "" : request.getParameter("canalId");
++			
+ 			
+ 			AgriParametroXPuntoVenta parametroPymeXPV = new AgriParametroXPuntoVenta();
+ 			AgriParametroXPuntoVentaDAO parametroPymeXPVDAO = new AgriParametroXPuntoVentaDAO();
+@@ -106,6 +108,9 @@
+ 			
+ 			if(!excepcionesCultivos.equals(""))
+ 				parametroPymeXPV.setExcepcionesDirectasCultivos(excepcionesCultivos);
++			
++			if(!canalId.equals(""))
++				parametroPymeXPV.setCanalId(new BigInteger(canalId));
+ 				
+ 			if(tipoConsulta.equals("buscarTodos")){
+ 				List<AgriParametroXPuntoVenta> listParametro = parametroPymeXPVDAO.buscarTodos();
+@@ -138,6 +143,7 @@
+ 			if(tipoConsulta.equals("buscarPorId")){
+ 				parametroPymeXPV = parametroPymeXPVDAO.buscarPorId(new BigInteger(puntoVentaId));			 
+ 				result.put("puntoVentaId", parametroPymeXPV.getPuntoVentaId());
++				result.put("canalId", parametroPymeXPV.getCanalId());
+ 				result.put("tipoCalculoId", parametroPymeXPV.getTipoCalculoId());
+ 				result.put("tieneEmisionDirecta", parametroPymeXPV.getEmisionDirecta());
+ 				result.put("tieneEmisionObligatoria", parametroPymeXPV.isEmisionObligatoria());

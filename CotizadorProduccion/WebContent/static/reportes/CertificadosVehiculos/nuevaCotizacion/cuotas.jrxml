@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Cuotas" pageWidth="210" pageHeight="100" columnWidth="210" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="42d4915e-9dfb-493f-a55e-a2f49fd9079a">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="cotizador"/>
+	<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+	<property name="com.jaspersoft.studio.unit." value="cm"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="cm"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="COTIZACION" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[select totalFactura VALOR from COTIZACION where id= $P{COTIZACION}]]>
+	</queryString>
+	<field name="VALOR" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="1" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="100" splitType="Stretch">
+			<property name="local_mesure_unitheight" value="cm"/>
+			<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+			<textField pattern="#.##">
+				<reportElement positionType="Float" x="25" y="36" width="75" height="15" isRemoveLineWhenBlank="true" uuid="ad35092f-8fc2-41e1-9dcd-d8377584a5e2">
+					<printWhenExpression><![CDATA[$F{VALOR}/50>=2]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[String.format("%.2f", $F{VALOR}/2).replaceAll(",", ".")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" mode="Opaque" x="2" y="22" width="23" height="15" isRemoveLineWhenBlank="true" forecolor="#000000" backcolor="#E7E7E8" uuid="891bbe50-0b23-4315-8a15-748f6254bec3">
+					<printWhenExpression><![CDATA[$F{VALOR}/50>=1]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["1"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#.##0.00">
+				<reportElement positionType="Float" mode="Opaque" x="25" y="51" width="75" height="15" isRemoveLineWhenBlank="true" backcolor="#E7E7E8" uuid="c53f2f86-b243-4bc0-a681-2f293333dd81">
+					<printWhenExpression><![CDATA[$F{VALOR}/50>=3]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[String.format("%.2f", $F{VALOR}/3).replaceAll(",", ".")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="2" y="36" width="23" height="15" isRemoveLineWhenBlank="true" uuid="37c08a37-1f01-483c-972d-4273328f2d1f">
+					<printWhenExpression><![CDATA[$F{VALOR}/50>=2]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["2"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#.##0.00">
+				<reportElement positionType="Float" x="25" y="66" width="75" height="15" isRemoveLineWhenBlank="true" uuid="d2dad4eb-3a9f-498f-92ee-2d76a8c07f09">
+					<printWhenExpression><![CDATA[$F{VALOR}/50>=4]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[String.format("%.2f", $F{VALOR}/4).replaceAll(",", ".")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" mode="Opaque" x="2" y="51" width="23" height="15" isRemoveLineWhenBlank="true" backcolor="#E7E7E8" uuid="a0a4d952-8efc-4f6c-8386-749c627e3ed6">
+					<printWhenExpression><![CDATA[$F{VALOR}/50>=3]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["3"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#.##0.00">
+				<reportElement key="" positionType="Float" mode="Opaque" x="25" y="81" width="75" height="15" isRemoveLineWhenBlank="true" backcolor="#E7E7E8" uuid="5a0cc8b1-c959-4a24-8ea6-39ec41b3c442">
+					<printWhenExpression><![CDATA[$F{VALOR}/50>=5]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[String.format("%.2f", $F{VALOR}/5).replaceAll(",", ".")]]></textFieldExpression>
+			</textField>
+			<textField pattern="#.##">
+				<reportElement positionType="Float" mode="Opaque" x="25" y="22" width="75" height="15" isRemoveLineWhenBlank="true" backcolor="#E7E7E8" uuid="f628e0c2-d8f6-4988-874f-c3f7dea09240">
+					<printWhenExpression><![CDATA[$F{VALOR}/50>=1]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[String.format("%.2f", $F{VALOR}).replaceAll(",", ".")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="109" y="67" width="23" height="15" isRemoveLineWhenBlank="true" uuid="073b3a95-7159-4185-a75a-6d9283bd0c14">
+					<printWhenExpression><![CDATA[$F{VALOR}/50>=9]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["9"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#.##0.00">
+				<reportElement positionType="Float" mode="Opaque" x="132" y="52" width="75" height="15" isRemoveLineWhenBlank="true" backcolor="#E7E7E8" uuid="9874f310-3e18-4404-a34e-01c3fdc81c50">
+					<printWhenExpression><![CDATA[$F{VALOR}/50>=8]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[String.format("%.2f", $F{VALOR}/8).replaceAll(",", ".")]]></textFieldExpression>
+			</textField>
+			<textField pattern="#.##">
+				<reportElement positionType="Float" mode="Opaque" x="132" y="23" width="75" height="15" isRemoveLineWhenBlank="true" backcolor="#E7E7E8" uuid="9a021883-99f8-41e3-a8ae-d0e48f4ea1bd">
+					<printWhenExpression><![CDATA[$F{VALOR}/50>=6]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[String.format("%.2f", $F{VALOR}/6).replaceAll(",", ".")]]></textFieldExpression>
+			</textField>
+			<textField pattern="#.##0.00">
+				<reportElement positionType="Float" x="132" y="67" width="75" height="15" isRemoveLineWhenBlank="true" uuid="aa968269-7b53-4edf-866e-34a93d230e9c">
+					<printWhenExpression><![CDATA[$F{VALOR}/50>=9]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[String.format("%.2f", $F{VALOR}/9).replaceAll(",", ".")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="109" y="37" width="23" height="15" isRemoveLineWhenBlank="true" uuid="935ec289-7792-431d-8e55-203840dd16eb">
+					<printWhenExpression><![CDATA[$F{VALOR}/50>=7]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["7"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#.##">
+				<reportElement positionType="Float" x="132" y="37" width="75" height="15" isRemoveLineWhenBlank="true" uuid="bea68a31-6485-4a25-bc11-bd2bc41a03d5">
+					<printWhenExpression><![CDATA[$F{VALOR}/50>=7]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[String.format("%.2f", $F{VALOR}/7).replaceAll(",", ".")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" mode="Opaque" x="109" y="82" width="23" height="15" isRemoveLineWhenBlank="true" backcolor="#E7E7E8" uuid="ce6d5a16-6ac5-4c44-9085-46aa0ebc0f34">
+					<printWhenExpression><![CDATA[$F{VALOR}/50>=10]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["10"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" mode="Opaque" x="109" y="23" width="23" height="15" isRemoveLineWhenBlank="true" forecolor="#000000" backcolor="#E7E7E8" uuid="3fabf416-72e9-4bdf-974f-088171a780e3">
+					<printWhenExpression><![CDATA[$F{VALOR}/50>=6]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["6"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#.##0.00">
+				<reportElement key="" positionType="Float" mode="Opaque" x="132" y="82" width="75" height="15" isRemoveLineWhenBlank="true" backcolor="#E7E7E8" uuid="a3c39bce-6814-4acb-9934-aa73c2204fd3">
+					<printWhenExpression><![CDATA[$F{VALOR}/50>=10]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[String.format("%.2f", $F{VALOR}/10).replaceAll(",", ".")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" mode="Opaque" x="109" y="52" width="23" height="15" isRemoveLineWhenBlank="true" backcolor="#E7E7E8" uuid="cd2fdd46-7128-4d7c-af6f-98080f1afcf2">
+					<printWhenExpression><![CDATA[$F{VALOR}/50>=8]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["8"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" mode="Opaque" x="1" y="0" width="209" height="18" isRemoveLineWhenBlank="true" forecolor="#FFFFFF" backcolor="#00205B" uuid="aa93f48f-37c4-4bc6-820e-f8cc9e455776"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" PAGO DE CUOTAS (USD)"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="2" y="66" width="23" height="15" isRemoveLineWhenBlank="true" uuid="e5c5ba86-c920-4599-8dc3-8e5e307c5f66">
+					<printWhenExpression><![CDATA[$F{VALOR}/50>=4]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["4"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" mode="Opaque" x="2" y="81" width="23" height="15" isRemoveLineWhenBlank="true" backcolor="#E7E7E8" uuid="d502ae75-0153-42ba-b395-d4835db1b076">
+					<printWhenExpression><![CDATA[$F{VALOR}/50>=5]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["5"]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

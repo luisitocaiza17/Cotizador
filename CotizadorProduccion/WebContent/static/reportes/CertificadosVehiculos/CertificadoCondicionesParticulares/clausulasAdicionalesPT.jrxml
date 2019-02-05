@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2015-02-12T22:30:59 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="coberturasAdicionalesTR" pageWidth="548" pageHeight="842" columnWidth="548" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="865b7234-28f9-4335-884c-a04399415e28">
+	<property name="com.jaspersoft.studio.unit." value="cm"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="cotizador"/>
+	<parameter name="COTIZACION" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT * FROM (
+SELECT distinct -- TEXTOS DEL DETALLE
+    convert( DP.texto using utf8) texto_cobertura,
+	C.orden,
+	C.id
+FROM
+    DETALLE_PRODUCTO DP,
+    CONFIGURACION_PRODUCTO CP,
+    COBERTURAS_CONJUNTO CC,
+    CONJUNTO_COBERTURAS COC,
+    COBERTURA C,
+    COTIZACION COT,
+    PRODUCTO_X_PUNTO_VENTA PPPV,
+    PRODUCTO P,
+    GRUPO_POR_PRODUCTO GPP
+WHERE
+    COT.producto_id = P.id
+        AND COT.punto_venta_id = PPPV.punto_venta_id
+        and DP.config_producto_id = CP.id
+        AND CP.producto_id = COT.producto_id
+        AND GPP.producto_id = CP.producto_id
+        AND DP.plan_id = PPPV.plan_id
+        AND CC.id = DP.coberturas_conj_id
+        AND COC.id = CC.conjunto_cober_id
+        AND C.id = CC.cobertura_id
+        AND COT.producto_x_punto_venta_id = PPPV.id
+        and C.tipo_cobertura_id = 3
+        AND COT.id = $P{COTIZACION}
+UNION SELECT distinct -- LOS TEXTOS QUE SE ENCUENTRAN EN LA COBERTURA NO EN EL DETALLE
+    convert( CO.texto using utf8) texto_cobertura,
+    CO.orden,
+	CO.id
+FROM
+    COBERTURA CO,
+    COTIZACION_COBERTURA CC,
+    COTIZACION_DETALLE CD
+WHERE
+    CO.id = CC.cobertura_id
+        AND CC.cotizacion_detalle_id = CD.id
+        AND CD.cotizacion_id = $P{COTIZACION}
+        AND CO.tipo_cobertura_id = 3
+        AND CO.id NOT IN (SELECT 
+            C.id
+        FROM
+            DETALLE_PRODUCTO DP,
+            CONFIGURACION_PRODUCTO CP,
+            COBERTURAS_CONJUNTO CC,
+            CONJUNTO_COBERTURAS COC,
+            COBERTURA C,
+            COTIZACION COT,
+            PRODUCTO_X_PUNTO_VENTA PPPV,
+            PRODUCTO P,
+            GRUPO_POR_PRODUCTO GPP
+        WHERE
+            COT.producto_id = P.id
+                AND COT.punto_venta_id = PPPV.punto_venta_id
+                and DP.config_producto_id = CP.id
+                AND CP.producto_id = COT.producto_id
+                AND GPP.producto_id = CP.producto_id
+                AND DP.plan_id = PPPV.plan_id
+                AND CC.id = DP.coberturas_conj_id
+                AND COC.id = CC.conjunto_cober_id
+                AND C.id = CC.cobertura_id
+                AND COT.producto_x_punto_venta_id = PPPV.id
+                and C.tipo_cobertura_id = 3
+                AND COT.id = $P{COTIZACION}) )AS A 
+                WHERE A.id 
+                IN (
+                	'30045', -- INICIO CANCELACIÓN DE PÓLIZA 30 DÍAS
+					'30111',
+					'40046',
+					'40135',
+					'1317732355',
+					'1318387716',
+					'26956398641',
+					'62418067323',
+					'108690615331',
+					'950773538098',
+					'1013570638325',
+					'1483529194160',
+					'1538560164142',  -- FIN CANCELACIÓN DE PÓLIZA 30 DÍAS
+'7017', -- INICIO NOTIFICACION DE SINIESTROS
+'7043',
+'30047',
+'30113',
+'40048',
+'40137',
+'1315962888',
+'1317732357',
+'1317732424',
+'1318387718',
+'1318387784',
+'1318387847',
+'1319763979',
+'1319763990',
+'1319764013',
+'1319764056',
+'1321271315',
+'26929463310',
+'26956398643',
+'55354606861',
+'57319110627',
+'59813009413',
+'62418067328',
+'76517146696',
+'76517146721',
+'94515642801',
+'108690615333',
+'714485094824',
+'893343704111',
+'915236581342',
+'950773538103',
+'1013570637060',
+'1013570638350',
+'1483529194261',
+'1805334553801',
+'1988847829551', -- FIN NOTIFICACION DE SINIESTROS
+'7007', -- INICIO PAGO DE PRIMAS 15 DIAS
+'7038',
+'30044',
+'30110',
+'40045',
+'40134',
+'1315962885',
+'1317732354',
+'1317732421',
+'1318387715',
+'1318387816',
+'1318387844',
+'1319763976',
+'1319763987',
+'1319764010',
+'1319764053',
+'1321271312',
+'26929463304',
+'26956398640',
+'38579799806',
+'57319110507',
+'59813008588',
+'62418067316',
+'76517146693',
+'76517146718',
+'108690615330',
+'714485094765',
+'893343703650',
+'915236580475',
+'950773538055',
+'1013570636687',
+'1013570638309',
+'1409453009285',
+'1483529194151',  -- FIN PAGO DE PRIMAS 15 DIAS
+'7018', --  INICIO R.A.S.A.
+'7044',
+'30048',
+'30114',
+'40049',
+'40138',
+'1315962890',
+'1317732360',
+'1317732425',
+'1318387720',
+'1318387785',
+'1318387821',
+'1318387848',
+'1319763980',
+'1319763991',
+'1319764016',
+'1319764057',
+'1321271316',
+'3052601349',
+'26929463311',
+'26956398644',
+'57319110702',
+'59813009634',
+'62418067360',
+'76517146697',
+'76517146722',
+'94515642896',
+'108690615335',
+'893343713485',
+'915236581353',
+'950773538107',
+'1013570637127',
+'1483529194262',
+'1538560164146',
+'1988847829590',
+'2281812081101',
+'2281812159675',
+'2285744244466',
+'2285744244770',
+'2288365666462',
+'2288365666471',
+'2288365666498',
+'2288365666602', -- FIN R.A.S.A.
+'30001', -- INICIO ACLARACIÒN DE EXTRAS Y PROCEDENCIA
+'30077',
+'40012',
+'40091',
+'1318387743',
+'26956398600',
+'1483529194960', -- FIN ACLARACIÒN DE EXTRAS Y PROCEDENCIA
+'108', --  INICIO CONTROVERSIAS
+'111',
+'117',
+'120',
+'123',
+'126',
+'129',
+'144',
+'150',
+'153',
+'156',
+'159',
+'162',
+'165',
+'174',
+'177',
+'7001',
+'7040',
+'30030',
+'30099',
+'40034',
+'40120',
+'65929216',
+'1323827200',
+'2632581121',
+'3258318848',
+'26929463307',
+'26956398621',
+'38579799835',
+'55354606979',
+'57319110870',
+'59862490028',
+'76517146703',
+'76517146728',
+'108690618677',
+'714485095847',
+'900562225095',
+'915236584865',
+'950773540709',
+'1013570637425',
+'1013570638585',
+'1409453009287',
+'1483529195025',
+'1538560167441',
+'1805334554424', -- FIN CONTROVERSIAS
+'134', -- INICIO PAGO PRIMAS
+'146',
+'167',
+'170',
+'173',
+'7012',
+'7048',
+'30029',
+'30098',
+'40033',
+'40119',
+'1318387781',
+'26929463315',
+'26956398620',
+'55354606847',
+'59862490023',
+'94515642737',
+'108690618655',
+'714485095824',
+'915236583957',
+'1013570637413',
+'1013570638534',
+'1483529195017',
+'1805334553651',
+'1988847829494',
+'2178234843885',
+'2198581871669',
+'2281812081044',
+'2281812159659',
+'2285744244442',
+'2285744244728',
+'2288365666459',
+'2288365666468',
+'2288365666480',
+'2288365666599', -- FIN PAGO DE PRIMAS
+'109', -- INICIO PARRAFO FINAL
+'112',
+'118',
+'121',
+'124',
+'127',
+'130',
+'142',
+'145',
+'151',
+'154',
+'157',
+'160',
+'163',
+'166',
+'175',
+'178',
+'7002',
+'7041',
+'30031',
+'30100',
+'40035',
+'40121',
+'65929217',
+'1323827201',
+'3052601354',
+'3258318849',
+'26929463308',
+'26956398622',
+'38579799836',
+'55354606991',
+'57319110871',
+'59862490033',
+'76517146704',
+'76517146729',
+'108690618730',
+'714485095909',
+'900562225103',
+'927704678524',
+'950773540712',
+'1013570637430',
+'1013570638612',
+'1409453009286',
+'1483529195088',
+'1538560168181',
+'1805334554425',
+'2281812081484',
+'2281812161847',
+'2285744244609', -- FIN PARRAFO FINAL
+'1649358077976', -- INICIO LICITUD DE FONDOS
+'1649358077978',
+'1649358077979',
+'1976383965017',
+'2093049613416',
+'6231940728330' -- FIN LICITUD DE FONDOS
+                ) AND ('40037' IN (SELECT 
+    B.id
+FROM
+    (
+SELECT distinct -- seleccionadas que se encuentren en el detalle producto
+        convert( DP.texto using utf8) texto_cobertura,
+            C.nemotecnico,
+            C.orden,
+			C.id
+    FROM
+        DETALLE_PRODUCTO DP, CONFIGURACION_PRODUCTO CP, COBERTURAS_CONJUNTO CC, CONJUNTO_COBERTURAS COC, COBERTURA C, COTIZACION_COBERTURA COTCOB, COTIZACION_DETALLE CD, COTIZACION COT, PRODUCTO_X_PUNTO_VENTA PPPV, PRODUCTO P, GRUPO_POR_PRODUCTO GPP
+    WHERE
+        COT.id = CD.cotizacion_id
+            and COTCOB.cobertura_id = C.id
+            and COT.producto_id = P.id
+            AND COT.punto_venta_id = PPPV.punto_venta_id
+            and CD.id = COTCOB.cotizacion_detalle_id
+            and DP.config_producto_id = CP.id
+            AND CP.producto_id = COT.producto_id
+            AND DP.plan_id = PPPV.plan_id
+            AND CC.id = DP.coberturas_conj_id
+            AND COC.id = CC.conjunto_cober_id
+            AND C.id = CC.cobertura_id
+            AND GPP.producto_id = P.id
+            AND COT.producto_x_punto_venta_id = PPPV.id
+            and C.tipo_cobertura_id = 1
+            and COT.id =  $P{COTIZACION} union 
+SELECT distinct  -- seleccionadas que no se encuentren en el detalle producto
+        convert( CO.texto using utf8) texto_cobertura,
+            CO.nemotecnico,
+            CO.orden,
+			CO.id
+    FROM
+        COBERTURA CO, COTIZACION_COBERTURA CC, COTIZACION_DETALLE CD
+    WHERE
+        CO.id = CC.cobertura_id
+            AND CC.cotizacion_detalle_id = CD.id
+            AND CO.tipo_cobertura_id = 1
+            and CD.cotizacion_id =  $P{COTIZACION}
+            AND CO.id NOT IN (SELECT 
+                C.id
+            FROM
+                DETALLE_PRODUCTO DP, CONFIGURACION_PRODUCTO CP, COBERTURAS_CONJUNTO CC, CONJUNTO_COBERTURAS COC, COBERTURA C, COTIZACION_COBERTURA COTCOB, COTIZACION_DETALLE CD, COTIZACION COT, PRODUCTO_X_PUNTO_VENTA PPPV, PRODUCTO P, GRUPO_POR_PRODUCTO GPP
+            WHERE
+                COT.id = CD.cotizacion_id
+                    and COTCOB.cobertura_id = C.id
+                    and COT.producto_id = P.id
+                    AND COT.punto_venta_id = PPPV.punto_venta_id
+                    and CD.id = COTCOB.cotizacion_detalle_id
+                    and DP.config_producto_id = CP.id
+                    AND CP.producto_id = COT.producto_id
+                    AND DP.plan_id = PPPV.plan_id
+                    AND CC.id = DP.coberturas_conj_id
+                    AND COC.id = CC.conjunto_cober_id
+                    AND C.id = CC.cobertura_id
+                    AND GPP.producto_id = P.id
+                    AND COT.producto_x_punto_venta_id = PPPV.id
+                    and COT.id =  $P{COTIZACION}
+                    and C.tipo_cobertura_id = 1)
+                    ) AS B) OR
+						'4540881508289' IN (SELECT 
+    B.id
+FROM
+    (
+SELECT distinct -- seleccionadas que se encuentren en el detalle producto
+        convert( DP.texto using utf8) texto_cobertura,
+            C.nemotecnico,
+            C.orden,
+			C.id
+    FROM
+        DETALLE_PRODUCTO DP, CONFIGURACION_PRODUCTO CP, COBERTURAS_CONJUNTO CC, CONJUNTO_COBERTURAS COC, COBERTURA C, COTIZACION_COBERTURA COTCOB, COTIZACION_DETALLE CD, COTIZACION COT, PRODUCTO_X_PUNTO_VENTA PPPV, PRODUCTO P, GRUPO_POR_PRODUCTO GPP
+    WHERE
+        COT.id = CD.cotizacion_id
+            and COTCOB.cobertura_id = C.id
+            and COT.producto_id = P.id
+            AND COT.punto_venta_id = PPPV.punto_venta_id
+            and CD.id = COTCOB.cotizacion_detalle_id
+            and DP.config_producto_id = CP.id
+            AND CP.producto_id = COT.producto_id
+            AND DP.plan_id = PPPV.plan_id
+            AND CC.id = DP.coberturas_conj_id
+            AND COC.id = CC.conjunto_cober_id
+            AND C.id = CC.cobertura_id
+            AND GPP.producto_id = P.id
+            AND COT.producto_x_punto_venta_id = PPPV.id
+            and C.tipo_cobertura_id = 1
+            and COT.id =  $P{COTIZACION} union 
+SELECT distinct  -- seleccionadas que no se encuentren en el detalle producto
+        convert( CO.texto using utf8) texto_cobertura,
+            CO.nemotecnico,
+            CO.orden,
+			CO.id
+    FROM
+        COBERTURA CO, COTIZACION_COBERTURA CC, COTIZACION_DETALLE CD
+    WHERE
+        CO.id = CC.cobertura_id
+            AND CC.cotizacion_detalle_id = CD.id
+            AND CO.tipo_cobertura_id = 1
+            and CD.cotizacion_id =  $P{COTIZACION}
+            AND CO.id NOT IN (SELECT 
+                C.id
+            FROM
+                DETALLE_PRODUCTO DP, CONFIGURACION_PRODUCTO CP, COBERTURAS_CONJUNTO CC, CONJUNTO_COBERTURAS COC, COBERTURA C, COTIZACION_COBERTURA COTCOB, COTIZACION_DETALLE CD, COTIZACION COT, PRODUCTO_X_PUNTO_VENTA PPPV, PRODUCTO P, GRUPO_POR_PRODUCTO GPP
+            WHERE
+                COT.id = CD.cotizacion_id
+                    and COTCOB.cobertura_id = C.id
+                    and COT.producto_id = P.id
+                    AND COT.punto_venta_id = PPPV.punto_venta_id
+                    and CD.id = COTCOB.cotizacion_detalle_id
+                    and DP.config_producto_id = CP.id
+                    AND CP.producto_id = COT.producto_id
+                    AND DP.plan_id = PPPV.plan_id
+                    AND CC.id = DP.coberturas_conj_id
+                    AND COC.id = CC.conjunto_cober_id
+                    AND C.id = CC.cobertura_id
+                    AND GPP.producto_id = P.id
+                    AND COT.producto_x_punto_venta_id = PPPV.id
+                    and COT.id =  $P{COTIZACION}
+                    and C.tipo_cobertura_id = 1)
+                    ) AS B))
+                ORDER BY A.orden]]>
+	</queryString>
+	<field name="texto_cobertura" class="java.lang.String"/>
+	<field name="orden" class="java.lang.Integer"/>
+	<field name="id" class="java.lang.Long"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="200" height="20" uuid="149ba4a3-e83a-4386-8634-9664aef08bf3"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["CLAUSULAS ADICIONALES"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement isPrintRepeatedValues="false" x="0" y="0" width="548" height="22" uuid="92bb5dba-f1a7-4814-b2c6-777a76c3734b">
+					<property name="local_mesure_unitwidth" value="cm"/>
+					<property name="local_mesure_unitheight" value="cm"/>
+				</reportElement>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{texto_cobertura}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

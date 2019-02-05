@@ -1,0 +1,13 @@
+diff --git a/WebContent/dashboard/AgriAprobadosObservaciones.jsp b/WebContent/dashboard/AgriAprobadosObservaciones.jsp
+--- a/WebContent/dashboard/AgriAprobadosObservaciones.jsp
++++ b/WebContent/dashboard/AgriAprobadosObservaciones.jsp
+@@ -308,7 +308,8 @@
+                 }
+             },
+             columns: [
+-						{ field: "id", title: "Id.", width: "60px"},
++						{ field: "id", title: "Id Cotización", width: "60px"},
++						{ field: "idCotizacion2", title: "Id Agricola.", width: "60px"},
+ 						{ field: "Ciclo", title: "Periodo" , width: "160px"},
+ 						{ field: "FechaElaboracion", title: "Fecha Elaboración",format: "{0:yyyy/MM/dd}", width: "100px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 						{ field: "IdentificacionCliente", title: "Identificación Cliente", width: "90px",headerAttributes: { style: "white-space: normal"}},

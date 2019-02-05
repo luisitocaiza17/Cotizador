@@ -1,0 +1,64 @@
+<!-- Use this file to deploy some handlers/chains and services      -->
+<!-- Two ways to do this:                                           -->
+<!--   java org.apache.axis.client.AdminClient deploy.wsdd          -->
+<!--      after the axis server is running                          -->
+<!-- or                                                             -->
+<!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   -->
+<!--      from the same directory that the Axis engine runs         -->
+
+<deployment
+    xmlns="http://xml.apache.org/axis/wsdd/"
+    xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from SolicitudAgricolaService WSDL service -->
+
+  <service name="SolicitudAgricola" provider="java:RPC" style="wrapped" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://agricolaSucre.QBE.servicios.cotizador.qbe.com"/>
+      <parameter name="wsdlServiceElement" value="SolicitudAgricolaService"/>
+      <parameter name="schemaQualified" value="http://agricolaSucre.QBE.servicios.cotizador.qbe.com"/>
+      <parameter name="wsdlServicePort" value="SolicitudAgricola"/>
+      <parameter name="className" value="com.qbe.cotizador.servicios.QBE.agricolaSucre.SolicitudAgricolaSoapBindingImpl"/>
+      <parameter name="wsdlPortType" value="SolicitudAgricola"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation name="registrarSolicitud" qname="operNS:registrarSolicitud" xmlns:operNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" returnQName="retNS:registrarSolicitudReturn" xmlns:retNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" returnType="rtns:RespuestaUN01DTO" xmlns:rtns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" soapAction="" >
+        <parameter qname="pns:in0" xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" type="tns:SolicitudUN01DTO" xmlns:tns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com"/>
+      </operation>
+      <operation name="registrarEmision" qname="operNS:registrarEmision" xmlns:operNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" returnQName="retNS:registrarEmisionReturn" xmlns:retNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" returnType="rtns:RespuestaEMIDTO" xmlns:rtns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" soapAction="" >
+        <parameter qname="pns:in0" xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" type="tns:SolicitudEMIDTO" xmlns:tns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com"/>
+      </operation>
+      <parameter name="allowedMethods" value="registrarSolicitud registrarEmision"/>
+
+      <typeMapping
+        xmlns:ns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com"
+        qname="ns:RespuestaEMIDTO"
+        type="java:com.qbe.cotizador.servicios.QBE.agricolaSucre.RespuestaEMIDTO"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com"
+        qname="ns:SolicitudUN01DTO"
+        type="java:com.qbe.cotizador.servicios.QBE.agricolaSucre.SolicitudUN01DTO"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com"
+        qname="ns:RespuestaUN01DTO"
+        type="java:com.qbe.cotizador.servicios.QBE.agricolaSucre.RespuestaUN01DTO"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      <typeMapping
+        xmlns:ns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com"
+        qname="ns:SolicitudEMIDTO"
+        type="java:com.qbe.cotizador.servicios.QBE.agricolaSucre.SolicitudEMIDTO"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+  </service>
+</deployment>

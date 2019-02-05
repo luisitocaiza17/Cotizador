@@ -1,0 +1,24 @@
+diff --git a/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java b/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java
+--- a/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java
++++ b/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java
+@@ -437,6 +437,10 @@
+ 					entidad = entidadTransaction.editar(entidad);
+ 				}
+ 				
++				if(entidad.getId()==null)
++					throw new Exception(
++							"No se pudo crear la entidad");
++				
+ 				/*PROCESO DE CREACION DEL CLIENTE */
+ 				cliente = clienteDAO.buscarPorEntidadId(entidad);
+ 				
+@@ -454,6 +458,9 @@
+ 					clienteNuevo.setId(cliente.getId());
+ 					cliente = clienteTransaction.editar(clienteNuevo);
+ 				}
++				if(cliente.getId()==null)
++					throw new Exception(
++							"No se pudo crear el cliente");
+ 				
+ 				/*CREACION DE LA DIRECCION*/
+ 				

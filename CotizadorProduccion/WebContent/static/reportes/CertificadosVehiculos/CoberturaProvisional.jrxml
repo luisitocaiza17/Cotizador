@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.1.final using JasperReports Library version 6.0.0  -->
+<!-- 2015-01-27T13:39:34 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CoberturaProvisional" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cb657e81-6cc4-4cf2-bc37-31bf8d83e7aa">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="cotizadorPruebas"/>
+	<parameter name="cotizacionId" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[select 
+    AGE.nombre_completo AGENTE,
+	SUC.nombre SUCURSAL,
+	FD.firma FIRMA,
+	CL.nombre_completo CLIENTE,
+	CAR.nombre CARGO, 
+	EUP.nombre_completo EMPLEADO_UP
+from
+    COTIZACION C,
+    RAMO R,
+    PRODUCTO P,
+    ENTIDAD AGE,
+    EMPLEADO EMP,
+    ENTIDAD EUP,
+    AGENTE A,
+    ENTIDAD CL,
+    CLIENTE CLI,
+    PRODUCTO_X_PUNTO_VENTA PPPV,
+    PUNTO_VENTA PV,
+    SUCURSAL SUC,
+    CONTENEDOR CON,
+	FIRMAS_DIGITALES FD,
+	UNIDAD_PRODUCCION UP,
+	CARGO CAR
+WHERE
+    C.punto_venta_id = PV.id
+        AND C.producto_id = P.id
+        AND P.ramo_id = R.id
+        AND C.cliente_id = CLI.id
+        AND CLI.entidad_id = CL.id
+        AND C.producto_x_punto_venta_id = PPPV.id
+        AND C.agente_id = A.id
+        AND AGE.id = A.entidad_id
+        AND CON.id = PPPV.contenedor_id
+		AND FD.ramo_id=R.id
+		AND FD.sucursal_id=PV.sucursal_id
+		AND FD.unidad_negocio_id=PPPV.unidad_negocio_id
+		AND FD.unidad_produccion_id=PPPV.unidad_produccion_id
+        AND PV.sucursal_id = SUC.id
+        AND FD.unidad_produccion_id=UP.id
+        AND UP.entidad_id=EUP.id
+        AND EUP.id=EMP.entidad_id
+        AND CAR.id=EMP.cargo_id
+        AND C.id= $P{cotizacionId}]]>
+	</queryString>
+	<field name="AGENTE" class="java.lang.String"/>
+	<field name="SUCURSAL" class="java.lang.String"/>
+	<field name="FIRMA" class="java.sql.Blob">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CLIENTE" class="java.lang.String"/>
+	<field name="CARGO" class="java.lang.String"/>
+	<field name="EMPLEADO_UP" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="639" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement x="10" y="10" width="250" height="20" uuid="ef1bc152-03da-45e1-9aea-72c54302a9c7"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{SUCURSAL}+", "+DAY(new java.util.Date()) + " de "+new SimpleDateFormat("MMMMMM").format(new java.util.Date())+" del "+YEAR(new java.util.Date())]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="30" width="100" height="20" uuid="ce90c2f6-52ef-46f0-abce-586de5f17d96"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Señor,]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="10" y="50" width="290" height="20" uuid="3de67bf9-a6a2-48c8-a966-557a2b20cc89"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{AGENTE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="10" y="70" width="110" height="20" uuid="3e1fc1eb-6605-4340-895c-91e6ee158790"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{SUCURSAL}+"."]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="100" width="290" height="20" uuid="fbf649f5-975a-46f1-a754-a87183c53076"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[REF:		COBERTURA PROVISIONAL DEL CLIENTE: ]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="10" y="140" width="540" height="80" uuid="7241f308-07f0-4dc6-93c4-8f2d787860a7"/>
+				<textElement textAlignment="Justified"/>
+				<textFieldExpression><![CDATA["De mi consideración:\n\nPor medio de la presente comunicación, nos complace confirmarle que QBE Seguros Colonial S.A. otorgará cobertura provisional para nuestro mutuo cliente  "+$F{CLIENTE}+".\n\nEsta cobertura tiene un plazo máximo de vigencia de 30 días contados a partir de la fecha de emisión del presente documento.\n\nUna vez que hemos recibido la orden de emisión  de su parte, de acuerdo a los términos y condiciones cotizadas, la presente cobertura provisional es para:"]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement positionType="Float" x="10" y="236" width="540" height="23" uuid="613d7d5c-13a0-4c28-8622-61aa291b0696"/>
+				<subreportParameter name="cotizacionId">
+					<subreportParameterExpression><![CDATA[$P{cotizacionId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["VehiculosCoberturaProvisional.jasper"]]></subreportExpression>
+			</subreport>
+			<textField>
+				<reportElement positionType="Float" x="10" y="270" width="540" height="140" uuid="4add816c-77eb-4b17-944d-1fca7fbf026d"/>
+				<textFieldExpression><![CDATA["Contamos con que durante el tiempo de vigencia de la cobertura provisional concedida, las pólizas contratadas por su representada, iniciarán su proceso de emisión regular con el propósito de perfeccionar la cobertura definitiva en el menor tiempo posible, una vez entregados todos los documentos habilitantes para tal emisión debidamente firmados.\nEn caso de siniestro que se verifique ocurrió dentro del plazo de vigencia de la presente cobertura provisional, la reclamación del Asegurado será materia del análisis pertinente sobre su procedencia técnica y legal. \n\nUna vez más agradecemos la confianza depositada en QBE Seguros Colonial S.A., estamos seguros que con su valioso aporte continuaremos haciendo que las cosas sucedan.\n\nAtentamente,"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="10" y="420" width="130" height="20" uuid="2f5f3c21-0f2e-4c37-89c2-addf7305a01a"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[QBE Seguros Colonial S.A.]]></text>
+			</staticText>
+			<image hAlign="Left" vAlign="Middle">
+				<reportElement positionType="Float" x="10" y="450" width="300" height="80" uuid="86dabb18-de5a-440b-8c8c-cc1d426f3ee0"/>
+				<imageExpression><![CDATA[javax.imageio.ImageIO.read( $F{FIRMA}.getBinaryStream() )]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement positionType="Float" x="10" y="530" width="350" height="20" uuid="98b0599b-08c6-414f-89b2-68b649d93168"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{EMPLEADO_UP}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="10" y="550" width="350" height="20" uuid="07c95505-8384-428d-8b00-4bb43edb6c99"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CARGO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,119 @@
+diff --git a/src/com/qbe/cotizador/model/AgriParroquia.java b/src/com/qbe/cotizador/model/AgriParroquia.java
+--- a/src/com/qbe/cotizador/model/AgriParroquia.java
++++ b/src/com/qbe/cotizador/model/AgriParroquia.java
+@@ -13,7 +13,9 @@
+ @Table(name="AGRI_PARROQUIAS")
+ @NamedQueries({
+ 	@NamedQuery(name="AgriParroquia.buscarTodos", query="SELECT a FROM AgriParroquia a"),
+-	@NamedQuery(name="AgriParroquia.obtenerPorSBS", query="SELECT a FROM AgriParroquia a where a.parroquiaSbs=:CodigoSBS")
++	@NamedQuery(name="AgriParroquia.obtenerPorSBS", query="SELECT a FROM AgriParroquia a where a.parroquiaSbs=:CodigoSBS"),
++	@NamedQuery(name="AgriParroquia.obtenerPorNombre", query="SELECT a FROM AgriParroquia a where a.parroquiaNombre=:nombre"),
++	@NamedQuery(name="AgriParroquia.obtenerPorNombreYCanton", query="SELECT a FROM AgriParroquia a where a.parroquiaNombre LIKE :nombre AND a.cantonId=:canton")
+ })
+ 
+ public class AgriParroquia implements Serializable {
+diff --git a/src/com/qbe/cotizador/servicios/QBE/archivoPlano/GeneradorReporte.java b/src/com/qbe/cotizador/servicios/QBE/archivoPlano/GeneradorReporte.java
+--- a/src/com/qbe/cotizador/servicios/QBE/archivoPlano/GeneradorReporte.java
++++ b/src/com/qbe/cotizador/servicios/QBE/archivoPlano/GeneradorReporte.java
+@@ -316,7 +316,12 @@
+ 			parametersHeader.put("Endoso", "FIDEICOMISO AGROINVERSIONES DOS");
+ 		}
+ 		else{
+-			parametersHeader.put("Endoso", "BANCO PICHINCHA C.A");
++			if(cotizacion.getPuntoVenta().getNombre().equals("AGRIPAC")){
++				parametersHeader.put("Endoso", "AGRIPAC S.A");
++			}else{
++				parametersHeader.put("Endoso", "BANCO PICHINCHA C.A");
++			}
++			
+ 		}
+ 		parametersHeader.put("FechaEmision", Fecha.format(fechaActual.getTime()));
+ 		
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java
+@@ -383,7 +383,12 @@
+ 			parametersHeader.put("Endoso", "FIDEICOMISO AGROINVERSIONES DOS");
+ 		}
+ 		else{
+-			parametersHeader.put("Endoso", "BANCO PICHINCHA C.A");
++			if(cotizacion.getPuntoVenta().getNombre().equals("AGRIPAC")){
++				parametersHeader.put("Endoso", "AGRIPAC S.A");
++			}else{
++				parametersHeader.put("Endoso", "BANCO PICHINCHA C.A");
++			}
++			
+ 		}
+ 		parametersHeader.put("FechaEmision", Fecha.format(fechaActual.getTime()));
+ 		parametersHeader.put("CultivoDias", ""+VigenciaCoberura);
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/ReadExelFile.java b/src/com/qbe/cotizador/servlets/producto/agricola/ReadExelFile.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/ReadExelFile.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/ReadExelFile.java
+@@ -153,6 +153,67 @@
+ 		}
+ 		return cotizacionArray;
+ 	}
++	
++	public static List<CotizacionArchivoPlano> readXLSXFileAgriPac(String rutaArchivo) throws IOException, ParseException
++	{
++
++		List<CotizacionArchivoPlano> cotizacionArray = new ArrayList<CotizacionArchivoPlano>();
++		InputStream ExcelFileToRead = new FileInputStream(rutaArchivo);
++		XSSFWorkbook  wb = new XSSFWorkbook(ExcelFileToRead);	
++
++		XSSFSheet sheet = wb.getSheetAt(0);
++		XSSFRow row; 
++		XSSFCell cell;
++
++		Iterator rows = sheet.rowIterator();
++		int i = 0;
++
++		while (rows.hasNext())
++		{
++
++			if(i<1){
++				rows.next();
++				i++;				
++				continue;				
++			}				
++			
++			row=(XSSFRow) rows.next();
++			String existeSiguiente=(readCell(row.getCell(0)));
++			if(existeSiguiente==""||existeSiguiente.equals("")||existeSiguiente==null||existeSiguiente.equals(null))
++				break;
++			//Iterator cells = row.cellIterator();
++			CotizacionArchivoPlano cotizacion = new CotizacionArchivoPlano();
++
++			//cotizacion.setCanal(row.getCell(0).getStringCellValue());
++			cotizacion.setCanal(readCell(row.getCell(0)).trim());
++			cotizacion.setClienteApellido(readCell(row.getCell(1)).trim());
++			cotizacion.setClienteNombre(readCell(row.getCell(2)).trim());			
++			if(readCell(row.getCell(3)).trim().length() > 0 )
++				row.getCell(3).setCellType(Cell.CELL_TYPE_STRING);
++			cotizacion.setClienteIdentificacion(readCell(row.getCell(3)).trim());
++			cotizacion.setMontoAsegurado(Double.parseDouble(readCell(row.getCell(4)).trim()));
++			cotizacion.setFechaSolicitud(stringToTimestamp(readCell(row.getCell(5)).trim()));
++			cotizacion.setFechaSiembra(stringToTimestamp(readCell(row.getCell(6)).trim()));
++			cotizacion.setTipoCultivoNombre(readCell(row.getCell(7)).trim());
++			cotizacion.setNumeroHectareasAseguradas(Double.parseDouble(readCell(row.getCell(8)).trim()));
++			cotizacion.setNumeroHectareasLote(Double.parseDouble(readCell(row.getCell(9)).trim()));
++			if(readCell(row.getCell(10)).trim().equalsIgnoreCase("SI"))
++				cotizacion.setEsTecnificado(true);
++			else
++				cotizacion.setEsTecnificado(false);
++			cotizacion.setProvinciaNombre(readCell(row.getCell(11)).trim());
++			cotizacion.setCantonNombre(readCell(row.getCell(12)).trim());
++			cotizacion.setParroquiaNombre(readCell(row.getCell(13)).trim());
++			cotizacion.setUbicacionCultivo(readCell(row.getCell(14)).trim());
++			if(readCell(row.getCell(15)).trim().length() > 0) 
++				row.getCell(15).setCellType(Cell.CELL_TYPE_STRING);
++			cotizacion.setTelefono(readCell(row.getCell(15)).trim());
++			cotizacion.setGpsX(readCell(row.getCell(16)).trim());
++			cotizacion.setGpsY(readCell(row.getCell(17)).trim());
++			cotizacionArray.add(cotizacion);
++		}
++		return cotizacionArray;
++	}
+ 
+ 	public static String readCell (XSSFCell cell){		
+ 		String val = "";

@@ -1,0 +1,76 @@
+diff --git a/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java b/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java
+--- a/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java
++++ b/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java
+@@ -1,5 +1,6 @@
+ package com.qbe.cotizador.servicios.QBE.agricolaSucre;
+ 
++import java.math.BigDecimal;
+ import java.math.BigInteger;
+ import java.text.DecimalFormat;
+ import java.text.ParseException;
+@@ -820,12 +821,21 @@
+ 				DecimalFormat decimales = new DecimalFormat("0.00"); 
+ 				
+ 				double valorPrima=valorTotaL * tasa /100;
+-				//cotizacion.setPrimaNetaTotal(""+ (Math.rint(valorPrima * 100) / 100));
+-				cotizacion.setPrimaNetaTotal(""+ (decimales.format(valorPrima).replace(",", ".")));
+-				//cotizacion.setSumaAseguradaTotal(Math.rint(valorTotaL) * 100 / 100);
+-				cotizacion.setSumaAseguradaTotal(Double.parseDouble(decimales.format(valorTotaL).replace(",", ".")));
+-				//cotizacion.setPrimaOrigen(Math.rint(valorPrima * 100) / 100);
+-				cotizacion.setPrimaOrigen(Double.parseDouble(decimales.format(valorPrima).replace(",", ".")));
++				
++				BigDecimal a = new BigDecimal(""+valorPrima);
++				BigDecimal roundOff = a.setScale(2, BigDecimal.ROUND_HALF_EVEN);
++								
++				cotizacion.setPrimaNetaTotal(""+roundOff);
++				
++				a=new BigDecimal(""+valorTotaL);
++				roundOff = a.setScale(2, BigDecimal.ROUND_HALF_EVEN);
++								
++				cotizacion.setSumaAseguradaTotal(Double.parseDouble(""+roundOff));
++				
++				a=new BigDecimal(""+valorPrima);
++				roundOff = a.setScale(2, BigDecimal.ROUND_HALF_EVEN);
++								
++				cotizacion.setPrimaOrigen(Double.parseDouble(""+roundOff));
+ 				
+ 				/* PROCESO DE CALCULO DE COMPONENTES */
+ 				TipoVariableDAO tipoVariableDao = new TipoVariableDAO();
+@@ -967,8 +977,8 @@
+ 				
+ 				agriObjetoCotizacion.setDireccionSiembra(in0.getReferencia().trim());
+ 				agriObjetoCotizacion.setTipoSeguro(0);
+-				agriObjetoCotizacion.setHectareasLote((float)(in0.getNumHectFinanciadas()));
+-				agriObjetoCotizacion.setLatitud(new Float(in0.getLatitud()));
+-				agriObjetoCotizacion.setLongitud(new Float(in0.getLongitud()));
+-				agriObjetoCotizacion.setHectareasAsegurables(new Float(in0.getNumHectAseguradas()));
++				agriObjetoCotizacion.setHectareasLote(Float.parseFloat(""+in0.getNumHectFinanciadas()));
++				agriObjetoCotizacion.setLatitud(Float.parseFloat(""+in0.getLatitud()));
++				agriObjetoCotizacion.setLongitud(Float.parseFloat(in0.getLongitud()));
++				agriObjetoCotizacion.setHectareasAsegurables(Float.parseFloat(""+in0.getNumHectAseguradas()));
+ 				try{
+@@ -974,5 +984,5 @@
+ 				try{
+-					agriObjetoCotizacion.setMontoCredito(new Float(in0.getMontoRecomendado()));
++					agriObjetoCotizacion.setMontoCredito(Float.parseFloat(in0.getMontoRecomendado()));
+ 				}catch(Exception e){
+ 					//error monto asegurado
+ 				}
+@@ -992,7 +1002,7 @@
+ 					agriObjetoCotizacion.setObservacion(Observacion);
+ 				}
+ 				agriObjetoCotizacion.setTipoCalculo(idTipoCalculo);
+-				agriObjetoCotizacion.setCostoProduccion((float)(costoProduccionL));
++				agriObjetoCotizacion.setCostoProduccion(Float.parseFloat(""+costoProduccionL));
+ 				
+ 				agriObjetoCotizacion = agriObjetoCotizacionTransaction.crear(agriObjetoCotizacion);
+ 				
+@@ -1156,7 +1166,7 @@
+ 			respuesta.setObservacion("Error: " + e.getMessage());
+ 			
+ 			try{
+-				auditoria.setEstado("Error");
++				auditoria.setEstado("Error" + e.getMessage());
+ 				procesoAuditoria.editar(auditoria);
+ 				}catch(Exception e1){
+ 					e1.printStackTrace();

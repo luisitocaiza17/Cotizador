@@ -1,0 +1,59 @@
+diff --git a/WebContent/WEB-INF/web.xml b/WebContent/WEB-INF/web.xml
+--- a/WebContent/WEB-INF/web.xml
++++ b/WebContent/WEB-INF/web.xml
+@@ -9,9 +9,11 @@
+     <welcome-file>default.htm</welcome-file>
+     <welcome-file>default.jsp</welcome-file>
+   </welcome-file-list>
+-   <listener><listener-class>com.sun.xml.ws.transport.http.servlet.WSServletContextListener</listener-class></listener>   
+-   <servlet>
+-        <servlet-name>CotizadorWS</servlet-name>
+-        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+-        <load-on-startup>1</load-on-startup>
++  <listener>
++    <listener-class>com.sun.xml.ws.transport.http.servlet.WSServletContextListener</listener-class>
++  </listener>
++  <servlet>
++    <servlet-name>CotizadorWS</servlet-name>
++    <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
++    <load-on-startup>1</load-on-startup>
+   </servlet>
+@@ -17,5 +19,7 @@
+   </servlet>
+-  <listener><listener-class>org.apache.commons.fileupload.servlet.FileCleanerCleanup</listener-class></listener>   
++  <listener>
++    <listener-class>org.apache.commons.fileupload.servlet.FileCleanerCleanup</listener-class>
++  </listener>
+   <servlet>
+     <display-name>Apache-Axis Servlet</display-name>
+     <servlet-name>AxisServlet</servlet-name>
+@@ -395,8 +399,6 @@
+     <servlet-name>com.qbe.cotizador.servlets.cotizacion.ContenedorController</servlet-name>
+     <url-pattern>/ContenedorController</url-pattern>
+   </servlet-mapping>
+-  
+-  
+   <filter>
+     <filter-name>sitemesh</filter-name>
+     <filter-class>com.opensymphony.sitemesh.webapp.SiteMeshFilter</filter-class>
+@@ -412,6 +414,5 @@
+     <description>Configuracion Persistence context</description>
+     <persistence-context-ref-name>CotizadorWebPC</persistence-context-ref-name>
+     <persistence-unit-name>CotizadorWebPU</persistence-unit-name>
+-  </persistence-context-ref>    
+- 
++  </persistence-context-ref>
+ </web-app>
+\ No newline at end of file
+diff --git a/WebContent/dashboard/ConsultaCanal.jsp b/WebContent/dashboard/ConsultaCanal.jsp
+--- a/WebContent/dashboard/ConsultaCanal.jsp
++++ b/WebContent/dashboard/ConsultaCanal.jsp
+@@ -780,7 +780,7 @@
+ 					<tr>
+ 						<th style="width: 180px">&nbsp;</th>
+ 						<th style="width: 100px">Cliente Identificación:</th>
+-						<th style="width: 300px"><input type="text" id="identificacion" onkeypress="return justNumbers(event);" style="width: 100%"></th>
++						<th style="width: 300px"><input type="text" id="identificacion" style="width: 100%"></th>
+ 						<th style="width: 100px">Cliente Apellidos:</th>
+ 						<th style="width: 300px"><input type="text" id="Apellidos_Cliente" style="width: 100%"></th>
+ 					</tr>

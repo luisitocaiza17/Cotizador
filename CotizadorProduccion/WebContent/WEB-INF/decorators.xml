@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<decorators defaultdir="/WEB-INF/decorators"> 
+	<excludes>
+		<pattern>/nodecorate/*</pattern>
+		<pattern>/styles/*</pattern>
+		<pattern>/assets/*</pattern>
+		<pattern>/scripts/*</pattern>
+		<pattern>/images/*</pattern>
+		<pattern>/index.html</pattern>
+		<pattern>/index.jsp*</pattern>
+		<pattern>/registrarse.jsp</pattern>
+		<pattern>/respuesta.jsp*</pattern>
+		<pattern>/ConfirmarMail*</pattern>
+		<pattern>/olvido*</pattern>
+		<pattern>/CotizadorWS*</pattern>
+		<pattern>/services*</pattern>		
+		<pattern>/META-INF/*</pattern>
+	</excludes>
+    <decorator name="dashboard" page="main.jsp">  
+        <pattern>/*</pattern>  
+    </decorator>  
+</decorators>  

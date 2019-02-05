@@ -1,0 +1,180 @@
+package com.qbe.cotizador.dao.seguridad;
+
+import java.math.BigInteger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.persistence.EntityManager;
+import javax.persistence.ParameterMode;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.StoredProcedureQuery;
+import javax.persistence.TypedQuery;
+
+import com.qbe.cotizador.entitymanagerfactory.EntityManagerFactoryDAO;
+import com.qbe.cotizador.model.AgriSucreAuditoria;
+import com.qbe.cotizador.model.TipoVariable;
+import com.qbe.cotizador.model.VariableSistema;
+
+
+public class VariableSistemaDAO extends EntityManagerFactoryDAO<VariableSistema>{
+	
+	@PersistenceContext(name="CotizadorWebPC", unitName = "CotizadorWebPU" )	
+	private EntityManager em;
+	
+	@Override
+	protected EntityManager getEntityManager() {
+		if(em == null){
+			Context initCtx = null;
+			try {
+				initCtx = new InitialContext();
+				em = (javax.persistence.EntityManager) initCtx.lookup("java:comp/env/CotizadorWebPC");
+			} catch (NamingException e) { 
+				e.printStackTrace();
+			}		
+		}
+		return em;
+	}
+	
+	public VariableSistemaDAO() {
+        super(VariableSistema.class);
+    }
+	
+	public List<VariableSistema> buscarTodos(){
+		return getEntityManager().createNamedQuery("VariableSistema.buscarTodos").getResultList();
+	}
+	
+	public VariableSistema buscarPorId(String id){
+		VariableSistema variable = new VariableSistema();
+		List<VariableSistema> query = getEntityManager().createNamedQuery("VariableSistema.buscarPorId").setParameter("id", id).getResultList();
+		if(!query.isEmpty())
+			variable =  query.get(0);
+		return variable;
+	}
+	
+	public VariableSistema buscarPorId2(int id){
+		VariableSistema variable = new VariableSistema();
+		List<VariableSistema> query = getEntityManager().createNamedQuery("VariableSistema.buscarPorId").setParameter("id", id).getResultList();
+		if(!query.isEmpty())
+			variable =  query.get(0);
+		return variable;
+	}
+	
+	public VariableSistema buscarPorNombre(String nombre){
+		VariableSistema variable = new VariableSistema();
+		List<VariableSistema> query = getEntityManager().createNamedQuery("VariableSistema.buscarPorNombre").setParameter("nombre", nombre).getResultList();
+		if(!query.isEmpty())
+			variable =  query.get(0);
+		return variable;
+	}
+	
+	public List<VariableSistema> buscarActivos(){
+		return getEntityManager().createNamedQuery("VariableSistema.buscarActivos").setParameter("valorActivo", true).getResultList();
+	}	
+	
+    
+    public List<String> buscarPorNombres(List<String> nombres){
+		VariableSistema variable = new VariableSistema();
+		List<String> listadoValores = new ArrayList<String>();  
+
+		for(int i = 0;i<nombres.size();i++){
+			Query query = getEntityManager().createNamedQuery("VariableSistema.buscarPorNombre").setParameter("nombre", nombres.get(i));
+			List results = query.getResultList();
+			variable = (VariableSistema) results.get(0);	
+			listadoValores.add(variable.getValor());
+		}
+		return listadoValores;
+	}
+    
+    public int variableSesionSistema(){
+    	VariableSistema variable_Sistema = new VariableSistema();
+    	int valorSesionSistema = 0;
+    	
+    	VariableSistema variable = null;
+		List<VariableSistema> query = getEntityManager().createNamedQuery("VariableSistema.buscarPorNombre").setParameter("nombre", "EXPIRA_SESION").getResultList();
+		if(query.isEmpty())
+			valorSesionSistema = 0;
+		else
+			valorSesionSistema =  Integer.parseInt(query.get(0).getValor());
+		return valorSesionSistema;
+    }
+    
+    public List<VariableSistema> buscarTipoVariable(TipoVariable tipoVariable){
+    	return getEntityManager().createNamedQuery("VariableSistema.buscarTipoVariable").setParameter("tipoVariable", tipoVariable).getResultList();
+	}
+
+    /**
+     * Obtenemos el valor del IVA segun la fecha de vigencia de SRI y segun la fecha de elaboracion de la cotizacion     
+     * @param cotizacion si es vacio trae el valor del iva actual
+     * @return
+     */
+	public double obtenerIVASegegunCotizacion(String cotizacion){
+				
+		StoredProcedureQuery storedProcedure = getEntityManager().createStoredProcedureQuery("SP_IVA_DINAMICO");
+        // Agregamos los valores de entrada y salida        
+        storedProcedure.registerStoredProcedureParameter("v_cotizacion", String.class, ParameterMode.IN);                       
+        storedProcedure.registerStoredProcedureParameter("valor_iva_retorno", Double.class, ParameterMode.OUT); 
+        storedProcedure.setParameter("v_cotizacion",cotizacion);
+        // execute SP
+        storedProcedure.execute();
+		// Resultado del procedimiento
+        Double valorIva = (Double)storedProcedure.getOutputParameterValue("valor_iva_retorno");        		
+		return valorIva;						
+	}
+	
+	public List<VariableSistema> buscarVariableK( String nombre, int Skip, int Take){ 
+				
+		BigInteger cotiID;
+				
+		List<VariableSistema> results = new ArrayList<VariableSistema>();
+		TypedQuery<VariableSistema> query = null;
+		
+		String stringQuery= "SELECT c FROM VariableSistema c ";					
+		
+		String valoresWhereQuery="";
+		
+		if(nombre.length()>0)
+			valoresWhereQuery = " where c.nombre = :nombre";
+		
+		stringQuery = stringQuery+valoresWhereQuery;
+		
+		query = getEntityManager().createQuery(stringQuery, VariableSistema.class);
+		
+		if(nombre.length()>0)
+			query.setParameter("nombre", nombre);
+		
+		results = query.setMaxResults(Take).setFirstResult(Skip).getResultList();
+		return results;
+	}
+	
+	public long buscarVarNum(String nombre, int Skip, int Take){ 
+
+				
+		Query query = null;
+		
+				
+		String stringQuery= "SELECT count(c.id) FROM VariableSistema c ";					
+		
+		String valoresWhereQuery="";
+		
+		if(nombre.length()>0)
+			valoresWhereQuery = " where c.nombre = :nombre";
+		
+		stringQuery = stringQuery+valoresWhereQuery;
+		
+		query = getEntityManager().createQuery(stringQuery);
+		
+
+		if(nombre.length()>0)
+			query.setParameter("nombre", nombre);
+	
+		long results = (long)query.getSingleResult();
+		return results;
+	}
+	
+}

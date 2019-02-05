@@ -1,0 +1,35 @@
+diff --git a/WebContent/dashboard/CotizacionPymesCerrados.jsp b/WebContent/dashboard/CotizacionPymesCerrados.jsp
+--- a/WebContent/dashboard/CotizacionPymesCerrados.jsp
++++ b/WebContent/dashboard/CotizacionPymesCerrados.jsp
+@@ -36,8 +36,8 @@
+ <script src="../static/js/bootstrap-datepicker.js"></script>
+ 
+ <!-- KENDO -->
+-<!-- <link rel="stylesheet" href="http://kendo.cdn.telerik.com/2015.1.225/styles/kendo.mobile.all.min.css"> -->
++<link rel="stylesheet" href="http://kendo.cdn.telerik.com/2015.1.225/styles/kendo.mobile.all.min.css">
+ <link rel="stylesheet" href="../static/css/Kendo/kendo.common.min.css" />
+ <link rel="stylesheet" href="../static/css/Kendo/kendo.blueopal.min.css" />
+ <script src="../static/js/Kendo/kendo.all.min.js"></script>
+ <script src="../static/js/Kendo/kendo.web.min.js"></script>
+@@ -40,8 +40,8 @@
+ <link rel="stylesheet" href="../static/css/Kendo/kendo.common.min.css" />
+ <link rel="stylesheet" href="../static/css/Kendo/kendo.blueopal.min.css" />
+ <script src="../static/js/Kendo/kendo.all.min.js"></script>
+ <script src="../static/js/Kendo/kendo.web.min.js"></script>
+-<!-- <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css"> -->
++<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
+ 
+ 
+ 
+diff --git a/src/com/qbe/cotizador/model/AgriCultivoCanal.java b/src/com/qbe/cotizador/model/AgriCultivoCanal.java
+--- a/src/com/qbe/cotizador/model/AgriCultivoCanal.java
++++ b/src/com/qbe/cotizador/model/AgriCultivoCanal.java
+@@ -17,7 +17,7 @@
+ @NamedQueries
+ ({
+ 	@NamedQuery(name="AgriCultivoCanal.findAll", query="SELECT a FROM AgriCultivoCanal a"),
+-	@NamedQuery(name="AgriCultivoCanal.buscarTipoCalculo", query="SELECT a FROM AgriCultivoCanal a WHERE a.tipoCalculoId=:tipoCalculoId ")
++	@NamedQuery(name="AgriCultivoCanal.buscarTipoCalculo", query="SELECT a FROM AgriCultivoCanal a WHERE a.tipoCalculoId=:tipoCalculoId ORDER BY A.nombre")
+ })
+ public class AgriCultivoCanal implements Serializable {
+ 	private static final long serialVersionUID = 1L;

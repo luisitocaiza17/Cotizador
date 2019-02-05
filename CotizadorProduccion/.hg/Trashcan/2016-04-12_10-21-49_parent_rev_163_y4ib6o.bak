@@ -1,0 +1,207 @@
+diff --git a/.settings/.jsdtscope b/.settings/.jsdtscope
+--- a/.settings/.jsdtscope
++++ b/.settings/.jsdtscope
+@@ -1,5 +1,12 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <classpath>
++	<classpathentry kind="con" path="org.eclipse.wst.jsdt.launching.JRE_CONTAINER"/>
++	<classpathentry kind="con" path="org.eclipse.wst.jsdt.launching.WebProject">
++		<attributes>
++			<attribute name="hide" value="true"/>
++		</attributes>
++	</classpathentry>
++	<classpathentry kind="con" path="org.eclipse.wst.jsdt.launching.baseBrowserLibrary"/>
+ 	<classpathentry kind="src" path="WebContent"/>
+ 	<classpathentry kind="output" path=""/>
+ </classpath>
+diff --git a/.settings/org.eclipse.wst.common.component b/.settings/org.eclipse.wst.common.component
+--- a/.settings/org.eclipse.wst.common.component
++++ b/.settings/org.eclipse.wst.common.component
+@@ -2,4 +2,5 @@
+     <wb-module deploy-name="CotizadorWeb">
+         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
+         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
++        <property name="context-root" value="CotizadorWeb"/>
+         <property name="java-output-path" value="/CotizadorWeb/build/classes"/>
+@@ -5,4 +6,3 @@
+         <property name="java-output-path" value="/CotizadorWeb/build/classes"/>
+-        <property name="context-root" value="CotizadorWeb"/>
+     </wb-module>
+ </project-modules>
+diff --git a/build/classes/com/qbe/cotizador/servlets/entidad/ActividadEconomicaController.class b/build/classes/com/qbe/cotizador/servlets/entidad/ActividadEconomicaController.class
+index d9968cc8cf9fe85359f91facb8a2457e64e6f9a1..f7d659656e39135bc77029ffe8d21c6d6e0b51e4
+GIT binary patch
+literal 6741
+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
+BGC=?U
+
+diff --git a/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java b/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java
+--- a/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java
++++ b/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java
+@@ -6,6 +6,7 @@
+ import java.text.ParseException;
+ import java.text.SimpleDateFormat;
+ import java.util.ArrayList;
++import java.util.Calendar;
+ import java.util.Date;
+ import java.util.List;
+ 
+@@ -699,4 +700,5 @@
+ 				List<AgriTipoCultivo> agriSucreQbeCultivo = tipoCultivoSucreProceso.BuscarTodosIntegracionSucre(codigoTipoCultivo);
+ 				Date dateSiembra=null;
+ 				SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");//formato de fecha de siembra
++				
+ 				try{
+@@ -702,5 +704,5 @@
+ 				try{
+-					dateSiembra=formatter.parse(in0.getFechaSiembra().trim());
++					dateSiembra=formatter.parse(in0.getFechaSiembra().trim());					
+ 				}catch(Exception e){
+ 					throw new Exception(
+ 							"Error la fecha de siembra "+in0.getFechaSiembra()+ " no esta en el formato dd/MM/yyyy");
+diff --git a/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java b/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java
+--- a/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java
++++ b/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java
+@@ -659,8 +659,8 @@
+ 				}
+ 				Date fechaAprobacion = null;
+ 				Date fechaSiembra=null;
+-				SimpleDateFormat formatoDelTexto = new SimpleDateFormat("dd/mm/yyyy");			
+-				try {
+-					fechaSiembra = formatoDelTexto.parse(in0.getFechaTentativaSiembra());
++				SimpleDateFormat formatoDelTexto = new SimpleDateFormat("dd/MM/yyyy");
++				fechaSiembra = formatoDelTexto.parse(in0.getFechaTentativaSiembra());		
++				try {					
+ 					fechaAprobacion = formatoDelTexto.parse(in0.getFechaAprobacionCredito());
+ 				} catch (Exception e) {
+@@ -665,7 +665,6 @@
+ 					fechaAprobacion = formatoDelTexto.parse(in0.getFechaAprobacionCredito());
+ 				} catch (Exception e) {
+-					fechaAprobacion = null;
+-					fechaSiembra=null;
++					fechaAprobacion = null;					
+ 				}			
+ 				agriObjetoCotizacion.setFechaCredito(fechaAprobacion);
+ 				agriObjetoCotizacion.setFechaSiembra(fechaSiembra);	
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java
+@@ -295,7 +295,8 @@
+ 				pg.setTotal((int)total);
+ 				pg.setData(data);
+ 				
+-				Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
++				//Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
++				Gson gson = new GsonBuilder().setDateFormat("MM/dd/yyyy HH:mm:ss").create();
+ 				// convert the DataSourceReslt to JSON and write it to the response
+ 				response.setContentType("application/json; charset=ISO-8859-1");
+ 			    response.getWriter().print(gson.toJson(pg));
+@@ -891,7 +892,8 @@
+ 				pg.setTotal((int)contador);
+ 				pg.setData(cotizacionList);
+ 				
+-				Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
++				//Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
++				Gson gson = new GsonBuilder().setDateFormat("MM/dd/yyyy HH:mm:ss").create();
+ 				// convert the DataSourceReslt to JSON and write it to the response
+ 				response.setContentType("application/json; charset=ISO-8859-1");
+ 			    response.getWriter().print(gson.toJson(pg));
+@@ -953,7 +955,8 @@
+ 				pg.setData(cotizacionList);
+ 				
+ 				
+-				Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
++				//Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
++				Gson gson = new GsonBuilder().setDateFormat("MM/dd/yyyy HH:mm:ss").create();
+ 				// convert the DataSourceReslt to JSON and write it to the response
+ 				response.setContentType("application/json; charset=ISO-8859-1");
+ 			    response.getWriter().print(gson.toJson(pg));
+@@ -1001,7 +1004,8 @@
+ 				pg.setData(cotizacionList);
+ 				
+ 				//Gson gson = new Gson();
+-				Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
++				//Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
++				Gson gson = new GsonBuilder().setDateFormat("MM/dd/yyyy HH:mm:ss").create();
+ 				// convert the DataSourceReslt to JSON and write it to the response
+ 				response.setContentType("application/json; charset=ISO-8859-1");
+ 			    response.getWriter().print(gson.toJson(pg));
+@@ -1449,6 +1453,7 @@
+ 						// Cambiar estados
+ 						EstadoDAO estadoDAO = new EstadoDAO();
+ 						cotizacionC.setEstado(estadoDAO.buscarPorNombre("Revocado","Cotizacion"));
++						cotizacionC.setNumeroTramite(null);
+ 						// Actualiza estado tabla cotizacion
+ 						cotizacionC = cotizacionTransaction.editar(cotizacionC);
+ 						// /TODO: Auditoria de aprobaciones y rechazos
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriEmisionPoliza.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriEmisionPoliza.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriEmisionPoliza.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriEmisionPoliza.java
+@@ -304,6 +304,7 @@
+ 			result=wsEntidadEnsurance.crearActualizarEntidad(entidadEnsurance);
+ 		}
+ 		catch(Exception ex){
++			ex.printStackTrace();
+ 			throw new Exception("Error al crear la entidad ensurance");
+ 		}
+ 		

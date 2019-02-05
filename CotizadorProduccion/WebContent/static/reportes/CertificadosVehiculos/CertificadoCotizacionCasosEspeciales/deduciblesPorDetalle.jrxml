@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.1.final using JasperReports Library version 6.0.0  -->
+<!-- 2015-01-06T15:02:14 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="DeduciblesPorDetalle" pageWidth="543" pageHeight="842" columnWidth="543" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="cd4c8ad1-7435-490d-91a7-28eb8c9c76e1">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="cotizador"/>
+	<property name="com.jaspersoft.studio.unit." value="cm"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="cm"/>
+	<parameter name="COTIZACION_DETALLE" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT distinct
+    COTCOB.porcentaje_suma_asegurada,
+    COTCOB.porcentaje_valor_siniestro,
+    COTCOB.monto_fijo
+FROM
+  COTIZACION_COBERTURA COTCOB, COBERTURA C
+WHERE
+C.id=COTCOB.cobertura_id AND
+  COTCOB.cotizacion_detalle_id = $P{COTIZACION_DETALLE}
+  AND C.tipo_cobertura_id=1
+--        AND COTCOB.cotizacion_detalle_id = 30
+-- AND CP.producto_id='2913639534387'
+-- AND DP.plan_id=1]]>
+	</queryString>
+	<field name="porcentaje_suma_asegurada" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="porcentaje_valor_siniestro" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="monto_fijo" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="100" height="20" forecolor="#000000" uuid="8c09bafe-bd79-4f64-a5cd-ef554ddb7b8b">
+					<printWhenExpression><![CDATA[$F{monto_fijo}>0||$F{porcentaje_suma_asegurada}>0||$F{porcentaje_valor_siniestro}>0]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Deducible"]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<printWhenExpression><![CDATA[$F{porcentaje_suma_asegurada}>0]]></printWhenExpression>
+			<textField isStretchWithOverflow="true" pattern="">
+				<reportElement x="11" y="0" width="449" height="20" forecolor="#000000" uuid="27fc1a23-46de-41d2-b0f4-2a4ebd7eb8ed"/>
+				<textFieldExpression><![CDATA["" +(IF($F{porcentaje_suma_asegurada}>0,$F{porcentaje_suma_asegurada}+" % Suma Asegurada, "," ")) +  (IF($F{porcentaje_valor_siniestro}>0,($F{porcentaje_valor_siniestro})+" % Valor Siniestro, "," ")) + 
+ (IF($F{monto_fijo}>0," Mínimo $"+$F{monto_fijo}+"; el que sea mayor"," "))]]></textFieldExpression>
+			</textField>
+		</band>
+		<band>
+			<printWhenExpression><![CDATA[$F{monto_fijo}>0]]></printWhenExpression>
+		</band>
+		<band>
+			<printWhenExpression><![CDATA[$F{porcentaje_valor_siniestro}>0]]></printWhenExpression>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

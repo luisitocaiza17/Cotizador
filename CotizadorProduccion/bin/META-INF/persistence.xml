@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+  <persistence-unit name="CotizadorWebPU" transaction-type="JTA">   
+    <jta-data-source>jdbc/MySQLResource</jta-data-source>
+    <properties>    
+    	<property name="eclipselink.target-server" value="Glassfish"/>
+    	<property name="eclipselink.persistence-context.close-on-commit" value="true" />
+    	<property name="eclipselink.persistence-context.persist-on-commit" value="false" />
+    </properties>
+  </persistence-unit>
+</persistence>

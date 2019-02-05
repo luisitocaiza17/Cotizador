@@ -1,0 +1,30 @@
+diff --git a/WebContent/dashboard/ConsultaCanal.jsp b/WebContent/dashboard/ConsultaCanal.jsp
+--- a/WebContent/dashboard/ConsultaCanal.jsp
++++ b/WebContent/dashboard/ConsultaCanal.jsp
+@@ -44,7 +44,7 @@
+ 	 -->
+ 
+ <script>
+-function GetQueryStringByParameter(name) {
++function NEetQueryStringByParameter(name) {
+     name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+     results = regex.exec(location.search);
+diff --git a/WebContent/dashboard/CotizacionAprobacionAgricola.jsp b/WebContent/dashboard/CotizacionAprobacionAgricola.jsp
+--- a/WebContent/dashboard/CotizacionAprobacionAgricola.jsp
++++ b/WebContent/dashboard/CotizacionAprobacionAgricola.jsp
+@@ -801,7 +801,13 @@
+ 			}
+  			$('#grid').hide();
+  			$('#btnImportar').prop('disabled', true);
+-			/* $('#dataTable').hide();
++ 			var tableLimpiar = $('#dataTableMasiva').DataTable();
++ 			 
++ 			tableLimpiar
++ 			    .clear()
++ 			    .draw();
++ 			
++ 			/* $('#dataTable').hide();
+ 			$('#dataTableContent').html('');
+ 			$('#dataTable_wrapper').hide(); */
+ 			//$("#datos_temporal").val("");

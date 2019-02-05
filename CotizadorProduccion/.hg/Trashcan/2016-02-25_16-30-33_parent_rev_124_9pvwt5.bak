@@ -1,0 +1,150 @@
+diff --git a/src/com/qbe/cotizador/servicios/QBE/archivoPlano/GeneradorReporte.java b/src/com/qbe/cotizador/servicios/QBE/archivoPlano/GeneradorReporte.java
+--- a/src/com/qbe/cotizador/servicios/QBE/archivoPlano/GeneradorReporte.java
++++ b/src/com/qbe/cotizador/servicios/QBE/archivoPlano/GeneradorReporte.java
+@@ -262,6 +262,10 @@
+ 		calVigenciaHasta.setTime(detalleCotizacion.getFechaSiembra());
+ 		calVigenciaHasta.add(Calendar.DAY_OF_MONTH,Integer.parseInt(VigenciaCoberura.toString()==null?"0":VigenciaCoberura.toString()));
+         Date fechaActual = new Date();
+-		
++		if(cotizacion.getPuntoVenta().getNombre().equals("CREDIFE")){
++			parametersHeader.put("NombreBeneficiario","BANCO DEL PICHINCHA");
++		}else{
++			parametersHeader.put("NombreBeneficiario","COOPROGRESO");
++		}
+ 		parametersHeader.put("NumeroPoliza", detalleCotizacion.getId().toString());
+ 		parametersHeader.put("AeguradoNombre",detalleCotizacion.getnombresCliente() );
+@@ -266,8 +270,8 @@
+ 		parametersHeader.put("NumeroPoliza", detalleCotizacion.getId().toString());
+ 		parametersHeader.put("AeguradoNombre",detalleCotizacion.getnombresCliente() );
+-		parametersHeader.put("NombreBeneficiario",endosoBeneficiario.getBeneficiario().getNombre());
++		
+ 		parametersHeader.put("VigenciaDesde", Fecha.format(detalleCotizacion.getFechaSiembra()));
+ 		parametersHeader.put("NombreCultivo",(detalleCotizacion.getTipoCultivoNombre()==null?"":detalleCotizacion.getTipoCultivoNombre()));
+ 		parametersHeader.put("Tasa",""+detalleCotizacion.getTasa());
+ 		parametersHeader.put("DiasVigencia", Fecha.format(calVigenciaHasta.getTime()));
+ 		parametersHeader.put("PrecioAjuste", tipoCultivo.getPrecioAjuste());
+@@ -269,7 +273,11 @@
+ 		parametersHeader.put("VigenciaDesde", Fecha.format(detalleCotizacion.getFechaSiembra()));
+ 		parametersHeader.put("NombreCultivo",(detalleCotizacion.getTipoCultivoNombre()==null?"":detalleCotizacion.getTipoCultivoNombre()));
+ 		parametersHeader.put("Tasa",""+detalleCotizacion.getTasa());
+ 		parametersHeader.put("DiasVigencia", Fecha.format(calVigenciaHasta.getTime()));
+ 		parametersHeader.put("PrecioAjuste", tipoCultivo.getPrecioAjuste());
+-		parametersHeader.put("PrecioAjuste2", tipoCultivo.getPrecioAjuste2());
++		try{
++			parametersHeader.put("PrecioAjuste2", tipoCultivo.getPrecioAjuste2());
++		}catch(Exception e){
++			
++		}
+ 		parametersHeader.put("FechaEmision", Fecha.format(fechaActual.getTime()));
+@@ -275,5 +283,4 @@
+ 		parametersHeader.put("FechaEmision", Fecha.format(fechaActual.getTime()));
+-		
+ 		parametersHeader.put("SRC_IMAGE", "file:///"+rutaImage);
+ 		
+ 		String Html = GenerarContenido(html, parametersHeader);
+diff --git a/src/com/qbe/cotizador/servicios/QBE/archivoPlano/ImportarCotizaciones.java b/src/com/qbe/cotizador/servicios/QBE/archivoPlano/ImportarCotizaciones.java
+--- a/src/com/qbe/cotizador/servicios/QBE/archivoPlano/ImportarCotizaciones.java
++++ b/src/com/qbe/cotizador/servicios/QBE/archivoPlano/ImportarCotizaciones.java
+@@ -84,7 +84,4 @@
+ 							//hallamos el beneficiario en base a la cotizacion:
+ 							CotizacionDAO cotizacionDAO = new CotizacionDAO();
+ 							Cotizacion  cotizacion =cotizacionDAO.buscarPorId(cotizacionId);
+-									
+-							EndosoBeneficiarioDAO endosoBeneficiarioDAO = new EndosoBeneficiarioDAO();
+-							EndosoBeneficiario endosoBeneficiario = new EndosoBeneficiario();
+ 							
+@@ -90,6 +87,11 @@
+ 							
+-							endosoBeneficiario=endosoBeneficiarioDAO.buscarPorCotizacion(cotizacion);
+-							respuesta.setBeneficiario(endosoBeneficiario.getBeneficiario().getNombre());
++							if(cotizacion.getEstado().getNombre().equals("Pendiente de Emitir")){
++								if(cotizacion.getPuntoVenta().getNombre().equals("CREDIFE")){
++									respuesta.setBeneficiario("BANCO PICHICHA");
++								}else{
++									respuesta.setBeneficiario("CREDIFE");
++								}
++							}
+ 							respuestaFinal[contador]=respuesta;
+ 							
+ 							
+@@ -107,13 +109,13 @@
+ 						//hallamos el beneficiario en base a la cotizacion:
+ 						CotizacionDAO cotizacionDAO = new CotizacionDAO();
+ 						Cotizacion  cotizacion =cotizacionDAO.buscarPorId(cotizacionDetalle.getCotizacion().getId());
+-								
+-						EndosoBeneficiarioDAO endosoBeneficiarioDAO = new EndosoBeneficiarioDAO();
+-						EndosoBeneficiario endosoBeneficiario = new EndosoBeneficiario();
+-						
+-						endosoBeneficiario=endosoBeneficiarioDAO.buscarPorCotizacion(cotizacion);
+-						respuesta.setBeneficiario(endosoBeneficiario.getBeneficiario().getNombre());
+-						
++						if(cotizacion.getEstado().getNombre().equals("Pendiente de Emitir")){
++							if(cotizacion.getPuntoVenta().getNombre().equals("CREDIFE")){
++								respuesta.setBeneficiario("BANCO PICHICHA");
++							}else{
++								respuesta.setBeneficiario("CREDIFE");
++							}
++						}
+ 						respuestaFinal[contador]=respuesta;
+ 					}
+ 					contador ++;
+diff --git a/WebContent/dashboard/AgriCargaPreviaArchivoPlano.jsp b/WebContent/dashboard/AgriCargaPreviaArchivoPlano.jsp
+--- a/WebContent/dashboard/AgriCargaPreviaArchivoPlano.jsp
++++ b/WebContent/dashboard/AgriCargaPreviaArchivoPlano.jsp
+@@ -136,6 +136,8 @@
+ 		} else {
+ 			alert("Seleccione un archivo.");
+ 		}
++		
++		alert("Proceso terminado.");
+ 	}
+ 
+ 	function onUpload(e) {
+diff --git a/WebContent/static/js/agricola/metodos.agricola.js b/WebContent/static/js/agricola/metodos.agricola.js
+--- a/WebContent/static/js/agricola/metodos.agricola.js
++++ b/WebContent/static/js/agricola/metodos.agricola.js
+@@ -2718,7 +2718,7 @@
+ 	$.ajax({url : "../AgriObjetoCotizacionController",
+ 		data : {
+ 			"cotizacionId" : $("#cotizacion_id").text(),
+-			"tipoConsulta" : "crear",
++			"tipoConsulta" : "crearPronaca",
+ 			"provinciaId" : $("#ubicacion_provincia").val(),
+ 			"cantonId" : $("#ubicacion_Canton").val(),
+ 			"parroquiaId" : $("#ubicacion_Parroquia").val(),
+diff --git a/WebContent/static/js/agricola/metodos.agricolaArchivoPlano.js b/WebContent/static/js/agricola/metodos.agricolaArchivoPlano.js
+--- a/WebContent/static/js/agricola/metodos.agricolaArchivoPlano.js
++++ b/WebContent/static/js/agricola/metodos.agricolaArchivoPlano.js
+@@ -1,6 +1,7 @@
+ var tipoObjeto = document.getElementById("tipoObjetoMetodos").getAttribute(
+ 		"tipoObjetoValor");
+ 
++
+ function formatDollar(num) {
+ 	var numero=parseFloat(num);
+ 	var p = numero.toFixed(2).split(".");
+@@ -13,5 +14,5 @@
+ 
+ 	var puntoId = "";
+ 	if (puntoVentaId != null && puntoVentaId != '')
+-		puntoId = puntoVentaId;
++		puntoId = "4271";
+ 	else
+@@ -17,5 +18,5 @@
+ 	else
+-		puntoId = $('#punto_venta').val();
++		puntoId = "4271";
+ 	$.ajax({
+ 		url : '../PuntoVentaController',
+ 		data : {
+@@ -375,8 +376,8 @@
+ 						$("#punto_venta").val(seleccionada);
+ 						verificarPuntosVenta(seleccionada);
+ 					}else{
+-						$("#punto_venta").val("4244");
+-						verificarPuntosVenta("4244");
++						$("#punto_venta").val("4271");
++						verificarPuntosVenta("4271");
+ 					}
+ 					verificarPuntosVenta('');
+ 					obtenerFormaPagoXPV('');

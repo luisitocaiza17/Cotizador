@@ -1,0 +1,576 @@
+package com.qbe.cotizador.servlets.producto.agricola;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.MathContext;
+import java.math.RoundingMode;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.allcolor.yahp.converter.CYaHPConverter;
+import org.allcolor.yahp.converter.IHtmlToPdfTransformer;
+import org.jboss.classfilewriter.annotations.AnnotationsAttribute.Type;
+
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
+import com.qbe.cotizador.dao.cotizacion.CotizacionDAO;
+import com.qbe.cotizador.dao.cotizacion.EndosoBeneficiarioDAO;
+import com.qbe.cotizador.dao.entidad.ClienteDAO;
+import com.qbe.cotizador.dao.entidad.EntidadDAO;
+import com.qbe.cotizador.dao.entidad.UsuarioDAO;
+import com.qbe.cotizador.dao.producto.agricola.AgriParametroXCanalDAO;
+import com.qbe.cotizador.dao.producto.agricola.AgriParametroXPuntoVentaDAO;
+import com.qbe.cotizador.dao.producto.agricola.AgriTipoCultivoDAO;
+import com.qbe.cotizador.dao.producto.agricola.AgriTipoCultivoXTipoCalculoDAO;
+import com.qbe.cotizador.dao.producto.agricola.CotizacionAprobacionDAO;
+import com.qbe.cotizador.model.AgriCotizacionAprobacion;
+import com.qbe.cotizador.model.AgriParametroXCanal;
+import com.qbe.cotizador.model.AgriParametroXPuntoVenta;
+import com.qbe.cotizador.model.AgriTipoCultivo;
+import com.qbe.cotizador.model.AgriTipoCultivoXTipoCalculo;
+import com.qbe.cotizador.model.Cliente;
+import com.qbe.cotizador.model.Cotizacion;
+import com.qbe.cotizador.model.EndosoBeneficiario;
+import com.qbe.cotizador.model.Entidad;
+import com.qbe.cotizador.model.Usuario;
+
+import net.sf.json.JSONObject;
+
+/**
+ * Servlet implementation class AgriCotizacionReporte
+ */
+@WebServlet("/AgriCotizacionReporte")
+public class AgriCotizacionReporte extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public AgriCotizacionReporte() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doPost(request, response);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		JSONObject result = new JSONObject ();
+		String codigoCotizacion = request.getParameter("codigoCotizacion") == null ? "" : request.getParameter("codigoCotizacion");
+		String IsCotizacion_ = request.getParameter("IsCotizacion_") == null ? "false" : request.getParameter("IsCotizacion_");
+		
+		
+		//System.out.println("el codigo de cotizacion es el : "+codigoCotizacion);
+		AgriCotizacionAprobacionController generarReporte = new AgriCotizacionAprobacionController();
+		Cotizacion cotizacion = new Cotizacion(); 
+		CotizacionDAO procesosCotizacion = new CotizacionDAO();
+		cotizacion=procesosCotizacion.buscarPorId(codigoCotizacion);
+		
+		CotizacionAprobacionDAO cDAO = new CotizacionAprobacionDAO();
+		AgriTipoCultivoXTipoCalculoDAO coberturasDAO = new AgriTipoCultivoXTipoCalculoDAO();
+		List<AgriTipoCultivoXTipoCalculo> Coberturas = new ArrayList<AgriTipoCultivoXTipoCalculo>();
+//		List<AgriTipoCultivoXTipoCalculo> lstCoberturasParaReporte = new ArrayList<AgriTipoCultivoXTipoCalculo>();
+
+		AgriCotizacionAprobacion cotAct = cDAO.buscarPorId(cotizacion.getId());
+		//TODO: se eliminan las coberturas por el momento
+//		Coberturas = coberturasDAO.BuscarTodos();
+//		if (Coberturas.size() > 0) {
+//			//AgriTipoCultivoXTipoCalculo coberturaCultivo = new AgriTipoCultivoXTipoCalculo();
+//			for (AgriTipoCultivoXTipoCalculo cobertura : Coberturas) {
+//				if (cobertura.getTipoCultivoId()
+//						.toString()
+//						.equals(cotAct.getTipoCultivoId()
+//								.toString())) {
+//					lstCoberturasParaReporte.add(cobertura);
+//				}
+//
+//			}
+//		}
+		String html="";
+		if (IsCotizacion_.equals("true"))
+			html = generarHtmlCondicionesParticularesBlob(cotAct);
+		else 
+			html = generarHtmlCondicionesParticularesBlob(cotAct);
+		
+		byte[] data =GenerarPDFCotizacion(html);
+		response.setHeader("Content-Transfer-Encoding", "binary"); 
+		response.setContentLength(data.length);
+		response.setHeader("Content-Encoding", "none");
+		response.setContentType("application/force-download");
+		response.setHeader("Content-Disposition","attachment; filename=" + "Cotizacion_" + cotizacion.getId() + ".pdf");//fileName);
+
+
+		//result.write(response.getWriter());
+		ServletOutputStream  o = response.getOutputStream();
+		o.write(data); 
+		o.flush(); 
+		o.close(); 
+		return;
+	}
+	
+	public byte[] GenerarPDFCotizacion(String html){
+		java.io.ByteArrayOutputStream out = null;
+
+		//FileOutputStream out = null;
+		try {
+			CYaHPConverter converter = new CYaHPConverter(false);
+
+			List headerFooterList = new ArrayList();
+
+			// cabecera y pie de página
+			//headerFooterList.add(new IHtmlToPdfTransformer.CHeaderFooter("", IHtmlToPdfTransformer.CHeaderFooter.HEADER));
+
+			headerFooterList.add(new IHtmlToPdfTransformer.CHeaderFooter("Página: <pagenumber>/<pagecount><hr />", IHtmlToPdfTransformer.CHeaderFooter.FOOTER));
+
+
+			Map properties = new HashMap();
+
+			properties.put(IHtmlToPdfTransformer.PDF_RENDERER_CLASS, IHtmlToPdfTransformer.FLYINGSAUCER_PDF_RENDERER);
+
+			// Soporte para fuentes
+			properties.put(IHtmlToPdfTransformer.FOP_TTF_FONT_PATH, "c:\\Windows\\Fonts");
+
+			//File fout = new File("D:\\Archivos\\Escritorio\\YaHP-Converter-master\\YaHP-Converter-master\\YaHPConverter\\out\\artifacts\\YaHPConverter\\cosa4.pdf");
+			//out = new FileOutputStream(fout);
+			out = new ByteArrayOutputStream();
+
+			// si no se pone la etiqueta head, no valen los saltos de línea
+			converter.convertToPdf(html,
+					IHtmlToPdfTransformer.A4P,
+					headerFooterList,
+					null,
+					out,
+					properties);
+
+			out.flush();
+			out.close();
+
+			// PDF renderizado en Byte Array
+			byte[] result = out.toByteArray();
+			return result;
+
+			//System.out.println(result.length);
+
+
+
+			//FileOutputStream fos = new FileOutputStream("D:\\Proyectos\\QBE_COTIZADOR\\PYMES\\Reporte\\cotizacion"+CotizacionId+".pdf");
+			//FileOutputStream fos = new FileOutputStream("Cotizacion_"+CotizacionId+".pdf");
+			//fos.write(result);
+			//fos.close();
+
+
+		}catch (Exception ex)
+		{
+			String data = ex.getMessage();
+			try {
+
+				out.flush();
+				out.close();
+			}catch (Exception ignore){}
+		}
+		return null;
+	}
+	
+
+	public String generarHtmlCondicionesParticulares(AgriCotizacionAprobacion detalleCotizacion) {
+		String html = "";
+		String rutaImage ="";
+		String PlantillaName="";
+		CotizacionDAO cotiDAO = new CotizacionDAO();
+		Cotizacion cotizacion = cotiDAO.buscarPorId(detalleCotizacion.getId().toString());
+		AgriTipoCultivoDAO tipoCultivoDAO = new AgriTipoCultivoDAO();
+		AgriTipoCultivo tipoCultivo = tipoCultivoDAO.BuscarPorId(detalleCotizacion.getTipoCultivoId());
+		//TODO:Buscar plantilla por canal y tipo de cultivo
+		AgriParametroXCanalDAO parametroCanalDAO = new AgriParametroXCanalDAO();
+		AgriParametroXCanal parametroCanal = parametroCanalDAO.obtenerPorCanalTipoCultivo(detalleCotizacion.getCanalId(), detalleCotizacion.getTipoCultivoId());
+		PlantillaName=parametroCanal.getPlantillaNombre();
+		if (PlantillaName==null)
+			PlantillaName="TipoCultivoMaiz";
+		try {
+			String rutaPlantilla = this.getServletContext().getRealPath("")
+					+ "/static/plantillas/"+PlantillaName+".html";
+			rutaImage = this.getServletContext().getRealPath("")
+					+ "/static/images/";
+			html = Files.toString(new File(rutaPlantilla), Charsets.UTF_8);
+		} catch (IOException ex) {
+		}
+
+		SimpleDateFormat Fecha = new SimpleDateFormat("dd/MM/yyyy");
+		BigInteger VigenciaCoberura = detalleCotizacion.getVigenciaDias();
+		java.util.Hashtable<String, String> parametersHeader = new java.util.Hashtable<String, String>();
+		Calendar calVigenciaHasta = Calendar.getInstance();
+		calVigenciaHasta.setTime(detalleCotizacion.getFechaSiembra());
+		calVigenciaHasta.add(Calendar.DAY_OF_MONTH,Integer.parseInt(VigenciaCoberura.toString()==null?"0":VigenciaCoberura.toString()));
+        
+		parametersHeader.put("SRC_IMAGE", "file:///"+rutaImage);
+		parametersHeader.put("VIGENCIA_DESDE", Fecha.format(detalleCotizacion.getFechaSiembra()));
+		parametersHeader.put("VIGENCIA_HASTA", Fecha.format(calVigenciaHasta.getTime()));
+		String PrecioAjuste = "";
+		if (detalleCotizacion.getTipoCultivoId()!=null){
+//			AgriTipoCultivoDAO tipoCultivoDAO = new AgriTipoCultivoDAO();
+//			AgriTipoCultivo tipoCultivo = tipoCultivoDAO.BuscarPorId(detalleCotizacion.getTipoCultivoId());
+			if (tipoCultivo.getPrecioAjuste()!=null)
+				PrecioAjuste = tipoCultivo.getPrecioAjuste();
+		}
+		parametersHeader.put("NRO_POLIZA", detalleCotizacion.getId().toString());
+
+		parametersHeader.put("VALOR_ASEGURADO", (new BigDecimal(detalleCotizacion.getSumaAseguradaTotal()).setScale(2,RoundingMode.HALF_UP)).toString());
+		parametersHeader.put("VALOR_ASEGURADO_TOTAL", (new BigDecimal(detalleCotizacion.getSumaAseguradaTotal()).setScale(2,RoundingMode.HALF_UP)).toString());
+
+		// /Buscar el detalle de cotizacion
+		//parametersHeader.put("CANAL_NOMBRE", detalleCotizacion.getPuntoVenta());
+		parametersHeader.put("TIPO_CULTIVO",(detalleCotizacion.getTipoCultivoNombre()==null?"":detalleCotizacion.getTipoCultivoNombre()));
+		parametersHeader.put("CLIENTE_NOMBRE",detalleCotizacion.getnombresCliente() );
+		parametersHeader.put("HECTAREAS_ASEGURABLES", (new BigDecimal(detalleCotizacion.getHectareasAsegurables()).setScale(2,RoundingMode.HALF_UP)).toString());
+		parametersHeader.put("PROVINCIA", detalleCotizacion.getProvinciaNombre());
+		parametersHeader.put("CANTON",detalleCotizacion.getCantonNombre());
+		parametersHeader.put("PRIMA_TOTAL",(new BigDecimal(detalleCotizacion.getTotalFactura()).setScale(2, RoundingMode.HALF_UP)).toString());
+		parametersHeader.put("ASEGURADO", cotizacion.getAsegurado().getNombres()+" "+(cotizacion.getAsegurado().getApellidos()==null?"":cotizacion.getAsegurado().getApellidos()));
+		//parametersHeader.put("DERECHO_EMISION", (new BigDecimal(detalleCotizacion.getDerechoEmision()).setScale(2,RoundingMode.HALF_UP)).toString());
+		parametersHeader.put("NRO_ANEXO", detalleCotizacion.getId().toString());
+		parametersHeader.put("SITIO", (detalleCotizacion.getParroquiaNombre()==null?"":detalleCotizacion.getParroquiaNombre().toUpperCase())+" "+
+		(detalleCotizacion.getDireccionSiembra()==null?"":detalleCotizacion.getDireccionSiembra().toUpperCase()));
+		parametersHeader.put("MONTO_ASEGURADO",(new BigDecimal(detalleCotizacion.getSumaAseguradaTotal()).setScale(2, RoundingMode.HALF_UP)).toString());
+		///TODO: Agregar el precio de ajuste 
+		parametersHeader.put("PRECIO_AJUSTE",PrecioAjuste.toString());
+		//TODO: Si el valor del precio de ajuste es 0 ocultar la clausula
+		if (PrecioAjuste==null || PrecioAjuste.isEmpty())
+			parametersHeader.put("PRECIO_AJUSTE_CLASS","oculto");
+		else 
+			parametersHeader.put("PRECIO_AJUSTE_CLASS","visible");
+		// /Recibir parametros de coberturas
+//		String coberturaTexto = "";
+//		String deducibleTexto = "";
+//		String metodoIndemnizacion = "";
+//		for (AgriTipoCultivoXTipoCalculo cobertura : coberturas) {
+//			if (cobertura.getTipoCultivoId().equals(
+//					detalleCotizacion.getTipoCultivoId())) {
+//				try {
+//					coberturaTexto = new String(cobertura.getCoberturaText(),"UTF-8");
+//					deducibleTexto = new String(cobertura.getDeducibleTexto(),"UTF-8");
+//					metodoIndemnizacion = new String(cobertura.getMetodoIndemnizacionTexto(), "UTF-8");
+//					break;
+//				} catch (Exception ex) {
+//					continue;
+//				}
+//			}
+//		}
+//		parametersHeader.put("COBERTURA_TEXTO", coberturaTexto);
+//		parametersHeader.put("DEDUCIBLE_TEXTO", deducibleTexto);
+//		parametersHeader.put("METODO_INDEMNIZACION_TEXTO", metodoIndemnizacion);
+		parametersHeader.put("VIGENCIA_DIAS", (VigenciaCoberura==null?"0":VigenciaCoberura.toString()));
+		//TODO: SI la vigencia de dias es menor a 365 aparece clausula
+		if (VigenciaCoberura!=null){
+			if (VigenciaCoberura.compareTo(new BigInteger("0"))<365)
+				parametersHeader.put("VIGENCIA_CLASS","visible");
+			else 
+				parametersHeader.put("VIGENCIA_CLASS","oculto");
+		}
+		else 
+			parametersHeader.put("VIGENCIA_CLASS","oculto");
+
+		String Html = GenerarContenido(html, parametersHeader);
+		return Html;
+
+	}
+	
+	
+	public String generarHtmlCondicionesParticularesBlob(AgriCotizacionAprobacion detalleCotizacion) {
+		String html = "";
+		String rutaImage ="";
+		String PlantillaName="";
+		CotizacionDAO cotiDAO = new CotizacionDAO();
+		Cotizacion cotizacion = cotiDAO.buscarPorId(detalleCotizacion.getId().toString());
+		AgriTipoCultivoDAO tipoCultivoDAO = new AgriTipoCultivoDAO();
+		AgriTipoCultivo tipoCultivo = tipoCultivoDAO.BuscarPorId(detalleCotizacion.getTipoCultivoId());
+		//TODO:Buscar plantilla por canal y tipo de cultivo
+		AgriParametroXCanalDAO parametroCanalDAO = new AgriParametroXCanalDAO();
+		AgriParametroXCanal parametroCanal = parametroCanalDAO.obtenerPorCanalTipoCultivo(detalleCotizacion.getCanalId(), detalleCotizacion.getTipoCultivoId());
+		PlantillaName=parametroCanal.getPlantillaNombre();
+		
+		AgriParametroXCanal agriParametroXCanal= new AgriParametroXCanal();
+		AgriParametroXCanalDAO agriParametroXCanalDAO = new AgriParametroXCanalDAO();
+		agriParametroXCanal=agriParametroXCanalDAO.obtenerPorCanalTipoCultivo(new BigInteger(cotizacion.getPuntoVenta().getId()), tipoCultivo.getTipoCultivoId());
+	
+		
+		byte[] buffer=agriParametroXCanal.getPlantillaHtml();
+		
+		try {
+			 
+			html = new String( buffer);
+			
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		
+	   EndosoBeneficiarioDAO endosoBeneficiarioDAO = new EndosoBeneficiarioDAO();
+	   EndosoBeneficiario endosoBeneficiario=	endosoBeneficiarioDAO.buscarPorCotizacion(cotizacion);
+	  
+		SimpleDateFormat Fecha = new SimpleDateFormat("dd/MM/yyyy");
+		BigInteger VigenciaCoberura = detalleCotizacion.getVigenciaDias();
+		java.util.Hashtable<String, String> parametersHeader = new java.util.Hashtable<String, String>();
+		Calendar calVigenciaHasta = Calendar.getInstance();
+		calVigenciaHasta.setTime(detalleCotizacion.getFechaSiembra());
+		calVigenciaHasta.add(Calendar.DAY_OF_MONTH,Integer.parseInt(VigenciaCoberura.toString()==null?"0":VigenciaCoberura.toString()));
+        Date fechaHasta=calVigenciaHasta.getTime();
+		Date fechaActual = new Date();
+		//Numero de contenedor
+		
+		//Armado Final de parametros a mostrar en la poliza
+		parametersHeader.put("NumeroPoliza", agriParametroXCanal.getContenedorNumero()+"-"+detalleCotizacion.getIdCotizacion2().toString());
+		//buscamos el cliente
+		Cliente cliente = new Cliente();
+		ClienteDAO clienteDAO = new ClienteDAO();
+		cliente= clienteDAO.buscarPorId(""+cotizacion.getClienteId());
+		parametersHeader.put("AseguradoNombre", cliente.getEntidad().getNombreCompleto());
+		parametersHeader.put("VigenciaDesde","DESDE "+ Fecha.format(detalleCotizacion.getFechaSiembra())+" HASTA "+Fecha.format(fechaHasta));
+		parametersHeader.put("Anexo", detalleCotizacion.getIdCotizacion2().toString());
+		//buscamos el asegurado
+		parametersHeader.put("Cliente", cotizacion.getAsegurado().getNombreCompleto());
+		parametersHeader.put("Provincia", detalleCotizacion.getProvinciaNombre());
+		parametersHeader.put("Canton", detalleCotizacion.getCantonNombre());
+		
+		if(detalleCotizacion.getParroquiaNombre()==null || detalleCotizacion.getParroquiaNombre().equals("")){
+			//nada
+		}else
+			parametersHeader.put("Parroquia", detalleCotizacion.getParroquiaNombre());
+		
+		parametersHeader.put("SitioReferencia", detalleCotizacion.getDireccionSiembra());
+		parametersHeader.put("Cultivo", detalleCotizacion.getTipoCultivoNombre());
+		parametersHeader.put("CostoProduccion", ""+detalleCotizacion.getCostoProduccion());
+		parametersHeader.put("Hectareas", ""+detalleCotizacion.getHectareasAsegurables());
+		
+		parametersHeader.put("SumaAsegurada", (new BigDecimal(detalleCotizacion.getSumaAseguradaTotal()).setScale(2,RoundingMode.HALF_UP)).toString());
+		parametersHeader.put("PrecioAjuste", tipoCultivo.getPrecioAjuste());
+		parametersHeader.put("UnidadMedida", tipoCultivo.getUnidadMedida());
+		try{
+			parametersHeader.put("PrecioAjuste2", tipoCultivo.getPrecioAjuste2());
+			parametersHeader.put("UnidadMedida2", tipoCultivo.getUnidadMedida2());
+		}catch(Exception e){
+			
+		}
+		parametersHeader.put("Prima",""+ detalleCotizacion.getPrimaNetaTotal());
+		parametersHeader.put("Tasa",""+""+ detalleCotizacion.getTasa());
+		if(cotizacion.getPuntoVenta().getNombre().equals("COOPROGRESO")){
+			parametersHeader.put("Endoso", "FIDEICOMISO AGROINVERSIONES DOS");
+		}
+		else{
+			if(cotizacion.getPuntoVenta().getNombre().equals("AGRIPAC")){
+				parametersHeader.put("Endoso", "AGRIPAC S.A");
+			}else{
+				if(cotizacion.getPuntoVenta().getNombre().equals("ECUAQUIMICA")){
+					parametersHeader.put("Endoso", "ECUAQUIMICA ECUATORIANA DE PRODUCTOS QUIMICOS C.A. ");
+				}else{
+					parametersHeader.put("Endoso", "BANCO PICHINCHA C.A");
+				}
+			}			
+		}
+		parametersHeader.put("FechaEmision", Fecha.format(fechaActual.getTime()));
+		parametersHeader.put("CultivoDias", ""+VigenciaCoberura);
+		
+		if(tipoCultivo.getTipo()==2){
+			
+			parametersHeader.put("VigenciaCultivo1",VigenciaCoberura+ " d&iacute;as (Desde la siembra hasta la madurez fisiol&oacute;gica del cultivo).");
+		}else{
+			parametersHeader.put("VigenciaCultivo1", "365 D&iacute;as." );
+			
+		}
+		
+		String rutaPlantilla = AgriSucreNotificacionErrores.class.getProtectionDomain().getCodeSource()
+				.getLocation().getPath();
+		rutaPlantilla=rutaPlantilla.replace("AgriSucreNotificacionErrores.class", "");
+		String rutaRelativaReporte="../../../../../../../../static/images/firmaAgricola.png";
+		String rutaFinalFirma=rutaPlantilla+rutaRelativaReporte;
+		parametersHeader.put("SRC_IMAGE", "file:///"+rutaFinalFirma);
+		String rutaImagen="../../../../../../../../static/images/logoQBE.png";;
+		String rutaFinalLogo=rutaPlantilla+rutaImagen;
+		parametersHeader.put("SRC_LOGO", "file:///"+rutaFinalLogo);
+		String Html = GenerarContenido(html, parametersHeader);
+		return Html;
+
+	}
+	
+	
+	/*public String generarHtmlCotizacion(AgriCotizacionAprobacion detalleCotizacion) {
+		String html = "";
+		String rutaImage ="";
+		String PlantillaName="";
+		CotizacionDAO cotiDAO = new CotizacionDAO();
+		Cotizacion cotizacion = cotiDAO.buscarPorId(detalleCotizacion.getId().toString());
+		AgriTipoCultivoDAO tipoCultivoDAO = new AgriTipoCultivoDAO();
+		AgriTipoCultivo tipoCultivo = tipoCultivoDAO.BuscarPorId(detalleCotizacion.getTipoCultivoId());
+		//TODO:Buscar plantilla por canal y tipo de cultivo
+		AgriParametroXCanalDAO parametroCanalDAO = new AgriParametroXCanalDAO();
+		AgriParametroXCanal parametroCanal = parametroCanalDAO.obtenerPorCanalTipoCultivo(detalleCotizacion.getCanalId(), detalleCotizacion.getTipoCultivoId());
+		PlantillaName=parametroCanal.getPlantillaNombre();
+		if (PlantillaName==null)
+			PlantillaName="TipoCultivoMaizCotizacion";
+		try {
+			String rutaPlantilla = this.getServletContext().getRealPath("")
+					+ "/static/plantillas/"+PlantillaName+"Cotizacion.html";
+			rutaImage = this.getServletContext().getRealPath("")
+					+ "/static/images/";
+			html = Files.toString(new File(rutaPlantilla), Charsets.UTF_8);
+		} catch (IOException ex) {
+		}
+
+		SimpleDateFormat Fecha = new SimpleDateFormat("dd/MM/yyyy");
+		BigInteger VigenciaCoberura = detalleCotizacion.getVigenciaDias();
+		java.util.Hashtable<String, String> parametersHeader = new java.util.Hashtable<String, String>();
+		Calendar calVigenciaHasta = Calendar.getInstance();
+		calVigenciaHasta.setTime(detalleCotizacion.getFechaSiembra());
+		calVigenciaHasta.add(Calendar.DAY_OF_MONTH,Integer.parseInt(VigenciaCoberura.toString()==null?"0":VigenciaCoberura.toString()));
+        
+		parametersHeader.put("FECHA_COTIZACION", Fecha.format(cotizacion.getFechaElaboracion()));
+		parametersHeader.put("SRC_IMAGE", "file:///"+rutaImage);
+		parametersHeader.put("VIGENCIA_DESDE", Fecha.format(detalleCotizacion.getFechaSiembra()));
+		parametersHeader.put("VIGENCIA_HASTA", Fecha.format(calVigenciaHasta.getTime()));
+		String PrecioAjuste = "";
+		if (detalleCotizacion.getTipoCultivoId()!=null){
+//			AgriTipoCultivoDAO tipoCultivoDAO = new AgriTipoCultivoDAO();
+//			AgriTipoCultivo tipoCultivo = tipoCultivoDAO.BuscarPorId(detalleCotizacion.getTipoCultivoId());
+			if (tipoCultivo.getPrecioAjuste()!=null)
+				PrecioAjuste = tipoCultivo.getPrecioAjuste();
+		}
+		parametersHeader.put("NRO_POLIZA", detalleCotizacion.getId().toString());
+
+		parametersHeader.put("VALOR_ASEGURADO", (new BigDecimal(detalleCotizacion.getSumaAseguradaTotal()).setScale(2,RoundingMode.HALF_UP)).toString());
+		parametersHeader.put("VALOR_ASEGURADO_TOTAL", (new BigDecimal(detalleCotizacion.getSumaAseguradaTotal()).setScale(2,RoundingMode.HALF_UP)).toString());
+
+		// /Buscar el detalle de cotizacion
+		//parametersHeader.put("CANAL_NOMBRE", detalleCotizacion.getPuntoVenta());
+		parametersHeader.put("TIPO_CULTIVO",(detalleCotizacion.getTipoCultivoNombre()==null?"":detalleCotizacion.getTipoCultivoNombre()));
+		parametersHeader.put("CLIENTE_NOMBRE",detalleCotizacion.getnombresCliente() );
+		parametersHeader.put("HECTAREAS_ASEGURABLES", (new BigDecimal(detalleCotizacion.getHectareasAsegurables()).setScale(2,RoundingMode.HALF_UP)).toString());
+		parametersHeader.put("PROVINCIA", detalleCotizacion.getProvinciaNombre());
+		parametersHeader.put("CANTON",detalleCotizacion.getCantonNombre());
+		parametersHeader.put("PRIMA_TOTAL",(new BigDecimal(detalleCotizacion.getTotalFactura()).setScale(2, RoundingMode.HALF_UP)).toString());
+		parametersHeader.put("ASEGURADO", cotizacion.getAsegurado().getNombres()+" "+(cotizacion.getAsegurado().getApellidos()==null?"":cotizacion.getAsegurado().getApellidos()));
+		//parametersHeader.put("DERECHO_EMISION", (new BigDecimal(detalleCotizacion.getDerechoEmision()).setScale(2,RoundingMode.HALF_UP)).toString());
+		parametersHeader.put("NRO_ANEXO", detalleCotizacion.getId().toString());
+		parametersHeader.put("SITIO", (detalleCotizacion.getParroquiaNombre()==null?"":detalleCotizacion.getParroquiaNombre().toUpperCase())+" "+
+		(detalleCotizacion.getDireccionSiembra()==null?"":detalleCotizacion.getDireccionSiembra().toUpperCase()));
+		parametersHeader.put("MONTO_ASEGURADO",(new BigDecimal(detalleCotizacion.getSumaAseguradaTotal()).setScale(2, RoundingMode.HALF_UP)).toString());
+		///TODO: Agregar el precio de ajuste 
+		parametersHeader.put("PRECIO_AJUSTE",PrecioAjuste.toString());
+		//TODO: Si el valor del precio de ajuste es 0 ocultar la clausula
+		
+		if (PrecioAjuste==null || PrecioAjuste.isEmpty())
+			parametersHeader.put("PRECIO_AJUSTE_CLASS","oculto");
+		else 
+			parametersHeader.put("PRECIO_AJUSTE_CLASS","visible");
+		
+		//double totalFactura = detalleCotizacion.getTotalFactura();
+		BigDecimal totalFactura = new BigDecimal(detalleCotizacion.getTotalFactura()).setScale(2,RoundingMode.HALF_UP);
+		//parametersHeader.put("FORMAS_PAGO","visible");
+		parametersHeader.put("CUOTA1",totalFactura.toString());
+		BigDecimal cuota2 = totalFactura.divide(new BigDecimal("2"),MathContext.DECIMAL32).setScale(2,RoundingMode.HALF_UP);
+		if (cuota2.compareTo(new BigDecimal("0"))>0)
+			parametersHeader.put("CUOTA2",cuota2.toString());
+		BigDecimal cuota3 = totalFactura.divide(new BigDecimal("3"),MathContext.DECIMAL32).setScale(2,RoundingMode.HALF_UP);
+		if (cuota3.compareTo(new BigDecimal("0"))>0)
+			parametersHeader.put("CUOTA3",cuota3.toString());
+		BigDecimal cuota4 = totalFactura.divide(new BigDecimal("4"),MathContext.DECIMAL32).setScale(2,RoundingMode.HALF_UP);
+		if (cuota4.compareTo(new BigDecimal("0"))>0)
+			parametersHeader.put("CUOTA4",cuota4.toString());
+		BigDecimal cuota5 = totalFactura.divide(new BigDecimal("5"),MathContext.DECIMAL32).setScale(2,RoundingMode.HALF_UP);
+		if (cuota5.compareTo(new BigDecimal("0"))>0)
+			parametersHeader.put("CUOTA5",cuota5.toString());
+		BigDecimal cuota6 = totalFactura.divide(new BigDecimal("6"),MathContext.DECIMAL32).setScale(2,RoundingMode.HALF_UP);
+		if (cuota6.compareTo(new BigDecimal("0"))>0)
+			parametersHeader.put("CUOTA6",cuota6.toString());
+		BigDecimal cuota7 = totalFactura.divide(new BigDecimal("7"),MathContext.DECIMAL32).setScale(2,RoundingMode.HALF_UP);
+		if (cuota7.compareTo(new BigDecimal("0"))>0)
+			parametersHeader.put("CUOTA7",cuota7.toString());
+		BigDecimal cuota8 = totalFactura.divide(new BigDecimal("8"),MathContext.DECIMAL32).setScale(2,RoundingMode.HALF_UP);
+		if (cuota8.compareTo(new BigDecimal("0"))>0)
+			parametersHeader.put("CUOTA8",cuota8.toString());
+		BigDecimal cuota9 = totalFactura.divide(new BigDecimal("9"),MathContext.DECIMAL32).setScale(2,RoundingMode.HALF_UP);
+		if (cuota9.compareTo(new BigDecimal("0"))>0)
+			parametersHeader.put("CUOTA9",cuota9.toString());
+		BigDecimal cuota10 = totalFactura.divide(new BigDecimal("10"),MathContext.DECIMAL32).setScale(2,RoundingMode.HALF_UP);
+		if (cuota10.compareTo(new BigDecimal("0"))>0)
+			parametersHeader.put("CUOTA10",cuota10.toString());
+		
+		
+		// /Recibir parametros de coberturas
+//		String coberturaTexto = "";
+//		String deducibleTexto = "";
+//		String metodoIndemnizacion = "";
+//		for (AgriTipoCultivoXTipoCalculo cobertura : coberturas) {
+//			if (cobertura.getTipoCultivoId().equals(
+//					detalleCotizacion.getTipoCultivoId())) {
+//				try {
+//					coberturaTexto = new String(cobertura.getCoberturaText(),"UTF-8");
+//					deducibleTexto = new String(cobertura.getDeducibleTexto(),"UTF-8");
+//					metodoIndemnizacion = new String(cobertura.getMetodoIndemnizacionTexto(), "UTF-8");
+//					break;
+//				} catch (Exception ex) {
+//					continue;
+//				}
+//			}
+//		}
+//		parametersHeader.put("COBERTURA_TEXTO", coberturaTexto);
+//		parametersHeader.put("DEDUCIBLE_TEXTO", deducibleTexto);
+//		parametersHeader.put("METODO_INDEMNIZACION_TEXTO", metodoIndemnizacion);
+		parametersHeader.put("VIGENCIA_DIAS", (VigenciaCoberura==null?"0":VigenciaCoberura.toString()));
+		//TODO: SI la vigencia de dias es menor a 365 aparece clausula
+				if (VigenciaCoberura!=null){
+					if (VigenciaCoberura.compareTo(new BigInteger("0"))<365)
+						parametersHeader.put("VIGENCIA_CLASS","visible");
+					else 
+						parametersHeader.put("VIGENCIA_CLASS","oculto");
+				}
+				else 
+					parametersHeader.put("VIGENCIA_CLASS","oculto");
+		
+		String Html = GenerarContenido(html, parametersHeader);
+		return Html;
+
+	}*/
+	
+private String GenerarContenido(String html, java.util.Hashtable<String, String> ParamValues){
+		List<String> detectedParams = new ArrayList<String>();
+		//Pattern params = Pattern.compile("\\[[a-zA-Z0-9\\.]*\\]");
+		Pattern params = Pattern.compile("\\[[a-zA-Z0-9\\._]*\\]");
+		Matcher mat=params.matcher(html);
+		while(mat.find()) {
+			detectedParams.add(mat.group());
+		}
+
+		for(String detectedParam:detectedParams)
+		{
+			String valor=(ParamValues.get(detectedParam.replace("[", "").replace("]", ""))==null?"":ParamValues.get(detectedParam.replace("[", "").replace("]", "")));
+			html=html.replace(detectedParam,  valor);
+		}
+		return html;
+	}
+}

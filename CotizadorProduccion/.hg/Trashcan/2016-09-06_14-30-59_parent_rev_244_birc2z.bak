@@ -1,0 +1,26 @@
+diff --git a/src/com/qbe/cotizador/dao/producto/agricola/AgriParametroXPuntoVentaDAO.java b/src/com/qbe/cotizador/dao/producto/agricola/AgriParametroXPuntoVentaDAO.java
+--- a/src/com/qbe/cotizador/dao/producto/agricola/AgriParametroXPuntoVentaDAO.java
++++ b/src/com/qbe/cotizador/dao/producto/agricola/AgriParametroXPuntoVentaDAO.java
+@@ -64,4 +64,9 @@
+ 	{
+ 		return getEntityManager().createNamedQuery("AgriParametroXPuntoVenta.obtenerTodos").getResultList();
+ 	}
++	
++	public  List<AgriParametroXPuntoVenta> buscarTodosCanal(BigInteger canalId)
++	{
++		return getEntityManager().createNamedQuery("AgriParametroXPuntoVenta.obtenerCanal").setParameter("canalId", canalId).getResultList();
++	}
+ }
+diff --git a/src/com/qbe/cotizador/model/Cotizacion.java b/src/com/qbe/cotizador/model/Cotizacion.java
+--- a/src/com/qbe/cotizador/model/Cotizacion.java
++++ b/src/com/qbe/cotizador/model/Cotizacion.java
+@@ -26,6 +26,9 @@
+ 	@NamedQuery(name="Cotizacion.buscarPorGrupoPorProducto", query="SELECT c FROM Cotizacion c where c.grupoPorProductoId=:grupoPorProductoId"),
+ 	@NamedQuery(name="Cotizacion.buscarPorNumeroTramite", query="SELECT c FROM Cotizacion c where c.numeroTramite=:numeroTramite"),
+ 	@NamedQuery(name="Cotizacion.buscarPorTipoObjetoPuntoVenta", query="SELECT c FROM Cotizacion c where c.tipoObjeto = :tipoObjeto and c.puntoVenta = :puntoVenta"),
++	@NamedQuery(name="Cotizacion.buscarRepetidos", query="SELECT c FROM Cotizacion c WHERE c.tipoObjeto = :tipoObjeto and c.puntoVenta = :puntoVenta  GROUP BY c.numeroTramite HAVING COUNT(c.numeroTramite) > 1 "),
++	@NamedQuery(name="Cotizacion.buscarPorNumeroTramiteTodos", query="SELECT c FROM Cotizacion c where c.numeroTramite=:numeroTramite"),
++	
+ })
+ public class Cotizacion implements Serializable {
+ 	private static final long serialVersionUID = 1L;

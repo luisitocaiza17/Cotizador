@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<endpoints version="2.0" xmlns="http://java.sun.com/xml/ns/jax-ws/ri/runtime">
+	<endpoint name="WebServiceCotizadorImpl" implementation="com.qbe.cotizador.servicios.QBE.serviciosExpuestos.implementacion.WebServiceCotizadorImpl" url-pattern="/CotizadorWS" />
+	<endpoint name="WebServiceRiskInspector" implementation="com.qbe.cotizador.serviciosExpuestos.riskInspector.implementacion.WebServiceRiskInspectorImpl" url-pattern="/RiskInspectorWS" />
+</endpoints>

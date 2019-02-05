@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CotiVacas2KR2012_04" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="f1fb4cb4-8bbb-4754-a74a-e7fe5df87b25">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="COTIZADOR"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="Cot_Id" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT DISTINCT ENT.NOMBRE_COMPLETO, COT.FECHA_ELABORACION, S.NOMBRE AS SUCURSAL
+FROM ENTIDAD ENT INNER JOIN CLIENTE CLI
+ON ENT.ID = CLI.ENTIDAD_ID INNER JOIN COTIZACION COT
+ON CLI.ID = COT.CLIENTE_ID INNER JOIN COTIZACION_DETALLE COTD
+ON COT.ID = COTD.COTIZACION_ID INNER JOIN PUNTO_VENTA PV
+ON COT.PUNTO_VENTA_ID = PV.ID INNER JOIN SUCURSAL S 
+ON PV.SUCURSAL_ID = S.ID
+and COT.ID = $P{Cot_Id}]]>
+	</queryString>
+	<field name="NOMBRE_COMPLETO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="FECHA_ELABORACION" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="SUCURSAL" class="java.lang.String"/>
+	<pageHeader>
+		<band height="50">
+			<staticText>
+				<reportElement x="168" y="5" width="280" height="45" uuid="a0540c77-ae2d-4c26-94c2-b2948a5a03be"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<text><![CDATA[• Quito: Av. Eloy Alfaro N.40-270 y Jose Quero Telf. (593 2) 398 9700 / 398 9800  Fa. Ext 2213 /2220     
+• Guayaquil: Av. Miguel H. Alcivar Edif. Torres del Norte Torre B  Of. 301 – 308   pisos  # 3. Teléfs: 688 313/15/16/20/25/26. Fax: 688314
+• Cuenca: Av. Federico Malo 170 y Av. 12 de Abril. Teléfonos: 841 285, 840 758, 842 876. Fax: 838 732
+• Riobamba: Calle Vargas Torre s/n entre Primera Constituyente y Veloz  Telfs: 940 863. Fax: 940 864 
+• Ambato: Ficoa Av. De los Guaytambos No. 04-102, Teléfono: 824 496/823495/820571]]></text>
+			</staticText>
+			<image>
+				<reportElement x="0" y="5" width="160" height="30" uuid="ee9c1d29-8668-4226-be50-04955c73ddf8"/>
+				<imageExpression><![CDATA["imagenes/logo_qbe.png"]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="595" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="99" width="440" height="82" uuid="adc55c37-5d95-4800-b7b4-2280f17fc95e"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[5. En caso de enfermedades metabólicas asociadas al parto como: Fiebre de Leche (Hipocalcemia), Cetosis (Acetonemia), Hígado Graso (Síndrome de la vaca obesa), Tetania por Hipomagnesemia, Síndrome Downer, Hemoglobinuria post-parto, etc., que son estresantes, predisponiendo a enfermedades concomitantes pudiendo llegar a la muerte, recomendamos que un veterinario atienda a la brevedad estos casos.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="20" width="440" height="70" uuid="1f237b9a-8ff0-419d-8cf6-de391c0368cf"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[4. Como cuidados pre-parto se sugiere ingresar al animal a un potrerillo de maternidad por lo menos 10 días antes del parto para observación y ayuda en el alumbramiento. En caso de las Comunidades debe existir la asistencia en lo posible de un profesional, o demostrar que existe en la zona una persona de la comunidad que pueda asistir al productor en estos casos.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="189" width="440" height="51" uuid="6e2ea303-e1ca-454d-a469-970b574a8c01"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[6. Disponer de asistencia periódica de un Médico Veterinario, en el predio para control de los animales. Control y asistencia permanente por lo menos una vez al mes de los animales.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="246" width="440" height="19" uuid="fa79fec2-8ed8-4f76-867a-0f769da35ed5"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[7. Se excluye muerte y/o sacrificio por negligencia.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="271" width="440" height="41" uuid="66581367-0393-42e1-b020-5658d5357938"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[8. Se deben tomar en cuenta las condiciones generales de la póliza, con sus respectivas exclusiones, garantías y procedimientos.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="312" width="440" height="30" uuid="30fbbddd-33a4-4ba0-9058-1673c08d0bac"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[9. No se encuentra cubierto el vientre y las crías.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="342" width="440" height="30" uuid="16122d0c-e0f7-440d-9a3d-d5d78efafb0d"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[10.  Se excluye muerte y/o sacrificio por Leucosis Bovina.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="372" width="440" height="33" uuid="243def88-7c09-493b-8039-591721f521a5"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[11.  Se excluye muerte por envenenamiento a causa de picadura de culebra.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="405" width="440" height="27" uuid="d7cbc474-faa1-420c-9b14-cdcdfc54a799"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Plazo de Aviso para siniestros: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="435" width="440" height="40" uuid="8189d98f-ae36-408d-bcf4-1eee17b70125"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Para agravación de Riesgo 24 horas.
+Para aviso de siniestro 48 horas.
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="475" width="440" height="30" uuid="7203d7c2-e86c-4e52-a97f-5762bb0459ec"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Sin más por el momento, nos encontramos a la espera de sus importantes noticias.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="565" width="440" height="30" uuid="100bea05-6644-4d5c-9eb3-495ea35ae2f0"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Atentamente
+Asesor Comercial]]></text>
+			</staticText>
+			<line>
+				<reportElement x="150" y="565" width="150" height="1" uuid="79b4feea-6b3b-46fa-a738-bd7735b1af3d"/>
+			</line>
+		</band>
+	</detail>
+</jasperReport>

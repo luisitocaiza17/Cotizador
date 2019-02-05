@@ -1,0 +1,84 @@
+package com.qbe.cotizador.dao.producto.agricola;
+
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+
+import com.qbe.cotizador.entitymanagerfactory.EntityManagerFactoryDAO;
+import com.qbe.cotizador.model.AgriRegla;
+import com.qbe.cotizador.model.AgriReglaVta;
+import com.qbe.cotizador.model.AgriReporteCotizacionVta;
+
+public class AgriReglaVtaDAO extends EntityManagerFactoryDAO<AgriReglaVta>{
+	@PersistenceContext(name="CotizadorWebPC", unitName = "CotizadorWebPU" )	
+	private EntityManager em;
+	
+	@Override
+	protected EntityManager getEntityManager() {
+		if(em == null){
+			Context initCtx = null;
+			try {
+				initCtx = new InitialContext();
+				em = (javax.persistence.EntityManager) initCtx.lookup("java:comp/env/CotizadorWebPC");
+			} catch (NamingException e) { 
+				e.printStackTrace();
+			}		
+		}
+		return em;
+	}
+
+	public AgriReglaVtaDAO() {
+		super(AgriReglaVta.class);
+	}
+	
+	public AgriReglaVta BuscarPorId (BigInteger ReglaId){
+		AgriReglaVta agriRegla = new AgriReglaVta();
+		List<AgriReglaVta> result = getEntityManager().createNamedQuery("AgriReglaVta.obtenerPorId").setParameter("reglaId", ReglaId).getResultList();
+		if (result.size()>0)
+			agriRegla = result.get(0);
+		return agriRegla;
+	}
+	
+	public List<AgriReglaVta> BuscarPorParametros (String reglaId, String tipoCultivoId,String tipoCalculoId,String provinciaId,String cantonId){
+				
+		TypedQuery<AgriReglaVta> query = null;
+		
+		String stringQuery= "SELECT c FROM AgriReglaVta c where (c.estado = 1)";					
+		String valoresWhereQuery = "";
+		
+		if(reglaId.length() > 0)
+			valoresWhereQuery +=" AND c.reglaId =:reglaId ";
+		if(tipoCultivoId.length() > 0)
+			valoresWhereQuery +=" AND c.tipoCultivoId =:tipoCultivoId ";
+		if(tipoCalculoId.length() > 0)
+			valoresWhereQuery +=" AND c.tipoCalculoId =:tipoCalculoId ";
+		if(provinciaId.length() > 0)
+			valoresWhereQuery +=" AND c.provinciaId =:provinciaId ";
+		if(cantonId.length() > 0)
+			valoresWhereQuery +=" AND c.cantonId =:cantonId ";
+		
+		stringQuery = stringQuery + valoresWhereQuery + " ORDER BY c.cultivoNombre, c.provinciaId, c.cantonId, c.tipoCalculoId ";
+		
+		query = getEntityManager().createQuery(stringQuery, AgriReglaVta.class);
+		
+		if(reglaId.length() > 0)
+			query.setParameter("reglaId", new BigInteger(reglaId));
+		if(tipoCultivoId.length() > 0)
+			query.setParameter("tipoCultivoId", new BigInteger(tipoCultivoId));
+		if(tipoCalculoId.length() > 0)
+			query.setParameter("tipoCalculoId", new BigInteger(tipoCalculoId));
+		if(provinciaId.length() > 0)
+			query.setParameter("provinciaId", new BigInteger(provinciaId));
+		if(cantonId.length() > 0)
+			query.setParameter("cantonId", new BigInteger(cantonId));
+		
+		return query.getResultList();
+	}
+}

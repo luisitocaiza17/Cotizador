@@ -1,0 +1,48 @@
+diff --git a/src/com/qbe/cotizador/model/AgriCotizacionAprobacion.java b/src/com/qbe/cotizador/model/AgriCotizacionAprobacion.java
+--- a/src/com/qbe/cotizador/model/AgriCotizacionAprobacion.java
++++ b/src/com/qbe/cotizador/model/AgriCotizacionAprobacion.java
+@@ -203,4 +203,7 @@
+ 	
+ 	@Column(name = "USUARIO_COTIZADOR")
+ 	private String usuarioCotizador;
++		
++	@Column(name = "ciclo_id")
++	private String cicloId;
+ 	
+@@ -206,4 +209,23 @@
+ 	
++	@Column(name = "cliente_id")
++	private String clienteId;
++		
++	public String getClienteId() {
++		return clienteId;
++	}
++
++	public void setClienteId(String clienteId) {
++		this.clienteId = clienteId;
++	}
++
++	public String getCicloId() {
++		return cicloId;
++	}
++
++	public void setCicloId(String cicloId) {
++		this.cicloId = cicloId;
++	}
++
+ 	public String getUsuarioCotizador() {
+ 		return usuarioCotizador;
+ 	}
+diff --git a/src/com/qbe/cotizador/model/AgriParroquia.java b/src/com/qbe/cotizador/model/AgriParroquia.java
+--- a/src/com/qbe/cotizador/model/AgriParroquia.java
++++ b/src/com/qbe/cotizador/model/AgriParroquia.java
+@@ -15,7 +15,8 @@
+ 	@NamedQuery(name="AgriParroquia.buscarTodos", query="SELECT a FROM AgriParroquia a"),
+ 	@NamedQuery(name="AgriParroquia.obtenerPorSBS", query="SELECT a FROM AgriParroquia a where a.parroquiaSbs=:CodigoSBS"),
+ 	@NamedQuery(name="AgriParroquia.obtenerPorNombre", query="SELECT a FROM AgriParroquia a where a.parroquiaNombre=:nombre"),
+-	@NamedQuery(name="AgriParroquia.obtenerPorNombreYCanton", query="SELECT a FROM AgriParroquia a where a.parroquiaNombre LIKE :nombre AND a.cantonId=:canton")
++	@NamedQuery(name="AgriParroquia.obtenerPorNombreYCanton", query="SELECT a FROM AgriParroquia a where a.parroquiaNombre LIKE :nombre AND a.cantonId=:canton"),
++	@NamedQuery(name="AgriParroquia.obtenerPorCanton", query="SELECT a FROM AgriParroquia a where a.cantonId=:canton")
+ })
+ 
+ public class AgriParroquia implements Serializable {

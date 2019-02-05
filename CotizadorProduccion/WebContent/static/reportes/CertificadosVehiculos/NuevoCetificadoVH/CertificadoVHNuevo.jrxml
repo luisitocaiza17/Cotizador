@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 5.6.2.final using JasperReports Library version 5.6.1  -->
+<!-- 2014-11-21T13:08:32 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CertificadoVHNuevo" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="116c41c2-35e5-4588-812f-e310cdbabd40">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="cotizador"/>
+	<parameter name="COTIZACION_ID" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT * FROM COTIZACION WHERE id= $P{COTIZACION_ID}]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="495" splitType="Stretch">
+			<subreport>
+				<reportElement stretchType="RelativeToTallestObject" x="-20" y="0" width="595" height="140" uuid="6c9ac9a9-5730-4979-9724-dff53a530990"/>
+				<subreportParameter name="COTIZACION_ID">
+					<subreportParameterExpression><![CDATA[$P{COTIZACION_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["CertificadosVehiculos/NuevoCetificadoVH/CabeceraCetificadoVhNuevo.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="200" width="280" height="90" uuid="2e06baa9-8f0b-4827-8a9b-43a11d7556a2"/>
+				<textElement textAlignment="Justified">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Es el seguro de vehículo pensado en las necesidades de nuestros clientes, le ofrece la mejor combinación de Coberturas, Asistencias, Asistencias Adicionales, Beneficios y Respaldo]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

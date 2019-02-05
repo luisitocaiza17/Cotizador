@@ -1,0 +1,103 @@
+package com.qbe.cotizador.dao.producto.agricola;
+
+import com.qbe.cotizador.entitymanagerfactory.EntityManagerFactoryDAO;
+import com.qbe.cotizador.model.AgriCargaPreviaArchivoPlano;
+import com.qbe.cotizador.model.UsuariosOffline;
+
+import java.math.BigInteger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+public class UsuariosOfflineDAO
+extends EntityManagerFactoryDAO<UsuariosOffline> {
+    @PersistenceContext(name="CotizadorWebPC", unitName="CotizadorWebPU")
+    private EntityManager em;
+
+    protected EntityManager getEntityManager() {
+        if (this.em == null) {
+            InitialContext initCtx = null;
+            try {
+                initCtx = new InitialContext();
+                this.em = (EntityManager)initCtx.lookup("java:comp/env/CotizadorWebPC");
+            }
+            catch (NamingException e) {
+                e.printStackTrace();
+            }
+        }
+        return this.em;
+    }
+
+    public UsuariosOfflineDAO() {
+        super((Class)UsuariosOffline.class);
+    }
+
+    public UsuariosOffline BuscarPorId(BigInteger id) {
+        UsuariosOffline usuarioOffline = new UsuariosOffline();
+        List result = this.getEntityManager().createNamedQuery("UsuariosOffline.buscarPorId").setParameter("id", (Object)id).getResultList();
+        if (result.size() > 0) {
+            usuarioOffline = (UsuariosOffline)result.get(0);
+        }
+        return usuarioOffline;
+    }
+
+    public UsuariosOffline BuscarUsuario(String usuario, String clave) {
+        UsuariosOffline usuarioOffline = new UsuariosOffline();
+        List result = this.getEntityManager().createNamedQuery("UsuariosOffline.buscarUsuario").setParameter("usuario", (Object)usuario).setParameter("clave", (Object)clave).getResultList();
+        if (result.size() > 0) {
+            usuarioOffline = (UsuariosOffline)result.get(0);
+        }
+        return usuarioOffline;
+    }
+
+    public List<UsuariosOffline> BuscarTodos() {
+        UsuariosOffline usuarioOffline = new UsuariosOffline();
+        List result = this.getEntityManager().createNamedQuery("UsuariosOffline.buscarTodos").getResultList();
+        return result;
+    }
+
+    public UsuariosOffline BuscarNombre(String nombres) {
+        UsuariosOffline usuarioOffline = new UsuariosOffline();
+        List result = this.getEntityManager().createNamedQuery("UsuariosOffline.buscarNombre").setParameter("nombres", (Object)nombres).getResultList();
+        if (result.size() > 0) {
+            usuarioOffline = (UsuariosOffline)result.get(0);
+        }
+        return usuarioOffline;
+    }
+    
+    public List<UsuariosOffline> cargarTodosKendo(int Skip, int Take){
+				
+		Query query = null;
+		
+		String stringQuery= "SELECT c FROM UsuariosOffline c";	
+				
+		query = getEntityManager().createQuery(stringQuery);
+		
+		List<UsuariosOffline> results = new ArrayList<UsuariosOffline>();
+		results = query.setMaxResults(Take).setFirstResult(Skip).getResultList();
+		
+		return results;
+	}
+    
+    public long cargarTodosKendoPorNumero(){
+		
+		Query query = null;
+		
+		String stringQuery= "SELECT count(c.id) FROM UsuariosOffline c ";	
+		
+		query = getEntityManager().createQuery(stringQuery);
+		
+		long results = (long)query.getSingleResult();
+		
+		return results;
+	}
+    
+    
+}

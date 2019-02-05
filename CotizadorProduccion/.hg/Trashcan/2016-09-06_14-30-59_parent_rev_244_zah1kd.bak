@@ -1,0 +1,73 @@
+diff --git a/WebContent/dashboard/CotizacionesPreviasAgricola.jsp b/WebContent/dashboard/CotizacionesPreviasAgricola.jsp
+--- a/WebContent/dashboard/CotizacionesPreviasAgricola.jsp
++++ b/WebContent/dashboard/CotizacionesPreviasAgricola.jsp
+@@ -200,7 +200,7 @@
+ 	var cargadoDatosUPLA = false;
+ 	var solicitarInspeccionArr = [];	
+ 	$(document).ready(function() {
+-		cargar();
++		cargarAgricola();
+ 				
+ 		//$('#celular').prop('disabled', true);
+ 		//$('#email').prop('disabled', true);
+@@ -329,5 +329,5 @@
+ 								<tr id="filaJuridica" hidden="true">
+ 									<td style="width: 15%" colspan="1"><label><b>Nombres Empresa:*</b></label></td>
+ 									<td style="width: 35%" colspan="3"><input type="text" id="nombre_completo" class="datosGanadero" name="nombre_completo" required="required"></td>
+-								</tr>
++								</tr>								
+ 								<tr>
+@@ -333,4 +333,4 @@
+ 								<tr>
+-									<td style="width: 15%"><label><b>E-mail:*</b></label></td>
++									<td style="width: 15%"><label><b>E-mail:*</b></label></td>									
+ 									<td style="width: 35%"><input type="email" id="email" class="datosGanadero" name="email" ></td>
+ 									<td style="width: 15%"><label><b>No. Teléfono:</b></label></td>
+@@ -335,5 +335,6 @@
+ 									<td style="width: 35%"><input type="email" id="email" class="datosGanadero" name="email" ></td>
+ 									<td style="width: 15%"><label><b>No. Teléfono:</b></label></td>
++									
+ 									<td style="width: 35%"><input type="text" id="telefono" class="datosGanadero" name="telefono" onkeypress="return justNumbers(event);"></td>
+ 								</tr>
+ 								<tr>
+@@ -376,8 +377,7 @@
+ 					
+ 				</fieldset>
+ 			</section>
+-			<h2> Producto <i class="fa fa-picture-o fa-2x"></i></h2>
+-			
++			<h2> Producto <i class="fa fa-picture-o fa-2x"></i></h2>			
+ 			<section>
+ 			<!--***********************************************************************************************
+                              G E N E R A C I O N   D E   L A  F I C H A   D E  A G R I C O L A
+@@ -389,4 +389,5 @@
+ 					<button type="button" class="close" data-dismiss="alert">
+ 						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+ 					</button>
++					
+ 				</div>
+@@ -392,4 +393,5 @@
+ 				</div>
++				
+ 				<div class="panel panel-primary">
+ 					<div class="panel-heading">1 - Ubicación del Cultivo</div>
+ 					<div class="panel-body">
+@@ -568,6 +570,7 @@
+ 								<td>
+ 									&nbsp;
+ 								</td>
+-							</tr>
++								
++							</tr>							
+ 							<tr>
+ 								<td>
+@@ -572,7 +575,7 @@
+ 							<tr>
+ 								<td>
+-									<b>Dispone asistencia:</b>
+-								</td>
++									<b>Dispone asistencia:</b>									
++								</td>								
+ 								<td>
+ 									<table style="width: 50%">
+ 										<tr>

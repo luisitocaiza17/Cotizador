@@ -1,0 +1,649 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<link
+	href="../static/css/sb-admin/plugins/dataTables/dataTables.bootstrap.css"
+	rel="stylesheet">
+<link href="../static/css/loading.css" rel="stylesheet">
+
+<script
+	src="../static/js/sb-admin/plugins/dataTables/jquery.dataTables.js"></script>
+<script
+	src="../static/js/sb-admin/plugins/dataTables/dataTables.bootstrap.js"></script>
+<script src="../static/js/util.js"></script>
+<!-- script src="../static/js/bootstrap.min.js"></script> -->
+
+<!-- KENDO -->
+<link rel="stylesheet" href="../static/css/Kendo/kendo.common.min.css" />
+<link rel="stylesheet" href="../static/css/Kendo/kendo.blueopal.min.css" />
+<script src="../static/js/Kendo/kendo.all.min.js"></script>
+<script src="../static/js/Kendo/kendo.web.min.js"></script>
+
+<style type="text/css">
+.tab_strip {
+	height: 200px;
+}
+</style>
+
+<title>Configuracion Canal - Cotizador QBE</title>
+
+<script>
+	$(function() {
+		$(".wrapper1").scroll(function() {
+			$(".wrapper2").scrollLeft($(".wrapper1").scrollLeft());
+		});
+		$(".wrapper2").scroll(function() {
+			$(".wrapper1").scrollLeft($(".wrapper2").scrollLeft());
+		});
+	});
+
+	var tipoConsulta = "";
+	var id = "";
+	var canalId = "";
+	var tipoCultivoId = "";
+	var plantillaId = "";
+	var contenedorId = "";
+	var sucursalEmisionId = "";
+	var plantillaNombre = "";
+	var nombreArchivo = "";
+	var canalList = "";
+	var tipoCultivoList = "";
+	
+	var textos="";
+	var textosCondiciones="";
+	
+	$(document)
+			.ready(
+					function() {
+						activarMenu("AgriParametroPorCanal");
+
+						$("#files").kendoUpload({
+							async : {
+								saveUrl : "../AgriParametroXCanalController",
+								removeUrl: "../AgriParametroXCanalController"
+							},
+							multiple : false,
+							upload : onUpload,
+							success : onSuccess
+						    //cancel: onCancel
+						});
+						
+						
+						
+						
+						//hacemo control de edicion al control texto
+						$("#texto").kendoEditor({
+            tools: [
+                "bold",
+                "italic",
+                "underline",
+                "strikethrough",
+                "justifyLeft",
+                "justifyCenter",
+                "justifyRight",
+                "justifyFull",
+                "insertUnorderedList",
+                "insertOrderedList",
+                "indent",
+                "outdent",
+                "createLink",
+                "unlink",
+                "insertImage",
+                "insertFile",
+                "subscript",
+                "superscript",
+                "createTable",
+                "addRowAbove",
+                "addRowBelow",
+                "addColumnLeft",
+                "addColumnRight",
+                "deleteRow",
+                "deleteColumn",
+                "viewHtml",
+                "formatting",
+                "cleanFormatting",
+                "fontName",
+                "fontSize",
+                "foreColor",
+                "backColor",
+                "print"
+            ]
+        });
+						
+						
+						$("#canal").kendoMultiSelect({
+							dataTextField : "nombre",
+							dataValueField : "codigo",
+							animation : false,
+							maxSelectedItems : 1
+						});
+										
+						$("#tipoCultivo").kendoMultiSelect({
+							dataTextField : "Nombre",
+							dataValueField : "TipoCultivoId",
+							animation : false,
+							maxSelectedItems : 1
+						});
+						
+						
+						tipoCultivoList = $("#tipoCultivo").data("kendoMultiSelect");
+						canalList = $("#canal").data("kendoMultiSelect");
+						cargar();
+						cargarCombos();
+
+						/*Inicio controloes grabar*/
+
+						$("#save-record")
+								.bind(
+										{
+											click : function() {
+												
+												
+												
+												var validator = $("#formCrud").kendoValidator().data("kendoValidator"); 
+												$(".required").css("border", "1px solid #ccc");
+												 if (validator.validate() === false) {     
+													$(".required").each(function(index) {
+															var cadena = $(this).val();
+															if (cadena.length <= 0) {
+																$(this).css("border", "1px solid red");
+																alert("Por favor ingrese el campo requerido");
+																$(this).focus();
+																return false;
+															}		
+														});
+											      }else{
+											    	  id = $("#id").val();
+														canalId = $("#canal option:selected").val();
+														tipoCultivoId = $("#tipoCultivo option:selected").val();
+														plantillaId = $("#plantillaId").val();
+														contenedorId = $("#contenedorId").val();
+														plantillaNombre = $("#plantillaNombre").val();
+														sucursalEmisionId = $("#sucursalEmisionId").val();
+														
+														
+														if(id=="")
+															tipoConsulta = "crear";
+														else
+															tipoConsulta = "editar";
+														
+														enviarDatos(id,canalId,tipoCultivoId,plantillaId,plantillaNombre,tipoConsulta,contenedorId,sucursalEmisionId);				
+														}
+											
+											}
+
+										});
+						/*Fin controloes grabar*/
+						
+						$("#addButton").click(function(){
+							var up = $('#files').data().kendoUpload;
+							var allLiElementsToBeRemoved = up.wrapper.find('.k-file');
+							up._removeFileEntry(allLiElementsToBeRemoved );	
+							$("#soloActulizar").hide();
+							limpiar();
+						});
+
+					});
+	
+	function onUpload(e) {
+		// Array with information about the uploaded files
+		var files = e.files;
+		// Check the extension of each file and abort the upload if it is not .jpg
+		$.each(files, function() {
+			if (this.extension.toLowerCase() != ".html") {
+				alert("Por favor seleccionar el archivo correcto.");
+				e.preventDefault();
+			}
+		});
+	}
+
+	//Carga de archivos masivo
+
+	function onSuccess(e) {
+		if (e.operation == "upload") {
+			nombreArchivo = e.files[0].name;
+			$('#btnImportar').show();
+		} else {
+			nombreArchivo = "";
+			$('#btnImportar').hide();
+		}
+	}
+	
+	function cargar() {
+
+		$("#dataTableContent").children().remove();
+
+		$.ajax({
+					url : '../AgriParametroXCanalController',
+					data : {
+						"tipoConsulta" : "buscarTodos"
+					},
+					async : false,
+					type : 'POST',
+					datatype : 'json',
+					success : function(data) {
+						var parametroArr = data.parametroArr;
+						$.each(parametroArr,function(index) {
+							var auxNombre = "";
+							var auxCultivo = "";
+							var auxPlantillaNombre = "";
+							var auxPlantillaId = "";
+							if(parametroArr[index].canalNombre === '' || typeof parametroArr[index].canalNombre === 'undefined')
+								auxNombre = "";
+							else
+								auxNombre = parametroArr[index].canalNombre;
+							if(parametroArr[index].tipoCultivo === '' || typeof parametroArr[index].tipoCultivo === 'undefined')
+								auxCultivo = "";
+							else
+								auxCultivo = parametroArr[index].tipoCultivo;
+							if(parametroArr[index].plantillaNombre === '' || typeof parametroArr[index].plantillaNombre === 'undefined')
+								auxPlantillaNombre = "";
+							else
+								auxPlantillaNombre = parametroArr[index].plantillaNombre;
+							if(parametroArr[index].plantillaId === '' || typeof parametroArr[index].plantillaId === 'undefined')
+								auxPlantillaId = "";
+							else
+								auxPlantillaId = parametroArr[index].plantillaId;
+							
+											$("#dataTableContent")
+													.append("<tr class='odd gradeX'>"
+																	+ "<td relation='canalNombre' style='width: 20%; text-align: left;' class='sorting' >"
+																	+ auxNombre
+																	+ "</td>"
+																	+ "<td relation='tipoCultivo' style='width: 30%; text-align: left;' class='sorting' >"
+																	+ auxCultivo
+																	+ "</td>"
+																	+ "<td relation='plantillaId' style='width: 20%; text-align: left;' class='sorting' >"
+																	+ auxPlantillaNombre
+																	+ "</td>"
+																	+ "<td relation='plantilla' style='width: 20%; text-align: left;' class='sorting' >"
+																	+ auxPlantillaId
+																	+ "</td>"
+																	+ "<td width='175px'>"
+																	+ " <button type='button'  name='actualizar-btn' data-toggle='modal' data-target='#add' class='btn btn-success btn-xs actualizar-btn' onclick='actualizar("
+																	+ parametroArr[index].id
+																	+ ")'>"
+																	+ " <span class='glyphicon glyphicon glyphicon-edit'></span> Actualizar"
+																	+ " </button>"
+																	+ " <button type='button' class='btn btn-danger btn-xs eliminar-btn' onclick='eliminar("
+																	+ parametroArr[index].id
+																	+ ")'>"
+																	+ "<span class='glyphicon glyphicon glyphicon-remove' id='delete-record'></span> Eliminar"
+																	+ " </button>"
+																	+ "</td>"
+																	+ "</tr>");
+										});
+
+						$("#loading").remove();
+
+					}
+				});
+	}
+	
+	function cargarCombos(){
+		$.ajax({
+			url : '../AgriParametrosPuntoVentaController',
+			data : {
+				"tipoConsulta" : "encontrarTodosPuntoVenta"
+			},
+			async : false,
+			type : 'POST',
+			datatype : 'json',
+			success : function(data) {
+				canalList.dataSource.filter({});
+				canalList.setDataSource(data.listadoPuntoVenta);
+				
+				$("#loading").remove();
+
+			}
+		});		
+		
+		$.ajax({
+			url : '../AgriTipoCultivoController',
+			data : {
+				"tipoConsulta" : "encontrarTodos"
+			},
+			async : false,
+			type : 'POST',
+			datatype : 'json',
+			success : function(data) {
+				tipoCultivoList.dataSource.filter({});
+				tipoCultivoList.setDataSource(data.TipoCultivoJSONArray);
+
+			}
+		});
+	}
+
+	function actualizar(parametroId) {
+		$("#soloActulizar").show();
+		
+		var up = $('#files').data().kendoUpload;
+		var allLiElementsToBeRemoved = up.wrapper.find('.k-file');
+		up._removeFileEntry(allLiElementsToBeRemoved );	
+ 			
+		limpiar();
+		
+		if (typeof parametroId === 'undefined')
+			return false;
+
+		$.ajax({
+			url : '../AgriParametroXCanalController',
+			data : {
+				"tipoConsulta" : "buscarPorId",
+				"id" : parametroId
+			},
+			type : 'POST',
+			datatype : 'json',
+			success : function(data) {
+				$("#id").val(data.id);
+				tipoCultivoList.value(data.tipoCultivoId);
+				canalList.value(data.canalId);
+				$("#plantillaNombre").val(data.plantillaNombre);
+				$("#plantillaId").val(data.plantillaId);
+				$("#sucursalEmisionId").val(data.sucursalEmisionId);
+				$("#contenedorId").val(data.contenedorId);
+				($("#texto").data("kendoEditor")).value(data.texto);
+				$("#loading").remove();
+			}
+		});
+
+	}
+
+	function eliminar(parametroId) {
+		var r = confirm("Seguro que desea eliminar");
+		if (r) {
+			id = parametroId;			
+			canalId = "";
+			tipoCultivoId = "";
+			plantillaId = "";
+			contenedorId = "";
+			plantillaNombre = "";
+			
+			tipoConsulta = "eliminar";
+
+			enviarDatos(id,canalId,tipoCultivoId,plantillaId,plantillaNombre,tipoConsulta,contenedorId);			
+			$("#loading").remove();
+		}
+	}
+
+	function enviarDatos(parametroCanalId,canal,tipoCultivo,plantillaId,plantillaNombre,tipoConsulta,contenedorId,sucursalEmisionId) {
+		var textoCondiciones=($("#texto").data("kendoEditor")).value();
+		$.ajax({
+			url : '../AgriParametroXCanalController',
+			async : false,
+			data : {
+				"tipoConsulta" : tipoConsulta,
+				"id" : parametroCanalId,
+				"canalId" : canal,
+				"tipoCultivoId" : tipoCultivo,
+				"plantillaEnsuranceId" : plantillaId,
+				"plantillaNombre" : plantillaNombre,
+				"contenedorEnsuranceId":contenedorId,
+				"sucursalEmisionId":sucursalEmisionId,
+				"FileName" : nombreArchivo,
+				"Texto" : textoCondiciones,
+			},
+			type : 'POST',
+			datatype : 'json',
+			success : function(data) {
+				if(data.success){
+					$("#msgPopup").text("");
+					$("#msgPopup").text("La configuración se grabo con exito.");
+					$("#msgPopup").show();
+				}else{
+					$("#msgPopup").text("");
+					$("#msgPopup").text(data.error);
+					$("#msgPopup").show();
+				}
+			}
+		});
+		cargar();
+		$("#loading").remove();
+	}
+	
+	function actualizarPorCanalCultivo(parametroCanalId,parametroCultivoId) {
+		$("#soloActulizar").show();
+		limpiar();
+		if ((parametroCanalId === '' || typeof parametroCanalId === 'undefined') || (parametroCultivoId === '' || typeof parametroCultivoId === 'undefined'))
+			return false;
+
+		$.ajax({
+			url : '../AgriParametroXCanalController',
+			data : {
+				"tipoConsulta" : "buscarPorCanalCultivo",
+				"canalId" : parametroCanalId,
+				"tipoCultivoId" : parametroCultivoId,
+			},
+			type : 'POST',
+			datatype : 'json',
+			success : function(data) {				
+				
+				if(data.success){
+					if(typeof data.id === 'undefined' ||  data.id === ''){
+								
+						return false;
+					}	
+					
+					
+					
+					$("#id").val(data.id);
+					tipoCultivoList.value(data.tipoCultivoId);
+					canalList.value(data.codigo);
+					$("#plantillaNombre").val(data.plantillaNombre);
+					$("#plantillaId").val(data.plantillaId);					
+					$("#contenedorId").val(data.contenedorId);
+					$("#sucursalEmisionId").val(data.sucursalEmisionId);
+				}else{
+					$("#msgPopup").text("");
+					$("#msgPopup").text(data.error);
+					$("#msgPopup").show();
+				}
+							
+			}
+		});
+
+	}
+	
+	function descargarPlantilla() {
+		window.open('../AgriPlantillaHtml?tipoConsulta=descargar&id=' + $("#id").val());
+	}
+	
+	
+	
+	function limpiar(){
+		$("#id").val("");
+		tipoCultivoList.value("");
+		canalList.value("");
+		$("#plantillaId").val("");
+		$("#contenedorId").val("");
+		$("#sucursalEmisionId").val("");
+		$("#plantillaNombre").val("");
+		($("#texto").data("kendoEditor")).value("");
+		$("#msgPopup").hide();
+	}
+	
+</script>
+
+</head>
+<body>
+	<%
+		// Permitimos el acceso si la session existe		
+		if (session.getAttribute("login") == null) {
+			response.sendRedirect("/CotizadorWeb");
+		}
+	%>
+
+	<div class="row crud-nav-bar">
+		<!-- Button trigger modal -->
+		<button class="btn btn-primary" data-toggle="modal" data-target="#add"
+			id="addButton">
+			<span class="glyphicon glyphicon-plus"></span> &nbsp; Nuevo
+		</button>
+
+		<!-- Modal -->
+		<div class="modal fade" id="add" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<form id="formCrud">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">
+								<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+							</button>
+							<h4 class="modal-title" id="myModalLabel">Parametros por Canal.</h4>
+						</div>
+						<div class="modal-body">
+							<div class="alert alert-success" id="msgPopup">La
+								configuración se grabo con exito.</div>
+							<div class="form-group">
+								<input type="hidden" class="form-control" id="id">
+								<table style="width: 100%">
+									<tr>
+										<td>
+											<label style="width: 100%">Punto de Venta:</label>
+											<select id="canal" name="canal" data-placeholder="Seleccione una opción..." validationMessage="Campo requerido!!!" required="required" required>
+										</select></td>
+									</tr>
+									<tr>
+										<td><br /></td>
+									</tr>
+									<tr>
+										<td>
+											<label style="width: 100%">Tipo Cultivo:</label>
+											<select id="tipoCultivo" name="tipoCultivo" data-placeholder="Seleccione una opción..." validationMessage="Campo requerido!!!" required="required" required>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td><br /></td>
+									</tr>
+									<tr>
+										<td>
+											<label style="width: 100%">Nombre Plantilla:</label>
+											<input type="text" id="plantillaNombre" name="plantillaNombre" class="form-control" >
+										</td>
+									</tr>
+									<tr>
+										<td><br /></td>
+									</tr>
+									<tr>
+										<td>
+											<label style="width: 100%">Plantilla ENSURANCE ID:</label>
+											<input type="number" id="plantillaId" name="plantillaId" class="form-control" >
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<label style="width: 100%">Contenedor ENSURANCE ID:</label>
+											<input type="number" id="contenedorId" name="contenedorId" class="form-control" >
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<label style="width: 100%">Numero Contenedor:</label>
+											<input type="text" id="sucursalEmisionId" name="sucursalEmisionId" class="form-control" >
+										</td>
+									</tr>
+									<tr id="soloActulizar">
+										<td>
+											<label style="width: 100%">PLANTILLA ACTUAL:</label>
+											<button type="button" class="btn btn-default" id="plantillaActual" onclick="descargarPlantilla();" name="plantillaActual" >descargar</button>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<div class="row" style="display: inline;" id="content-Upload">
+											<div class="col-lg-12">
+												<div class="table-responsive">
+												<table width="80%">
+														<tr >
+																<td colspan="2" >SUBIR HTML</td>
+														</tr>
+														<tr >
+															<td  colspan="2"><input name="files" id="files" type="file" /></td>
+																<div id="loading">
+																	<div class="loading-indicator">
+																		<img src="../static/images/ajax-loader.gif" /><br /> <br /> <span
+																			id="loading-msg">Procesando, espere por favor...</span>
+																	</div>
+																</div>
+															</tr>
+															<td><br /> <br /></td>
+														</table>
+												</div>
+											</div>
+										</div>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="4">Texto:
+										</td>
+									</tr>
+									<tr>
+										<td colspan="4"><textarea id="texto" rows="10" cols="30"
+									style="height: 100%; width: 100%; max-width: 400px;"
+									class="form-control required"></textarea>
+										</td>
+									</tr>
+									
+									<tr>
+										<td><br /></td>
+									</tr>
+								</table>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" id="close-popup"
+								data-dismiss="modal">Cerrar</button>
+							<button type="button" class="btn btn-primary" id="save-record">Guardar
+								Cambios</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal -->
+
+	<!-- Datatable -->
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="panel panel-primary">
+				<div class="panel-body">
+					<div class="input-group">
+						<span class="input-group-addon">Filtro</span> <input id="filter"
+							type="text" class="form-control"
+							placeholder="Escriba la palabra a buscar...">
+					</div>
+					<table class="table table-striped table-bordered table-hover"
+						id="dataTable">
+						<thead>
+							<tr>
+								<th>Punto de Venta</th>
+								<th>Cultivo</th>
+								<th>Nombre Plantilla</th>
+								<th>Plantilla ENSURANCE</th>
+								<th></th>								
+							</tr>
+						</thead>
+						<tbody id="dataTableContent" class="searchable">
+							<div id="loading">
+								<div class="loading-indicator">
+									<img src="../static/images/ajax-loader.gif" /><br /> <br />
+									<span id="loading-msg">Cargando...</span>
+								</div>
+							</div>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Datatable -->
+
+</body>
+</html>

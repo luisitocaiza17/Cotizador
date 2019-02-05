@@ -1,0 +1,1403 @@
+diff --git a/WebContent/dashboard/AgriParametrosPuntoVenta.jsp b/WebContent/dashboard/AgriParametrosPuntoVenta.jsp
+--- a/WebContent/dashboard/AgriParametrosPuntoVenta.jsp
++++ b/WebContent/dashboard/AgriParametrosPuntoVenta.jsp
+@@ -44,9 +44,10 @@
+ 	var tipoConsulta = "";
+ 	var puntoVentaId = "";
+ 	var tipoCalculoId = "";
++	var agenteId="";
+ 	var contenedorEnsuranceId = "";
+ 	var plantillaEnsuranceId = "";
+ 	var codigoIntegracion = "";	
+ 	var tieneEmisionDirecta = "";
+ 	var emailPuntoVenta="";
+ 	var formaNotificacion="";
+@@ -47,12 +48,11 @@
+ 	var contenedorEnsuranceId = "";
+ 	var plantillaEnsuranceId = "";
+ 	var codigoIntegracion = "";	
+ 	var tieneEmisionDirecta = "";
+ 	var emailPuntoVenta="";
+ 	var formaNotificacion="";
+-	var sucursalEmisionId="";
+ 	var beneficiarioId="";
+ 	var tieneEmisionObligatoria="";
+     var canalIdList="";
+ 	var puntoVentaList = "";
+ 	var tipoCalculoList = "";
+@@ -54,8 +54,9 @@
+ 	var beneficiarioId="";
+ 	var tieneEmisionObligatoria="";
+     var canalIdList="";
+ 	var puntoVentaList = "";
+ 	var tipoCalculoList = "";
++	var agenteList="";
+ 
+ 	$(document)
+ 			.ready(
+@@ -92,4 +93,10 @@
+ 						tipoCalculoList = $("#tipoCalculoId").data(
+ 						"kendoMultiSelect");
+ 						
++						$("#agenteId").kendoMultiSelect({
++							dataTextField : "nombre",
++							dataValueField : "id",
++							animation : false,
++							maxSelectedItems : 1
++						});
+ 						
+@@ -95,4 +102,5 @@
+ 						
++						agenteList = $("#agenteId").data("kendoMultiSelect");
+ 
+ 						cargar();
+ 
+@@ -112,7 +120,7 @@
+ 										return false;
+ 									}
+ 								});
+-							}else{							
++							}else{			
+ 										puntoVentaId = $("#puntoVentaId option:selected").val();
+ 										canalId=$("#canalId option:selected").val();
+ 										tipoCalculoId = $("#tipoCalculoId option:selected").val();
+@@ -122,7 +130,6 @@
+ 										
+ 										emailPuntoVenta=$("#emailPuntoVenta").val();
+ 										formaNotificacion=$("#formaNotificacion").val();
+-										sucursalEmisionId=$("#sucursalId").val();
+ 										beneficiarioId=$("#beneficiarioId").val();
+ 										excepcionesCultivos=$("#tiposCultivosExcepxion").val();
+ 										
+@@ -132,8 +139,8 @@
+ 										tipoConsulta = "crear";									
+ 
+ 										enviarDatos(puntoVentaId,tipoCalculoId,codigoIntegracion,tieneEmisionDirecta,tipoConsulta,
+-												emailPuntoVenta,formaNotificacion,sucursalEmisionId,beneficiarioId,tieneEmisionObligatoria,excepcionesCultivos);
++												emailPuntoVenta,formaNotificacion,beneficiarioId,tieneEmisionObligatoria,excepcionesCultivos);
+ 									}
+ 							}
+ 
+ 						});
+@@ -136,14 +143,40 @@
+ 									}
+ 							}
+ 
+ 						});
+-						/*Fin controloes grabar*/
+-
+-						$("#puntoVentaId").change(
+-								function() {
+-									actualizar($(
+-											"#puntoVentaId option:selected")
+-											.val());
+-								});
+-
++						
++						///TODO: al seleccionar el combo canal
++						$("#canalId").change(function(){	
++							$("#puntoVentaId").children().remove();
++							$("select option:selected").each(function(){
++								CargarCombo();
++							});
++						});
++				});
++	
++	
++	function CargarCombo() {
++		var listPuntoVenta="";
++		var puntoId = $("#canalId option:selected").val() ? $(
++		"#canalId option:selected").val() : "";
++		if (puntoId==""){
++			$("#puntoVentaId").children().remove();
++		}
++		else {
++			$.ajax({
++				url : '../AgriCotizacionAprobacionController',
++				data : {
++					"tipoConsulta" : "cargarCombosPuntoVenta",
++					"canalId" : puntoId,
++				},
++				async : false,
++				type : 'post',
++				datatype : 'json',
++				success : function(data) {
++					
++					$("#puntoVentaId").children().remove();
++					$("#puntoVentaId").append("<option value=''>Seleccione una opción</option>");
++					listPuntoVenta = data.listPuntoVenta;
++					$.each(listPuntoVenta, function (index){								
++						$("#puntoVentaId").append("<option value='"+ listPuntoVenta[index].puntoVentaId +"'>"+ listPuntoVenta[index].nombre +"</option>");
+ 					});
+@@ -149,6 +182,12 @@
+ 					});
++					puntoVentaList.dataSource.filter({});
++					puntoVentaList.setDataSource(listPuntoVenta);
++				}
++			});
++		}
++	}
+ 
+ 	function cargar() {
+ 
+ 		$("#dataTableContent").children().remove();
+ 		$.ajax({
+@@ -150,28 +189,8 @@
+ 
+ 	function cargar() {
+ 
+ 		$("#dataTableContent").children().remove();
+ 		$.ajax({
+-			url : '../AgriParametrosPuntoVentaController',
+-			data : {
+-				"tipoConsulta" : "encontrarTodosPuntoVenta"
+-			},
+-			async : false,
+-			type : 'POST',
+-			datatype : 'json',
+-			success : function(data) {
+-				/*Activo los select*/
+-				puntoVentaList.enable(true);
+-
+-				/*Cargo el select puntoVenta*/
+-				puntoVentaList.dataSource.filter({});
+-				puntoVentaList.setDataSource(data.listadoPuntoVenta);
+-
+-			}
+-		});
+-
+-		//cargar los canales
+-		$.ajax({
+ 			url : '../AgriCanalController',
+ 			data : {
+ 				"tipoConsulta" : "encontrarTodos"
+@@ -195,7 +214,7 @@
+ 		$.ajax({
+ 		url : '../BeneficiarioController',
+ 		data : {
+-			"tipoConsulta" : "cargarSelect2"
++			"tipoConsulta" : "cargarSelect3"
+ 		},
+ 		async: false,
+ 		type : 'post',
+@@ -213,5 +232,5 @@
+ 			}
+ 		});
+ 		
+-		//Carga los sucursales
++		/**Cargamos los agentes**/
+ 		$.ajax({
+@@ -217,18 +236,14 @@
+ 		$.ajax({
+-		url : '../SucursalController',
+-		data : {
+-			"tipoConsulta" : "encontrarTodos"
+-		},
+-		async: false,
+-		type : 'post',
+-		datatype : 'json',
+-		success : function (data) {
+-			var sucursales = data.listadoSucursal;
+-			/*$('#beneficiario').select2({
+-				data : beneficiarios,
+-				placeholder : 'Seleccione un beneficiario'
+-			});*/
+-			$("#sucursalId").append("<option value=''>Seleccione una opcion</option>");
+-			$.each(sucursales, function (index) {
+-				$("#sucursalId").append("<option value='" + sucursales[index].codigo + "'>" + sucursales[index].nombre + "</option>");
++				url : '../AgriParametrosPuntoVentaController',
++				data : {
++					"tipoConsulta" : "buscarAgente"
++				},
++				async : false,
++				type : 'post',
++				datatype : 'json',
++				success : function(data) {					
++					$("#agenteId").children().remove();
++					agenteList.dataSource.filter({});
++					agenteList.setDataSource(data.listaAgentes);
++				}
+ 			});
+@@ -234,6 +249,4 @@
+ 			});
+-			}
+-		});
+ 		
+ 		$.ajax({
+ 					url : '../AgriParametrosPuntoVentaController',
+@@ -289,4 +302,17 @@
+ 	}
+ 
+ 	function actualizar(puntoVenta) {
++		
++		/**Cargamos los puntos de venta**/
++		$.ajax({
++			url : '../AgriParametrosPuntoVentaController',
++			data : {
++				"tipoConsulta" : "encontrarTodosPuntoVenta"
++			},
++			async : false,
++			type : 'POST',
++			datatype : 'json',
++			success : function(data) {
++				/*Activo los select*/
++				puntoVentaList.enable(true);
+ 
+@@ -292,4 +318,12 @@
+ 
++				/*Cargo el select puntoVenta*/
++				puntoVentaList.dataSource.filter({});
++				puntoVentaList.setDataSource(data.listadoPuntoVenta);
++
++			}
++		});
++		
++		
+ 		$("#tipoCalculoId").val("");
+ 		$("#emailPuntoVenta").val("");
+ 		$("#formaNotificacion").val("");
+@@ -293,7 +327,6 @@
+ 		$("#tipoCalculoId").val("");
+ 		$("#emailPuntoVenta").val("");
+ 		$("#formaNotificacion").val("");
+-		$("#sucursalId").val("");
+ 		$("#beneficiarioId").val("");
+ 		$("#tiposCultivosExcepxion").val("");
+ 		$("#codigoIntegracion").val("");
+@@ -313,9 +346,10 @@
+ 			datatype : 'json',
+ 			success : function(data) {				
+ 				$("#puntoVentaId").data("kendoMultiSelect").value(data.puntoVentaId);
++				$("#agenteId").data("kendoMultiSelect").value(data.agenteId);
+ 				$("#canalId").data("kendoMultiSelect").value(data.canalId);
+ 				$("#tipoCalculoId").data("kendoMultiSelect").value(data.tipoCalculoId);
+ 				$("#codigoIntegracion").val(data.codigoIntegracion);
+ 				$("#canalId").data("kendoMultiSelect").value(data.canalId);
+ 				$("#emailPuntoVenta").val(data.emailPuntoVenta);
+ 				$("#formaNotificacion").val(data.formaNotificacion);
+@@ -316,8 +350,7 @@
+ 				$("#canalId").data("kendoMultiSelect").value(data.canalId);
+ 				$("#tipoCalculoId").data("kendoMultiSelect").value(data.tipoCalculoId);
+ 				$("#codigoIntegracion").val(data.codigoIntegracion);
+ 				$("#canalId").data("kendoMultiSelect").value(data.canalId);
+ 				$("#emailPuntoVenta").val(data.emailPuntoVenta);
+ 				$("#formaNotificacion").val(data.formaNotificacion);
+-				$("#sucursalId").val(data.sucursalEmisionId);
+ 				$("#beneficiarioId").val(data.beneficiarioId);
+@@ -323,4 +356,5 @@
+ 				$("#beneficiarioId").val(data.beneficiarioId);
++				$("#comision").val(data.comision);
+ 				$("#tiposCultivosExcepxion").val(data.excepcionesCultivos);
+ 				
+ 				if (data.tieneEmisionDirecta) {
+@@ -349,9 +383,8 @@
+ 			tieneEmisionDirecta = "";
+ 			emailPuntoVenta="";
+ 			formaNotificacion="";
+-			sucursalEmisionId="";
+ 			beneficiarioId="";
+ 			tieneEmisionObligatoria="";
+ 			excepcionesCultivos="";
+ 			tipoConsulta = "eliminar";
+ 
+@@ -353,11 +386,11 @@
+ 			beneficiarioId="";
+ 			tieneEmisionObligatoria="";
+ 			excepcionesCultivos="";
+ 			tipoConsulta = "eliminar";
+ 
+-			enviarDatos(puntoVentaId,tipoCalculoId,codigoIntegracion,tieneEmisionDirecta,tipoConsulta);
++			enviarDatos(puntoVentaId,tipoCalculoId,codigoIntegracion,tieneEmisionDirecta,tipoConsulta,emailPuntoVenta,formaNotificacion,beneficiarioId,tieneEmisionObligatoria,excepcionesCultivos);
+ 			cargar();
+ 		}
+ 	}
+ 
+ 	function enviarDatos(puntoVentaId,tipoCalculoId,codigoIntegracion,tieneEmisionDirecta,tipoConsulta,
+@@ -359,8 +392,8 @@
+ 			cargar();
+ 		}
+ 	}
+ 
+ 	function enviarDatos(puntoVentaId,tipoCalculoId,codigoIntegracion,tieneEmisionDirecta,tipoConsulta,
+-			emailPuntoVenta,formaNotificacion,sucursalEmisionId,beneficiarioId,tieneEmisionObligatoria,excepcionesCultivos) {
++			emailPuntoVenta,formaNotificacion,beneficiarioId,tieneEmisionObligatoria,excepcionesCultivos) {
+ 		
+ 		canalId=$("#canalId option:selected").val();
+@@ -365,9 +398,10 @@
+ 		
+ 		canalId=$("#canalId option:selected").val();
+-		
++		var agenteSeleccionado= $("#agenteId option:selected").val();
++		var comisionSeleccionada=$("#comision").val();
+ 		$.ajax({
+ 			url : '../AgriParametrosPuntoVentaController',
+ 			async : false,
+ 			data : {
+ 				"canalId":canalId,
+ 				"tipoConsulta" : tipoConsulta,
+@@ -368,10 +402,12 @@
+ 		$.ajax({
+ 			url : '../AgriParametrosPuntoVentaController',
+ 			async : false,
+ 			data : {
+ 				"canalId":canalId,
+ 				"tipoConsulta" : tipoConsulta,
++				"agenteId":agenteSeleccionado,
++				"comision":comisionSeleccionada,
+ 				"puntoVentaId" : puntoVentaId,
+ 				"tipoCalculoId" : tipoCalculoId,
+ 				"emailPuntoVenta" :emailPuntoVenta,
+ 				"formaNotificacion" : formaNotificacion,
+@@ -374,8 +410,7 @@
+ 				"puntoVentaId" : puntoVentaId,
+ 				"tipoCalculoId" : tipoCalculoId,
+ 				"emailPuntoVenta" :emailPuntoVenta,
+ 				"formaNotificacion" : formaNotificacion,
+-				"sucursalEmisionId" : sucursalEmisionId,
+ 				"beneficiarioId" : beneficiarioId,
+ 				"codigoIntegracion" : codigoIntegracion,
+ 				"excepcionesCultivos" : excepcionesCultivos,
+@@ -426,5 +461,5 @@
+ 							<div class="form-group">
+ 								<input type="hidden" class="form-control" id="parametroPPVId">
+ 								<input type="hidden" id="idCotizacion">
+-								<table style="width: 100%">
++								<table class="table table-striped" style="width: 100%">
+ 									<tr>
+@@ -430,5 +465,5 @@
+ 									<tr>
+-										<td colspan="2"><label style="width: 100%">Sponsor:</label></td>
++										<td colspan="2"><label style="width: 100%">Sponsor: *</label></td>
+ 									</tr>
+ 									<tr>
+ 										<td colspan="2"><select id="canalId" name="canalId" style ="width: 450px"
+@@ -436,8 +471,10 @@
+ 										</select></td>
+ 									</tr>
+ 									<tr>
+-										<td colspan="2"><label style="width: 100%">Punto
+-												de Venta:</label></td>
++										<br>&nbsp;
++									</tr>
++									<tr>
++										<td colspan="2"><label style="width: 100%">Punto de Venta: *</label></td>
+ 									</tr>
+ 									<tr>
+ 										<td colspan="2"><select id="puntoVentaId" name="puntoVentaId" style ="width: 450px"
+@@ -445,7 +482,7 @@
+ 										</select></td>
+ 									</tr>
+ 									<tr>
+-										<td colspan="2"><label style="width: 100%">Tipo de Calculo:</label></td>
++										<td colspan="2"><label style="width: 100%">Tipo de Calculo: *</label></td>
+ 									</tr>									
+ 									<tr>
+ 										<td colspan="2"><select id="tipoCalculoId" name="tipoCalculoId"  style ="width: 450px"
+@@ -453,7 +490,7 @@
+ 										</select></td>
+ 									</tr>
+ 									<tr>
+-										<td colspan="2"><label style="width: 100%">Beneficiario para el Endoso::</label></td>
++										<td colspan="2"><label style="width: 100%">Beneficiario para el Endoso: *</label></td>
+ 									</tr>
+ 									<tr>
+ 										<td colspan="2"><select id="beneficiarioId" name="beneficiarioId"  style ="width: 450px"
+@@ -461,6 +498,6 @@
+ 										</select></td>
+ 									</tr>
+ 									<tr>
+-										<td colspan="2"><label style="width: 100%">Sucursal para la Emisión:</label></td>
++										<td colspan="2"><label style="width: 100%">Agente para la Emision: *</label></td>
+ 									</tr>
+ 									<tr>
+@@ -465,6 +502,6 @@
+ 									</tr>
+ 									<tr>
+-										<td colspan="2"><select id="sucursalId" name="sucursalId"  style ="width: 450px"
+-											data-placeholder="Seleccione una opción..." validationMessage="Campo requerido!!!" required>
++										<td colspan="2"><select id="agenteId" name="agenteId"  style ="width: 450px"
++											data-placeholder="Seleccione una opción si aplica...">
+ 										</select></td>
+ 									</tr>
+@@ -469,4 +506,3 @@
+ 										</select></td>
+ 									</tr>
+-									<br>
+ 									<tr><br>
+@@ -472,6 +508,6 @@
+ 									<tr><br>
+-										<td><label style="width: 100%">Email para notificaciones:</label></td>
+-										<td><input type="text" id="emailPuntoVenta"></td>
++										<td><label style="width: 100%">Email para facturacion Electronica: *</label></td>
++										<td><input type="email" id="emailPuntoVenta"></td>
+ 
+ 									</tr>								
+ 									<tr>
+@@ -475,7 +511,7 @@
+ 
+ 									</tr>								
+ 									<tr>
+-										<td><label style="width: 100%">Forma de Notificación:</label></td>
++										<td><label style="width: 100%">Forma de Notificación: *</label></td>
+ 										<td><select id="formaNotificacion">
+ 												<option value="1">General</option>
+ 												<option value="2">Web Service(Sucre)</option>
+@@ -486,7 +522,7 @@
+ 
+ 									</tr>
+ 									<tr>
+-										<td><label style="width: 100%">Código Integración:</label></td>
++										<td><label style="width: 100%">Código Integración: *</label></td>
+ 										<td><input type="text" id="codigoIntegracion"></td>
+ 									</tr>
+ 									<tr>
+@@ -490,6 +526,14 @@
+ 										<td><input type="text" id="codigoIntegracion"></td>
+ 									</tr>
+ 									<tr>
++										<td><label style="width: 100%">Porcentaje de comision para Emision: *</label></td>
++										<td><input type="text" id="comision"></td>
++									</tr>
++									<tr>
++										<td><label style="width: 100%">Emite Directamente : *</label></td>
++										<td><input type="checkbox" id="tieneEmisionDirecta"></td>
++									</tr>
++									<tr>
+ 										<td><label style="width: 100%">Tipos de Cultivo Excepciones:</label></td>
+ 										<td><input type="text" id="tiposCultivosExcepxion"></td>
+ 									</tr>
+@@ -493,10 +537,7 @@
+ 										<td><label style="width: 100%">Tipos de Cultivo Excepciones:</label></td>
+ 										<td><input type="text" id="tiposCultivosExcepxion"></td>
+ 									</tr>
+-									<tr>
+-										<td><label style="width: 100%">Emite Directamente ?:</label></td>
+-										<td><input type="checkbox" id="tieneEmisionDirecta"></td>
+-									</tr>
++									
+ 									<tr>
+ 										<td><label style="width: 100%">Emisión Obligatoria ?:</label></td>
+ 										<td><input type="checkbox" id="tieneEmisionObligatoria"></td>
+diff --git a/WebContent/dashboard/ReglasAgricola.jsp b/WebContent/dashboard/ReglasAgricola.jsp
+--- a/WebContent/dashboard/ReglasAgricola.jsp
++++ b/WebContent/dashboard/ReglasAgricola.jsp
+@@ -17,6 +17,7 @@
+ 	<link rel="stylesheet" href="../static/css/Kendo/kendo.blueopal.min.css" />
+     <script src="../static/js/Kendo/kendo.all.min.js"></script>
+     <script src="../static/js/Kendo/kendo.web.min.js"></script>
++    <script src="../static/js/Kendo/jszip.min.js"></script>
+ 
+ <title>Reglas Agricola</title>
+ <script>
+@@ -34,6 +35,8 @@
+ 	var xcicloId = "";
+ 	var tipoCalculoId = "";
+ 	var provinciaId = "";
++	var activo = "";
++	var activoGeneral="";
+ 	var cantonId = "";
+ 	var costoProduccion = "";
+ 	var tasa = "";
+@@ -49,8 +52,8 @@
+ 	var tipoCalculoList = "";
+ 	var provinciaList = "";
+ 	var cantonList = "";
+-	
+-	
++	var activoList="";
++	var activoGeneralList="";
+ 	$(document).ready(
+ 	function() {
+ 	activarMenu("ReglasAgricola");
+@@ -98,6 +101,26 @@
+     tipoCalculoList = $("#calculoId").data(
+ 	"kendoMultiSelect");
+     
++    $("#activoGeneral").kendoMultiSelect({
++		dataTextField : "valor",
++		dataValueField : "id",
++		animation : false,
++		maxSelectedItems : 1
++	});
++    
++    activoGeneralList = $("#activoGeneral").data(
++	"kendoMultiSelect");
++    
++    $("#activo").kendoMultiSelect({
++		dataTextField : "valor",
++		dataValueField : "id",
++		animation : false,
++		maxSelectedItems : 1
++	});
++    
++    activoList = $("#activo").data(
++	"kendoMultiSelect");
++    
+     $("#provinciaId").kendoMultiSelect({
+ 		dataTextField : "nombre",
+ 		dataValueField : "codigo",
+@@ -122,7 +145,7 @@
+ 	ConsultarCiclo();
+ 	ConsultarTipoCalculo();
+ 	ConsultarProvincia();	
+-	
++	$("#activoGeneral").data("kendoMultiSelect").value('1');
+ 	$("#save-recordCopy").click(function(){
+ 		listCopy = "";
+ 		$( ".copy" ).each(function( index ) {
+@@ -141,9 +164,9 @@
+ 		cantonId = $("#Ciudad option:selected").val();
+ 		observaciones = $("#Observaciones").val();
+ 		tipoConsulta = "copiar";
+-		
++		estado=$("#activo option:selected").val();
+ 		if(provinciaId != "" && cantonId === ""){
+ 			alert("Por favor debe seleccionar un cantón.");
+ 			return false;
+ 		}
+ 		
+@@ -145,9 +168,9 @@
+ 		if(provinciaId != "" && cantonId === ""){
+ 			alert("Por favor debe seleccionar un cantón.");
+ 			return false;
+ 		}
+ 		
+-		enviarDatos("","","",tipoCalculoId,provinciaId,cantonId,"","", "","","",observaciones,"",listCopy,tipoConsulta);
++		enviarDatos("","","",tipoCalculoId,provinciaId,cantonId,"","", "","","",observaciones,estado,listCopy,tipoConsulta);
+ 		
+ 	});
+ 	
+@@ -170,20 +193,7 @@
+ 			});
+ 			} else {
+ 				var Ciclo = $("#Ciclo").val();
+-				var Desde = $("#AceptabilidadDesde").val();
+-				var Hasta = $("#AceptabilidadHasta").val();
+-				/// Si el check de aceptabilidad esta marcado que seleccione el ciclo
+-				if ($("#AceptaCicloId").prop("checked") == true && Ciclo==""){
+-					alert("Por favor debe seleccionar el ciclo");
+-					$(this).focus();
+-					return false;
+-				}
+-				///Si el check no esta marcado debe ingresar fechas de aceptabilidad
+-				if ($("#AceptaCicloId").prop("checked") == false &&(Desde==""  	|| Hasta=="")){
+-					alert("Por favor debe ingresar las fechas de aceptabilidad");
+-					$(this).focus();
+-					return false;
+-				}
++				
+ 				reglaId = $("#ReglaId").val();
+ 				tipoCultivoId = $("#TipoCultivo").val();
+ 				CicloId = $("#Ciclo").val();
+@@ -193,6 +203,4 @@
+ 				costoProduccion = $("#CostoProduccion").val();
+ 				tasa = $("#Tasa").val();
+ 				costoMantenimiento = $("#CostoMantenimiento").val();
+-				aceptabilidadDesde = $("#AceptabilidadDesde").val();
+-				aceptabilidadHasta = $("#AceptabilidadHasta").val();
+ 				observaciones = $("#Observaciones").val();
+@@ -198,4 +206,5 @@
+ 				observaciones = $("#Observaciones").val();
++				estado=$("#activo option:selected").val();
+ 				if (reglaId == "")
+ 					tipoConsulta = "crear";
+ 				else
+@@ -203,7 +212,7 @@
+ 
+ 				enviarDatos(reglaId,tipoCultivoId,CicloId,tipoCalculoId,
+ 				provinciaId,cantonId,costoProduccion,tasa, costoMantenimiento,
+-				aceptabilidadDesde,aceptabilidadHasta,
++				"","",
+ 				observaciones,estado,"",tipoConsulta);
+ 				}
+ 			}
+@@ -211,85 +220,11 @@
+ 	
+ 	
+ 	$("#ConsultaBtn").click(function(){
+-		$("#buscando").show();
+-		
+-		$("#configuracionRegla").children().remove();
+-		
+-		tipoCultivoId =$("#cultivoId option:selected").val();
+-		tipoCalculoId =$("#calculoId option:selected").val();
+-		provinciaId =$("#provinciaId option:selected").val();
+-		cantonId =$("#cantonId option:selected").val();
+-		reglaId = ($("#reglaId").data("kendoNumericTextBox")).value();
+-		if(typeof tipoCultivoId === 'undefined' && typeof tipoCalculoId === 'undefined' && typeof provinciaId === 'undefined' && typeof cantonId === 'undefined'){
+-			if(reglaId === null){
+-				alert("Seleccione al menos una opción ");
+-				return false;			
+-			}			
+-		} 
+-		
+-		$.ajax({
+-			url : '../AgriReglaVtaController',
+-			data : {
+-				"tipoConsulta":"encontrarPorParametros"	,
+-				"reglaId":reglaId,
+-				"tipoCultivoId":tipoCultivoId	,
+-				"tipoCalculoId":tipoCalculoId	,
+-				"provinciaId":provinciaId	,
+-				"cantonId":cantonId
+-			},
+-			type : 'POST',
+-			async : false,
+-			datatype : 'json',
+-			success : function(data){
+-				var ReglaJSONArray = data.ReglaJSONArray;
+-				$
+-						.each(
+-								ReglaJSONArray,
+-								function(index) {
+-									$('#configuracionRegla')
+-											.append(
+-													"<tr class='odd gradeX'>"
+-															+ "<td relation='copiar'  align='center'>"															
+-															+ "<input type='checkbox' class='copy' name='copiar'> <input type='hidden' value='" + ReglaJSONArray[index].reglaId + "'/></td>"
+-															+ "<td relation='reglaId'>"
+-															+ ReglaJSONArray[index].reglaId
+-															+ "</td>"
+-															+ "<td relation='TipoCultivoId'>"
+-															+ ReglaJSONArray[index].cultivoNombre
+-															+ "</td>"
+-															+ "<td relation='TipoCalculoId'>"
+-															+ ReglaJSONArray[index].calculoNombre
+-															+ "</td>"
+-															+ "<td relation='ProvinciaId'>"
+-															+ ReglaJSONArray[index].proviciaNombre
+-															+ "</td>"
+-															+ "<td relation='CantonId'>"
+-															+ ReglaJSONArray[index].cantonNombre
+-															+ "</td>"
+-															+ "<td relation='Estado'>"
+-															+ ReglaJSONArray[index].estado
+-															+ "</td>"
+-															+
+-
+-															"<td width='175px'>"
+-															+ "<input type='hidden' id='ReglaId' value='" + ReglaJSONArray[index].reglaId + "'/>"
+-															+ " <button type='button'  name='actualizar-btn' data-toggle='modal' data-target='#add' class='btn btn-success btn-xs actualizar-btn' onclick='actualizar("
+-															+ ReglaJSONArray[index].reglaId
+-															+ ");'>"
+-															+ " <span class='glyphicon glyphicon glyphicon-edit'></span> Actualizar"
+-															+ " </button>"
+-															+ " <button type='button' class='btn btn-danger btn-xs eliminar-btn' onclick='eliminar("
+-															+ ReglaJSONArray[index].reglaId
+-															+ ");'>"
+-															+ "<span class='glyphicon glyphicon glyphicon-remove' id='delete-record' ></span> Eliminar"
+-															+ " </button>"
+-															+ "</td>"
+-															+ "</tr>");
+-								});
+-				$("#buscando").hide();
+-			}			
+-		});
+-	});
++		$("#buscando").show();		
++		 		
++		CargarGrid();	
++		$("#buscando").hide();
++	});		
+ 	
+ 	$("#Provincia").change(function(){	
+ 		Provincia = $("#Provincia").val();
+@@ -375,7 +310,7 @@
+ 		$("#Ciclo").hide();
+ 		
+ 		$("#Ciclo").prop('disabled', true);		
+-		$("#AceptaCicloId").prop('disabled', true);		
++				
+ 		$("#ReglaId").val("");
+ 		$("#TipoCultivo").prop('disabled', true);
+ 		$("#Ciclo").val("");
+@@ -393,10 +328,6 @@
+ 		($("#CostoMantenimiento").data("kendoNumericTextBox")).enable(false);
+ 		($("#Tasa").data("kendoNumericTextBox")).value("");
+ 		($("#Tasa").data("kendoNumericTextBox")).enable(false);
+-		($("#AceptabilidadDesde").data("kendoDatePicker")).enable(false);
+-		($("#AceptabilidadHasta").data("kendoDatePicker")).enable(false);
+-		//$("#AceptabilidadDesde").val("");
+-		//$("#AceptabilidadHasta").val("");
+ 		$("#Observaciones").val("");
+ 		
+ 	});
+@@ -413,6 +344,4 @@
+ 		($("#CostoProduccion").data("kendoNumericTextBox")).enable(true);
+ 		($("#CostoMantenimiento").data("kendoNumericTextBox")).enable(true);
+ 		($("#Tasa").data("kendoNumericTextBox")).enable(true);
+-		($("#AceptabilidadDesde").data("kendoDatePicker")).enable(true);
+-		($("#AceptabilidadHasta").data("kendoDatePicker")).enable(true);
+ 		$("#Ciclo").prop('disabled', false);		
+@@ -418,5 +347,5 @@
+ 		$("#Ciclo").prop('disabled', false);		
+-		$("#AceptaCicloId").prop('disabled', false);
++		
+ 		$("#save-record").show();
+ 		$("#save-recordCopy").hide();
+ 	});	
+@@ -455,6 +384,120 @@
+ });
+ 	
+ 	
++	function CargarGrid() {	
++		$("#configuracionRegla").children().remove();
++		tipoCultivoId =$("#cultivoId option:selected").val();
++		tipoCalculoId =$("#calculoId option:selected").val();
++		provinciaId =$("#provinciaId option:selected").val();
++		cantonId =$("#cantonId option:selected").val();
++		var activoGeneralId =$("#activoGeneral option:selected").val();
++		reglaId = ($("#reglaId").data("kendoNumericTextBox")).value();
++		if(typeof tipoCultivoId === 'undefined' && typeof tipoCalculoId === 'undefined' && typeof provinciaId === 'undefined' && typeof cantonId === 'undefined'){
++			if(reglaId === null){
++				alert("Seleccione al menos una opción ");
++				return false;			
++			}			
++		}
++		$('#dataTable_wrapper').hide();
++	
++		if ($('#grid').data().kendoGrid){
++			$('#grid').data().kendoGrid.destroy();
++			$('#grid').empty();
++		}
++		
++		$("#grid").kendoGrid({
++			toolbar: ["excel"],
++	        excel: {
++	            fileName: "AgriReglas.xlsx",
++	            filterable: true,
++	            allPages: true
++	        },
++			dataSource: {
++	            type: "json",
++	            serverPaging: true,
++	            serverSorting: true,
++	            serverFiltering: true,
++	            filterable: {
++                    mode: "row"
++                },
++	            pageSize: 20,
++	            transport:{
++	            	read: {
++	            		url: "../AgriReglaController",
++	            		data: {
++	            			"tipoConsulta":"encontrarPorParametros"	,
++	        				"ReglaId":reglaId,
++	        				"TipoCultivoId":tipoCultivoId	,
++	        				"TipoCalculoId":tipoCalculoId	,
++	        				"ProvinciaId":provinciaId	,
++	        				"CantonId":cantonId,
++	        				"Estado":activoGeneralId
++						}
++	            	}
++	            },
++	            schema: {
++	            	data: "Data",
++	            	total: "Total",
++	            }
++	        },
++	        columns: [
++	  				{ field: "reglaId", title: "Regla ID.", width: "80px",headerAttributes: { style: "white-space: normal"}},
++	  				{ field: "tipoCultivoId", title: "Tipo Cultivo ID", width: "80px",headerAttributes: { style: "white-space: normal"},headerAttributes: { style: "white-space: normal"}, exportar: true, hidden: true},
++	  				{ field: "cultivoNombre", title: "Cultivo.", width: "250px",headerAttributes: { style: "white-space: normal"}},
++	  				{ field: "cicloId", title: "Ciclo ID", width: "80px",headerAttributes: { style: "white-space: normal"},headerAttributes: { style: "white-space: normal"}, exportar: true, hidden: true},
++	  				{ field: "cicloNombre", title: "Ciclo", width: "100px",headerAttributes: { style: "white-space: normal"}},
++	  				{ field: "tipoCalculoId", title: "Calculo ID",width: "80px",headerAttributes: { style: "white-space: normal"},headerAttributes: { style: "white-space: normal"}, exportar: true, hidden: true},
++	  				{ field: "nombreCalculo", title: "Calculo.", width: "250px",headerAttributes: { style: "white-space: normal"}},
++	  				{ field: "provinciaNombre", title: "Provincia", width: "200px",headerAttributes: { style: "white-space: normal"}},
++	  				{ field: "cantonNombre", title: "Canton", width: "200px",headerAttributes: { style: "white-space: normal"}},
++	  				{ field: "costoProduccion", title: "Costo Produccion.", width: "100px",headerAttributes: { style: "white-space: normal"}},
++	  				{ field: "costoMantenimiento", title: "Costo Mantenimiento", width: "100px",headerAttributes: { style: "white-space: normal"}},
++	  				{ field: "tasa", title: "Tasa", width: "100px",headerAttributes: { style: "white-space: normal"}},
++	  				{ field: "observaciones", title: "Observacion.", width: "250px",headerAttributes: { style: "white-space: normal"}},
++	  				{ command: { text: "Ver Detalle", click: fnEventoClick }, title: " Detalle ", width: "110px"},
++	  				{ command: { text: "Eliminar", click: EliminarEventoClick}, title: " Eliminar ", width: "110px"}
++	  				],
++	  				height: 500,
++	            selectable: true,
++	            resizable: true,
++	            pageable: {
++	                info: true,
++	                numeric: false,
++	                previousNext: false
++	            },
++	            scrollable: {
++	                virtual: true
++	            },
++	        }); 
++		
++		
++		var exportFlag=false;
++		$("#grid").data("kendoGrid").bind("excelExport", function (e) {
++			var columns = e.sender.columns;
++			if (!exportFlag) {
++	            jQuery.each(columns, function (index) {
++	                if (this.exportar) {
++	                	e.sender.showColumn(this.field);
++	                }
++	            });
++	            
++	            //e.sender.showColumn("AgenteId");
++	            e.preventDefault();
++	            exportFlag = true;
++	            setTimeout(function () {
++	                e.sender.saveAsExcel();
++	            }, 1000);
++	        } else {
++	        	jQuery.each(columns, function (index) {
++	                if (this.exportar) {
++	                	e.sender.hideColumn(this.field);
++	                }
++	            });
++	            exportFlag = false;
++	        }
++		});
++	}
++	
+ 	function actualizar(Regla) {
+ 		$("#myModalLabel").show();
+ 		$("#myModalLabelCopy").hide();
+@@ -466,6 +509,4 @@
+ 		($("#CostoProduccion").data("kendoNumericTextBox")).enable(true);
+ 		($("#CostoMantenimiento").data("kendoNumericTextBox")).enable(true);
+ 		($("#Tasa").data("kendoNumericTextBox")).enable(true);
+-		($("#AceptabilidadDesde").data("kendoDatePicker")).enable(true);
+-		($("#AceptabilidadHasta").data("kendoDatePicker")).enable(true);
+ 		$("#Ciclo").prop('disabled', false);		
+@@ -471,5 +512,5 @@
+ 		$("#Ciclo").prop('disabled', false);		
+-		$("#AceptaCicloId").prop('disabled', false);
++		var activoGeneralId =$("#activoGeneral option:selected").val();
+ 		$("#save-record").show();
+ 		$("#save-recordCopy").hide();
+ 		
+@@ -477,7 +518,8 @@
+ 			url : '../AgriReglaController',
+ 			data : {
+ 				"ReglaId" : Regla,
+-				"tipoConsulta" : "obtenerPorId"
++				"tipoConsulta" : "obtenerPorId",
++				"EstadoConsulta": activoGeneralId
+ 			},
+ 			type : 'POST',
+ 			datatype : 'json',
+@@ -495,9 +537,10 @@
+ 				$("#TipoCultivo").val(data.TipoCultivoId);
+ 				$("#Ciclo").val(data.CicloId);
+ 				$("#TipoCalculo").val(data.TipoCalculoId);
++				$("#activo").data("kendoMultiSelect").value(data.activo);
+ 				$("#Provincia").val(data.ProvinciaId);
+ 				ConsultarCiudad();
+ 				$("#Ciudad").val(data.CantonId);
+ 				($("#CostoProduccion").data("kendoNumericTextBox")).value(data.CostoProduccion);
+ 				($("#Tasa").data("kendoNumericTextBox")).value(data.Tasa);
+ 				($("#CostoMantenimiento").data("kendoNumericTextBox")).value(data.CostoMantenimiento);
+@@ -498,9 +541,7 @@
+ 				$("#Provincia").val(data.ProvinciaId);
+ 				ConsultarCiudad();
+ 				$("#Ciudad").val(data.CantonId);
+ 				($("#CostoProduccion").data("kendoNumericTextBox")).value(data.CostoProduccion);
+ 				($("#Tasa").data("kendoNumericTextBox")).value(data.Tasa);
+ 				($("#CostoMantenimiento").data("kendoNumericTextBox")).value(data.CostoMantenimiento);
+-				$("#AceptabilidadDesde").val(data.AceptabilidadDesde);
+-				$("#AceptabilidadHasta").val(data.AceptabilidadHasta);
+ 				$("#Observaciones").val(data.Observaciones);
+@@ -506,13 +547,4 @@
+ 				$("#Observaciones").val(data.Observaciones);
+-				if (data.CicloId!=null){
+-					$("#AceptaCicloId").prop("checked", true);// para poner la marca
+-					$("#AceptabilidadTable").css("display","none");
+-					}  
+-				else {
+-					$("#AceptaCicloId").prop("checked", false);
+-					$("#AceptabilidadTable").css("display","block");
+-					}
+-				//var Tipo = this.options[this.selectedIndex].getAttribute("class");
+ 				var Tipo = $('#TipoCultivo option:selected').attr('class');
+ 				if (Tipo=="2"){
+ 						$("#TablaValores").hide();
+@@ -523,17 +555,6 @@
+ 			}
+ 		});
+ 		
+-		$("#AceptaCicloId").change(function(){	
+-			//Si se cambia el estado del check se oculta/muestra la aceptabilidad
+-			if ($("#AceptaCicloId").prop("checked") == true){
+-			$("#AceptabilidadTable").css("display","none");
+-			$("#AceptabilidadDesde").val("");
+-			$("#AceptabilidadHasta").val("");
+-			}
+-			else {
+-				$("#AceptabilidadTable").css("display","block");
+-				$("#Ciclo").val("");
+-			}
+-		});
++		
+ 		
+ 		$("#Ciclo").change(function(){	
+@@ -538,36 +559,7 @@
+ 		
+ 		$("#Ciclo").change(function(){	
+-			cicloId = $("#Ciclo").val();
+-			$("select option:selected").each(function(){
+-				if (cicloId!=""){
+-					$("#AceptaCicloId").prop("checked", true);// para poner la marca
+-					$("#AceptabilidadTable").css("display","none");	
+-					$("#AceptabilidadDesde").val("");
+-					$("#AceptabilidadHasta").val("");
+-				}
+-				else {
+-					$("#AceptaCicloId").prop("checked", false);// para poner la marca
+-					$("#AceptabilidadTable").css("display","block");	
+-				}
+-			});
+-		});
+-		
+-		/*$("#TipoCultivo").change(function(){
+-			var Tipo = this.options[this.selectedIndex].getAttribute("class");
+-			$("select option:selected").each(function(){
+-				if (Tipo=="2"){
+-					$("#TablaValores").hide();
+-					//($("#UnidadPorHec").data("kendoNumericTextBox")).value("");
+-					//($("#PrecioPorUni").data("kendoNumericTextBox")).value("");
+-					}
+-				else {
+-					$("#TablaValores").show();
+-					//($("#UnidadPorHec").data("kendoNumericTextBox")).value("");
+-					//($("#PrecioPorUni").data("kendoNumericTextBox")).value("");
+-					}
+-				
+-			});
+-		});	*/
++			cicloId = $("#Ciclo").val();			
++		});		
+ 	}
+ 	
+ 	function eliminar(Regla) {
+@@ -578,7 +570,7 @@
+ 			enviarDatos(reglaId, "", "", "",
+ 					"", "", "", "","", "", "","", "","", tipoConsulta);
+ 		}
+-		//Cargar();
++		CargarGrid();
+ 		$("#msgPopup").hide();
+ 	}
+ 	
+@@ -582,6 +574,19 @@
+ 		$("#msgPopup").hide();
+ 	}
+ 	
++	function fnEventoClick(e) {
++        e.preventDefault();
++        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
++        $('#add').modal('show');
++        actualizar(dataItem.reglaId);
++    }
++	
++	function EliminarEventoClick(e) {
++        e.preventDefault();
++        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));        
++        eliminar(dataItem.reglaId);
++    }
++	
+ 	function enviarDatos(ReglaId, TipoCultivoId, CicloId, TipoCalculoId,
+ 			ProvinciaId, CantonId, CostoProduccion, Tasa, CostoMantenimiento,
+ 			AceptabilidadDesde, AceptabilidadHasta,
+@@ -673,7 +678,13 @@
+ 				$("#Ciclo").append("<option value =''>Seleccione una opción</option>");
+ 				$.each(listadoCiclo, function(index){
+ 					$("#Ciclo").append("<option value='"+ listadoCiclo[index].CicloId+"'>"+listadoCiclo[index].Nombre+"</option>");
+-				});							
++				});	
++				
++				activoList.dataSource.filter({});
++				activoList.setDataSource(data.ActivoJSONArray);
++				
++				activoGeneralList.dataSource.filter({});
++				activoGeneralList.setDataSource(data.ActivoJSONArray);
+ 			}
+ 		});
+ 	}
+@@ -739,9 +750,14 @@
+ 
+ 					</tr>
+ 					<tr>
+-					<th style="width: 20%">Busqueda por:</th>
+-					<th style="width: 40%"> Código:<input type="text" name="reglaId" id="reglaId"></input></th>
+-					<th style="width: 40%"></th>
++						<th style="width: 20%">Busqueda por:</th>
++						<th style="width: 40%"> Código:</th>
++						<th style="width: 40%"> Activos:</th>
++					</tr>
++					<tr>
++						<th style="width: 20%"></th>
++						<th style="width: 40%"><input type="text" name="reglaId" id="reglaId"></input></th>
++						<th style="width: 40%"><select id="activoGeneral" data-placeholder="Seleccione una opción..."></select></th>
+ 					</tr>
+ 					<tr>
+ 						<th style="width: 20%">Busqueda por:</th>
+@@ -875,37 +891,16 @@
+ 
+ 									</tr>
+ 									<tr>
+-										<td>&nbsp;</td>
+-									</tr>
+-								</table>
+-								<table id="TablaValores" width="100%">
+-									<tr>
+-									<td width="90px">Costo de Mantenimiento:</td>
+-										<td width="180px"><input type="number" name="CostoMantenimiento"
+-											id="CostoMantenimiento" class="datosRegla" ></td>
+-									</tr>
+-									<tr>
+-										<td>&nbsp;</td>
+-									</tr>
+-									</table>
+-								<table id="TablaCiclo">
+-									<tr>
+-										<td width="90px">Acepta Ciclo Agrícola:</td>
+-										<td width="40px"><input type="checkbox" id="AceptaCicloId"
+-											class="datosRegla" name="AceptaCicloId"></td>
+-											<td><table id="AceptabilidadTable">
+-											<tr>
+-											<td width="90px">Aceptabilidad:</td>
+-										<td>Desde:<input type="text" name="AceptabilidadDesde"
+-											id="AceptabilidadDesde" class="datosRegla">
+-										</td>
+-										<td>&nbsp;</td>
+-										<td>Hasta:<input type="text" name="AceptabilidadHasta"
+-											id="AceptabilidadHasta" class="datosRegla">
+-										</td>
+-											</tr>
+-											</table></td>
+-										
++										<td width="90px">Costo de Mantenimiento:</td>
++										<td width="180px">
++											<input type="text"
++															name="CostoMantenimiento" id="CostoMantenimiento"
++															class="datosRegla" validationMessage="Campo requerido!!!" required></input>
++											</td>
++										<td width="120px">Activo:</td>
++										<td><select style="width: 180px" name="activo"
++											id="activo" class="datosRegla">
++										</select></td>
+ 									</tr>
+ 									<tr>
+ 										<td>&nbsp;</td>
+@@ -936,35 +931,6 @@
+ 	<!-- Modal -->
+ 	
+ 	<!-- Datatable -->
+-	<div class="row">
+-		<div class="col-lg-12">
+-			 <div class="panel panel-primary"> 
+-				<div class="panel-body">
+-					<div class="input-group">
+-						<span class="input-group-addon">Filtro</span> <input id="filter"
+-							type="text" class="form-control"
+-							placeholder="Escriba la palabra a buscar...">
+-					</div>
+-					<table class="table table-striped table-bordered table-hover"
+-						id="dataTable">
+-						<thead>
+-							<tr>
+-								<th>Copiar <input type='checkbox' name='copiar' id="copyAll"> </th>
+-								<th>Código</th>
+-								<th>Tipo Cultivo</th>
+-								<th>Tipo Calculo</th>
+-								<th>Provincia</th>
+-								<th>Cantón</th>
+-								<th>Estado</th>
+-								<th></th>
+-							</tr>
+-						</thead>
+-						<tbody id="configuracionRegla" class="searchable">
+-							
+-						</tbody>
+-					</table>
+-				</div>
+-			</div>
+-		</div>
++	<div id="grid"></div>
+ 	</div>
+ 	<!-- Datatable -->
+@@ -969,5 +935,6 @@
+ 	</div>
+ 	<!-- Datatable -->
++	
+ </div>
+ </body>
+ </html>
+\ No newline at end of file
+diff --git a/build/classes/com/qbe/cotizador/servlets/entidad/BeneficiarioController.class b/build/classes/com/qbe/cotizador/servlets/entidad/BeneficiarioController.class
+index 54de06468b74df530b0edd38c86f68fb4de82d98..97b4c3d381d7841ddcce8e16ca0d85b549ad265f
+GIT binary patch
+literal 5536
+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
+
+diff --git a/src/com/qbe/cotizador/dao/producto/agricola/AgriReglaDAO.java b/src/com/qbe/cotizador/dao/producto/agricola/AgriReglaDAO.java
+--- a/src/com/qbe/cotizador/dao/producto/agricola/AgriReglaDAO.java
++++ b/src/com/qbe/cotizador/dao/producto/agricola/AgriReglaDAO.java
+@@ -39,6 +39,13 @@
+ 		// TODO Auto-generated constructor stub
+ 		super(AgriRegla.class);
+ 	}
++	public AgriRegla BuscarPorId (BigInteger ReglaId, int Estado){
++		AgriRegla agriRegla = new AgriRegla();
++		List<AgriRegla> result = getEntityManager().createNamedQuery("AgriRegla.obtenerPorId").setParameter("reglaId", ReglaId).setParameter("estado", Estado).getResultList();
++		if (result.size()>0)
++			agriRegla = result.get(0);
++		return agriRegla;
++	}
+ 	public AgriRegla BuscarPorId (BigInteger ReglaId){
+ 		AgriRegla agriRegla = new AgriRegla();
+ 		List<AgriRegla> result = getEntityManager().createNamedQuery("AgriRegla.obtenerPorId").setParameter("reglaId", ReglaId).setParameter("estado", 1).getResultList();
+@@ -46,6 +53,13 @@
+ 			agriRegla = result.get(0);
+ 		return agriRegla;
+ 	}
++	public AgriRegla BuscarPorIdTodos (BigInteger ReglaId){
++		AgriRegla agriRegla = new AgriRegla();
++		List<AgriRegla> result = getEntityManager().createNamedQuery("AgriRegla.obtenerPorIdTodos").setParameter("reglaId", ReglaId).getResultList();
++		if (result.size()>0)
++			agriRegla = result.get(0);
++		return agriRegla;
++	}
+ 	public List<AgriRegla>BuscarTodos(){
+ 		return getEntityManager().createNamedQuery("AgriRegla.findAll").getResultList();
+ 	}
+diff --git a/src/com/qbe/cotizador/dao/producto/agricola/AgriReglaVtaDAO.java b/src/com/qbe/cotizador/dao/producto/agricola/AgriReglaVtaDAO.java
+--- a/src/com/qbe/cotizador/dao/producto/agricola/AgriReglaVtaDAO.java
++++ b/src/com/qbe/cotizador/dao/producto/agricola/AgriReglaVtaDAO.java
+@@ -9,6 +9,7 @@
+ import javax.naming.NamingException;
+ import javax.persistence.EntityManager;
+ import javax.persistence.PersistenceContext;
++import javax.persistence.Query;
+ import javax.persistence.TypedQuery;
+ 
+ import com.qbe.cotizador.entitymanagerfactory.EntityManagerFactoryDAO;
+@@ -81,4 +82,80 @@
+ 		
+ 		return query.getResultList();
+ 	}
++	public List<AgriReglaVta> BuscarPorParametrosKendo (String reglaId, String tipoCultivoId,String tipoCalculoId,String provinciaId,String cantonId,int skip,int take, int Estado){
++		
++		Query query = null;
++		
++		String stringQuery= "SELECT c FROM AgriReglaVta c where (c.estado =:estado)";					
++		String valoresWhereQuery = "";
++		
++		if(reglaId.length() > 0)
++			valoresWhereQuery +=" AND c.reglaId =:reglaId ";
++		if(tipoCultivoId.length() > 0)
++			valoresWhereQuery +=" AND c.tipoCultivoId =:tipoCultivoId ";
++		if(tipoCalculoId.length() > 0)
++			valoresWhereQuery +=" AND c.tipoCalculoId =:tipoCalculoId ";
++		if(provinciaId.length() > 0)
++			valoresWhereQuery +=" AND c.provinciaId =:provinciaId ";
++		if(cantonId.length() > 0)
++			valoresWhereQuery +=" AND c.cantonId =:cantonId ";
++		
++		stringQuery = stringQuery + valoresWhereQuery + " ORDER BY c.cultivoNombre, c.provinciaId, c.cantonId, c.tipoCalculoId ";
++		
++		query = getEntityManager().createQuery(stringQuery, AgriReglaVta.class);
++		
++		if(reglaId.length() > 0)
++			query.setParameter("reglaId", new BigInteger(reglaId));
++		if(tipoCultivoId.length() > 0)
++			query.setParameter("tipoCultivoId", new BigInteger(tipoCultivoId));
++		if(tipoCalculoId.length() > 0)
++			query.setParameter("tipoCalculoId", new BigInteger(tipoCalculoId));
++		if(provinciaId.length() > 0)
++			query.setParameter("provinciaId", new BigInteger(provinciaId));
++		if(cantonId.length() > 0)
++			query.setParameter("cantonId", new BigInteger(cantonId));
++		
++		query.setParameter("estado",Estado);
++		
++		List<AgriReglaVta> results= new ArrayList<AgriReglaVta>();
++		results = query.setMaxResults(take).setFirstResult(skip).getResultList();
++		return results;
++	}
++public long BuscarPorParametrosKendoPorNumero(String reglaId, String tipoCultivoId,String tipoCalculoId,String provinciaId,String cantonId,int skip,int take,int Estado){
++		
++		Query query = null;
++		
++		String stringQuery= "SELECT count(c.reglaId) FROM AgriReglaVta c where (c.estado =:estado)";					
++		String valoresWhereQuery = "";
++		
++		if(reglaId.length() > 0)
++			valoresWhereQuery +=" AND c.reglaId =:reglaId ";
++		if(tipoCultivoId.length() > 0)
++			valoresWhereQuery +=" AND c.tipoCultivoId =:tipoCultivoId ";
++		if(tipoCalculoId.length() > 0)
++			valoresWhereQuery +=" AND c.tipoCalculoId =:tipoCalculoId ";
++		if(provinciaId.length() > 0)
++			valoresWhereQuery +=" AND c.provinciaId =:provinciaId ";
++		if(cantonId.length() > 0)
++			valoresWhereQuery +=" AND c.cantonId =:cantonId ";
++		
++		stringQuery = stringQuery + valoresWhereQuery + " ORDER BY c.cultivoNombre, c.provinciaId, c.cantonId, c.tipoCalculoId ";
++		
++		query = getEntityManager().createQuery(stringQuery, AgriReglaVta.class);
++		
++		if(reglaId.length() > 0)
++			query.setParameter("reglaId", new BigInteger(reglaId));
++		if(tipoCultivoId.length() > 0)
++			query.setParameter("tipoCultivoId", new BigInteger(tipoCultivoId));
++		if(tipoCalculoId.length() > 0)
++			query.setParameter("tipoCalculoId", new BigInteger(tipoCalculoId));
++		if(provinciaId.length() > 0)
++			query.setParameter("provinciaId", new BigInteger(provinciaId));
++		if(cantonId.length() > 0)
++			query.setParameter("cantonId", new BigInteger(cantonId));
++		query.setParameter("estado",Estado);
++		
++		long results = (long)query.getSingleResult();
++		return results;
++	}
+ }
+diff --git a/src/com/qbe/cotizador/model/AgriParametroXPuntoVenta.java b/src/com/qbe/cotizador/model/AgriParametroXPuntoVenta.java
+--- a/src/com/qbe/cotizador/model/AgriParametroXPuntoVenta.java
++++ b/src/com/qbe/cotizador/model/AgriParametroXPuntoVenta.java
+@@ -55,6 +55,28 @@
+ 	@Column(name="EXCEPCIONES_DIRECTAS_CULTIVOS")
+ 	private String excepcionesDirectasCultivos;
+ 	
++	@Column(name="AGENTE_ID")
++	private String agenteId;
++	
++	@Column(name="PORCENTAJE_COMISION")
++	private String porcentajeComision;
++	
++	public String getAgenteId() {
++		return agenteId;
++	}
++
++	public void setAgenteId(String agenteId) {
++		this.agenteId = agenteId;
++	}
++
++	public String getPorcentajeComision() {
++		return porcentajeComision;
++	}
++
++	public void setPorcentajeComision(String porcentajeComision) {
++		this.porcentajeComision = porcentajeComision;
++	}
++
+ 	public String getExcepcionesDirectasCultivos() {
+ 		return excepcionesDirectasCultivos;
+ 	}
+diff --git a/src/com/qbe/cotizador/model/AgriRegla.java b/src/com/qbe/cotizador/model/AgriRegla.java
+--- a/src/com/qbe/cotizador/model/AgriRegla.java
++++ b/src/com/qbe/cotizador/model/AgriRegla.java
+@@ -15,6 +15,7 @@
+ @NamedQueries({
+ 	@NamedQuery(name="AgriRegla.findAll", query="SELECT a FROM AgriRegla a"),
+ 	@NamedQuery(name="AgriRegla.obtenerPorId", query="SELECT a FROM AgriRegla a where a.reglaId=:reglaId and a.estado=:estado"),
++	@NamedQuery(name="AgriRegla.obtenerPorIdTodos", query="SELECT a FROM AgriRegla a where a.reglaId=:reglaId"),
+ 	@NamedQuery(name="AgriRegla.obtenerPorParametros", query="SELECT a FROM AgriRegla a where a.cantonId=:cantonId and a.provinciaId=:provinciaId and a.tipoCultivoId=:tipoCultivoId and a.estado=:estado"),
+ 	@NamedQuery(name="AgriRegla.obtenerPorParametros2", query="SELECT a FROM AgriRegla a where a.cantonId=:cantonId and a.provinciaId=:provinciaId and a.tipoCultivoId=:tipoCultivoId and a.tipoCalculoId=:tipoCalculoId and a.estado=:estado"),
+ 	@NamedQuery(name="AgriRegla.obtenerPorTipoCultivo", query="SELECT a FROM AgriRegla a where  a.tipoCultivoId=:tipoCultivoId and a.tipoCalculoId=:tipoCalculoId and a.estado=:estado")
+diff --git a/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java b/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java
+--- a/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java
++++ b/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java
+@@ -630,14 +630,5 @@
+ 		                    cotizacion.setImpSuperBancos(valorSuperBancos);
+ 		                    valorBase = valorBase + valorSuperBancos;
+ 		        		}
+-		        		
+-		        		if(variable.getNombre().equals("COMISION_BANCACOMUNAL")){
+-		        			 cotizacion.setPorcentajeComision(Double.parseDouble(variable.getValor()));//%COMISION DE AGENTE
+-		        		}
+-		        		 	
+-		        		if(variable.getNombre().equals("AGENTE_BANCACOMUNAL")){
+-		        			cotizacion.setAgenteId(new BigInteger(variable.getValor()));//AGENTE AL QUE SE ATA
+-		        			
+-		        		}
+ 		        		else if(variable.getNombre().equals("SUBTOTAL")){
+ 		                    valorSubTotal = Math.rint(valorBase*100)/100;
+@@ -642,11 +633,6 @@
+ 		        		else if(variable.getNombre().equals("SUBTOTAL")){
+ 		                    valorSubTotal = Math.rint(valorBase*100)/100;
+-		                }
+-		                else if(variable.getNombre().equals("IVA")){
+-		                	//Proces de exoneracion del iva del 14% LEY DE SOLIDARIDAD provincia ESMERANLDAS Y MANABI
+-		                		                    
+-		                }
+-		        		
++		                }		               
+ 		        	}
+ 		        	
+ 		        	VariableSistema variableIva= variableDAO.buscarPorNombre("IVA");					
+@@ -668,6 +654,5 @@
+ 					double valorFactura=valorSubTotal+valorIva;
+ 					a = new BigDecimal(""+valorFactura);
+ 					roundOff = a.setScale(2, BigDecimal.ROUND_HALF_UP);
+-					cotizacion.setTotalFactura(Double.parseDouble(""+roundOff));
+-					
++					cotizacion.setTotalFactura(Double.parseDouble(""+roundOff));					
+ 		        }
+@@ -673,5 +658,7 @@
+ 		        }
+-		        cotizacion.setTasaProductoValor(nuestraTasa);//tasa QBE
++		        cotizacion.setAgenteId(new BigInteger(PPuntoVenta.getAgenteId()));
++	        	cotizacion.setPorcentajeComision(Double.parseDouble(PPuntoVenta.getPorcentajeComision()));
++	        	cotizacion.setTasaProductoValor(nuestraTasa);//tasa QBE
+ 		        cotizacion.setEtapaWizard(3);
+ 		        cotizacion.setAsegurado(entidad);
+ 		        cotizacion.setClienteId(new BigInteger(cliente.getId()));

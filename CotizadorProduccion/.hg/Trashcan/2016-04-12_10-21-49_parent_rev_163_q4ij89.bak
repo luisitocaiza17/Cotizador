@@ -1,0 +1,24 @@
+diff --git a/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java b/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java
+--- a/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java
++++ b/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java
+@@ -659,8 +659,8 @@
+ 				}
+ 				Date fechaAprobacion = null;
+ 				Date fechaSiembra=null;
+-				SimpleDateFormat formatoDelTexto = new SimpleDateFormat("dd/mm/yyyy");			
+-				try {
+-					fechaSiembra = formatoDelTexto.parse(in0.getFechaTentativaSiembra());
++				SimpleDateFormat formatoDelTexto = new SimpleDateFormat("dd/MM/yyyy");
++				fechaSiembra = formatoDelTexto.parse(in0.getFechaTentativaSiembra());		
++				try {					
+ 					fechaAprobacion = formatoDelTexto.parse(in0.getFechaAprobacionCredito());
+ 				} catch (Exception e) {
+@@ -665,7 +665,6 @@
+ 					fechaAprobacion = formatoDelTexto.parse(in0.getFechaAprobacionCredito());
+ 				} catch (Exception e) {
+-					fechaAprobacion = null;
+-					fechaSiembra=null;
++					fechaAprobacion = null;					
+ 				}			
+ 				agriObjetoCotizacion.setFechaCredito(fechaAprobacion);
+ 				agriObjetoCotizacion.setFechaSiembra(fechaSiembra);	

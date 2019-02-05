@@ -1,0 +1,168 @@
+package com.qbe.cotizador.model;
+
+
+import java.io.Serializable;
+
+import javax.persistence.*;
+
+import java.math.BigInteger;
+import java.sql.Timestamp;
+import java.util.Date;
+
+
+/**
+ * The persistent class for the AGRI_COTIZACION_ENDOSO database table.
+ * 
+ */
+@Entity
+@Table(name="AGRI_COTIZACION_ENDOSO")
+@NamedQueries({
+	@NamedQuery(name="AgriCotizacionEndoso.findAll", query="SELECT a FROM AgriCotizacionEndoso a"),
+	@NamedQuery(name="AgriCotizacionEndoso.buscarCotizacionId", query="SELECT a FROM AgriCotizacionEndoso a where a.cotizacionId=:cotizacionId"),
+	@NamedQuery(name="AgriCotizacionEndoso.buscarCotizacionIdAnexo", query="SELECT a FROM AgriCotizacionEndoso a where a.cotizacionId=:cotizacionId and a.anexo=:anexo"),
+	@NamedQuery(name="AgriCotizacionEndoso.buscarId", query="SELECT a FROM AgriCotizacionEndoso a where a.id=:id")
+})
+
+public class AgriCotizacionEndoso implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	private BigInteger id;
+
+	@Column(name="cotizacion_id")
+	private BigInteger cotizacionId;
+
+	private Timestamp fecha_Proceso;
+
+	private String tipo;
+
+	private double valor;
+	
+	private int tipoSubEndoso;
+	
+	private double numHectareas;
+	
+	private double sumaAnteriorMov;
+	
+	private double primaAnteriorMov;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="fecha_canal")
+	private Date fechaCanal;
+	
+	private String anexo;
+			
+	public String getAnexo() {
+		return anexo;
+	}
+
+	public void setAnexo(String anexo) {
+		this.anexo = anexo;
+	}
+
+	public Date getFechaCanal() {
+		return fechaCanal;
+	}
+
+	public void setFechaCanal(Date fechaCanal) {
+		this.fechaCanal = fechaCanal;
+	}
+
+	public double getSumaAnteriorMov() {
+		return sumaAnteriorMov;
+	}
+
+	public void setSumaAnteriorMov(double sumaAnteriorMov) {
+		this.sumaAnteriorMov = sumaAnteriorMov;
+	}
+
+	public double getPrimaAnteriorMov() {
+		return primaAnteriorMov;
+	}
+
+	public void setPrimaAnteriorMov(double primaAnteriorMov) {
+		this.primaAnteriorMov = primaAnteriorMov;
+	}
+
+	public int getTipoSubEndoso() {
+		return tipoSubEndoso;
+	}
+
+	public void setTipoSubEndoso(int tipoSubEndoso) {
+		this.tipoSubEndoso = tipoSubEndoso;
+	}
+
+	public double getNumHectareas() {
+		return numHectareas;
+	}
+
+	public void setNumHectareas(double numHectareas) {
+		this.numHectareas = numHectareas;
+	}
+
+	@Column(name="suma_Asegurada")
+	private double sumaAsegurada;
+	
+	@Column(name="prima")
+	private double prima;
+	
+	public double getSumaAsegurada() {
+		return sumaAsegurada;
+	}
+
+	public void setSumaAsegurada(double sumaAsegurada) {
+		this.sumaAsegurada = sumaAsegurada;
+	}
+
+	public double getPrima() {
+		return prima;
+	}
+
+	public void setPrima(double prima) {
+		this.prima = prima;
+	}
+
+	public AgriCotizacionEndoso() {
+	}
+
+	public BigInteger getId() {
+		return this.id;
+	}
+
+	public void setId(BigInteger id) {
+		this.id = id;
+	}
+
+	public BigInteger getCotizacionId() {
+		return this.cotizacionId;
+	}
+
+	public void setCotizacionId(BigInteger cotizacionId) {
+		this.cotizacionId = cotizacionId;
+	}
+
+	public Timestamp getFecha_Proceso() {
+		return this.fecha_Proceso;
+	}
+
+	public void setFecha_Proceso(Timestamp fecha_Proceso) {
+		this.fecha_Proceso = fecha_Proceso;
+	}
+
+	public String getTipo() {
+		return this.tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+
+	public double getValor() {
+		return this.valor;
+	}
+
+	public void setValor(double valor) {
+		this.valor = valor;
+	}
+
+}

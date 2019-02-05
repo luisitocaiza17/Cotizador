@@ -1,0 +1,351 @@
+diff --git a/WebContent/WEB-INF/web.xml b/WebContent/WEB-INF/web.xml
+--- a/WebContent/WEB-INF/web.xml
++++ b/WebContent/WEB-INF/web.xml
+@@ -398,8 +398,8 @@
+   <servlet-mapping>
+     <servlet-name>com.qbe.cotizador.servlets.cotizacion.ContenedorController</servlet-name>
+     <url-pattern>/ContenedorController</url-pattern>
+-  </servlet-mapping>  
+-   <servlet>
++  </servlet-mapping>
++  <servlet>
+     <servlet-name>com.qbe.cotizador.servlets.cotizacion.vehiculos_dinamicos.tarificador.TarificadorController</servlet-name>
+     <servlet-class>com.qbe.cotizador.servlets.cotizacion.vehiculos_dinamicos.tarificador.TarificadorController</servlet-class>
+   </servlet>
+@@ -423,4 +423,4 @@
+     <persistence-context-ref-name>CotizadorWebPC</persistence-context-ref-name>
+     <persistence-unit-name>CotizadorWebPU</persistence-unit-name>
+   </persistence-context-ref>
+-</web-app>
++</web-app>
+\ No newline at end of file
+diff --git a/WebContent/dashboard/AgriParametroPorCanal.jsp b/WebContent/dashboard/AgriParametroPorCanal.jsp
+--- a/WebContent/dashboard/AgriParametroPorCanal.jsp
++++ b/WebContent/dashboard/AgriParametroPorCanal.jsp
+@@ -24,6 +24,12 @@
+ <script src="../static/js/Kendo/kendo.web.min.js"></script>
+ 
+ <style type="text/css">
++.modal .modal-dialog {
++	width: 80%;
++}
++.modal-body {
++    height:80%; 
++}
+ .tab_strip {
+ 	height: 200px;
+ }
+@@ -184,6 +190,8 @@
+ 							var allLiElementsToBeRemoved = up.wrapper.find('.k-file');
+ 							up._removeFileEntry(allLiElementsToBeRemoved );	
+ 							$("#soloActulizar").hide();
++							$("#cajaTexto").hide();
++							$("#mensajeTexto").hide();
+ 							limpiar();
+ 						});
+ 
+@@ -320,7 +328,8 @@
+ 
+ 	function actualizar(parametroId) {
+ 		$("#soloActulizar").show();
+-		
++		$("#cajaTexto").show();
++		$("#mensajeTexto").show();
+ 		var up = $('#files').data().kendoUpload;
+ 		var allLiElementsToBeRemoved = up.wrapper.find('.k-file');
+ 		up._removeFileEntry(allLiElementsToBeRemoved );	
+@@ -407,6 +416,8 @@
+ 	
+ 	function actualizarPorCanalCultivo(parametroCanalId,parametroCultivoId) {
+ 		$("#soloActulizar").show();
++		$("#cajaTexto").show();
++		$("#mensajeTexto").show();
+ 		limpiar();
+ 		if ((parametroCanalId === '' || typeof parametroCanalId === 'undefined') || (parametroCultivoId === '' || typeof parametroCultivoId === 'undefined'))
+ 			return false;
+@@ -503,7 +514,7 @@
+ 								<input type="hidden" class="form-control" id="id">
+ 								<table style="width: 100%">
+ 									<tr>
+-										<td>
++										<td width="45%">
+ 											<label style="width: 100%">Punto de Venta:</label>
+ 											<select id="canal" name="canal" data-placeholder="Seleccione una opción..." validationMessage="Campo requerido!!!" required="required" required>
+ 										</select></td>
+@@ -507,14 +518,10 @@
+ 											<label style="width: 100%">Punto de Venta:</label>
+ 											<select id="canal" name="canal" data-placeholder="Seleccione una opción..." validationMessage="Campo requerido!!!" required="required" required>
+ 										</select></td>
+-									</tr>
+-									<tr>
+-										<td><br /></td>
+-									</tr>
+-									<tr>
+-										<td>
++										<td width="10%"></td>
++										<td width="45%">
+ 											<label style="width: 100%">Tipo Cultivo:</label>
+ 											<select id="tipoCultivo" name="tipoCultivo" data-placeholder="Seleccione una opción..." validationMessage="Campo requerido!!!" required="required" required>
+ 											</select>
+ 										</td>
+ 									</tr>
+@@ -516,6 +523,7 @@
+ 											<label style="width: 100%">Tipo Cultivo:</label>
+ 											<select id="tipoCultivo" name="tipoCultivo" data-placeholder="Seleccione una opción..." validationMessage="Campo requerido!!!" required="required" required>
+ 											</select>
+ 										</td>
+ 									</tr>
++									
+ 									<tr>
+@@ -521,8 +529,5 @@
+ 									<tr>
+-										<td><br /></td>
+-									</tr>
+-									<tr>
+-										<td>
++										<td width="45%">
+ 											<label style="width: 100%">Nombre Plantilla:</label>
+ 											<input type="text" id="plantillaNombre" name="plantillaNombre" class="form-control" >
+ 										</td>
+@@ -526,7 +531,12 @@
+ 											<label style="width: 100%">Nombre Plantilla:</label>
+ 											<input type="text" id="plantillaNombre" name="plantillaNombre" class="form-control" >
+ 										</td>
++										<td width="10%"></td>
++										<td width="45%">
++											<label style="width: 100%">Plantilla ENSURANCE ID:</label>
++											<input type="number" id="plantillaId" name="plantillaId" class="form-control" >
++										</td>
+ 									</tr>
+ 									<tr>
+ 										<td><br /></td>
+ 									</tr>
+@@ -529,5 +539,6 @@
+ 									</tr>
+ 									<tr>
+ 										<td><br /></td>
+ 									</tr>
++									
+ 									<tr>
+@@ -533,5 +544,5 @@
+ 									<tr>
+-										<td>
+-											<label style="width: 100%">Plantilla ENSURANCE ID:</label>
+-											<input type="number" id="plantillaId" name="plantillaId" class="form-control" >
++										<td width="45%">
++											<label style="width: 100%">Numero Contenedor:</label>
++											<input type="text" id="sucursalEmisionId" name="sucursalEmisionId" class="form-control" >
+ 										</td>
+@@ -537,8 +548,7 @@
+ 										</td>
+-									</tr>
+-									<tr>
+-										<td>
++										<td width="10%"> </td>
++										<td width="45%">
+ 											<label style="width: 100%">Contenedor ENSURANCE ID:</label>
+ 											<input type="number" id="contenedorId" name="contenedorId" class="form-control" >
+ 										</td>
+ 									</tr>
+@@ -541,5 +551,6 @@
+ 											<label style="width: 100%">Contenedor ENSURANCE ID:</label>
+ 											<input type="number" id="contenedorId" name="contenedorId" class="form-control" >
+ 										</td>
+ 									</tr>
++									
+ 									<tr>
+@@ -545,11 +556,5 @@
+ 									<tr>
+-										<td>
+-											<label style="width: 100%">Numero Contenedor:</label>
+-											<input type="text" id="sucursalEmisionId" name="sucursalEmisionId" class="form-control" >
+-										</td>
+-									</tr>
+-									<tr id="soloActulizar">
+-										<td>
++										<td id="soloActulizar">
+ 											<label style="width: 100%">PLANTILLA ACTUAL:</label>
+ 											<button type="button" class="btn btn-default" id="plantillaActual" onclick="descargarPlantilla();" name="plantillaActual" >descargar</button>
+ 										</td>
+@@ -553,9 +558,8 @@
+ 											<label style="width: 100%">PLANTILLA ACTUAL:</label>
+ 											<button type="button" class="btn btn-default" id="plantillaActual" onclick="descargarPlantilla();" name="plantillaActual" >descargar</button>
+ 										</td>
+-									</tr>
+-									<tr>
+-										<td>
++										<td ></td>
++										<td >
+ 											<div class="row" style="display: inline;" id="content-Upload">
+ 											<div class="col-lg-12">
+ 												<div class="table-responsive">
+@@ -579,7 +583,8 @@
+ 										</div>
+ 										</td>
+ 									</tr>
+-									<tr>
+-										<td colspan="4">Texto:
++									
++									<tr id="mensajeTexto">
++										<td colspan="4"><h3>Texto:</h3>
+ 										</td>
+ 									</tr>
+@@ -584,10 +589,9 @@
+ 										</td>
+ 									</tr>
+-									<tr>
+-										<td colspan="4"><textarea id="texto" rows="10" cols="30"
+-									style="height: 100%; width: 100%; max-width: 400px;"
+-									class="form-control required"></textarea>
+-										</td>
++									<tr id="cajaTexto">
++										<td colspan="4"><textarea id="texto" rows="30" cols="30"
++												style="height: 500px; width: 100%; max-width: 600px;"
++												class="form-control"></textarea></td>
+ 									</tr>
+ 									
+ 									<tr>
+diff --git a/WebContent/dashboard/AgriUsuariosOffline.jsp b/WebContent/dashboard/AgriUsuariosOffline.jsp
+--- a/WebContent/dashboard/AgriUsuariosOffline.jsp
++++ b/WebContent/dashboard/AgriUsuariosOffline.jsp
+@@ -169,6 +169,10 @@
+ 	            type: "json",
+ 	            serverPaging: true,
+ 	            serverSorting: true,
++	            serverFiltering: true,
++	            filterable: {
++                    mode: "row"
++                },
+ 	            pageSize: 20,
+ 	            transport:{
+ 	            	read: {
+@@ -357,6 +361,7 @@
+ 		<!-- Button trigger modal -->
+ 		<button class="btn btn-primary" data-toggle="modal" data-target="#add" id="addButton">
+ 			<span class="glyphicon glyphicon-plus"></span> &nbsp; Nuevo
++			
+ 		</button>
+ 
+ 		<!-- Modal -->
+diff --git a/build/classes/com/qbe/cotizador/model/Cliente.class b/build/classes/com/qbe/cotizador/model/Cliente.class
+index a726db7131b3793cd13a36e1be2832277eb944a6..c866b59b23883a6c1d05180f27e0a6d4a62941cc
+GIT binary patch
+literal 2569
+zc$|e*ZFAE`5Z()ZA*pGIaY6|tnAbWXL=b2ThNPs90uD|>Y?BV*Lq?Ww%rUkOBsp#R
+zoBE-hDbtyL=nv?R>hw8DR$BR-c*Z{M-m}j>y4^kh{m-9&5zzyBoux5GS8drdKDM}F
+zOJDqKwWVwHWSe)5N>^~l=UGZII{)4}w2ZFhbc~(Wdv5z#$}lPfULlPJcZJnObgRn&
+z_5yQ{yPlBF>*_iqw#n#RMLM2uIsTs2?ejE+AI4}*v>D}V$0-`VE1b>~MwjY+#}_@m
+zCp-b_HOG;@<%85?G!q2;WPDI*JfAx@H>zy}UDs?p=MHx*pSOeD0G;)GWp|EF#3NJl
+z=tF?7uAAG<YV!@FjAi@cP~xTb8D()qqHW;?uGK~zq!~iMaz&GB%W{sIa>r3w@&UC1
+zo3?ahPuLct#gW8oLuhc!X>x2z;Z$U|-*W&+IaUu<nu&8A@Im;2s>BpZBszVLou~yE
+z&1y(v!u)Z-fjx-GJQa@cR~elt&F>*;1&Sx=4Bg7nHM-7dvL+n9-S4%y+YH+#Uz0Yv
+z#zODFj+`m~o$yXN+(;s1q&wWNLVuw&Kio^>#OQ90a&!(rF9c4PhH*;kIEdDw8bkfQ
+zihYoy0!?GjJKjr`_7!{raC6WFH<0|aK2Us*b2LL25$ydZ_-5(USe0;kpfAxVODE*k
+zw2G4PU5+l%EGRuar7>EOhEa(tC~?UKQmNK+G^b9#;AsFjh=%ODHs27c>bc0hr0S#Z
+zK6N1e5z1cFY;L2&+q->SL)=rHaj2$VKN>Mqaa|bXZS_6da$iYT^-21p+GcdSVb;t_
+zvuGDL>N{J-2n+MacihFgB-$%wH9@mOG*S5!+wy5F(T!4EDVF2QB_XUS+Y(c8aRe3W
+z`G0)av50s$D)|pD%({u>;oVkTDdWgw6o-MuAmE#(49!xO&f<9-clQ`g;ES1p{W<I@
+zSd&=K!=B=lrwedkYyv3SJ%VMhei8W4dy#JvmhxSO{iR1&V9v$7pJBZkZWIFpHwb=j
+z1pi{Vhq0y?{-B$`1*Es}t8@{~Q;HVoD?H^w5S8G=e-6BNA_5~O_?;GijR`V=^R6~{
+zDF{-*t3aznnT0!_Xfc`oK4O*whM5o*F{r2T&=}nVYFNnfF9{)EYlS?7KPlw$Ct6Ml
+zd5oCy2qCIGD)Be;twzYB<cX|kg_P-u?nE9Xg{&dw`w>FI{$TVJIfjL-CWV+<A<vLP
+zBV;uxq>7l$5kkVIWDu(BkxEj?mR5+V?~zJU$Sz{)BZPzlFh(0e%=2IrUgGIR@B)lB
+f-%{#X;K5+jXv?GR*xXU(tJvICW<53=%544%7qTs#
+
+diff --git a/build/classes/com/qbe/cotizador/model/Entidad.class b/build/classes/com/qbe/cotizador/model/Entidad.class
+index 42d023e5650a3e5e678e09c442cf903213126643..2e1a0d26cf4c5e944d2d0dc6463f18d0bc0c925d
+GIT binary patch
+literal 8970
+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
+
+diff --git a/build/classes/com/qbe/cotizador/model/Modelo.class b/build/classes/com/qbe/cotizador/model/Modelo.class
+index 3596722a05c78460ae95ba0b219ac16905714cea..0a14b0b43bfc8ef4aacbe98bcb611598249504fc
+GIT binary patch
+literal 7027
+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
+Z5<dvU50&^)AbzaGPvCR(+Kyg7{Rd!%upR&a
+

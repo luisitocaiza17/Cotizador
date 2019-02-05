@@ -1,0 +1,286 @@
+diff --git a/WebContent/WEB-INF/web.xml b/WebContent/WEB-INF/web.xml
+--- a/WebContent/WEB-INF/web.xml
++++ b/WebContent/WEB-INF/web.xml
+@@ -398,8 +398,8 @@
+   <servlet-mapping>
+     <servlet-name>com.qbe.cotizador.servlets.cotizacion.ContenedorController</servlet-name>
+     <url-pattern>/ContenedorController</url-pattern>
+-  </servlet-mapping>  
+-   <servlet>
++  </servlet-mapping>
++  <servlet>
+     <servlet-name>com.qbe.cotizador.servlets.cotizacion.vehiculos_dinamicos.tarificador.TarificadorController</servlet-name>
+     <servlet-class>com.qbe.cotizador.servlets.cotizacion.vehiculos_dinamicos.tarificador.TarificadorController</servlet-class>
+   </servlet>
+@@ -407,7 +407,7 @@
+     <servlet-name>com.qbe.cotizador.servlets.cotizacion.vehiculos_dinamicos.tarificador.TarificadorController</servlet-name>
+     <url-pattern>/TarificadorController</url-pattern>
+   </servlet-mapping>
+-    <servlet>
++  <servlet>
+     <servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.novacredit.VhNovacreditCotizacionController</servlet-name>
+     <servlet-class>com.qbe.cotizador.servlets.producto.vehiculo.novacredit.VhNovacreditCotizacionController</servlet-class>
+   </servlet>
+@@ -415,7 +415,6 @@
+     <servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.novacredit.VhNovacreditCotizacionController</servlet-name>
+     <url-pattern>/VhNovacreditCotizacionController</url-pattern>
+   </servlet-mapping>
+-  
+   <filter>
+     <filter-name>sitemesh</filter-name>
+     <filter-class>com.opensymphony.sitemesh.webapp.SiteMeshFilter</filter-class>
+@@ -432,4 +431,4 @@
+     <persistence-context-ref-name>CotizadorWebPC</persistence-context-ref-name>
+     <persistence-unit-name>CotizadorWebPU</persistence-unit-name>
+   </persistence-context-ref>
+-</web-app>
++</web-app>
+\ No newline at end of file
+diff --git a/WebContent/dashboard/AgriAprobadosObservaciones.jsp b/WebContent/dashboard/AgriAprobadosObservaciones.jsp
+--- a/WebContent/dashboard/AgriAprobadosObservaciones.jsp
++++ b/WebContent/dashboard/AgriAprobadosObservaciones.jsp
+@@ -310,10 +310,12 @@
+             columns: [
+ 						{ field: "id", title: "Id Cotización", width: "60px"},
+ 						{ field: "idCotizacion2", title: "Id Agricola.", width: "60px"},
+-						{ field: "Ciclo", title: "Periodo" , width: "160px"},
++						{ field: "Confirmacion", title: "Confirmación Canal", width: "100px",headerAttributes: { style: "white-space: normal"},attributes:{style:"color: red;"}},
++						{ field: "EstadoCotizacion", title: "Estado", width: "100px"},	
++						{ field: "Ciclo", title: "Periodo" , width: "160px",hidden: true, exportar: true},
+ 						{ field: "FechaElaboracion", title: "Fecha Elaboración",type:"date", width: "100px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 						{ field: "IdentificacionCliente", title: "Identificación Cliente", width: "90px",headerAttributes: { style: "white-space: normal"}},
+ 						{ field: "NombresCliente", title: "Cliente", width: "100px",headerAttributes: { style: "white-space: normal"}},
+ 						{ field: "CanalNombre", title: "Sponsor", width: "80px"},
+ 						{ field: "PuntoVenta", title: "Canal", width: "120px"},
+ 						{ field: "NumeroTramite", title: "Nro. Trámite", width: "80px",headerAttributes: { style: "white-space: normal"}},
+@@ -314,10 +316,10 @@
+ 						{ field: "FechaElaboracion", title: "Fecha Elaboración",type:"date", width: "100px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 						{ field: "IdentificacionCliente", title: "Identificación Cliente", width: "90px",headerAttributes: { style: "white-space: normal"}},
+ 						{ field: "NombresCliente", title: "Cliente", width: "100px",headerAttributes: { style: "white-space: normal"}},
+ 						{ field: "CanalNombre", title: "Sponsor", width: "80px"},
+ 						{ field: "PuntoVenta", title: "Canal", width: "120px"},
+ 						{ field: "NumeroTramite", title: "Nro. Trámite", width: "80px",headerAttributes: { style: "white-space: normal"}},
+-						{ field: "VigenciaDias", title: "Vigencia en Dias", width: "120px"},
++						{ field: "VigenciaDias", title: "Vigencia en Dias", width: "120px",hidden: true, exportar: true},
+ 						{ field: "fechaVigenciaDesde", title: "Vigencia Desde" ,type:"date", width: "120px", hidden: true, exportar: true},
+ 						{ field: "fechaVigenciaHasta", title: "Vigencia Hasta",type:"date", width: "120px", hidden: true, exportar: true},
+ 						{ field: "tipoCultivoNombre", title: "Cultivo", width: "100px"},
+@@ -325,7 +327,7 @@
+ 						{ field: "cantonNombre", title: "Cantón", width: "100px"},
+ 						{ field: "parroquiaNombre", title: "Parroquia", width: "100px"},
+ 						{ field: "DireccionSiembra", title: "Sitio Inversión", width: "100px"},
+-						{ field: "Telefono", title: "Telefono", width: "100px"},
++						{ field: "Telefono", title: "Telefono", width: "100px",hidden: true, exportar: true},
+ 						{ field: "hectareasAsegurables", title: "Has. Aseg", width: "50px",headerAttributes: { style: "white-space: normal"}},
+ 						{ field: "sumaAseguradaTotal", title: "Monto Asegurado", width: "70px",headerAttributes: { style: "white-space: normal"}},
+ 						{ field: "fechaSiembra", title: "Fecha Siembra", type:"date", format:"{0:dd/MM/yyyy}", width: "100px",headerAttributes: { style: "white-space: normal"}},
+@@ -342,7 +344,7 @@
+ 						{ field: "DisponeRiego", title: "Dispone Riego", width: "50px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true },
+ 						{ field: "DisponeAsistencia", title: "Dispone Asistencia", width: "50px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 						{ field: "AgricultorTecnificado", title: "Agricultor es Tecnificado", width: "50px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+-						{ field: "ObservacionRegla", title: "Observación", width: "160px"},
++						{ field: "ObservacionRegla", title: "Observación", width: "160px",hidden: true, exportar: true},
+ 						{ field: "EstadoCotizacion", title: "Estado", width: "100px", hidden: true, exportar: true},                     
+                       { command: { text: "Ver Detalle", click: fnEventoClick }, title: " ", width: "100px"}],
+                 height: 500,
+@@ -356,8 +358,14 @@
+                 scrollable: {
+                     virtual: true
+                 },
+-            }); 
+-
++            }).on("click", "tbody td", function(e) {
++              	var cell = $(e.currentTarget);
++                var cellIndex = cell[0].cellIndex;
++                var grid = $("#grid").data("kendoGrid");
++                var column = grid.columns[0];
++                var dataItem = grid.dataItem(cell.closest("tr"));
++                cargarEndoso(dataItem[column.field]);
++            });
+ 		
+ 		var exportFlag=false;
+ 		$("#grid").data("kendoGrid").bind("excelExport", function (e) {
+@@ -424,6 +432,87 @@
+ 						});
+ 	});
+ 	
++	
++	function cargarEndoso (id){
++		$("#grid2").kendoGrid({
++			toolbar: ["excel"],
++            excel: {
++                fileName: "QBE_Endoso.xlsx",
++                filterable: true,
++                allPages: true
++            },
++			dataSource: {
++                type: "json",
++                serverPaging: true,
++                serverSorting: true,
++                pageSize: 20,
++                transport:{
++                	read: {
++                		url: "../AgriCotizacionEndosoController",
++                		data: {
++                			"tipoConsulta" : "cargarEndoso",
++    						"id" : id
++    					}
++                	}
++                	
++                },
++                schema: {
++                	data: "Data",
++                	total: "Total",
++                }
++            },
++            columns: [
++						{ field: "id", title: "Id Endoso", width: "90px",hidden: true, exportar: true},
++						{ field: "cotizacionId", title: "Id Cotizacion.", width: "60px", hidden: true, exportar: true},
++						{ field: "tipo", title: "Tipo Endoso", width: "80px"},
++						{ field: "sumaAsegurada", title: "Suma Asegurada", width: "90px"},
++						{ field: "prima", title: "Prima", width: "50px"},
++						{ field: "fecha_Proceso", title: "fecha",type:"date",format:"{0:dd/MM/yyyy}", width: "80px",headerAttributes: { style: "white-space: normal"}},
++						{ field: "valor", title: "valor", width: "60px"},
++						{ field: "tipoSubEndoso", title: "Tipo SubEndoso", width: "60px"},
++						{ field: "numHectareas", title: "Hectareas", width: "80px",headerAttributes: { style: "white-space: normal"}}
++						],
++                height: 500,
++                selectable: true,
++                resizable: true,
++                pageable: {
++                    info: true,
++                    numeric: false,
++                    previousNext: false
++                },
++                scrollable: {
++                    virtual: true
++                },
++            })
++		
++		var exportFlag=false;
++		$("#grid2").data("kendoGrid").bind("excelExport", function (e) {
++			var columns = e.sender.columns;
++			if (!exportFlag) {
++	            jQuery.each(columns, function (index) {
++	                if (this.exportar) {
++	                	e.sender.showColumn(this.field);
++	                }
++	            });
++	            
++	            //e.sender.showColumn("AgenteId");
++	            e.preventDefault();
++	            exportFlag = true;
++	            setTimeout(function () {
++	                e.sender.saveAsExcel();
++	            }, 1000);
++	        } else {
++	        	jQuery.each(columns, function (index) {
++	                if (this.exportar) {
++	                	e.sender.hideColumn(this.field);
++	                }
++	            });
++	            exportFlag = false;
++	        }
++		});
++		
++	}
++	
+ 	function fnEventoClick(e) {
+         e.preventDefault();
+         var dataItem = this.dataItem($(e.currentTarget).closest("tr"));       
+@@ -836,9 +925,9 @@
+ 	</div>	
+ 
+ 	<!-- Table -->
+-	<div class="row">
+-		<div class="col-lg-12">
++	<div class="row">		
++		<div class="col-lg-6">
+ 			<div class="table-responsive">				
+ 				<div id="grid"></div>
+ 			</div>
+ 		</div>
+@@ -841,7 +930,12 @@
+ 			<div class="table-responsive">				
+ 				<div id="grid"></div>
+ 			</div>
+ 		</div>
++		<div class="col-lg-1">
++		</div>
++		<div class="col-lg-5">
++			<div id="grid2"></div>
++		</div>
+ 	</div>
+ </body>
+ </html>
+\ No newline at end of file
+diff --git a/WebContent/dashboard/AgriCliente.jsp b/WebContent/dashboard/AgriCliente.jsp
+--- a/WebContent/dashboard/AgriCliente.jsp
++++ b/WebContent/dashboard/AgriCliente.jsp
+@@ -318,7 +318,7 @@
+ 				<thead>
+ 					<tr>
+ 						<td colspan="6" style="font-weight: bold;" align="center">Buscador
+-								Cotizaciones Pendientes por Aprobar</td>
++								de clientes</td>
+ 
+ 					</tr>
+ 					<tr>
+diff --git a/WebContent/dashboard/LogCotizaciones.jsp b/WebContent/dashboard/LogCotizaciones.jsp
+--- a/WebContent/dashboard/LogCotizaciones.jsp
++++ b/WebContent/dashboard/LogCotizaciones.jsp
+@@ -67,7 +67,7 @@
+ 		var agenteList = "";
+ 		
+ 		$(document).ready(function() {
+-				activarMenu("ResumenCotizaciones");
++				activarMenu("LogCotizaciones");
+ 				
+ 				$("#loading").hide();
+ 				
+diff --git a/WebContent/dashboard/agriVariables.jsp b/WebContent/dashboard/agriVariables.jsp
+--- a/WebContent/dashboard/agriVariables.jsp
++++ b/WebContent/dashboard/agriVariables.jsp
+@@ -6,7 +6,7 @@
+ <head>
+ <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ <meta http-equiv="Cache-control" content="no-cache">
+-<title>Cotizaciones Agr&iacute;cola Log - CotizadorQBE</title>
++<title>Variables - CotizadorQBE</title>
+ <!-- <script src="../static/js/jquery.min.js"></script> -->
+ <script src="../static/js/cotizador/comun.js"></script>
+ <link href="../static/css/loading.css" rel="stylesheet">
+@@ -67,7 +67,7 @@
+ 		var agenteList = "";
+ 		
+ 		$(document).ready(function() {
+-				activarMenu("agriVariable");
++				activarMenu("agriVariables");
+ 				
+ 				$("#loading").hide();
+ 				
+diff --git a/build/classes/com/qbe/cotizador/model/Cliente.class b/build/classes/com/qbe/cotizador/model/Cliente.class
+index a726db7131b3793cd13a36e1be2832277eb944a6..c866b59b23883a6c1d05180f27e0a6d4a62941cc
+GIT binary patch
+literal 2569
+zc$|e*ZFAE`5Z()ZA*pGIaY6|tnAbWXL=b2ThNPs90uD|>Y?BV*Lq?Ww%rUkOBsp#R
+zoBE-hDbtyL=nv?R>hw8DR$BR-c*Z{M-m}j>y4^kh{m-9&5zzyBoux5GS8drdKDM}F
+zOJDqKwWVwHWSe)5N>^~l=UGZII{)4}w2ZFhbc~(Wdv5z#$}lPfULlPJcZJnObgRn&
+z_5yQ{yPlBF>*_iqw#n#RMLM2uIsTs2?ejE+AI4}*v>D}V$0-`VE1b>~MwjY+#}_@m
+zCp-b_HOG;@<%85?G!q2;WPDI*JfAx@H>zy}UDs?p=MHx*pSOeD0G;)GWp|EF#3NJl
+z=tF?7uAAG<YV!@FjAi@cP~xTb8D()qqHW;?uGK~zq!~iMaz&GB%W{sIa>r3w@&UC1
+zo3?ahPuLct#gW8oLuhc!X>x2z;Z$U|-*W&+IaUu<nu&8A@Im;2s>BpZBszVLou~yE
+z&1y(v!u)Z-fjx-GJQa@cR~elt&F>*;1&Sx=4Bg7nHM-7dvL+n9-S4%y+YH+#Uz0Yv
+z#zODFj+`m~o$yXN+(;s1q&wWNLVuw&Kio^>#OQ90a&!(rF9c4PhH*;kIEdDw8bkfQ
+zihYoy0!?GjJKjr`_7!{raC6WFH<0|aK2Us*b2LL25$ydZ_-5(USe0;kpfAxVODE*k
+zw2G4PU5+l%EGRuar7>EOhEa(tC~?UKQmNK+G^b9#;AsFjh=%ODHs27c>bc0hr0S#Z
+zK6N1e5z1cFY;L2&+q->SL)=rHaj2$VKN>Mqaa|bXZS_6da$iYT^-21p+GcdSVb;t_
+zvuGDL>N{J-2n+MacihFgB-$%wH9@mOG*S5!+wy5F(T!4EDVF2QB_XUS+Y(c8aRe3W
+z`G0)av50s$D)|pD%({u>;oVkTDdWgw6o-MuAmE#(49!xO&f<9-clQ`g;ES1p{W<I@
+zSd&=K!=B=lrwedkYyv3SJ%VMhei8W4dy#JvmhxSO{iR1&V9v$7pJBZkZWIFpHwb=j
+z1pi{Vhq0y?{-B$`1*Es}t8@{~Q;HVoD?H^w5S8G=e-6BNA_5~O_?;GijR`V=^R6~{
+zDF{-*t3aznnT0!_Xfc`oK4O*whM5o*F{r2T&=}nVYFNnfF9{)EYlS?7KPlw$Ct6Ml
+zd5oCy2qCIGD)Be;twzYB<cX|kg_P-u?nE9Xg{&dw`w>FI{$TVJIfjL-CWV+<A<vLP
+zBV;uxq>7l$5kkVIWDu(BkxEj?mR5+V?~zJU$Sz{)BZPzlFh(0e%=2IrUgGIR@B)lB
+f-%{#X;K5+jXv?GR*xXU(tJvICW<53=%544%7qTs#
+

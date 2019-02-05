@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CondicionesParticulares11" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="2ce2edb2-0cc8-4daa-8003-de8021d4a968">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="COTIZADOR"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="cot_Id" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT DISTINCT COT.ID AS COTIZACIONID, ENT.ID, COT.AGENTE_ID, ENT.NOMBRE_COMPLETO,
+VIGP.NOMBRE, COT.TASA_PRODUCTO_VALOR, COT.SUMA_ASEGURADA_TOTAL, VIGP.ID AS VIGENCIA
+FROM ENTIDAD ENT INNER JOIN CLIENTE CLI
+ON ENT.ID = CLI.entidad_id INNER JOIN COTIZACION COT
+ON CLI.ID = COT.CLIENTE_ID INNER JOIN AGENTE AGE
+ON COT.AGENTE_ID = AGE.ID INNER JOIN VIGENCIA_POLIZA VIGP
+ON COT.VIGENCIA_POLIZA_ID = VIGP.ID
+AND COT.ID = $P{cot_Id}]]>
+	</queryString>
+	<field name="COTIZACIONID" class="java.lang.Long"/>
+	<field name="ID" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="AGENTE_ID" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="NOMBRE_COMPLETO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="NOMBRE" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TASA_PRODUCTO_VALOR" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="SUMA_ASEGURADA_TOTAL" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="VIGENCIA" class="java.lang.Long"/>
+	<detail>
+		<band height="660" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="40" width="448" height="20" uuid="388eeab3-81e8-405c-a1b0-5582c15e0111"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ARTÍCULO N° 11: AVISOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="71" width="490" height="66" uuid="a32de603-1d81-43b4-9a50-9dee4866b276"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Para la presentación de los avisos de agravación de riesgo, siniestro, el Asegurado, su representante o beneficiario deberá  comunicar vía telefónica a Seguros Sucre S.A. en los plazos  establecidos en este documento, y deberá entregar en un plazo no mayor de cinco 5 días los documentos  de sustento del siniestro con carácter obligatorio, para el inicio del proceso de reclamo.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="149" width="195" height="20" uuid="c33a8310-00ac-48b0-b1fb-bade40166698"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Plazos para presentar aviso:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="180" width="490" height="30" uuid="863debe2-9827-48c8-bbfc-c055bdf07055"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Para agravación de Riesgo 12 horas luego de conocido el evento que provoco la agravación del riesgo.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="271" width="490" height="78" uuid="2119e278-dc22-4547-8095-e3f1227fb057"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[En caso de que un animal asegurado muera a causa de un riesgo cubierto, el tomador del seguro, Asegurado o beneficiario deberá comunicar a la compañía de seguros dentro de los plazos estipulados en el formato establecido, entregando esta documentación directamente en las oficinas de la Aseguradora,  institución donde contrato la póliza o a través de MAGAP, con un plazo de cinco días posteriores al siniestro.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="240" width="448" height="20" uuid="bba0b970-87b2-4a19-b148-cf587c14069e"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ARTÍCULO N° 12: OBLIGACIONES DEL ASEGURADO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="210" width="490" height="20" uuid="253a41f3-9f36-4437-848a-8cf894b91cac"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Para aviso de siniestro 48 horas ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="352" width="490" height="20" uuid="1a854e25-acd5-4d1b-b10d-9ce95d8237d0"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Deberá indicar como mínimo los siguientes datos:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="376" width="459" height="19" uuid="74579074-7b98-43f1-ab1e-9d2a5fb4dc71"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- Nombres y apellidos del asegurado.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="517" width="490" height="30" uuid="41e99216-dc35-45b0-a8bb-ce567eae83f6"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Adicionalmente como documentación obligatoria de sustento para el reclamo, el cliente deberá enviar a la Compañía de Seguros:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="550" width="458" height="19" uuid="12a67242-d286-4ff5-b72a-0c549b78cf5f"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- Tres fotografías (frente, lado izquierdo y lado derecho), si existe un video puede incluirse.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="399" width="459" height="19" uuid="fe96adcd-65d9-4d92-95da-8047f9bf21ab"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- Numero de póliza.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="421" width="459" height="20" uuid="6a205e7f-12f4-456a-b8d0-5d95c3eba86e"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- Fecha del siniestro.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="445" width="459" height="20" uuid="f7dc1b28-5f8b-444a-aaf7-674124d77e73"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- Lugar del siniestro.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="468" width="459" height="20" uuid="ad972591-1fc3-4c7a-bbc9-cfdd6d5d4e81"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- Causa del siniestro.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="491" width="459" height="17" uuid="d9112def-c43e-4c89-99b2-09b1be4f5cd7"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- Número telefónico del veterinario que dio la asistencia.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="573" width="458" height="50" uuid="69602ef8-75eb-4ae3-b5b5-9145267afc8d"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- Carta descriptiva de los hechos y antecedentes que se presentaron antes del sinestro, mencionando la asistencia de primeros auxilios (en que consistió), que se usó en cuanto a medicación o labores necesarias, hora de ocurrencia.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="626" width="458" height="30" uuid="a53e2ada-e052-44dc-a2a4-96f978423006"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- El asegurado deberá presentar el certificado de la muerte del animal emitido por un veterinario. ( El costo lo asume el Asegurado)]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<summary>
+		<band height="56">
+			<subreport>
+				<reportElement x="0" y="0" width="550" height="50" uuid="fb4b4146-7d28-43ac-8d72-e44144f2bdb6"/>
+				<subreportParameter name="cot_Id">
+					<subreportParameterExpression><![CDATA[$P{cot_Id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["Ganadero/CondicionesParticulares12.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

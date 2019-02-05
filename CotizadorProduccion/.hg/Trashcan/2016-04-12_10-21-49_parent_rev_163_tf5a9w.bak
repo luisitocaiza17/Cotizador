@@ -1,0 +1,21 @@
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriImportarDatosOfflineController.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriImportarDatosOfflineController.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriImportarDatosOfflineController.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriImportarDatosOfflineController.java
+@@ -77,7 +77,7 @@
+ 							String rutaPlantilla = AgriSucreNotificacionErrores.class.getProtectionDomain().getCodeSource()
+ 									.getLocation().getPath();
+ 							rutaPlantilla=rutaPlantilla.replace("AgriSucreNotificacionErrores.class", "");
+-							String rutaRelativaReporte="../../../../../../../../static/CotizacionesOffline/";
++							String rutaRelativaReporte="../../../../../../../../static/plantillas/Agricola/CotizacionesOffline/";
+ 							rutaPlantilla=rutaPlantilla+rutaRelativaReporte;
+ 							
+ 							try {
+@@ -106,7 +106,7 @@
+ 				//Leo el contenido del archivo que viene en la ruta seleccionada en pantalla
+ 				String textoJson="";
+ 				try{
+-					String rutaPlantilla = this.getServletContext().getRealPath("") + "/static/CotizacionesOffline/"+nombreArchivo;
++					String rutaPlantilla = this.getServletContext().getRealPath("") + "/static/plantillas/Agricola/CotizacionesOffline/"+nombreArchivo;
+ 					textoJson = Files.toString(new File(rutaPlantilla), Charsets.UTF_8);
+ 				}
+ 				catch(IOException ex){

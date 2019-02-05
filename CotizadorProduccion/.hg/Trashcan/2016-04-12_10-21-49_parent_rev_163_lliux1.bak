@@ -1,0 +1,38 @@
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java
+@@ -345,7 +345,7 @@
+ 		//Numero de contenedor
+ 		
+ 		//Armado Final de parametros a mostrar en la poliza
+-		parametersHeader.put("NumeroPoliza", agriParametroXCanal.getContenedorEnsuranceId()+"-"+detalleCotizacion.getId().toString());
++		parametersHeader.put("NumeroPoliza", agriParametroXCanal.getContenedorNumero()+"-"+detalleCotizacion.getId().toString());
+ 		//buscamos el cliente
+ 		Cliente cliente = new Cliente();
+ 		ClienteDAO clienteDAO = new ClienteDAO();
+diff --git a/WebContent/dashboard/AgriParametroPorCanal.jsp b/WebContent/dashboard/AgriParametroPorCanal.jsp
+--- a/WebContent/dashboard/AgriParametroPorCanal.jsp
++++ b/WebContent/dashboard/AgriParametroPorCanal.jsp
+@@ -180,6 +180,9 @@
+ 						/*Fin controloes grabar*/
+ 						
+ 						$("#addButton").click(function(){
++							var up = $('#files').data().kendoUpload;
++							var allLiElementsToBeRemoved = up.wrapper.find('.k-file');
++							up._removeFileEntry(allLiElementsToBeRemoved );	
+ 							$("#soloActulizar").hide();
+ 							limpiar();
+ 						});
+@@ -317,7 +320,11 @@
+ 
+ 	function actualizar(parametroId) {
+ 		$("#soloActulizar").show();
+-
++		
++		var up = $('#files').data().kendoUpload;
++		var allLiElementsToBeRemoved = up.wrapper.find('.k-file');
++		up._removeFileEntry(allLiElementsToBeRemoved );	
++ 			
+ 		limpiar();
+ 		
+ 		if (typeof parametroId === 'undefined')

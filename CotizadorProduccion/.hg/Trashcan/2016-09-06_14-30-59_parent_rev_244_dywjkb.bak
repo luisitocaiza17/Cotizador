@@ -1,0 +1,287 @@
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriAgriPacController.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriAgriPacController.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriAgriPacController.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriAgriPacController.java
+@@ -649,16 +649,7 @@
+ 			        			valorSuperBancos = Math.rint(Double.parseDouble(variable.getValor())*valorFinalPrima/100*100)/100;
+ 			                    cotizacion.setImpSuperBancos(valorSuperBancos);
+ 			                    valorBase = valorBase + valorSuperBancos;
+-			        		}
+-			        		
+-			        		if(variable.getNombre().equals("COMISION_AGRIPAC")){
+-			        			 cotizacion.setPorcentajeComision(Double.parseDouble(variable.getValor()));//%COMISION DE AGENTE
+-			        		}
+-			        		 	
+-			        		if(variable.getNombre().equals("AGENTE_AGRIPAC")){
+-			        			cotizacion.setAgenteId(new BigInteger(variable.getValor()));//AGENTE AL QUE SE ATA id cotizador
+-			        			
+-			        		}
++			        		}	
+ 			        		else if(variable.getNombre().equals("SUBTOTAL")){
+ 			                    valorSubTotal = Math.rint(valorBase*100)/100;
+ 			                }
+@@ -691,6 +682,8 @@
+ 						cotizacion.setTotalFactura(Double.parseDouble(""+roundOff));
+ 						
+ 			        }
++					cotizacion.setAgenteId(new BigInteger(PPuntoVenta.getAgenteId()));
++					cotizacion.setPorcentajeComision(Double.parseDouble(PPuntoVenta.getPorcentajeComision()));
+ 					cotizacion.setTasaProductoValor(tasa);
+ 					cotizacion.setEtapaWizard(3);
+ 					cotizacion.setClienteId(new BigInteger(cliente.getId()));
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriEcuaquimicaController.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriEcuaquimicaController.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriEcuaquimicaController.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriEcuaquimicaController.java
+@@ -641,16 +641,7 @@
+ 			        			valorSuperBancos = Math.rint(Double.parseDouble(variable.getValor())*valorFinalPrima/100*100)/100;
+ 			                    cotizacion.setImpSuperBancos(valorSuperBancos);
+ 			                    valorBase = valorBase + valorSuperBancos;
+-			        		}
+-			        		
+-			        		if(variable.getNombre().equals("COMISION_ECUAQUIMICA")){
+-			        			 cotizacion.setPorcentajeComision(Double.parseDouble(variable.getValor()));//%COMISION DE AGENTE
+-			        		}
+-			        		 	
+-			        		if(variable.getNombre().equals("AGENTE_ECUAQUIMICA")){
+-			        			cotizacion.setAgenteId(new BigInteger(variable.getValor()));//AGENTE AL QUE SE ATA
+-			        			
+-			        		}
++			        		}			        		
+ 			        		else if(variable.getNombre().equals("SUBTOTAL")){
+ 			                    valorSubTotal = Math.rint(valorBase*100)/100;
+ 			                }
+@@ -686,6 +677,8 @@
+ 					cotizacion.setTasaProductoValor(tasa);
+ 					cotizacion.setEtapaWizard(3);
+ 					cotizacion.setClienteId(new BigInteger(cliente.getId()));
++					cotizacion.setAgenteId(new BigInteger(PPuntoVenta.getAgenteId()));
++					cotizacion.setPorcentajeComision(Double.parseDouble(PPuntoVenta.getPorcentajeComision()));
+ 					
+ 					cotizacion.setEstado(estadoDAO.buscarPorNombre(	"Pendiente de Emitir", "Cotizacion"));
+ 					cotizacion.setFechaEmision(sq);
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriReglaController.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriReglaController.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriReglaController.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriReglaController.java
+@@ -7,9 +7,10 @@
+ import java.text.SimpleDateFormat;
+ import java.util.Date;
+ import java.util.List;
++
+ import javax.servlet.ServletException;
+ import javax.servlet.annotation.WebServlet;
+ import javax.servlet.http.HttpServlet;
+ import javax.servlet.http.HttpServletRequest;
+ import javax.servlet.http.HttpServletResponse;
+ import javax.servlet.http.HttpSession;
+@@ -10,8 +11,9 @@
+ import javax.servlet.ServletException;
+ import javax.servlet.annotation.WebServlet;
+ import javax.servlet.http.HttpServlet;
+ import javax.servlet.http.HttpServletRequest;
+ import javax.servlet.http.HttpServletResponse;
+ import javax.servlet.http.HttpSession;
++
+ import net.sf.json.JSONArray;
+ import net.sf.json.JSONObject;
+@@ -16,8 +18,10 @@
+ import net.sf.json.JSONArray;
+ import net.sf.json.JSONObject;
++
++import com.google.gson.Gson;
+ import com.qbe.cotizador.dao.entidad.CantonDAO;
+ import com.qbe.cotizador.dao.entidad.ProvinciaDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriReglaAuditoriaDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriReglaAuditoriaNuevaDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriReglaAuditoriaOriginalDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriReglaDAO;
+@@ -18,12 +22,13 @@
+ import com.qbe.cotizador.dao.entidad.CantonDAO;
+ import com.qbe.cotizador.dao.entidad.ProvinciaDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriReglaAuditoriaDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriReglaAuditoriaNuevaDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriReglaAuditoriaOriginalDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriReglaDAO;
++import com.qbe.cotizador.dao.producto.agricola.AgriReglaVtaDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriTipoCalculoDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriTipoCultivoDAO;
+ import com.qbe.cotizador.model.AgriRegla;
+ import com.qbe.cotizador.model.AgriReglaAuditoria;
+ import com.qbe.cotizador.model.AgriReglaNueva;
+ import com.qbe.cotizador.model.AgriReglaOriginal;
+@@ -24,9 +29,10 @@
+ import com.qbe.cotizador.dao.producto.agricola.AgriTipoCalculoDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriTipoCultivoDAO;
+ import com.qbe.cotizador.model.AgriRegla;
+ import com.qbe.cotizador.model.AgriReglaAuditoria;
+ import com.qbe.cotizador.model.AgriReglaNueva;
+ import com.qbe.cotizador.model.AgriReglaOriginal;
++import com.qbe.cotizador.model.AgriReglaVta;
+ import com.qbe.cotizador.model.AgriTipoCalculo;
+ import com.qbe.cotizador.model.AgriTipoCultivo;
+ import com.qbe.cotizador.model.Canton;
+@@ -57,6 +63,7 @@
+ 	 */
+ 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+ 		// TODO Auto-generated method stub
++		doPost(request, response);
+ 	}
+ 
+ 	/**
+@@ -81,6 +88,7 @@
+ 			String AceptabilidadHasta = request.getParameter("AceptabilidadHasta")==null?"":request.getParameter("AceptabilidadHasta");
+ 			String Observaciones = request.getParameter("Observaciones")==null?"":request.getParameter("Observaciones");
+ 			String Copy = request.getParameter("Copy")==null?"":request.getParameter("Copy");
++			String Estado = request.getParameter("Estado")==null?"":request.getParameter("Estado");
+ 			
+ 			JSONObject ReglaJSONObjetc = new JSONObject();
+ 			JSONArray ReglaJSONArray = new JSONArray();
+@@ -93,6 +101,8 @@
+ 			
+ 			// Activacion de la sesion y agregamosclie
+ 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
++			if(!Estado.equals(""))
++				agriRegla.setEstado(Integer.parseInt(Estado));
+ 			if (!ReglaId.equals(""))
+ 				agriRegla.setReglaId(new BigInteger(ReglaId) );
+ 			if (!TipoCultivoId.equals(""))
+@@ -122,8 +132,32 @@
+ 			if (!Observaciones.equals(""))
+ 				agriRegla.setObservaciones(Observaciones);
+ 			
+-			//if (!Estado.equals(""))
+-			//agriRegla.setEstado(new Integer(Estado));
++			if(tipoConsulta.equals("encontrarPorParametros")){
++				/*cargamos la tabla*/
++				int skip = request.getParameter("skip") == null ? 0 : Integer.parseInt(request.getParameter("skip"));
++				int take = request.getParameter("take") == null ? 20 : Integer.parseInt(request.getParameter("take"));
++				int EstadoId=1;
++				
++				if(Estado.equals("1"))
++					EstadoId=1;
++				else
++					EstadoId=0;
++				
++				AgriReglaVtaDAO agriReglaVtaDAO = new AgriReglaVtaDAO();
++				List<AgriReglaVta> data = agriReglaVtaDAO.BuscarPorParametrosKendo(ReglaId,TipoCultivoId,TipoCalculoId,ProvinciaId,CantonId,skip, take,EstadoId);
++				long total=agriReglaVtaDAO.BuscarPorParametrosKendoPorNumero(ReglaId,TipoCultivoId,TipoCalculoId,ProvinciaId,CantonId,skip, take,EstadoId);
++				DataSourceResult pg = new DataSourceResult();
++				pg.setTotal((int)total);
++				pg.setData(data);
++				
++				Gson gson = new Gson(); 
++				// convert the DataSourceReslt to JSON and write it to the response
++				response.setContentType("application/json; charset=ISO-8859-1");
++			    response.getWriter().print(gson.toJson(pg));
++			    return;	
++			}
++			
++			
+ 			if (tipoConsulta.equals("encontrarTodos"))
+ 			{
+ 				List<AgriRegla> results = agriReglaDAO.BuscarTodos();
+@@ -155,4 +189,5 @@
+ 			}
+ 			if (tipoConsulta.equals("obtenerPorId"))
+ 			{
++				String EstadoId = request.getParameter("EstadoConsulta")==null?"":request.getParameter("EstadoConsulta");
+ 				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+@@ -158,8 +193,8 @@
+ 				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+-				AgriRegla results =agriReglaDAO.BuscarPorId(new BigInteger(ReglaId));
++				AgriRegla results =agriReglaDAO.BuscarPorId(new BigInteger(ReglaId),Integer.parseInt(EstadoId));
+ 				result.put("ReglaId", results.getReglaId());
+ 				result.put("TipoCultivoId", results.getTipoCultivoId());
+ 				result.put("CicloId", results.getClicloId());
+ 				result.put("TipoCalculoId", results.getTipoCalculoId());
+ 				result.put("ProvinciaId", results.getProvinciaId());
+ 				result.put("CantonId", results.getCantonId());
+@@ -160,10 +195,10 @@
+ 				result.put("ReglaId", results.getReglaId());
+ 				result.put("TipoCultivoId", results.getTipoCultivoId());
+ 				result.put("CicloId", results.getClicloId());
+ 				result.put("TipoCalculoId", results.getTipoCalculoId());
+ 				result.put("ProvinciaId", results.getProvinciaId());
+ 				result.put("CantonId", results.getCantonId());
+-				
++				result.put("activo", results.getEstado());
+ 				result.put("CostoProduccion", results.getCostoProduccion());
+ 				result.put("Tasa", results.getTasa());
+ 				result.put("CostoMantenimiento", results.getCostoMantenimiento());
+@@ -179,9 +214,8 @@
+ 				result.put("Estado", results.getEstado());
+ 			}
+ 			if (tipoConsulta.equals("crear")){				
+-				agriRegla.setEstado(1);
+ 				agriRegla = agriReglaTransaction.crear(agriRegla);
+ 				auditoria(agriRegla, tipoConsulta, session);
+ 			}
+ 			
+ 			if (tipoConsulta.equals("editar")){				
+@@ -183,10 +217,8 @@
+ 				agriRegla = agriReglaTransaction.crear(agriRegla);
+ 				auditoria(agriRegla, tipoConsulta, session);
+ 			}
+ 			
+ 			if (tipoConsulta.equals("editar")){				
+-				
+-				agriRegla.setEstado(1);
+ 				auditoria(agriRegla, tipoConsulta, session);
+ 				agriReglaTransaction.editar(agriRegla);
+ 			}
+@@ -195,48 +227,6 @@
+ 					auditoria(agriRegla, tipoConsulta, session);
+ 					agriReglaTransaction.eliminar(agriRegla);
+ 				}
+-			
+-			if (tipoConsulta.equals("copiar")){				
+-				
+-				String[] list = Copy.split(",");
+-				for(String r : list){
+-					if(!r.equals("")){
+-						AgriRegla results =agriReglaDAO.BuscarPorId(new BigInteger(r));
+-						if(results != null){
+-							if (!TipoCultivoId.equals(""))
+-								results.setTipoCultivoId(new BigInteger(TipoCultivoId));
+-							if (!CicloId.equals(""))
+-								results.setClicloId(new BigInteger(CicloId));
+-							if (!TipoCalculoId.equals(""))
+-								results.setTipoCalculoId(new BigInteger(TipoCalculoId));
+-							if (!ProvinciaId.equals(""))
+-								results.setProvinciaId(new BigInteger(ProvinciaId));
+-							if (!CantonId.equals(""))
+-								results.setCantonId(new BigInteger(CantonId));
+-							if (!CostoProduccion.equals(""))
+-								results.setCostoProduccion(new Float(CostoProduccion));
+-							if (!Tasa.equals(""))
+-								results.setTasa(new Float(Tasa));
+-							if (!CostoMantenimiento.equals(""))
+-								results.setCostoMantenimiento(new Float(CostoMantenimiento));
+-							if (!AceptabilidadDesde.equals("")){
+-								Date fechaD = df.parse(AceptabilidadDesde);
+-								results.setAceptabilidadDesde(fechaD);
+-							}
+-							if (!AceptabilidadHasta.equals("")){
+-								Date fechaH = df.parse(AceptabilidadHasta);
+-								results.setAceptabilidadHasta(fechaH);
+-							}
+-							if (!Observaciones.equals(""))
+-								results.setObservaciones(Observaciones);
+-							
+-							results.setEstado(1);
+-							results = agriReglaTransaction.crear(results);
+-							auditoria(results, tipoConsulta, session);							
+-						}
+-					}
+-				}
+-			}
+ 			result.put("success", Boolean.TRUE);
+ 			response.setContentType("application/json; charset=ISO-8859-1"); 
+ 			result.write(response.getWriter());
+@@ -267,7 +257,7 @@
+ 		
+ 		/*Busco si existe el registro*/
+ 		AgriReglaDAO agriReglaDAO = new AgriReglaDAO();
+-		AgriRegla results =agriReglaDAO.BuscarPorId(arg.getReglaId());		
++		AgriRegla results =agriReglaDAO.BuscarPorIdTodos(arg.getReglaId());		
+ 		/*Busco si existe el registro*/
+ 		agriAuditoriaRegla.setReglaId(results.getReglaId());
+ 		agriAuditoriaRegla.setFechaModificacion(fechaValidacion);

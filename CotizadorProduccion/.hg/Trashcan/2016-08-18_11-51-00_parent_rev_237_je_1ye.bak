@@ -1,0 +1,670 @@
+diff --git a/WebContent/WEB-INF/web.xml b/WebContent/WEB-INF/web.xml
+deleted file mode 100644
+--- a/WebContent/WEB-INF/web.xml
++++ /dev/null
+@@ -1,426 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+-  <display-name>CotizadorWeb</display-name>
+-  <welcome-file-list>
+-    <welcome-file>index.html</welcome-file>
+-    <welcome-file>index.htm</welcome-file>
+-    <welcome-file>index.jsp</welcome-file>
+-    <welcome-file>default.html</welcome-file>
+-    <welcome-file>default.htm</welcome-file>
+-    <welcome-file>default.jsp</welcome-file>
+-  </welcome-file-list>
+-  <listener>
+-    <listener-class>com.sun.xml.ws.transport.http.servlet.WSServletContextListener</listener-class>
+-  </listener>
+-  <servlet>
+-    <servlet-name>CotizadorWS</servlet-name>
+-    <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+-    <load-on-startup>1</load-on-startup>
+-  </servlet>
+-  <listener>
+-    <listener-class>org.apache.commons.fileupload.servlet.FileCleanerCleanup</listener-class>
+-  </listener>
+-  <servlet>
+-    <display-name>Apache-Axis Servlet</display-name>
+-    <servlet-name>AxisServlet</servlet-name>
+-    <servlet-class>org.apache.axis.transport.http.AxisServlet</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>AxisServlet</servlet-name>
+-    <url-pattern>/servlet/AxisServlet</url-pattern>
+-  </servlet-mapping>
+-  <servlet-mapping>
+-    <servlet-name>AxisServlet</servlet-name>
+-    <url-pattern>*.jws</url-pattern>
+-  </servlet-mapping>
+-  <servlet-mapping>
+-    <servlet-name>AxisServlet</servlet-name>
+-    <url-pattern>/services/*</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <display-name>Axis Admin Servlet</display-name>
+-    <servlet-name>AdminServlet</servlet-name>
+-    <servlet-class>org.apache.axis.transport.http.AdminServlet</servlet-class>
+-    <load-on-startup>100</load-on-startup>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>AdminServlet</servlet-name>
+-    <url-pattern>/servlet/AdminServlet</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.seguridad.AccesoSistemaController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.seguridad.AccesoSistemaController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.seguridad.AccesoSistemaController</servlet-name>
+-    <url-pattern>/AccesoSistemaController</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.entidad.SucursalController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.entidad.SucursalController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.entidad.SucursalController</servlet-name>
+-    <url-pattern>/SucursalController</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.entidad.PuntoVentaController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.entidad.PuntoVentaController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.entidad.PuntoVentaController</servlet-name>
+-    <url-pattern>/PuntoVentaController</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.entidad.EntidadController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.entidad.EntidadController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.entidad.EntidadController</servlet-name>
+-    <url-pattern>/EntidadController</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.MarcaController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.producto.vehiculo.MarcaController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.MarcaController</servlet-name>
+-    <url-pattern>/MarcaController</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.ModeloController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.producto.vehiculo.ModeloController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.ModeloController</servlet-name>
+-    <url-pattern>/ModeloController</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.TipoExtraController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.producto.vehiculo.TipoExtraController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.TipoExtraController</servlet-name>
+-    <url-pattern>/TipoExtraController</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.entidad.TipoIdentificacionController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.entidad.TipoIdentificacionController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.entidad.TipoIdentificacionController</servlet-name>
+-    <url-pattern>/TipoIdentificacionController</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.seguridad.VariableSistemaController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.seguridad.VariableSistemaController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.seguridad.VariableSistemaController</servlet-name>
+-    <url-pattern>/VariableSistemaController</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.cotizacion.ProductoGrupoController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.cotizacion.ProductoGrupoController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.cotizacion.ProductoGrupoController</servlet-name>
+-    <url-pattern>/ProductoGrupoController</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.entidad.UnidadNegocioController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.entidad.UnidadNegocioController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.entidad.UnidadNegocioController</servlet-name>
+-    <url-pattern>/UnidadNegocioController</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.entidad.UnidadProduccionController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.entidad.UnidadProduccionController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.entidad.UnidadProduccionController</servlet-name>
+-    <url-pattern>/UnidadProduccionController</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.entidad.UsuarioXPuntoVentaController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.entidad.UsuarioXPuntoVentaController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.entidad.UsuarioXPuntoVentaController</servlet-name>
+-    <url-pattern>/UsuarioXPuntoVentaController</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.cotizacion.MotivoDescuentoController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.cotizacion.MotivoDescuentoController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.cotizacion.MotivoDescuentoController</servlet-name>
+-    <url-pattern>/MotivoDescuentoController</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.ObjetoVehiculoController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.producto.vehiculo.ObjetoVehiculoController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.ObjetoVehiculoController</servlet-name>
+-    <url-pattern>/ObjetoVehiculoController</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.reportes.ReportesController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.reportes.ReportesController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.reportes.ReportesController</servlet-name>
+-    <url-pattern>/ReportesController</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.entidad.EmpleadoController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.entidad.EmpleadoController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.entidad.EmpleadoController</servlet-name>
+-    <url-pattern>/EmpleadoController</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.seguridad.ConfirmarMailController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.seguridad.ConfirmarMailController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.seguridad.ConfirmarMailController</servlet-name>
+-    <url-pattern>/ConfirmarMail</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.cotizacion.ConfirmarSolicitudDescuentoController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.cotizacion.ConfirmarSolicitudDescuentoController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.cotizacion.ConfirmarSolicitudDescuentoController</servlet-name>
+-    <url-pattern>/ConfirmarSolicitudDescuento</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.seguridad.SalirSistemaController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.seguridad.SalirSistemaController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.seguridad.SalirSistemaController</servlet-name>
+-    <url-pattern>/SalirSistema</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.ColorController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.producto.vehiculo.ColorController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.ColorController</servlet-name>
+-    <url-pattern>/ColorController</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.cotizacion.CotizacionController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.cotizacion.CotizacionController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.cotizacion.CotizacionController</servlet-name>
+-    <url-pattern>/CotizacionController</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.EmisionVHController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.producto.vehiculo.EmisionVHController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.EmisionVHController</servlet-name>
+-    <url-pattern>/EmisionVHController</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.entidad.UPLAController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.entidad.UPLAController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.entidad.UPLAController</servlet-name>
+-    <url-pattern>/UPLAController</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.inspeccion.ComentarioSolicitudInspeccionController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.inspeccion.ComentarioSolicitudInspeccionController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.inspeccion.ComentarioSolicitudInspeccionController</servlet-name>
+-    <url-pattern>/ComentarioSolicitudInspeccionController</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.archivos.CargaArchivosController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.archivos.CargaArchivosController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.archivos.CargaArchivosController</servlet-name>
+-    <url-pattern>/CargaArchivosController</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.archivos.DocumentoVisadoController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.archivos.DocumentoVisadoController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.archivos.DocumentoVisadoController</servlet-name>
+-    <url-pattern>/DocumentoVisadoController</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculocerrado.DetalleProductoController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.producto.vehiculocerrado.DetalleProductoController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculocerrado.DetalleProductoController</servlet-name>
+-    <url-pattern>/DetalleProductoController</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculocerrado.GrupoPorProductoController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.producto.vehiculocerrado.GrupoPorProductoController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculocerrado.GrupoPorProductoController</servlet-name>
+-    <url-pattern>/GrupoPorProductoController</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculocerrado.GrupoProductoController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.producto.vehiculocerrado.GrupoProductoController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculocerrado.GrupoProductoController</servlet-name>
+-    <url-pattern>/GrupoProductoController</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculocerrado.TasaProductoController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.producto.vehiculocerrado.TasaProductoController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculocerrado.TasaProductoController</servlet-name>
+-    <url-pattern>/TasaProductoController</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.cotizacion.CotizacionVHCerradosController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.cotizacion.CotizacionVHCerradosController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.cotizacion.CotizacionVHCerradosController</servlet-name>
+-    <url-pattern>/CotizacionVHCerradosController</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.mantenimiento.MantenimientoController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.mantenimiento.MantenimientoController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.mantenimiento.MantenimientoController</servlet-name>
+-    <url-pattern>/MantenimientoController</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.seguridad.FiltroPathController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.seguridad.FiltroPathController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.seguridad.FiltroPathController</servlet-name>
+-    <url-pattern>/static/reportes/*</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.cotizacion.TipoTasaController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.cotizacion.TipoTasaController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.cotizacion.TipoTasaController</servlet-name>
+-    <url-pattern>/TipoTasaController</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.cotizacion.TipoCoberturaController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.cotizacion.TipoCoberturaController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.cotizacion.TipoCoberturaController</servlet-name>
+-    <url-pattern>/TipoCoberturaController</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculocerrado.ProductoCoberturaController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.producto.vehiculocerrado.ProductoCoberturaController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculocerrado.ProductoCoberturaController</servlet-name>
+-    <url-pattern>/ProductoCoberturaController</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculocerrado.PaqueteCoberturaController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.producto.vehiculocerrado.PaqueteCoberturaController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculocerrado.PaqueteCoberturaController</servlet-name>
+-    <url-pattern>/PaqueteCoberturaController</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.entidad.BeneficiarioController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.entidad.BeneficiarioController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.entidad.BeneficiarioController</servlet-name>
+-    <url-pattern>/BeneficiarioController</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.cotizacion.EndosoBeneficiarioController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.cotizacion.EndosoBeneficiarioController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.cotizacion.EndosoBeneficiarioController</servlet-name>
+-    <url-pattern>/EndosoBeneficiarioController</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.entidad.DireccionController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.entidad.DireccionController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.entidad.DireccionController</servlet-name>
+-    <url-pattern>/DireccionController</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.entidad.EntidadJrController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.entidad.EntidadJrController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.entidad.EntidadJrController</servlet-name>
+-    <url-pattern>/EntidadJrController</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.seguridad.OpcionPantallaController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.seguridad.OpcionPantallaController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.seguridad.OpcionPantallaController</servlet-name>
+-    <url-pattern>/OpcionPantallaController</url-pattern>
+-  </servlet-mapping>
+-  <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.cotizacion.ContenedorController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.cotizacion.ContenedorController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.cotizacion.ContenedorController</servlet-name>
+-    <url-pattern>/ContenedorController</url-pattern>
+-  </servlet-mapping>  
+-   <servlet>
+-    <servlet-name>com.qbe.cotizador.servlets.cotizacion.vehiculos_dinamicos.tarificador.TarificadorController</servlet-name>
+-    <servlet-class>com.qbe.cotizador.servlets.cotizacion.vehiculos_dinamicos.tarificador.TarificadorController</servlet-class>
+-  </servlet>
+-  <servlet-mapping>
+-    <servlet-name>com.qbe.cotizador.servlets.cotizacion.vehiculos_dinamicos.tarificador.TarificadorController</servlet-name>
+-    <url-pattern>/TarificadorController</url-pattern>
+-  </servlet-mapping>
+-  <filter>
+-    <filter-name>sitemesh</filter-name>
+-    <filter-class>com.opensymphony.sitemesh.webapp.SiteMeshFilter</filter-class>
+-  </filter>
+-  <filter-mapping>
+-    <filter-name>sitemesh</filter-name>
+-    <url-pattern>/*</url-pattern>
+-  </filter-mapping>
+-  <session-config>
+-    <session-timeout>120</session-timeout>
+-  </session-config>
+-  <persistence-context-ref>
+-    <description>Configuracion Persistence context</description>
+-    <persistence-context-ref-name>CotizadorWebPC</persistence-context-ref-name>
+-    <persistence-unit-name>CotizadorWebPU</persistence-unit-name>
+-  </persistence-context-ref>
+-</web-app>
+diff --git a/build/classes/com/qbe/cotizador/model/Cliente.class b/build/classes/com/qbe/cotizador/model/Cliente.class
+deleted file mode 100644
+index a726db7131b3793cd13a36e1be2832277eb944a6..e69de29bb2d1d6434b8b29ae775ad8c2e48c5391
+GIT binary patch
+literal 0
+Hc$@<O00001
+
+diff --git a/build/classes/com/qbe/cotizador/model/Entidad.class b/build/classes/com/qbe/cotizador/model/Entidad.class
+deleted file mode 100644
+index 42d023e5650a3e5e678e09c442cf903213126643..e69de29bb2d1d6434b8b29ae775ad8c2e48c5391
+GIT binary patch
+literal 0
+Hc$@<O00001
+
+diff --git a/build/classes/com/qbe/cotizador/model/Modelo.class b/build/classes/com/qbe/cotizador/model/Modelo.class
+deleted file mode 100644
+index 3596722a05c78460ae95ba0b219ac16905714cea..e69de29bb2d1d6434b8b29ae775ad8c2e48c5391
+GIT binary patch
+literal 0
+Hc$@<O00001
+
+diff --git a/build/classes/com/qbe/cotizador/model/ObjetoVehiculo.class b/build/classes/com/qbe/cotizador/model/ObjetoVehiculo.class
+deleted file mode 100644
+index a6a7e2ba0a7e8cc8d801e892ed83a5a4ea105c20..e69de29bb2d1d6434b8b29ae775ad8c2e48c5391
+GIT binary patch
+literal 0
+Hc$@<O00001
+
+diff --git a/build/classes/com/qbe/cotizador/servlets/producto/ganadero/ObjetoGanaderoController.class b/build/classes/com/qbe/cotizador/servlets/producto/ganadero/ObjetoGanaderoController.class
+deleted file mode 100644
+index 9a6d40ab473a9be24ab025e84dabc5283dc49fe1..e69de29bb2d1d6434b8b29ae775ad8c2e48c5391
+GIT binary patch
+literal 0
+Hc$@<O00001
+
+diff --git a/build/classes/com/qbe/cotizador/servlets/producto/pymes/ObjetoPymesController.class b/build/classes/com/qbe/cotizador/servlets/producto/pymes/ObjetoPymesController.class
+deleted file mode 100644
+index cccbd34c31309b142ccfd5c109670d7c19576e9f..e69de29bb2d1d6434b8b29ae775ad8c2e48c5391
+GIT binary patch
+literal 0
+Hc$@<O00001
+
+diff --git a/build/classes/com/qbe/cotizador/util/MotorTarifador.class b/build/classes/com/qbe/cotizador/util/MotorTarifador.class
+deleted file mode 100644
+index 1de5384e9e5ae6c902912f940c53d2068c63345e..e69de29bb2d1d6434b8b29ae775ad8c2e48c5391
+GIT binary patch
+literal 0
+Hc$@<O00001
+
+diff --git a/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java b/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java
+--- a/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java
++++ b/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java
+@@ -1176,10 +1176,14 @@
+ 					e.printStackTrace();
+ 				}
+ 				
+-				/**PROCESO DE CREACION DEL DETALLE DE LA COTIZACION ENDOSO***/
+-				AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
+-				agriCotizacionDetalleProcesos.creardetalleCotizacion(cotizacion,"Registro Solicitud");
+-				/**FIN DE REGISTRO DE ENDOSO**/
++				try{
++					/**PROCESO DE CREACION DEL DETALLE DE LA COTIZACION ENDOSO***/
++					AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
++					agriCotizacionDetalleProcesos.creardetalleCotizacion(cotizacion,"Registro Solicitud");
++					/**FIN DE REGISTRO DE ENDOSO**/
++				}catch(Exception e){
++					e.printStackTrace();
++				}
+ 				
+ 			} else {
+ 				String IdCotizacion = ExisteCotizacion.getId();
+@@ -1619,10 +1623,14 @@
+ 						ExisteCotizacion.setEstado(estado);
+ 						CotizacionTransaction cotizacionTransaction = new CotizacionTransaction();
+ 						cotizacionTransaction.editar(ExisteCotizacion);
+-						/**PROCESO DE CREACION DEL DETALLE DE LA COTIZACION ENDOSO***/
+-						AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
+-						agriCotizacionDetalleProcesos.creardetalleCotizacion(ExisteCotizacion, Proceso);
+-						/**FIN DE REGISTRO DE ENDOSO**/
++						try{
++							/**PROCESO DE CREACION DEL DETALLE DE LA COTIZACION ENDOSO***/
++							AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
++							agriCotizacionDetalleProcesos.creardetalleCotizacion(ExisteCotizacion, Proceso);
++							/**FIN DE REGISTRO DE ENDOSO**/
++						}catch(Exception e){
++							e.printStackTrace();
++						}
+ 						respuesta.setEstado("OK");
+ 						respuesta.setObservacion(ObservacionSucre);
+ 						
+@@ -1777,13 +1785,14 @@
+ 			String fechaCambio= formatoDelTexto.format(date2);
+ 			respuesta.setFechaCambio(""+fechaCambio);
+ 			
+-			/**PROCESO DE CREACION DEL DETALLE DE LA COTIZACION ENDOSO***/
+-			AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
+-			agriCotizacionDetalleProcesos.creardetalleCotizacion(cotizacion,"Cambio de fecha");
+-			
+-			
+-			/**FIN DE REGISTRO DE ENDOSO**/
+-			
++			try{
++				/**PROCESO DE CREACION DEL DETALLE DE LA COTIZACION ENDOSO***/
++				AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
++				agriCotizacionDetalleProcesos.creardetalleCotizacion(cotizacion,"Cambio de fecha");
++				/**FIN DE REGISTRO DE ENDOSO**/
++			}catch(Exception e){
++				e.printStackTrace();
++			}
+ 			
+ 			
+ 			auditoria.setObjeto(fechaAnterior);
+@@ -1975,10 +1984,4 @@
+ 			auditoria.setObjeto(temporal);
+ 			auditoria.setEstado("ok");
+ 			
+-			/**PROCESO DE CREACION DEL DETALLE DE LA COTIZACION ENDOSO***/
+-			AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
+-			agriCotizacionDetalleProcesos.creardetalleCotizacion(cotizacion, "cambio de lugar");
+-			/**FIN DE REGISTRO DE ENDOSO**/
+-			
+-			
+ 			try{
+@@ -1984,6 +1987,9 @@
+ 			try{
+-				auditoria=procesoAuditoria.editar(auditoria);
++				/**PROCESO DE CREACION DEL DETALLE DE LA COTIZACION ENDOSO***/
++				AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
++				agriCotizacionDetalleProcesos.creardetalleCotizacion(cotizacion, "cambio de lugar");
++				/**FIN DE REGISTRO DE ENDOSO**/
+ 			}catch(Exception e){
+ 				e.printStackTrace();
+ 			}
+ 			
+@@ -1986,7 +1992,8 @@
+ 			}catch(Exception e){
+ 				e.printStackTrace();
+ 			}
+ 			
++			
+ 			try{
+ 				procesoAuditoria.editar(auditoria);
+ 			}catch(Exception e){
+@@ -2098,11 +2105,14 @@
+ 			CotizacionTransaction cotizacionTransaction= new CotizacionTransaction();
+ 			cotizacionTransaction.editar(cotizacion);
+ 			
+-			/**PROCESO DE CREACION DEL DETALLE DE LA COTIZACION ENDOSO***/
+-			AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
+-			agriCotizacionDetalleProcesos.creardetalleCotizacion(cotizacion, "Revocado");
+-			/**FIN DE REGISTRO DE ENDOSO**/
+-			
++			try{
++				/**PROCESO DE CREACION DEL DETALLE DE LA COTIZACION ENDOSO***/
++				AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
++				agriCotizacionDetalleProcesos.creardetalleCotizacion(cotizacion, "Revocado");
++				/**FIN DE REGISTRO DE ENDOSO**/
++			}catch(Exception e){
++				e.printStackTrace();
++			}
+ 			
+ 			respuesta.setEstado("OK");
+ 			respuesta.setObservacion("PROCESO CORRECTO");
+@@ -2112,11 +2122,6 @@
+ 			
+ 			auditoria.setObjeto(estadoAnterior);
+ 			auditoria.setEstado("OK");
+-			try{
+-				auditoria=procesoAuditoria.editar(auditoria);
+-			}catch(Exception e){
+-				e.printStackTrace();
+-			}
+ 			
+ 			try{
+ 				procesoAuditoria.editar(auditoria);
+diff --git a/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java b/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java
+--- a/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java
++++ b/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java
+@@ -783,10 +783,14 @@
+ 					agriAuditoriaCotizacionTransaction.crear(agriAuditoriaCotizacion);
+ 				}
+ 				
+-				/**PROCESO DE CREACION DEL DETALLE DE LA COTIZACION ENDOSO***/
+-				AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
+-				agriCotizacionDetalleProcesos.creardetalleCotizacion(cotizacion, "Registro Solicitud");
+-				/**FIN DE REGISTRO DE ENDOSO**/
++				try{
++					/**PROCESO DE CREACION DEL DETALLE DE LA COTIZACION ENDOSO***/
++					AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
++					agriCotizacionDetalleProcesos.creardetalleCotizacion(cotizacion, "Registro Solicitud");
++					/**FIN DE REGISTRO DE ENDOSO**/
++				}catch(Exception e){
++					e.printStackTrace();
++				}
+ 				
+ 				try{
+ 					auditoria.setObjeto(variableControl);
+@@ -1069,11 +1073,14 @@
+ 					variableControl=variableControl+" || ValorMonetario "+valorMonetario+" || fechaDesembolso "+fechaDesembolso+" || setNumeroOperacion "+in0.getNumeroOperacion();
+ 					AgriProcesos.editar(agriObjetoCotizacion);
+ 					
+-					/**PROCESO DE CREACION DEL DETALLE DE LA COTIZACION ENDOSO***/
+-					AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
+-					agriCotizacionDetalleProcesos.creardetalleCotizacion(existeCotizacion, "confirmacion Emision");
+-					/**FIN DE REGISTRO DE ENDOSO**/
+-					
++					try{
++						/**PROCESO DE CREACION DEL DETALLE DE LA COTIZACION ENDOSO***/
++						AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
++						agriCotizacionDetalleProcesos.creardetalleCotizacion(existeCotizacion, "confirmacion Emision");
++						/**FIN DE REGISTRO DE ENDOSO**/
++					}catch(Exception e){
++						e.printStackTrace();
++					}
+ 					
+ 					mensaje="0";
+ 					try{
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriAgriPacController.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriAgriPacController.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriAgriPacController.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriAgriPacController.java
+@@ -794,10 +794,14 @@
+ 						agriAuditoriaCotizacionTransaction.crear(agriAuditoriaCotizacion);
+ 					}
+ 					
+-					/**PROCESO DE CREACION DEL DETALLE DE LA COTIZACION ENDOSO***/
+-					AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
+-					agriCotizacionDetalleProcesos.creardetalleCotizacion(cotizacion, "Registro Solicitud");
+-					/**FIN DE REGISTRO DE ENDOSO**/
++					try{
++						/**PROCESO DE CREACION DEL DETALLE DE LA COTIZACION ENDOSO***/
++						AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
++						agriCotizacionDetalleProcesos.creardetalleCotizacion(cotizacion, "Registro Solicitud");
++						/**FIN DE REGISTRO DE ENDOSO**/
++					}catch(Exception e){
++						e.printStackTrace();
++					}
+ 					
+ 					auditoria.setEstado(EstadoAuditoria);
+ 					procesoAuditoria.editar(auditoria);

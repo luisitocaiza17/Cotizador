@@ -1,0 +1,21 @@
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCargaPreviaArchivoPlanoController.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCargaPreviaArchivoPlanoController.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCargaPreviaArchivoPlanoController.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCargaPreviaArchivoPlanoController.java
+@@ -86,7 +86,7 @@
+ 							String rutaPlantilla = AgriSucreNotificacionErrores.class.getProtectionDomain().getCodeSource()
+ 									.getLocation().getPath();
+ 							rutaPlantilla=rutaPlantilla.replace("AgriSucreNotificacionErrores.class", "");
+-							String rutaRelativaReporte="../../../../../../../../static/CotizacionesArchivoPlano/";
++							String rutaRelativaReporte="../../../../../../../../static/plantillas/Agricola/CotizacionesArchivoPlano";
+ 							rutaPlantilla=rutaPlantilla+rutaRelativaReporte;
+ 							
+ 							String fileName = item.getName();
+@@ -141,7 +141,7 @@
+ 				int skip = request.getParameter("skip") == null ? 0 : Integer.parseInt(request.getParameter("skip"));
+ 				int take = request.getParameter("take") == null ? 20 : Integer.parseInt(request.getParameter("take"));
+ 
+-				String rutaPlantilla = this.getServletContext().getRealPath("") + "/static/CotizacionesArchivoPlano/"+nombreArchivo;
++				String rutaPlantilla = this.getServletContext().getRealPath("") + "/static/plantillas/Agricola/CotizacionesArchivoPlano/"+nombreArchivo;
+ 				FileInputStream input = new FileInputStream(rutaPlantilla);
+ 				List<CotizacionArchivoPlano> cotizacionList = new ArrayList<CotizacionArchivoPlano>();
+ 				

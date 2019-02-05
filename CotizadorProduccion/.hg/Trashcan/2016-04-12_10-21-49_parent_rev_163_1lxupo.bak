@@ -1,0 +1,20 @@
+diff --git a/WebContent/dashboard/CotizacionGanadero.jsp b/WebContent/dashboard/CotizacionGanadero.jsp
+--- a/WebContent/dashboard/CotizacionGanadero.jsp
++++ b/WebContent/dashboard/CotizacionGanadero.jsp
+@@ -1008,7 +1008,7 @@
+ 															type="text"></input></td>
+ 													</tr>
+ 													<tr>
+-														<td style="text-align: right">IVA 12.00%</td>
++														<td style="text-align: right">valor del IVA: </td>
+ 														<td><input id="iva_vh" disabled="disabled"
+ 															type="text"></input></td>
+ 													</tr>
+@@ -1018,7 +1018,6 @@
+ 															disabled="disabled" type="text"><input
+ 															id="total_vh_origin" disabled="disabled" type="hidden"></td>
+ 													</tr>
+-
+ 												</table>
+ 											</div>
+ 										</div>

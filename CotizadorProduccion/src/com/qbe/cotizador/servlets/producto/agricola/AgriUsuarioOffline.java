@@ -1,0 +1,281 @@
+package com.qbe.cotizador.servlets.producto.agricola;
+
+import java.io.IOException;
+import java.math.BigInteger;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.google.gson.Gson;
+import com.qbe.cotizador.dao.entidad.PuntoVentaDAO;
+import com.qbe.cotizador.dao.producto.agricola.AgriAgenciaDAO;
+import com.qbe.cotizador.dao.producto.agricola.AgriCargaPreviaArchivoPlanoDAO;
+import com.qbe.cotizador.dao.producto.agricola.AgriCargaPreviaObjeto;
+import com.qbe.cotizador.dao.producto.agricola.AgriParametroXPuntoVentaDAO;
+import com.qbe.cotizador.dao.producto.agricola.UsuariosOfflineDAO;
+import com.qbe.cotizador.model.AgriAgencia;
+import com.qbe.cotizador.model.AgriCargaPreviaArchivoPlano;
+import com.qbe.cotizador.model.AgriParametroXPuntoVenta;
+import com.qbe.cotizador.model.UsuariosOffline;
+import com.qbe.cotizador.transaction.producto.agricola.usuarioOfflineTransaction;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
+/**
+ * Servlet implementation class AgriUsuarioOffline
+ */
+@WebServlet("/AgriUsuarioOffline")
+public class AgriUsuarioOffline extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public AgriUsuarioOffline() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doPost(request, response);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		
+		JSONObject result = new JSONObject();
+		String tipoConsulta = request.getParameter("tipoConsulta") == null ? "":request.getParameter("tipoConsulta");
+		
+		if(tipoConsulta.equals("cargarCombos")){
+			/*Buscamos los combos para cargarlos a la ves*/
+			
+			/*Cargamos las agencias*/
+			JSONObject agenciasObjeto = new JSONObject();
+			JSONArray  agenciaArray = new JSONArray();
+			AgriAgenciaDAO agriAgenciaDAO = new AgriAgenciaDAO();
+			List<AgriAgencia> listadoAgencias = agriAgenciaDAO.buscarTodos();
+			for(AgriAgencia agencia: listadoAgencias){
+				agenciasObjeto.put("codigo", agencia.getId());
+				agenciasObjeto.put("nombre", agencia.getAgenciaNombre());
+				agenciaArray.add(agenciasObjeto);
+			}
+			result.put("agenciasArray", agenciaArray);
+			
+			/*Cargamos los puntos de venta*/
+			
+			JSONObject puntosVentaObject = new JSONObject();
+			JSONArray  puntosVentaArray = new JSONArray();
+			AgriParametroXPuntoVentaDAO agriParametroXPuntoVentaDAO = new AgriParametroXPuntoVentaDAO();
+			List<AgriParametroXPuntoVenta> agriParametroXPuntoVenta= new ArrayList<AgriParametroXPuntoVenta>();
+			agriParametroXPuntoVenta=agriParametroXPuntoVentaDAO.buscarTodos();
+			for(AgriParametroXPuntoVenta puntoVenta:agriParametroXPuntoVenta){
+				if(puntoVenta.getCanalId().toString().equals("3")||puntoVenta.getCanalId().toString().equals("5")||puntoVenta.getCanalId().toString().equals("6")){
+					puntosVentaObject.put("codigo", puntoVenta.getPuntoVentaId());
+					PuntoVentaDAO puntoVentaDAO = new PuntoVentaDAO();
+					com.qbe.cotizador.model.PuntoVenta pVenta= puntoVentaDAO.buscarPorId(puntoVenta.getPuntoVentaId().toString());
+					puntosVentaObject.put("nombre", pVenta.getNombre());
+					puntosVentaArray.add(puntosVentaObject);
+				}				
+			}
+			result.put("puntoVentaArray", puntosVentaArray);
+			
+			JSONObject unidadNegocioObject = new JSONObject();
+			JSONArray  unidadNegocioArray = new JSONArray();
+			
+			/*no lo cargamos desde base ya que solo necesitamos agricola y masivos*/
+			
+			unidadNegocioObject.put("codigo", "2");
+			unidadNegocioObject.put("nombre", "Masivos");
+			unidadNegocioArray.add(unidadNegocioObject);
+			unidadNegocioObject.put("codigo", "3");
+			unidadNegocioObject.put("nombre", "Agricola Ganadero");
+			unidadNegocioArray.add(unidadNegocioObject);
+			result.put("unidadNegocioArray", unidadNegocioArray);
+			
+			
+			/*Enviamos los combos*/
+			result.put("success", Boolean.TRUE);
+			response.setContentType("application/json; charset=ISO-8859-1"); 
+			result.write(response.getWriter());
+			
+		}
+		
+		if(tipoConsulta.equals("buscarTodos")){
+			
+			
+			/*cargamos la tabla*/
+			int skip = request.getParameter("skip") == null ? 0 : Integer.parseInt(request.getParameter("skip"));
+			int take = request.getParameter("take") == null ? 20 : Integer.parseInt(request.getParameter("take"));
+
+			
+			List<UsuariosOffline> data = new ArrayList<UsuariosOffline>();
+			UsuariosOfflineDAO usuariosOfflineDAO = new UsuariosOfflineDAO();
+			data=usuariosOfflineDAO.cargarTodosKendo(skip, take);
+				
+			long total=usuariosOfflineDAO.cargarTodosKendoPorNumero();
+					
+			DataSourceResult pg = new DataSourceResult();
+			pg.setTotal((int)total);
+			pg.setData(data);
+			
+			Gson gson = new Gson(); 
+			// convert the DataSourceReslt to JSON and write it to the response
+			response.setContentType("application/json; charset=ISO-8859-1");
+		    response.getWriter().print(gson.toJson(pg));
+		    return;		
+			
+		}
+		
+		if(tipoConsulta.equals("obtenerPorId")){
+			String id = request.getParameter("idUsuario") == null ? "":request.getParameter("idUsuario");
+			UsuariosOffline data = new UsuariosOffline();
+			UsuariosOfflineDAO usuariosOfflineDAO = new UsuariosOfflineDAO();
+			data=usuariosOfflineDAO.BuscarPorId(new BigInteger(id));
+			
+			result.put("agenciaEnvio", data.getAgencia());
+			result.put("puntoVentaEnvio", data.getPuntoVenta());
+			result.put("unidadEnvio", data.getUnidadNegocio());
+			result.put("usuarioEnvio", data.getUsuario());
+			result.put("claveEnvio", data.getClave());
+			result.put("identificacionEnvio", data.getIdentificacion());
+			result.put("nombresEnvio", data.getNombres());
+			result.put("apellidosEnvio", data.getApellidos());
+			result.put("correoEnvio", data.getCorreoElectronico());
+			result.put("Id", data.getId());
+			
+			result.put("success", Boolean.TRUE);
+			response.setContentType("application/json; charset=ISO-8859-1"); 
+			result.write(response.getWriter());			
+		}
+		
+		if(tipoConsulta.equals("crear")){
+			
+			String agencia = request.getParameter("agenciaEnvio") == null ? "":request.getParameter("agenciaEnvio");
+			String puntoVenta = request.getParameter("puntoVentaEnvio") == null ? "":request.getParameter("puntoVentaEnvio");
+			String unidad= request.getParameter("unidadEnvio") == null ? "":request.getParameter("unidadEnvio");
+			String usuario = request.getParameter("usuarioEnvio") == null ? "":request.getParameter("usuarioEnvio");
+			String clave= request.getParameter("claveEnvio") == null ? "":request.getParameter("claveEnvio");
+			String identificacion = request.getParameter("identificacionEnvio") == null ? "":request.getParameter("identificacionEnvio");
+			String nombres = request.getParameter("nombresEnvio") == null ? "":request.getParameter("nombresEnvio");
+			String apellidos= request.getParameter("apellidosEnvio") == null ? "":request.getParameter("apellidosEnvio");
+			String correo= request.getParameter("correoEnvio") == null ? "":request.getParameter("correoEnvio");
+			
+			UsuariosOffline usuariosOffline = new UsuariosOffline();
+			usuariosOffline.setAgencia(agencia);
+			usuariosOffline.setPuntoVenta(puntoVenta);
+			usuariosOffline.setUnidadNegocio(unidad);
+			usuariosOffline.setUsuario(usuario);
+			usuariosOffline.setClave(clave);
+			usuariosOffline.setIdentificacion(identificacion);
+			usuariosOffline.setNombres(nombres);
+			usuariosOffline.setApellidos(apellidos);
+			usuariosOffline.setCorreoElectronico(correo);
+			
+			//Para grabar el usuario
+			try{
+				usuarioOfflineTransaction offlineTransaction = new usuarioOfflineTransaction();
+				offlineTransaction.crear(usuariosOffline);
+				result.put("success", Boolean.TRUE);
+				response.setContentType("application/json; charset=ISO-8859-1"); 
+				result.write(response.getWriter());
+			}catch(Exception e){
+				result.put("success", Boolean.FALSE);
+				response.setContentType("application/json; charset=ISO-8859-1"); 
+				result.write(response.getWriter());
+				e.printStackTrace();
+			}
+			
+		}
+		
+		if(tipoConsulta.equals("eliminar")){
+			String UsuarioId = request.getParameter("idUsuario") == null ? "":request.getParameter("idUsuario");
+			
+			try{
+				UsuariosOffline usuariosOffline = new UsuariosOffline();
+				usuariosOffline.setId(new BigInteger(UsuarioId));
+				usuarioOfflineTransaction offlineTransaction = new usuarioOfflineTransaction();
+								
+				offlineTransaction.eliminar(usuariosOffline);
+				result.put("success", Boolean.TRUE);
+				response.setContentType("application/json; charset=ISO-8859-1"); 
+				result.write(response.getWriter());
+			}catch(Exception e){
+				result.put("success", Boolean.FALSE);
+				response.setContentType("application/json; charset=ISO-8859-1"); 
+				result.write(response.getWriter());
+				e.printStackTrace();
+			}
+		}
+		
+		if(tipoConsulta.equals("editar")){
+			
+			String agencia = request.getParameter("agenciaEnvio") == null ? "":request.getParameter("agenciaEnvio");
+			String puntoVenta = request.getParameter("puntoVentaEnvio") == null ? "":request.getParameter("puntoVentaEnvio");
+			String unidad= request.getParameter("unidadEnvio") == null ? "":request.getParameter("unidadEnvio");
+			String usuario = request.getParameter("usuarioEnvio") == null ? "":request.getParameter("usuarioEnvio");
+			String clave= request.getParameter("claveEnvio") == null ? "":request.getParameter("claveEnvio");
+			String identificacion = request.getParameter("identificacionEnvio") == null ? "":request.getParameter("identificacionEnvio");
+			String nombres = request.getParameter("nombresEnvio") == null ? "":request.getParameter("nombresEnvio");
+			String apellidos= request.getParameter("apellidosEnvio") == null ? "":request.getParameter("apellidosEnvio");
+			String correo= request.getParameter("correoEnvio") == null ? "":request.getParameter("correoEnvio");
+			String UsuarioId = request.getParameter("UsuarioId") == null ? "":request.getParameter("UsuarioId");
+			
+			try{
+				UsuariosOffline usuariosOffline = new UsuariosOffline();
+				if(UsuarioId!=null)
+					usuariosOffline.setId(new BigInteger(UsuarioId));
+				else
+					throw new Exception("No llega el id de actualizacion");
+				
+				if(agencia!=null)	
+					usuariosOffline.setAgencia(agencia);
+				if(puntoVenta!=null)
+					usuariosOffline.setPuntoVenta(puntoVenta);
+				if(unidad!=null)
+					usuariosOffline.setUnidadNegocio(unidad);
+				if(usuario!=null)
+					usuariosOffline.setUsuario(usuario);
+				if(clave!=null)
+					usuariosOffline.setClave(clave);
+				if(identificacion!=null)
+					usuariosOffline.setIdentificacion(identificacion);
+				if(nombres!=null)
+					usuariosOffline.setNombres(nombres);
+				if(apellidos!=null)
+					usuariosOffline.setApellidos(apellidos);
+				if(correo!=null)
+					usuariosOffline.setCorreoElectronico(correo);
+				
+				//Para grabar el usuario
+			
+				usuarioOfflineTransaction offlineTransaction = new usuarioOfflineTransaction();
+				offlineTransaction.editar(usuariosOffline);
+				result.put("success", Boolean.TRUE);
+				response.setContentType("application/json; charset=ISO-8859-1"); 
+				result.write(response.getWriter());
+			}catch(Exception e){
+				result.put("success", Boolean.FALSE);
+				response.setContentType("application/json; charset=ISO-8859-1"); 
+				result.write(response.getWriter());
+				e.printStackTrace();
+			}
+			
+		}
+		
+	}
+
+}

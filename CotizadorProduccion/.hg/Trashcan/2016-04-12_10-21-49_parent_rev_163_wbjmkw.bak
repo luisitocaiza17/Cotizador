@@ -1,0 +1,89 @@
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java
+@@ -345,7 +345,7 @@
+ 		//Numero de contenedor
+ 		
+ 		//Armado Final de parametros a mostrar en la poliza
+-		parametersHeader.put("NumeroPoliza", agriParametroXCanal.getContenedorEnsuranceId()+"-"+detalleCotizacion.getId().toString());
++		parametersHeader.put("NumeroPoliza", agriParametroXCanal.getContenedorNumero()+"-"+detalleCotizacion.getId().toString());
+ 		//buscamos el cliente
+ 		Cliente cliente = new Cliente();
+ 		ClienteDAO clienteDAO = new ClienteDAO();
+diff --git a/src/com/qbe/cotizador/dao/producto/agricola/AgriReglaDAO.java b/src/com/qbe/cotizador/dao/producto/agricola/AgriReglaDAO.java
+--- a/src/com/qbe/cotizador/dao/producto/agricola/AgriReglaDAO.java
++++ b/src/com/qbe/cotizador/dao/producto/agricola/AgriReglaDAO.java
+@@ -51,7 +51,7 @@
+ 	}
+ 	
+ 	public List<AgriRegla> BuscarPorParametros(BigInteger provinciaId, BigInteger cantonId, BigInteger tipoCultivoId){
+-		return getEntityManager().createNamedQuery("AgriRegla.obtenerPorParametros")
++		return getEntityManager().createNamedQuery("AgriRegla.obtenerPorParametros").setParameter("estado", 1)
+ 				.setParameter("provinciaId", provinciaId)
+ 				.setParameter("cantonId", cantonId)
+ 				.setParameter("tipoCultivoId", tipoCultivoId).getResultList();
+@@ -62,7 +62,8 @@
+ 				.setParameter("provinciaId", provinciaId)
+ 				.setParameter("cantonId", cantonId)
+ 				.setParameter("tipoCultivoId", tipoCultivoId)
+-				.setParameter("tipoCalculoId", tipoCalculoId).getResultList();
++				.setParameter("tipoCalculoId", tipoCalculoId)
++				.setParameter("estado", 1).getResultList();
+ 	}
+ 	 public List<AgriRegla> BuscarPorTipoCalculoNombre(String TipoCalculoNombre){
+ 			List<AgriRegla>results = new ArrayList<AgriRegla>();
+@@ -72,8 +73,8 @@
+ 			TypedQuery<AgriRegla>query = null;
+ 			String stringQuery= "SELECT c FROM AgriRegla c where (c.tipoCalculoId =:tipoCalculoId)";					
+ 			query = getEntityManager().createQuery(stringQuery, AgriRegla.class);
+-			query.setParameter("tipoCalculoId",tipoCalculoId);
++			query.setParameter("tipoCalculoId",tipoCalculoId).setParameter("estado", 1);
+ 			results = query.getResultList();
+ 			return results;
+ 		}
+ 	 public List<AgriRegla> obtenerPorTipoCultivo(BigInteger tipoCultivoId,BigInteger tipoCalculoId){
+@@ -76,8 +77,8 @@
+ 			results = query.getResultList();
+ 			return results;
+ 		}
+ 	 public List<AgriRegla> obtenerPorTipoCultivo(BigInteger tipoCultivoId,BigInteger tipoCalculoId){
+-			return getEntityManager().createNamedQuery("AgriRegla.obtenerPorTipoCultivo")
++			return getEntityManager().createNamedQuery("AgriRegla.obtenerPorTipoCultivo").setParameter("estado", 1)
+ 					.setParameter("tipoCultivoId", tipoCultivoId)
+ 					.setParameter("tipoCalculoId", tipoCalculoId).getResultList();
+ 		}
+diff --git a/src/com/qbe/cotizador/model/AgriCotizacionAprobacion.java b/src/com/qbe/cotizador/model/AgriCotizacionAprobacion.java
+--- a/src/com/qbe/cotizador/model/AgriCotizacionAprobacion.java
++++ b/src/com/qbe/cotizador/model/AgriCotizacionAprobacion.java
+@@ -209,4 +209,10 @@
+ 	
+ 	@Column(name = "cliente_id")
+ 	private String clienteId;
++	
++	@Column(name = "POLIZA_NUMERO")
++	private String polizaNumero;
++	
++	@Column(name = "POLIZA_FECHA_VENCIMIENTO")
++	private String polizaFechaVencimiento;
+ 		
+@@ -212,4 +218,20 @@
+ 		
++	public String getPolizaNumero() {
++		return polizaNumero;
++	}
++
++	public void setPolizaNumero(String polizaNumero) {
++		this.polizaNumero = polizaNumero;
++	}
++
++	public String getPolizaFechaVencimiento() {
++		return polizaFechaVencimiento;
++	}
++
++	public void setPolizaFechaVencimiento(String polizaFechaVencimiento) {
++		this.polizaFechaVencimiento = polizaFechaVencimiento;
++	}
++
+ 	public String getClienteId() {
+ 		return clienteId;
+ 	}

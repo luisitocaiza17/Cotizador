@@ -1,0 +1,21 @@
+diff --git a/WebContent/dashboard/CotizacionAprobacionAgricola.jsp b/WebContent/dashboard/CotizacionAprobacionAgricola.jsp
+--- a/WebContent/dashboard/CotizacionAprobacionAgricola.jsp
++++ b/WebContent/dashboard/CotizacionAprobacionAgricola.jsp
+@@ -656,6 +656,9 @@
+ 				alert("Por favor seleccionar el archivo correcto.");
+ 				e.preventDefault();
+ 			}
++			else{
++				$('#btnImportar').prop('disabled', false);
++			}
+ 		});
+ 	}
+ 	//Aprobar cotizacion 
+@@ -797,6 +800,7 @@
+ 				$('#grid').empty();
+ 			}
+  			$('#grid').hide();
++ 			$('#btnImportar').prop('disabled', true);
+ 			/* $('#dataTable').hide();
+ 			$('#dataTableContent').html('');
+ 			$('#dataTable_wrapper').hide(); */

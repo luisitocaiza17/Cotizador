@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2015-02-20T15:50:28 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="FirmaDigital" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="750f9467-ba09-45c1-9e38-6d2b2a494ed6">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="cotizador"/>
+	<import value="java.io.InputStream"/>
+	<import value="java.awt.Image"/>
+	<import value="java.io.File"/>
+	<import value="java.lang.String"/>
+	<import value="net.sf.jasperreports.engine.util.JRLoader"/>
+	<import value="net.sf.jasperreports.engine.util.JRImageLoader"/>
+	<parameter name="RAMO_ID" class="java.lang.String"/>
+	<parameter name="UNIDAD_NEGOCIO_ID" class="java.lang.String"/>
+	<parameter name="UNIDAD_PRODUCCION_ID" class="java.lang.String"/>
+	<parameter name="SUCURSAL_ID" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[select f.firma from FIRMAS_DIGITALES f, UNIDAD_PRODUCCION up where f.sucursal_id= $P{SUCURSAL_ID} 
+ and up.id= $P{UNIDAD_PRODUCCION_ID} 
+ and f.ramo_id= $P{RAMO_ID}
+ and f.entidad_id=up.entidad_id]]>
+	</queryString>
+	<field name="firma" class="java.sql.Blob">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="180" splitType="Stretch">
+			<property name="local_mesure_unitheight" value="cm"/>
+			<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+			<image>
+				<reportElement x="0" y="0" width="300" height="150" uuid="e16f1e67-4979-4d2d-8f6f-0de00f0961c5"/>
+				<imageExpression><![CDATA[javax.imageio.ImageIO.read( $F{firma}.getBinaryStream() )]]></imageExpression>
+			</image>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

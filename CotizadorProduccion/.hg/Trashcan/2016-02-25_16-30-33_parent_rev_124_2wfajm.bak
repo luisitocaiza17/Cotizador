@@ -1,0 +1,44 @@
+diff --git a/src/com/qbe/cotizador/servicios/QBE/archivoPlano/GeneradorReporte.java b/src/com/qbe/cotizador/servicios/QBE/archivoPlano/GeneradorReporte.java
+--- a/src/com/qbe/cotizador/servicios/QBE/archivoPlano/GeneradorReporte.java
++++ b/src/com/qbe/cotizador/servicios/QBE/archivoPlano/GeneradorReporte.java
+@@ -262,6 +262,10 @@
+ 		calVigenciaHasta.setTime(detalleCotizacion.getFechaSiembra());
+ 		calVigenciaHasta.add(Calendar.DAY_OF_MONTH,Integer.parseInt(VigenciaCoberura.toString()==null?"0":VigenciaCoberura.toString()));
+         Date fechaActual = new Date();
+-		
++		if(cotizacion.getPuntoVenta().getNombre().equals("CREDIFE")){
++			parametersHeader.put("NombreBeneficiario","BANCO DEL PICHINCHA");
++		}else{
++			parametersHeader.put("NombreBeneficiario","COOPROGRESO");
++		}
+ 		parametersHeader.put("NumeroPoliza", detalleCotizacion.getId().toString());
+ 		parametersHeader.put("AeguradoNombre",detalleCotizacion.getnombresCliente() );
+@@ -266,8 +270,8 @@
+ 		parametersHeader.put("NumeroPoliza", detalleCotizacion.getId().toString());
+ 		parametersHeader.put("AeguradoNombre",detalleCotizacion.getnombresCliente() );
+-		parametersHeader.put("NombreBeneficiario",endosoBeneficiario.getBeneficiario().getNombre());
++		
+ 		parametersHeader.put("VigenciaDesde", Fecha.format(detalleCotizacion.getFechaSiembra()));
+ 		parametersHeader.put("NombreCultivo",(detalleCotizacion.getTipoCultivoNombre()==null?"":detalleCotizacion.getTipoCultivoNombre()));
+ 		parametersHeader.put("Tasa",""+detalleCotizacion.getTasa());
+ 		parametersHeader.put("DiasVigencia", Fecha.format(calVigenciaHasta.getTime()));
+ 		parametersHeader.put("PrecioAjuste", tipoCultivo.getPrecioAjuste());
+@@ -269,7 +273,11 @@
+ 		parametersHeader.put("VigenciaDesde", Fecha.format(detalleCotizacion.getFechaSiembra()));
+ 		parametersHeader.put("NombreCultivo",(detalleCotizacion.getTipoCultivoNombre()==null?"":detalleCotizacion.getTipoCultivoNombre()));
+ 		parametersHeader.put("Tasa",""+detalleCotizacion.getTasa());
+ 		parametersHeader.put("DiasVigencia", Fecha.format(calVigenciaHasta.getTime()));
+ 		parametersHeader.put("PrecioAjuste", tipoCultivo.getPrecioAjuste());
+-		parametersHeader.put("PrecioAjuste2", tipoCultivo.getPrecioAjuste2());
++		try{
++			parametersHeader.put("PrecioAjuste2", tipoCultivo.getPrecioAjuste2());
++		}catch(Exception e){
++			
++		}
+ 		parametersHeader.put("FechaEmision", Fecha.format(fechaActual.getTime()));
+@@ -275,5 +283,4 @@
+ 		parametersHeader.put("FechaEmision", Fecha.format(fechaActual.getTime()));
+-		
+ 		parametersHeader.put("SRC_IMAGE", "file:///"+rutaImage);
+ 		
+ 		String Html = GenerarContenido(html, parametersHeader);

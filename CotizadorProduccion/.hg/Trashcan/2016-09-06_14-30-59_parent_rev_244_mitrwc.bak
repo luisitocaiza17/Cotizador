@@ -1,0 +1,2204 @@
+diff --git a/WebContent/WEB-INF/SolicitudAgricolaService/com/qbe/cotizador/servicios/QBE/agricolaSucre/deploy.wsdd b/WebContent/WEB-INF/SolicitudAgricolaService/com/qbe/cotizador/servicios/QBE/agricolaSucre/deploy.wsdd
+--- a/WebContent/WEB-INF/SolicitudAgricolaService/com/qbe/cotizador/servicios/QBE/agricolaSucre/deploy.wsdd
++++ b/WebContent/WEB-INF/SolicitudAgricolaService/com/qbe/cotizador/servicios/QBE/agricolaSucre/deploy.wsdd
+@@ -13,9 +13,8 @@
+       <operation xmlns:operNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:retNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:rtns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" name="registrarSolicitud" qname="operNS:registrarSolicitud" returnQName="retNS:registrarSolicitudReturn" returnType="rtns:RespuestaUN01DTO" soapAction="">
+         <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" qname="pns:in0" type="tns:SolicitudUN01DTO"/>
+       </operation>
+-      <operation xmlns:operNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:retNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:rtns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" name="solicitudCambioFecha" qname="operNS:solicitudCambioFecha" returnQName="retNS:solicitudCambioFechaReturn" returnType="rtns:RespuestaCambio" soapAction="">
+-        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:tramite" type="tns:string"/>
+-        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:fechaSiembra" type="tns:string"/>
++      <operation xmlns:operNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:retNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:rtns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" name="registrarEmision" qname="operNS:registrarEmision" returnQName="retNS:registrarEmisionReturn" returnType="rtns:RespuestaEMIDTO" soapAction="">
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" qname="pns:in0" type="tns:SolicitudEMIDTO"/>
+       </operation>
+       <operation xmlns:operNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:retNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:rtns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" name="solicitudCambiolugarSiembra" qname="operNS:solicitudCambiolugarSiembra" returnQName="retNS:solicitudCambiolugarSiembraReturn" returnType="rtns:RespuestaCambio" soapAction="">
+         <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:tramite" type="tns:string"/>
+@@ -26,6 +25,7 @@
+         <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:latitud" type="tns:string"/>
+         <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:longitud" type="tns:string"/>
+       </operation>
+-      <operation xmlns:operNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:retNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:rtns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" name="registrarEmision" qname="operNS:registrarEmision" returnQName="retNS:registrarEmisionReturn" returnType="rtns:RespuestaEMIDTO" soapAction="">
+-        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" qname="pns:in0" type="tns:SolicitudEMIDTO"/>
++      <operation xmlns:operNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:retNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:rtns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" name="solicitudCambioFecha" qname="operNS:solicitudCambioFecha" returnQName="retNS:solicitudCambioFechaReturn" returnType="rtns:RespuestaCambio" soapAction="">
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:tramite" type="tns:string"/>
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:fechaSiembra" type="tns:string"/>
+       </operation>
+@@ -31,5 +31,18 @@
+       </operation>
+-      <parameter name="allowedMethods" value="registrarSolicitud registrarEmision solicitudCambiolugarSiembra solicitudCambioFecha"/>
++      <operation xmlns:operNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:retNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:rtns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" name="registroSiniestros" qname="operNS:registroSiniestros" returnQName="retNS:registroSiniestrosReturn" returnType="rtns:RespuestaCambio" soapAction="">
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:Tramite" type="tns:string"/>
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:identificacion" type="tns:string"/>
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:NombreCliente" type="tns:string"/>
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:ApellidoCliente" type="tns:string"/>
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:valorIndemnizacion" type="tns:double"/>
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:fechaPago" type="tns:string"/>
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:cultivo" type="tns:string"/>
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:hectareas" type="tns:double"/>
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:sumaAseguradaIndemnizacion" type="tns:double"/>
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:fechaNotificacionCliente" type="tns:string"/>
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:tipoIndemnizacion" type="tns:string"/>
++      </operation>
++      <parameter name="allowedMethods" value="registrarSolicitud registroSiniestros registrarEmision solicitudCambiolugarSiembra solicitudCambioFecha"/>
+ 
+       <typeMapping xmlns:ns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" qname="ns:SolicitudEMIDTO" type="java:com.qbe.cotizador.servicios.QBE.agricolaSucre.SolicitudEMIDTO" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+       <typeMapping xmlns:ns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" qname="ns:RespuestaEMIDTO" type="java:com.qbe.cotizador.servicios.QBE.agricolaSucre.RespuestaEMIDTO" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+diff --git a/WebContent/WEB-INF/SolicitudAgricolaService/com/qbe/cotizador/servicios/QBE/agricolaSucre/deploy.wsdd.bak b/WebContent/WEB-INF/SolicitudAgricolaService/com/qbe/cotizador/servicios/QBE/agricolaSucre/deploy.wsdd.bak
+--- a/WebContent/WEB-INF/SolicitudAgricolaService/com/qbe/cotizador/servicios/QBE/agricolaSucre/deploy.wsdd.bak
++++ b/WebContent/WEB-INF/SolicitudAgricolaService/com/qbe/cotizador/servicios/QBE/agricolaSucre/deploy.wsdd.bak
+@@ -23,9 +23,8 @@
+       <operation name="registrarSolicitud" qname="operNS:registrarSolicitud" xmlns:operNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" returnQName="retNS:registrarSolicitudReturn" xmlns:retNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" returnType="rtns:RespuestaUN01DTO" xmlns:rtns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" soapAction="" >
+         <parameter qname="pns:in0" xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" type="tns:SolicitudUN01DTO" xmlns:tns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com"/>
+       </operation>
+-      <operation name="solicitudCambioFecha" qname="operNS:solicitudCambioFecha" xmlns:operNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" returnQName="retNS:solicitudCambioFechaReturn" xmlns:retNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" returnType="rtns:RespuestaCambio" xmlns:rtns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" soapAction="" >
+-        <parameter qname="pns:tramite" xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+-        <parameter qname="pns:fechaSiembra" xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
++      <operation name="registrarEmision" qname="operNS:registrarEmision" xmlns:operNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" returnQName="retNS:registrarEmisionReturn" xmlns:retNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" returnType="rtns:RespuestaEMIDTO" xmlns:rtns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" soapAction="" >
++        <parameter qname="pns:in0" xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" type="tns:SolicitudEMIDTO" xmlns:tns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com"/>
+       </operation>
+       <operation name="solicitudCambiolugarSiembra" qname="operNS:solicitudCambiolugarSiembra" xmlns:operNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" returnQName="retNS:solicitudCambiolugarSiembraReturn" xmlns:retNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" returnType="rtns:RespuestaCambio" xmlns:rtns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" soapAction="" >
+         <parameter qname="pns:tramite" xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+@@ -36,6 +35,7 @@
+         <parameter qname="pns:latitud" xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+         <parameter qname="pns:longitud" xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+       </operation>
+-      <operation name="registrarEmision" qname="operNS:registrarEmision" xmlns:operNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" returnQName="retNS:registrarEmisionReturn" xmlns:retNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" returnType="rtns:RespuestaEMIDTO" xmlns:rtns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" soapAction="" >
+-        <parameter qname="pns:in0" xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" type="tns:SolicitudEMIDTO" xmlns:tns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com"/>
++      <operation name="solicitudCambioFecha" qname="operNS:solicitudCambioFecha" xmlns:operNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" returnQName="retNS:solicitudCambioFechaReturn" xmlns:retNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" returnType="rtns:RespuestaCambio" xmlns:rtns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" soapAction="" >
++        <parameter qname="pns:tramite" xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
++        <parameter qname="pns:fechaSiembra" xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+       </operation>
+@@ -41,5 +41,18 @@
+       </operation>
+-      <parameter name="allowedMethods" value="registrarSolicitud registrarEmision solicitudCambiolugarSiembra solicitudCambioFecha"/>
++      <operation name="registroSiniestros" qname="operNS:registroSiniestros" xmlns:operNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" returnQName="retNS:registroSiniestrosReturn" xmlns:retNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" returnType="rtns:RespuestaCambio" xmlns:rtns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" soapAction="" >
++        <parameter qname="pns:Tramite" xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
++        <parameter qname="pns:identificacion" xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
++        <parameter qname="pns:NombreCliente" xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
++        <parameter qname="pns:ApellidoCliente" xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
++        <parameter qname="pns:valorIndemnizacion" xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" type="tns:double" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
++        <parameter qname="pns:fechaPago" xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
++        <parameter qname="pns:cultivo" xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
++        <parameter qname="pns:hectareas" xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" type="tns:double" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
++        <parameter qname="pns:sumaAseguradaIndemnizacion" xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" type="tns:double" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
++        <parameter qname="pns:fechaNotificacionCliente" xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
++        <parameter qname="pns:tipoIndemnizacion" xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
++      </operation>
++      <parameter name="allowedMethods" value="registrarSolicitud registroSiniestros registrarEmision solicitudCambiolugarSiembra solicitudCambioFecha"/>
+ 
+       <typeMapping
+         xmlns:ns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com"
+diff --git a/WebContent/WEB-INF/server-config.wsdd b/WebContent/WEB-INF/server-config.wsdd
+--- a/WebContent/WEB-INF/server-config.wsdd
++++ b/WebContent/WEB-INF/server-config.wsdd
+@@ -7,4 +7,5 @@
+   <ns1:parameter name="dotNetSoapEncFix" value="true"/>
+   <ns1:parameter name="enableNamespacePrefixOptimization" value="false"/>
+   <ns1:parameter name="sendXMLDeclaration" value="true"/>
++  <ns1:parameter name="sendXsiTypes" value="true"/>
+   <ns1:parameter name="attachments.implementation" value="org.apache.axis.attachments.AttachmentsImpl"/>
+@@ -10,5 +11,4 @@
+   <ns1:parameter name="attachments.implementation" value="org.apache.axis.attachments.AttachmentsImpl"/>
+-  <ns1:parameter name="sendXsiTypes" value="true"/>
+   <ns1:requestFlow>
+    <ns1:handler type="java:org.apache.axis.handlers.JWSHandler">
+     <ns1:parameter name="scope" value="session"/>
+@@ -22,4 +22,52 @@
+  <ns1:handler name="URLMapper" type="java:org.apache.axis.handlers.http.URLMapper"/>
+  <ns1:handler name="LocalResponder" type="java:org.apache.axis.transport.local.LocalResponder"/>
+  <ns1:handler name="Authenticate" type="java:org.apache.axis.handlers.SimpleAuthenticationHandler"/>
++ <ns1:service name="CotizacionGanderoQBE" provider="java:RPC" style="wrapped" use="literal">
++  <ns2:operation name="obtenerRazas" qname="ns1:obtenerRazas" returnQName="ns1:obtenerRazasReturn" returnType="ns1:Razas" soapAction="" xmlns:ns1="http://ganadero.QBE.servicios.cotizador.qbe.com" xmlns:ns2="http://xml.apache.org/axis/wsdd/"/>
++  <ns1:operation name="obtenerTiposGanadoVacuno" qname="ns2:obtenerTiposGanadoVacuno" returnQName="ns2:obtenerTiposGanadoVacunoReturn" returnType="ns2:TipoGanadoVacuno" soapAction="" xmlns:ns2="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
++  <ns1:operation name="obtenerProvincias" qname="ns3:obtenerProvincias" returnQName="ns3:obtenerProvinciasReturn" returnType="ns3:Provincias" soapAction="" xmlns:ns3="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
++  <ns1:operation name="obtenerCiudadesPorProvincia" qname="ns4:obtenerCiudadesPorProvincia" returnQName="ns4:obtenerCiudadesPorProvinciaReturn" returnType="ns4:Ciudades" soapAction="" xmlns:ns4="http://ganadero.QBE.servicios.cotizador.qbe.com">
++   <ns1:parameter qname="ns4:provinciaId" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++  </ns1:operation>
++  <ns1:operation name="consultarEstadoCotizacion2" qname="ns5:ConsultarEstadoCotizacion2" returnQName="ns5:ConsultarEstadoCotizacion2Return" returnType="ns5:ConsultaOBJ" soapAction="" xmlns:ns5="http://ganadero.QBE.servicios.cotizador.qbe.com">
++   <ns1:parameter qname="ns5:NumeroCotizacion" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++  </ns1:operation>
++  <ns1:operation name="consultarEstadoCotizacion" qname="ns6:ConsultarEstadoCotizacion" returnQName="ns6:ConsultarEstadoCotizacionReturn" returnType="ns6:ConsultaOBJ" soapAction="" xmlns:ns6="http://ganadero.QBE.servicios.cotizador.qbe.com">
++   <ns1:parameter qname="ns6:NumeroCotizacion" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++   <ns1:parameter qname="ns6:numeroCotizacionOrigen" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++  </ns1:operation>
++  <ns1:operation name="generarVariasCotizacion" qname="ns7:GenerarVariasCotizacion" returnQName="ns7:GenerarVariasCotizacionReturn" returnType="ns7:ResultadoOBJ" soapAction="" xmlns:ns7="http://ganadero.QBE.servicios.cotizador.qbe.com">
++   <ns1:parameter qname="ns7:nuevasCotizaciones" type="ns7:CotizacionOBJ"/>
++  </ns1:operation>
++  <ns1:operation name="generarCotizacion" qname="ns8:GenerarCotizacion" returnQName="ns8:GenerarCotizacionReturn" returnType="ns8:ResultadoOBJ" soapAction="" xmlns:ns8="http://ganadero.QBE.servicios.cotizador.qbe.com">
++   <ns1:parameter qname="ns8:nuevaCotizacion" type="ns8:CotizacionOBJ"/>
++  </ns1:operation>
++  <ns1:operation name="obtenerParroquiasPorCiudad" qname="ns9:obtenerParroquiasPorCiudad" returnQName="ns9:obtenerParroquiasPorCiudadReturn" returnType="ns9:Parroquias" soapAction="" xmlns:ns9="http://ganadero.QBE.servicios.cotizador.qbe.com">
++   <ns1:parameter qname="ns9:ciudadId" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++  </ns1:operation>
++  <ns1:parameter name="sendMultiRefs" value="false"/>
++  <ns1:parameter name="wsdlServicePort" value="CotizacionGanderoQBE"/>
++  <ns1:parameter name="schemaQualified" value="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
++  <ns1:parameter name="className" value="com.qbe.cotizador.servicios.QBE.ganadero.CotizacionGanderoQBE"/>
++  <ns1:parameter name="typeMappingVersion" value="1.2"/>
++  <ns1:parameter name="allowedMethods" value="generarCotizacion obtenerTiposGanadoVacuno obtenerProvincias obtenerParroquiasPorCiudad obtenerRazas generarVariasCotizacion consultarEstadoCotizacion obtenerCiudadesPorProvincia consultarEstadoCotizacion2"/>
++  <ns1:parameter name="wsdlPortType" value="CotizacionGanderoQBE"/>
++  <ns1:parameter name="wsdlServiceElement" value="CotizacionGanderoQBEService"/>
++  <ns1:parameter name="wsdlTargetNamespace" value="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
++  <ns1:parameter name="sendXsiTypes" value="false"/>
++  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns10:ResultadoOBJ" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.ganadero.ResultadoOBJ" xmlns:ns10="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
++  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns11:Ciudades" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.ganadero.Ciudades" xmlns:ns11="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
++  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns12:SolicitanteOBJ" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.ganadero.SolicitanteOBJ" xmlns:ns12="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
++  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns13:GanadoVacunoOBJ" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.ganadero.GanadoVacunoOBJ" xmlns:ns13="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
++  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns14:Parroquias" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.ganadero.Parroquias" xmlns:ns14="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
++  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns15:Provincias" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.ganadero.Provincias" xmlns:ns15="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
++  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns16:CotizacionOBJ" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.ganadero.CotizacionOBJ" xmlns:ns16="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
++  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns17:Razas" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.ganadero.Razas" xmlns:ns17="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
++  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns18:AseguradoOBJ" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.ganadero.AseguradoOBJ" xmlns:ns18="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
++  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns19:TipoGanadoVacuno" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.ganadero.TipoGanadoVacuno" xmlns:ns19="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
++  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns20:BeneficiarioOBJ" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.ganadero.BeneficiarioOBJ" xmlns:ns20="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
++  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns21:FichaGanaderoOBJ" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.ganadero.FichaGanaderoOBJ" xmlns:ns21="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
++  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns22:ConsultaOBJ" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.ganadero.ConsultaOBJ" xmlns:ns22="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
++  <ns1:arrayMapping innerType="ns23:GanadoVacunoOBJ" languageSpecificType="java:com.qbe.cotizador.servicios.QBE.ganadero.GanadoVacunoOBJ[]" qname="ns23:ArrayOfGanadoVacunoOBJ" xmlns:ns23="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
++ </ns1:service>
+  <ns1:service name="AgriCotizacionServicio" provider="java:RPC" style="wrapped" use="literal">
+@@ -25,10 +73,10 @@
+  <ns1:service name="AgriCotizacionServicio" provider="java:RPC" style="wrapped" use="literal">
+-  <ns3:operation name="buscarPorClienteIdentificacion" qname="ns1:buscarPorClienteIdentificacion" returnQName="ns1:buscarPorClienteIdentificacionReturn" returnType="ns2:AgriCotizaciones" soapAction="" xmlns:ns1="http://agricola.producto.servlets.cotizador.qbe.com" xmlns:ns2="http://model.cotizador.qbe.com" xmlns:ns3="http://xml.apache.org/axis/wsdd/">
+-   <ns3:parameter qname="ns1:identificacion" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+-  </ns3:operation>
+-  <ns1:operation name="busquedaCotizacionesTodos" qname="ns3:busquedaCotizacionesTodos" returnQName="ns3:busquedaCotizacionesTodosReturn" returnType="ns4:AgriCotizaciones" soapAction="" xmlns:ns3="http://agricola.producto.servlets.cotizador.qbe.com" xmlns:ns4="http://model.cotizador.qbe.com"/>
+-  <ns1:operation name="buscarPorCotizacionId" qname="ns5:buscarPorCotizacionId" returnQName="ns5:buscarPorCotizacionIdReturn" returnType="ns6:AgriCotizaciones" soapAction="" xmlns:ns5="http://agricola.producto.servlets.cotizador.qbe.com" xmlns:ns6="http://model.cotizador.qbe.com">
+-   <ns1:parameter qname="ns5:Id" type="xsd:integer" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++  <ns1:operation name="buscarPorClienteIdentificacion" qname="ns24:buscarPorClienteIdentificacion" returnQName="ns24:buscarPorClienteIdentificacionReturn" returnType="ns25:AgriCotizaciones" soapAction="" xmlns:ns24="http://agricola.producto.servlets.cotizador.qbe.com" xmlns:ns25="http://model.cotizador.qbe.com">
++   <ns1:parameter qname="ns24:identificacion" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++  </ns1:operation>
++  <ns1:operation name="busquedaCotizacionesTodos" qname="ns26:busquedaCotizacionesTodos" returnQName="ns26:busquedaCotizacionesTodosReturn" returnType="ns27:AgriCotizaciones" soapAction="" xmlns:ns26="http://agricola.producto.servlets.cotizador.qbe.com" xmlns:ns27="http://model.cotizador.qbe.com"/>
++  <ns1:operation name="buscarPorCotizacionId" qname="ns28:buscarPorCotizacionId" returnQName="ns28:buscarPorCotizacionIdReturn" returnType="ns29:AgriCotizaciones" soapAction="" xmlns:ns28="http://agricola.producto.servlets.cotizador.qbe.com" xmlns:ns29="http://model.cotizador.qbe.com">
++   <ns1:parameter qname="ns28:Id" type="xsd:integer" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+   </ns1:operation>
+   <ns1:parameter name="sendMultiRefs" value="false"/>
+   <ns1:parameter name="wsdlServicePort" value="AgriCotizacionServicio"/>
+@@ -36,4 +84,6 @@
+   <ns1:parameter name="className" value="com.qbe.cotizador.servlets.producto.agricola.AgriCotizacionServicio"/>
+   <ns1:parameter name="typeMappingVersion" value="1.2"/>
+   <ns1:parameter name="allowedMethods" value="buscarPorCotizacionId busquedaCotizacionesTodos buscarPorClienteIdentificacion"/>
++  <ns1:parameter name="wsdlPortType" value="AgriCotizacionServicio"/>
++  <ns1:parameter name="wsdlServiceElement" value="AgriCotizacionServicioService"/>
+   <ns1:parameter name="wsdlTargetNamespace" value="http://agricola.producto.servlets.cotizador.qbe.com"/>
+@@ -39,4 +89,2 @@
+   <ns1:parameter name="wsdlTargetNamespace" value="http://agricola.producto.servlets.cotizador.qbe.com"/>
+-  <ns1:parameter name="wsdlServiceElement" value="AgriCotizacionServicioService"/>
+-  <ns1:parameter name="wsdlPortType" value="AgriCotizacionServicio"/>
+   <ns1:parameter name="sendXsiTypes" value="false"/>
+@@ -42,52 +90,4 @@
+   <ns1:parameter name="sendXsiTypes" value="false"/>
+-  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns7:AgriCotizaciones" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.model.AgriCotizaciones" xmlns:ns7="http://model.cotizador.qbe.com"/>
+- </ns1:service>
+- <ns1:service name="CotizacionGanderoQBE" provider="java:RPC" style="wrapped" use="literal">
+-  <ns1:operation name="obtenerRazas" qname="ns8:obtenerRazas" returnQName="ns8:obtenerRazasReturn" returnType="ns8:Razas" soapAction="" xmlns:ns8="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
+-  <ns1:operation name="obtenerTiposGanadoVacuno" qname="ns9:obtenerTiposGanadoVacuno" returnQName="ns9:obtenerTiposGanadoVacunoReturn" returnType="ns9:TipoGanadoVacuno" soapAction="" xmlns:ns9="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
+-  <ns1:operation name="obtenerProvincias" qname="ns10:obtenerProvincias" returnQName="ns10:obtenerProvinciasReturn" returnType="ns10:Provincias" soapAction="" xmlns:ns10="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
+-  <ns1:operation name="obtenerCiudadesPorProvincia" qname="ns11:obtenerCiudadesPorProvincia" returnQName="ns11:obtenerCiudadesPorProvinciaReturn" returnType="ns11:Ciudades" soapAction="" xmlns:ns11="http://ganadero.QBE.servicios.cotizador.qbe.com">
+-   <ns1:parameter qname="ns11:provinciaId" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+-  </ns1:operation>
+-  <ns1:operation name="consultarEstadoCotizacion2" qname="ns12:ConsultarEstadoCotizacion2" returnQName="ns12:ConsultarEstadoCotizacion2Return" returnType="ns12:ConsultaOBJ" soapAction="" xmlns:ns12="http://ganadero.QBE.servicios.cotizador.qbe.com">
+-   <ns1:parameter qname="ns12:NumeroCotizacion" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+-  </ns1:operation>
+-  <ns1:operation name="consultarEstadoCotizacion" qname="ns13:ConsultarEstadoCotizacion" returnQName="ns13:ConsultarEstadoCotizacionReturn" returnType="ns13:ConsultaOBJ" soapAction="" xmlns:ns13="http://ganadero.QBE.servicios.cotizador.qbe.com">
+-   <ns1:parameter qname="ns13:NumeroCotizacion" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+-   <ns1:parameter qname="ns13:numeroCotizacionOrigen" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+-  </ns1:operation>
+-  <ns1:operation name="generarVariasCotizacion" qname="ns14:GenerarVariasCotizacion" returnQName="ns14:GenerarVariasCotizacionReturn" returnType="ns14:ResultadoOBJ" soapAction="" xmlns:ns14="http://ganadero.QBE.servicios.cotizador.qbe.com">
+-   <ns1:parameter qname="ns14:nuevasCotizaciones" type="ns14:CotizacionOBJ"/>
+-  </ns1:operation>
+-  <ns1:operation name="generarCotizacion" qname="ns15:GenerarCotizacion" returnQName="ns15:GenerarCotizacionReturn" returnType="ns15:ResultadoOBJ" soapAction="" xmlns:ns15="http://ganadero.QBE.servicios.cotizador.qbe.com">
+-   <ns1:parameter qname="ns15:nuevaCotizacion" type="ns15:CotizacionOBJ"/>
+-  </ns1:operation>
+-  <ns1:operation name="obtenerParroquiasPorCiudad" qname="ns16:obtenerParroquiasPorCiudad" returnQName="ns16:obtenerParroquiasPorCiudadReturn" returnType="ns16:Parroquias" soapAction="" xmlns:ns16="http://ganadero.QBE.servicios.cotizador.qbe.com">
+-   <ns1:parameter qname="ns16:ciudadId" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+-  </ns1:operation>
+-  <ns1:parameter name="sendMultiRefs" value="false"/>
+-  <ns1:parameter name="wsdlServicePort" value="CotizacionGanderoQBE"/>
+-  <ns1:parameter name="schemaQualified" value="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
+-  <ns1:parameter name="className" value="com.qbe.cotizador.servicios.QBE.ganadero.CotizacionGanderoQBE"/>
+-  <ns1:parameter name="typeMappingVersion" value="1.2"/>
+-  <ns1:parameter name="allowedMethods" value="generarCotizacion obtenerTiposGanadoVacuno obtenerProvincias obtenerParroquiasPorCiudad obtenerRazas generarVariasCotizacion consultarEstadoCotizacion obtenerCiudadesPorProvincia consultarEstadoCotizacion2"/>
+-  <ns1:parameter name="wsdlTargetNamespace" value="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
+-  <ns1:parameter name="wsdlServiceElement" value="CotizacionGanderoQBEService"/>
+-  <ns1:parameter name="wsdlPortType" value="CotizacionGanderoQBE"/>
+-  <ns1:parameter name="sendXsiTypes" value="false"/>
+-  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns17:ResultadoOBJ" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.ganadero.ResultadoOBJ" xmlns:ns17="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
+-  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns18:Ciudades" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.ganadero.Ciudades" xmlns:ns18="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
+-  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns19:SolicitanteOBJ" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.ganadero.SolicitanteOBJ" xmlns:ns19="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
+-  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns20:GanadoVacunoOBJ" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.ganadero.GanadoVacunoOBJ" xmlns:ns20="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
+-  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns21:Parroquias" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.ganadero.Parroquias" xmlns:ns21="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
+-  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns22:Provincias" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.ganadero.Provincias" xmlns:ns22="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
+-  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns23:CotizacionOBJ" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.ganadero.CotizacionOBJ" xmlns:ns23="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
+-  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns24:Razas" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.ganadero.Razas" xmlns:ns24="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
+-  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns25:AseguradoOBJ" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.ganadero.AseguradoOBJ" xmlns:ns25="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
+-  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns26:TipoGanadoVacuno" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.ganadero.TipoGanadoVacuno" xmlns:ns26="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
+-  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns27:BeneficiarioOBJ" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.ganadero.BeneficiarioOBJ" xmlns:ns27="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
+-  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns28:FichaGanaderoOBJ" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.ganadero.FichaGanaderoOBJ" xmlns:ns28="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
+-  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns29:ConsultaOBJ" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.ganadero.ConsultaOBJ" xmlns:ns29="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
+-  <ns1:arrayMapping innerType="ns30:GanadoVacunoOBJ" languageSpecificType="java:com.qbe.cotizador.servicios.QBE.ganadero.GanadoVacunoOBJ[]" qname="ns30:ArrayOfGanadoVacunoOBJ" xmlns:ns30="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
++  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns30:AgriCotizaciones" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.model.AgriCotizaciones" xmlns:ns30="http://model.cotizador.qbe.com"/>
+  </ns1:service>
+  <ns1:service name="SolicitudAgricola" provider="java:RPC" style="wrapped" use="literal">
+@@ -92,14 +92,8 @@
+  </ns1:service>
+  <ns1:service name="SolicitudAgricola" provider="java:RPC" style="wrapped" use="literal">
+-  <ns1:operation name="solicitudCambiolugarSiembra" qname="ns31:solicitudCambiolugarSiembra" returnQName="ns31:solicitudCambiolugarSiembraReturn" returnType="ns31:RespuestaCambio" soapAction="" xmlns:ns31="http://agricolaSucre.QBE.servicios.cotizador.qbe.com">
+-   <ns1:parameter qname="ns31:tramite" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+-   <ns1:parameter qname="ns31:codProvincia" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+-   <ns1:parameter qname="ns31:codCanton" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+-   <ns1:parameter qname="ns31:codParroquia" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+-   <ns1:parameter qname="ns31:direccionSiembra" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+-   <ns1:parameter qname="ns31:latitud" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+-   <ns1:parameter qname="ns31:longitud" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++  <ns1:operation name="registrarSolicitud" qname="ns31:registrarSolicitud" returnQName="ns31:registrarSolicitudReturn" returnType="ns31:RespuestaUN01DTO" soapAction="" xmlns:ns31="http://agricolaSucre.QBE.servicios.cotizador.qbe.com">
++   <ns1:parameter qname="ns31:in0" type="ns31:SolicitudUN01DTO"/>
+   </ns1:operation>
+   <ns1:operation name="registrarEmision" qname="ns32:registrarEmision" returnQName="ns32:registrarEmisionReturn" returnType="ns32:RespuestaEMIDTO" soapAction="" xmlns:ns32="http://agricolaSucre.QBE.servicios.cotizador.qbe.com">
+    <ns1:parameter qname="ns32:in0" type="ns32:SolicitudEMIDTO"/>
+   </ns1:operation>
+@@ -102,10 +96,16 @@
+   </ns1:operation>
+   <ns1:operation name="registrarEmision" qname="ns32:registrarEmision" returnQName="ns32:registrarEmisionReturn" returnType="ns32:RespuestaEMIDTO" soapAction="" xmlns:ns32="http://agricolaSucre.QBE.servicios.cotizador.qbe.com">
+    <ns1:parameter qname="ns32:in0" type="ns32:SolicitudEMIDTO"/>
+   </ns1:operation>
+-  <ns1:operation name="registrarSolicitud" qname="ns33:registrarSolicitud" returnQName="ns33:registrarSolicitudReturn" returnType="ns33:RespuestaUN01DTO" soapAction="" xmlns:ns33="http://agricolaSucre.QBE.servicios.cotizador.qbe.com">
+-   <ns1:parameter qname="ns33:in0" type="ns33:SolicitudUN01DTO"/>
++  <ns1:operation name="solicitudCambiolugarSiembra" qname="ns33:solicitudCambiolugarSiembra" returnQName="ns33:solicitudCambiolugarSiembraReturn" returnType="ns33:RespuestaCambio" soapAction="" xmlns:ns33="http://agricolaSucre.QBE.servicios.cotizador.qbe.com">
++   <ns1:parameter qname="ns33:tramite" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++   <ns1:parameter qname="ns33:codProvincia" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++   <ns1:parameter qname="ns33:codCanton" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++   <ns1:parameter qname="ns33:codParroquia" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++   <ns1:parameter qname="ns33:direccionSiembra" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++   <ns1:parameter qname="ns33:latitud" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++   <ns1:parameter qname="ns33:longitud" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+   </ns1:operation>
+   <ns1:operation name="solicitudCambioFecha" qname="ns34:solicitudCambioFecha" returnQName="ns34:solicitudCambioFechaReturn" returnType="ns34:RespuestaCambio" soapAction="" xmlns:ns34="http://agricolaSucre.QBE.servicios.cotizador.qbe.com">
+    <ns1:parameter qname="ns34:tramite" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+    <ns1:parameter qname="ns34:fechaSiembra" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+@@ -108,9 +108,22 @@
+   </ns1:operation>
+   <ns1:operation name="solicitudCambioFecha" qname="ns34:solicitudCambioFecha" returnQName="ns34:solicitudCambioFechaReturn" returnType="ns34:RespuestaCambio" soapAction="" xmlns:ns34="http://agricolaSucre.QBE.servicios.cotizador.qbe.com">
+    <ns1:parameter qname="ns34:tramite" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+    <ns1:parameter qname="ns34:fechaSiembra" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+-  </ns1:operation> 
+-  <ns1:parameter name="allowedMethods" value="registrarSolicitud notificacionRevocado registrarEmision solicitudCambiolugarSiembra solicitudCambioFecha"/>
++  </ns1:operation>
++  <ns1:operation name="registroSiniestros" qname="ns35:registroSiniestros" returnQName="ns35:registroSiniestrosReturn" returnType="ns35:RespuestaCambio" soapAction="" xmlns:ns35="http://agricolaSucre.QBE.servicios.cotizador.qbe.com">
++   <ns1:parameter qname="ns35:Tramite" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++   <ns1:parameter qname="ns35:identificacion" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++   <ns1:parameter qname="ns35:NombreCliente" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++   <ns1:parameter qname="ns35:ApellidoCliente" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++   <ns1:parameter qname="ns35:valorIndemnizacion" type="xsd:double" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++   <ns1:parameter qname="ns35:fechaPago" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++   <ns1:parameter qname="ns35:cultivo" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++   <ns1:parameter qname="ns35:hectareas" type="xsd:double" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++   <ns1:parameter qname="ns35:sumaAseguradaIndemnizacion" type="xsd:double" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++   <ns1:parameter qname="ns35:fechaNotificacionCliente" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++   <ns1:parameter qname="ns35:tipoIndemnizacion" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++  </ns1:operation>
++  <ns1:parameter name="allowedMethods" value="registrarSolicitud registroSiniestros registrarEmision solicitudCambiolugarSiembra solicitudCambioFecha"/>
+   <ns1:parameter name="typeMappingVersion" value="1.2"/>
+   <ns1:parameter name="wsdlPortType" value="SolicitudAgricola"/>
+   <ns1:parameter name="className" value="com.qbe.cotizador.servicios.QBE.agricolaSucre.SolicitudAgricola"/>
+@@ -141,4 +154,6 @@
+   <ns1:parameter name="className" value="com.qbe.cotizador.servicios.QBE.bancaComunal.EndpointQBEAgricola"/>
+   <ns1:parameter name="typeMappingVersion" value="1.2"/>
+   <ns1:parameter name="allowedMethods" value="consultarPrepoliza generarPrepoliza generarDesenbolos"/>
++  <ns1:parameter name="wsdlPortType" value="EndpointQBEAgricola"/>
++  <ns1:parameter name="wsdlServiceElement" value="EndpointQBEAgricolaService"/>
+   <ns1:parameter name="wsdlTargetNamespace" value="http://bancaComunal.QBE.servicios.cotizador.qbe.com"/>
+@@ -144,6 +159,4 @@
+   <ns1:parameter name="wsdlTargetNamespace" value="http://bancaComunal.QBE.servicios.cotizador.qbe.com"/>
+-  <ns1:parameter name="wsdlServiceElement" value="EndpointQBEAgricolaService"/>
+-  <ns1:parameter name="wsdlPortType" value="EndpointQBEAgricola"/>
+   <ns1:parameter name="sendXsiTypes" value="false"/>
+   <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns44:DesembolsoDTO" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.bancaComunal.DesembolsoDTO" xmlns:ns44="http://bancaComunal.QBE.servicios.cotizador.qbe.com"/>
+   <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns45:PrepolizaSeguroAgricolaDTO" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.bancaComunal.PrepolizaSeguroAgricolaDTO" xmlns:ns45="http://bancaComunal.QBE.servicios.cotizador.qbe.com"/>
+@@ -155,4 +168,20 @@
+   <ns1:parameter name="className" value="org.apache.axis.utils.Admin"/>
+   <ns1:namespace>http://xml.apache.org/axis/wsdd/</ns1:namespace>
+  </ns1:service>
++ <ns1:service name="ImportarCotizaciones" provider="java:RPC" style="wrapped" use="literal">
++  <ns1:operation name="importarCotizaciones" qname="ns47:importarCotizaciones" returnQName="ns47:importarCotizacionesReturn" returnType="ns47:ObjetosRespuesta" soapAction="" xmlns:ns47="http://archivoPlano.QBE.servicios.cotizador.qbe.com">
++   <ns1:parameter qname="ns47:textoJson" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++   <ns1:parameter qname="ns47:correo" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++   <ns1:parameter qname="ns47:CCCorreos" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++  </ns1:operation>
++  <ns1:parameter name="allowedMethods" value="importarCotizaciones"/>
++  <ns1:parameter name="wsdlPortType" value="ImportarCotizaciones"/>
++  <ns1:parameter name="typeMappingVersion" value="1.2"/>
++  <ns1:parameter name="schemaQualified" value="http://archivoPlano.QBE.servicios.cotizador.qbe.com"/>
++  <ns1:parameter name="wsdlServicePort" value="ImportarCotizaciones"/>
++  <ns1:parameter name="className" value="com.qbe.cotizador.servicios.QBE.archivoPlano.ImportarCotizaciones"/>
++  <ns1:parameter name="wsdlTargetNamespace" value="http://archivoPlano.QBE.servicios.cotizador.qbe.com"/>
++  <ns1:parameter name="wsdlServiceElement" value="ImportarCotizacionesService"/>
++  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns48:ObjetosRespuesta" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.archivoPlano.ObjetosRespuesta" xmlns:ns48="http://archivoPlano.QBE.servicios.cotizador.qbe.com"/>
++ </ns1:service>
+  <ns1:service name="MidpointTagh" provider="java:RPC" style="wrapped" use="literal">
+@@ -158,7 +187,7 @@
+  <ns1:service name="MidpointTagh" provider="java:RPC" style="wrapped" use="literal">
+-  <ns1:operation name="consultarPolizas" qname="ns47:consultarPolizas" returnQName="ns47:consultarPolizasReturn" returnType="ns47:DatosTagh" soapAction="" xmlns:ns47="http://tagh.QBE.servicios.cotizador.qbe.com">
+-   <ns1:parameter qname="ns47:token" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+-   <ns1:parameter qname="ns47:identificacion" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++  <ns1:operation name="consultarPolizas" qname="ns49:consultarPolizas" returnQName="ns49:consultarPolizasReturn" returnType="ns49:DatosTagh" soapAction="" xmlns:ns49="http://tagh.QBE.servicios.cotizador.qbe.com">
++   <ns1:parameter qname="ns49:token" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++   <ns1:parameter qname="ns49:identificacion" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+   </ns1:operation>
+   <ns1:parameter name="sendMultiRefs" value="false"/>
+   <ns1:parameter name="wsdlServicePort" value="MidpointTagh"/>
+@@ -166,4 +195,6 @@
+   <ns1:parameter name="className" value="com.qbe.cotizador.servicios.QBE.tagh.MidpointTagh"/>
+   <ns1:parameter name="typeMappingVersion" value="1.2"/>
+   <ns1:parameter name="allowedMethods" value="consultarPolizas"/>
++  <ns1:parameter name="wsdlPortType" value="MidpointTagh"/>
++  <ns1:parameter name="wsdlServiceElement" value="MidpointTaghService"/>
+   <ns1:parameter name="wsdlTargetNamespace" value="http://tagh.QBE.servicios.cotizador.qbe.com"/>
+@@ -169,4 +200,2 @@
+   <ns1:parameter name="wsdlTargetNamespace" value="http://tagh.QBE.servicios.cotizador.qbe.com"/>
+-  <ns1:parameter name="wsdlServiceElement" value="MidpointTaghService"/>
+-  <ns1:parameter name="wsdlPortType" value="MidpointTagh"/>
+   <ns1:parameter name="sendXsiTypes" value="false"/>
+@@ -172,21 +201,5 @@
+   <ns1:parameter name="sendXsiTypes" value="false"/>
+-  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns48:DatosTagh" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.tagh.DatosTagh" xmlns:ns48="http://tagh.QBE.servicios.cotizador.qbe.com"/>
+- </ns1:service>
+- <ns1:service name="ImportarCotizaciones" provider="java:RPC" style="wrapped" use="literal">
+-  <ns1:operation name="importarCotizaciones" qname="ns49:importarCotizaciones" returnQName="ns49:importarCotizacionesReturn" returnType="ns49:ObjetosRespuesta" soapAction="" xmlns:ns49="http://archivoPlano.QBE.servicios.cotizador.qbe.com">
+-   <ns1:parameter qname="ns49:textoJson" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+-   <ns1:parameter qname="ns49:correo" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+-   <ns1:parameter qname="ns49:CCCorreos" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+-  </ns1:operation>
+-  <ns1:parameter name="allowedMethods" value="importarCotizaciones"/>
+-  <ns1:parameter name="typeMappingVersion" value="1.2"/>
+-  <ns1:parameter name="wsdlPortType" value="ImportarCotizaciones"/>
+-  <ns1:parameter name="className" value="com.qbe.cotizador.servicios.QBE.archivoPlano.ImportarCotizaciones"/>
+-  <ns1:parameter name="wsdlServicePort" value="ImportarCotizaciones"/>
+-  <ns1:parameter name="schemaQualified" value="http://archivoPlano.QBE.servicios.cotizador.qbe.com"/>
+-  <ns1:parameter name="wsdlTargetNamespace" value="http://archivoPlano.QBE.servicios.cotizador.qbe.com"/>
+-  <ns1:parameter name="wsdlServiceElement" value="ImportarCotizacionesService"/>
+-  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns50:ObjetosRespuesta" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.archivoPlano.ObjetosRespuesta" xmlns:ns50="http://archivoPlano.QBE.servicios.cotizador.qbe.com"/>
++  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns50:DatosTagh" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.tagh.DatosTagh" xmlns:ns50="http://tagh.QBE.servicios.cotizador.qbe.com"/>
+  </ns1:service>
+  <ns1:service name="Version" provider="java:RPC">
+   <ns1:parameter name="allowedMethods" value="getVersion"/>
+diff --git a/WebContent/WEB-INF/web.xml b/WebContent/WEB-INF/web.xml
+--- a/WebContent/WEB-INF/web.xml
++++ b/WebContent/WEB-INF/web.xml
+@@ -1,453 +1,450 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+-	xmlns="http://java.sun.com/xml/ns/javaee"
+-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+-	id="WebApp_ID" version="3.0">
+-	<display-name>CotizadorWeb</display-name>
+-	<welcome-file-list>
+-		<welcome-file>index.html</welcome-file>
+-		<welcome-file>index.htm</welcome-file>
+-		<welcome-file>index.jsp</welcome-file>
+-		<welcome-file>default.html</welcome-file>
+-		<welcome-file>default.htm</welcome-file>
+-		<welcome-file>default.jsp</welcome-file>
+-	</welcome-file-list>
+-	<listener>
+-		<listener-class>com.sun.xml.ws.transport.http.servlet.WSServletContextListener</listener-class>
+-	</listener>
+-	<servlet>
+-		<servlet-name>CotizadorWS</servlet-name>
+-		<servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+-		<load-on-startup>1</load-on-startup>
+-	</servlet>
+-	<listener>
+-		<listener-class>org.apache.commons.fileupload.servlet.FileCleanerCleanup</listener-class>
+-	</listener>
+-	<servlet>
+-		<display-name>Apache-Axis Servlet</display-name>
+-		<servlet-name>AxisServlet</servlet-name>
+-		<servlet-class>org.apache.axis.transport.http.AxisServlet</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>AxisServlet</servlet-name>
+-		<url-pattern>/servlet/AxisServlet</url-pattern>
+-	</servlet-mapping>
+-	<servlet-mapping>
+-		<servlet-name>AxisServlet</servlet-name>
+-		<url-pattern>*.jws</url-pattern>
+-	</servlet-mapping>
+-	<servlet-mapping>
+-		<servlet-name>AxisServlet</servlet-name>
+-		<url-pattern>/services/*</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<display-name>Axis Admin Servlet</display-name>
+-		<servlet-name>AdminServlet</servlet-name>
+-		<servlet-class>org.apache.axis.transport.http.AdminServlet</servlet-class>
+-		<load-on-startup>100</load-on-startup>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>AdminServlet</servlet-name>
+-		<url-pattern>/servlet/AdminServlet</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.seguridad.AccesoSistemaController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.seguridad.AccesoSistemaController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.seguridad.AccesoSistemaController</servlet-name>
+-		<url-pattern>/AccesoSistemaController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.entidad.SucursalController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.entidad.SucursalController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.entidad.SucursalController</servlet-name>
+-		<url-pattern>/SucursalController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.entidad.PuntoVentaController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.entidad.PuntoVentaController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.entidad.PuntoVentaController</servlet-name>
+-		<url-pattern>/PuntoVentaController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.entidad.EntidadController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.entidad.EntidadController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.entidad.EntidadController</servlet-name>
+-		<url-pattern>/EntidadController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.MarcaController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.producto.vehiculo.MarcaController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.MarcaController</servlet-name>
+-		<url-pattern>/MarcaController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.ModeloController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.producto.vehiculo.ModeloController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.ModeloController</servlet-name>
+-		<url-pattern>/ModeloController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.TipoExtraController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.producto.vehiculo.TipoExtraController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.TipoExtraController</servlet-name>
+-		<url-pattern>/TipoExtraController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.entidad.TipoIdentificacionController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.entidad.TipoIdentificacionController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.entidad.TipoIdentificacionController</servlet-name>
+-		<url-pattern>/TipoIdentificacionController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.seguridad.VariableSistemaController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.seguridad.VariableSistemaController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.seguridad.VariableSistemaController</servlet-name>
+-		<url-pattern>/VariableSistemaController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.cotizacion.ProductoGrupoController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.cotizacion.ProductoGrupoController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.cotizacion.ProductoGrupoController</servlet-name>
+-		<url-pattern>/ProductoGrupoController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.entidad.UnidadNegocioController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.entidad.UnidadNegocioController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.entidad.UnidadNegocioController</servlet-name>
+-		<url-pattern>/UnidadNegocioController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.entidad.UnidadProduccionController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.entidad.UnidadProduccionController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.entidad.UnidadProduccionController</servlet-name>
+-		<url-pattern>/UnidadProduccionController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.entidad.UsuarioXPuntoVentaController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.entidad.UsuarioXPuntoVentaController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.entidad.UsuarioXPuntoVentaController</servlet-name>
+-		<url-pattern>/UsuarioXPuntoVentaController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.cotizacion.MotivoDescuentoController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.cotizacion.MotivoDescuentoController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.cotizacion.MotivoDescuentoController</servlet-name>
+-		<url-pattern>/MotivoDescuentoController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.ObjetoVehiculoController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.producto.vehiculo.ObjetoVehiculoController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.ObjetoVehiculoController</servlet-name>
+-		<url-pattern>/ObjetoVehiculoController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.reportes.ReportesController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.reportes.ReportesController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.reportes.ReportesController</servlet-name>
+-		<url-pattern>/ReportesController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.entidad.EmpleadoController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.entidad.EmpleadoController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.entidad.EmpleadoController</servlet-name>
+-		<url-pattern>/EmpleadoController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.seguridad.ConfirmarMailController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.seguridad.ConfirmarMailController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.seguridad.ConfirmarMailController</servlet-name>
+-		<url-pattern>/ConfirmarMail</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.cotizacion.ConfirmarSolicitudDescuentoController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.cotizacion.ConfirmarSolicitudDescuentoController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.cotizacion.ConfirmarSolicitudDescuentoController</servlet-name>
+-		<url-pattern>/ConfirmarSolicitudDescuento</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.seguridad.SalirSistemaController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.seguridad.SalirSistemaController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.seguridad.SalirSistemaController</servlet-name>
+-		<url-pattern>/SalirSistema</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.ColorController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.producto.vehiculo.ColorController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.ColorController</servlet-name>
+-		<url-pattern>/ColorController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.cotizacion.CotizacionController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.cotizacion.CotizacionController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.cotizacion.CotizacionController</servlet-name>
+-		<url-pattern>/CotizacionController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.EmisionVHController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.producto.vehiculo.EmisionVHController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.EmisionVHController</servlet-name>
+-		<url-pattern>/EmisionVHController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.entidad.UPLAController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.entidad.UPLAController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.entidad.UPLAController</servlet-name>
+-		<url-pattern>/UPLAController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.inspeccion.ComentarioSolicitudInspeccionController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.inspeccion.ComentarioSolicitudInspeccionController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.inspeccion.ComentarioSolicitudInspeccionController</servlet-name>
+-		<url-pattern>/ComentarioSolicitudInspeccionController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.archivos.CargaArchivosController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.archivos.CargaArchivosController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.archivos.CargaArchivosController</servlet-name>
+-		<url-pattern>/CargaArchivosController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.archivos.DocumentoVisadoController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.archivos.DocumentoVisadoController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.archivos.DocumentoVisadoController</servlet-name>
+-		<url-pattern>/DocumentoVisadoController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.producto.vehiculocerrado.DetalleProductoController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.producto.vehiculocerrado.DetalleProductoController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.producto.vehiculocerrado.DetalleProductoController</servlet-name>
+-		<url-pattern>/DetalleProductoController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.producto.vehiculocerrado.GrupoPorProductoController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.producto.vehiculocerrado.GrupoPorProductoController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.producto.vehiculocerrado.GrupoPorProductoController</servlet-name>
+-		<url-pattern>/GrupoPorProductoController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.producto.vehiculocerrado.GrupoProductoController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.producto.vehiculocerrado.GrupoProductoController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.producto.vehiculocerrado.GrupoProductoController</servlet-name>
+-		<url-pattern>/GrupoProductoController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.producto.vehiculocerrado.TasaProductoController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.producto.vehiculocerrado.TasaProductoController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.producto.vehiculocerrado.TasaProductoController</servlet-name>
+-		<url-pattern>/TasaProductoController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.cotizacion.CotizacionVHCerradosController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.cotizacion.CotizacionVHCerradosController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.cotizacion.CotizacionVHCerradosController</servlet-name>
+-		<url-pattern>/CotizacionVHCerradosController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.mantenimiento.MantenimientoController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.mantenimiento.MantenimientoController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.mantenimiento.MantenimientoController</servlet-name>
+-		<url-pattern>/MantenimientoController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.seguridad.FiltroPathController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.seguridad.FiltroPathController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.seguridad.FiltroPathController</servlet-name>
+-		<url-pattern>/static/reportes/*</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.cotizacion.TipoTasaController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.cotizacion.TipoTasaController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.cotizacion.TipoTasaController</servlet-name>
+-		<url-pattern>/TipoTasaController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.cotizacion.TipoCoberturaController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.cotizacion.TipoCoberturaController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.cotizacion.TipoCoberturaController</servlet-name>
+-		<url-pattern>/TipoCoberturaController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.producto.vehiculocerrado.ProductoCoberturaController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.producto.vehiculocerrado.ProductoCoberturaController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.producto.vehiculocerrado.ProductoCoberturaController</servlet-name>
+-		<url-pattern>/ProductoCoberturaController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.producto.vehiculocerrado.PaqueteCoberturaController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.producto.vehiculocerrado.PaqueteCoberturaController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.producto.vehiculocerrado.PaqueteCoberturaController</servlet-name>
+-		<url-pattern>/PaqueteCoberturaController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.entidad.BeneficiarioController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.entidad.BeneficiarioController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.entidad.BeneficiarioController</servlet-name>
+-		<url-pattern>/BeneficiarioController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.cotizacion.EndosoBeneficiarioController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.cotizacion.EndosoBeneficiarioController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.cotizacion.EndosoBeneficiarioController</servlet-name>
+-		<url-pattern>/EndosoBeneficiarioController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.entidad.DireccionController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.entidad.DireccionController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.entidad.DireccionController</servlet-name>
+-		<url-pattern>/DireccionController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.entidad.EntidadJrController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.entidad.EntidadJrController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.entidad.EntidadJrController</servlet-name>
+-		<url-pattern>/EntidadJrController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.seguridad.OpcionPantallaController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.seguridad.OpcionPantallaController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.seguridad.OpcionPantallaController</servlet-name>
+-		<url-pattern>/OpcionPantallaController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.cotizacion.ContenedorController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.cotizacion.ContenedorController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.cotizacion.ContenedorController</servlet-name>
+-		<url-pattern>/ContenedorController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.cotizacion.vehiculos_dinamicos.tarificador.TarificadorController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.cotizacion.vehiculos_dinamicos.tarificador.TarificadorController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.cotizacion.vehiculos_dinamicos.tarificador.TarificadorController</servlet-name>
+-		<url-pattern>/TarificadorController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.novacredit.VhNovacreditCotizacionController</servlet-name>
+-		<servlet-class>com.qbe.cotizador.servlets.producto.vehiculo.novacredit.VhNovacreditCotizacionController</servlet-class>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.novacredit.VhNovacreditCotizacionController</servlet-name>
+-		<url-pattern>/VhNovacreditCotizacionController</url-pattern>
+-	</servlet-mapping>
+-	<servlet>
+-		<servlet-name>Jersey RESTful Application</servlet-name>
+-		<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+-		<init-param>
+-			<param-name>jersey.config.server.provider.packages</param-name>
+-			<param-value>com.qbe.cotizador.rest.inspeccion</param-value>
+-		</init-param>
+-		<init-param>
+-			<param-name>jersey.config.server.provider.classnames</param-name>
+-			<param-value>org.glassfish.jersey.media.multipart.MultiPartFeature</param-value>
+-		</init-param>
+-	</servlet>
+-	<servlet-mapping>
+-		<servlet-name>Jersey RESTful Application</servlet-name>
+-		<url-pattern>/rest/*</url-pattern>
+-	</servlet-mapping>
+-	<filter>
+-		<filter-name>sitemesh</filter-name>
+-		<filter-class>com.opensymphony.sitemesh.webapp.SiteMeshFilter</filter-class>
+-	</filter>
+-	<filter-mapping>
+-		<filter-name>sitemesh</filter-name>
+-		<url-pattern>/*</url-pattern>
+-	</filter-mapping>
+-	<session-config>
+-		<session-timeout>120</session-timeout>
+-	</session-config>
+-	<persistence-context-ref>
+-		<description>Configuracion Persistence context</description>
+-		<persistence-context-ref-name>CotizadorWebPC</persistence-context-ref-name>
+-		<persistence-unit-name>CotizadorWebPU</persistence-unit-name>
+-	</persistence-context-ref>
++<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
++  <display-name>CotizadorWeb</display-name>
++  <welcome-file-list>
++    <welcome-file>index.html</welcome-file>
++    <welcome-file>index.htm</welcome-file>
++    <welcome-file>index.jsp</welcome-file>
++    <welcome-file>default.html</welcome-file>
++    <welcome-file>default.htm</welcome-file>
++    <welcome-file>default.jsp</welcome-file>
++  </welcome-file-list>
++  <listener>
++    <listener-class>com.sun.xml.ws.transport.http.servlet.WSServletContextListener</listener-class>
++  </listener>
++  <servlet>
++    <servlet-name>CotizadorWS</servlet-name>
++    <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
++    <load-on-startup>1</load-on-startup>
++  </servlet>
++  <listener>
++    <listener-class>org.apache.commons.fileupload.servlet.FileCleanerCleanup</listener-class>
++  </listener>
++  <servlet>
++    <display-name>Apache-Axis Servlet</display-name>
++    <servlet-name>AxisServlet</servlet-name>
++    <servlet-class>org.apache.axis.transport.http.AxisServlet</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>AxisServlet</servlet-name>
++    <url-pattern>/servlet/AxisServlet</url-pattern>
++  </servlet-mapping>
++  <servlet-mapping>
++    <servlet-name>AxisServlet</servlet-name>
++    <url-pattern>*.jws</url-pattern>
++  </servlet-mapping>
++  <servlet-mapping>
++    <servlet-name>AxisServlet</servlet-name>
++    <url-pattern>/services/*</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <display-name>Axis Admin Servlet</display-name>
++    <servlet-name>AdminServlet</servlet-name>
++    <servlet-class>org.apache.axis.transport.http.AdminServlet</servlet-class>
++    <load-on-startup>100</load-on-startup>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>AdminServlet</servlet-name>
++    <url-pattern>/servlet/AdminServlet</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.seguridad.AccesoSistemaController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.seguridad.AccesoSistemaController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.seguridad.AccesoSistemaController</servlet-name>
++    <url-pattern>/AccesoSistemaController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.entidad.SucursalController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.entidad.SucursalController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.entidad.SucursalController</servlet-name>
++    <url-pattern>/SucursalController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.entidad.PuntoVentaController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.entidad.PuntoVentaController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.entidad.PuntoVentaController</servlet-name>
++    <url-pattern>/PuntoVentaController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.entidad.EntidadController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.entidad.EntidadController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.entidad.EntidadController</servlet-name>
++    <url-pattern>/EntidadController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.MarcaController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.producto.vehiculo.MarcaController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.MarcaController</servlet-name>
++    <url-pattern>/MarcaController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.ModeloController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.producto.vehiculo.ModeloController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.ModeloController</servlet-name>
++    <url-pattern>/ModeloController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.TipoExtraController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.producto.vehiculo.TipoExtraController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.TipoExtraController</servlet-name>
++    <url-pattern>/TipoExtraController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.entidad.TipoIdentificacionController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.entidad.TipoIdentificacionController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.entidad.TipoIdentificacionController</servlet-name>
++    <url-pattern>/TipoIdentificacionController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.seguridad.VariableSistemaController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.seguridad.VariableSistemaController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.seguridad.VariableSistemaController</servlet-name>
++    <url-pattern>/VariableSistemaController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.cotizacion.ProductoGrupoController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.cotizacion.ProductoGrupoController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.cotizacion.ProductoGrupoController</servlet-name>
++    <url-pattern>/ProductoGrupoController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.entidad.UnidadNegocioController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.entidad.UnidadNegocioController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.entidad.UnidadNegocioController</servlet-name>
++    <url-pattern>/UnidadNegocioController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.entidad.UnidadProduccionController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.entidad.UnidadProduccionController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.entidad.UnidadProduccionController</servlet-name>
++    <url-pattern>/UnidadProduccionController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.entidad.UsuarioXPuntoVentaController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.entidad.UsuarioXPuntoVentaController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.entidad.UsuarioXPuntoVentaController</servlet-name>
++    <url-pattern>/UsuarioXPuntoVentaController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.cotizacion.MotivoDescuentoController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.cotizacion.MotivoDescuentoController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.cotizacion.MotivoDescuentoController</servlet-name>
++    <url-pattern>/MotivoDescuentoController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.ObjetoVehiculoController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.producto.vehiculo.ObjetoVehiculoController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.ObjetoVehiculoController</servlet-name>
++    <url-pattern>/ObjetoVehiculoController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.reportes.ReportesController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.reportes.ReportesController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.reportes.ReportesController</servlet-name>
++    <url-pattern>/ReportesController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.entidad.EmpleadoController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.entidad.EmpleadoController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.entidad.EmpleadoController</servlet-name>
++    <url-pattern>/EmpleadoController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.seguridad.ConfirmarMailController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.seguridad.ConfirmarMailController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.seguridad.ConfirmarMailController</servlet-name>
++    <url-pattern>/ConfirmarMail</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.cotizacion.ConfirmarSolicitudDescuentoController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.cotizacion.ConfirmarSolicitudDescuentoController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.cotizacion.ConfirmarSolicitudDescuentoController</servlet-name>
++    <url-pattern>/ConfirmarSolicitudDescuento</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.seguridad.SalirSistemaController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.seguridad.SalirSistemaController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.seguridad.SalirSistemaController</servlet-name>
++    <url-pattern>/SalirSistema</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.ColorController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.producto.vehiculo.ColorController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.ColorController</servlet-name>
++    <url-pattern>/ColorController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.cotizacion.CotizacionController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.cotizacion.CotizacionController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.cotizacion.CotizacionController</servlet-name>
++    <url-pattern>/CotizacionController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.EmisionVHController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.producto.vehiculo.EmisionVHController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.EmisionVHController</servlet-name>
++    <url-pattern>/EmisionVHController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.entidad.UPLAController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.entidad.UPLAController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.entidad.UPLAController</servlet-name>
++    <url-pattern>/UPLAController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.inspeccion.ComentarioSolicitudInspeccionController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.inspeccion.ComentarioSolicitudInspeccionController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.inspeccion.ComentarioSolicitudInspeccionController</servlet-name>
++    <url-pattern>/ComentarioSolicitudInspeccionController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.archivos.CargaArchivosController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.archivos.CargaArchivosController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.archivos.CargaArchivosController</servlet-name>
++    <url-pattern>/CargaArchivosController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.archivos.DocumentoVisadoController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.archivos.DocumentoVisadoController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.archivos.DocumentoVisadoController</servlet-name>
++    <url-pattern>/DocumentoVisadoController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculocerrado.DetalleProductoController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.producto.vehiculocerrado.DetalleProductoController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculocerrado.DetalleProductoController</servlet-name>
++    <url-pattern>/DetalleProductoController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculocerrado.GrupoPorProductoController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.producto.vehiculocerrado.GrupoPorProductoController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculocerrado.GrupoPorProductoController</servlet-name>
++    <url-pattern>/GrupoPorProductoController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculocerrado.GrupoProductoController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.producto.vehiculocerrado.GrupoProductoController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculocerrado.GrupoProductoController</servlet-name>
++    <url-pattern>/GrupoProductoController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculocerrado.TasaProductoController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.producto.vehiculocerrado.TasaProductoController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculocerrado.TasaProductoController</servlet-name>
++    <url-pattern>/TasaProductoController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.cotizacion.CotizacionVHCerradosController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.cotizacion.CotizacionVHCerradosController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.cotizacion.CotizacionVHCerradosController</servlet-name>
++    <url-pattern>/CotizacionVHCerradosController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.mantenimiento.MantenimientoController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.mantenimiento.MantenimientoController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.mantenimiento.MantenimientoController</servlet-name>
++    <url-pattern>/MantenimientoController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.seguridad.FiltroPathController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.seguridad.FiltroPathController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.seguridad.FiltroPathController</servlet-name>
++    <url-pattern>/static/reportes/*</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.cotizacion.TipoTasaController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.cotizacion.TipoTasaController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.cotizacion.TipoTasaController</servlet-name>
++    <url-pattern>/TipoTasaController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.cotizacion.TipoCoberturaController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.cotizacion.TipoCoberturaController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.cotizacion.TipoCoberturaController</servlet-name>
++    <url-pattern>/TipoCoberturaController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculocerrado.ProductoCoberturaController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.producto.vehiculocerrado.ProductoCoberturaController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculocerrado.ProductoCoberturaController</servlet-name>
++    <url-pattern>/ProductoCoberturaController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculocerrado.PaqueteCoberturaController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.producto.vehiculocerrado.PaqueteCoberturaController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculocerrado.PaqueteCoberturaController</servlet-name>
++    <url-pattern>/PaqueteCoberturaController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.entidad.BeneficiarioController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.entidad.BeneficiarioController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.entidad.BeneficiarioController</servlet-name>
++    <url-pattern>/BeneficiarioController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.cotizacion.EndosoBeneficiarioController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.cotizacion.EndosoBeneficiarioController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.cotizacion.EndosoBeneficiarioController</servlet-name>
++    <url-pattern>/EndosoBeneficiarioController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.entidad.DireccionController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.entidad.DireccionController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.entidad.DireccionController</servlet-name>
++    <url-pattern>/DireccionController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.entidad.EntidadJrController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.entidad.EntidadJrController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.entidad.EntidadJrController</servlet-name>
++    <url-pattern>/EntidadJrController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.seguridad.OpcionPantallaController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.seguridad.OpcionPantallaController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.seguridad.OpcionPantallaController</servlet-name>
++    <url-pattern>/OpcionPantallaController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.cotizacion.ContenedorController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.cotizacion.ContenedorController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.cotizacion.ContenedorController</servlet-name>
++    <url-pattern>/ContenedorController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.cotizacion.vehiculos_dinamicos.tarificador.TarificadorController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.cotizacion.vehiculos_dinamicos.tarificador.TarificadorController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.cotizacion.vehiculos_dinamicos.tarificador.TarificadorController</servlet-name>
++    <url-pattern>/TarificadorController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.novacredit.VhNovacreditCotizacionController</servlet-name>
++    <servlet-class>com.qbe.cotizador.servlets.producto.vehiculo.novacredit.VhNovacreditCotizacionController</servlet-class>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.novacredit.VhNovacreditCotizacionController</servlet-name>
++    <url-pattern>/VhNovacreditCotizacionController</url-pattern>
++  </servlet-mapping>
++  <servlet>
++    <servlet-name>Jersey RESTful Application</servlet-name>
++    <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
++    <init-param>
++      <param-name>jersey.config.server.provider.packages</param-name>
++      <param-value>com.qbe.cotizador.rest.inspeccion</param-value>
++    </init-param>
++    <init-param>
++      <param-name>jersey.config.server.provider.classnames</param-name>
++      <param-value>org.glassfish.jersey.media.multipart.MultiPartFeature</param-value>
++    </init-param>
++  </servlet>
++  <servlet-mapping>
++    <servlet-name>Jersey RESTful Application</servlet-name>
++    <url-pattern>/rest/*</url-pattern>
++  </servlet-mapping>
++  <filter>
++    <filter-name>sitemesh</filter-name>
++    <filter-class>com.opensymphony.sitemesh.webapp.SiteMeshFilter</filter-class>
++  </filter>
++  <filter-mapping>
++    <filter-name>sitemesh</filter-name>
++    <url-pattern>/*</url-pattern>
++  </filter-mapping>
++  <session-config>
++    <session-timeout>120</session-timeout>
++  </session-config>
++  <persistence-context-ref>
++    <description>Configuracion Persistence context</description>
++    <persistence-context-ref-name>CotizadorWebPC</persistence-context-ref-name>
++    <persistence-unit-name>CotizadorWebPU</persistence-unit-name>
++  </persistence-context-ref>
+ </web-app>
+\ No newline at end of file
+diff --git a/WebContent/dashboard/CotizacionesPreviasAgricola.jsp b/WebContent/dashboard/CotizacionesPreviasAgricola.jsp
+--- a/WebContent/dashboard/CotizacionesPreviasAgricola.jsp
++++ b/WebContent/dashboard/CotizacionesPreviasAgricola.jsp
+@@ -636,8 +636,9 @@
+ 								<b> <font color="red">DEBE DESCARGAR LA PREPOLIZA PARA PODER TERMINAR LA COTIZACION
+ 								</font></b>
+ 								<br>
++								
+ 								<br>
+ 								<button type="button" class="btn btn-success btn-xs descargaCertificado" id="descargar_FichaCotizacion" onclick="generarReporteCotizacion();"> <span class="glyphicon glyphicon glyphicon-download"></span> Descargar </button>
+ 								<button type="button" class="btn btn-success btn-xs descargaCertificado" id="descargar_certificadoCotizacion" onclick="abrirCertificadoCotizacion();" hidden="hidden"> <span class="glyphicon glyphicon glyphicon-download"></span>Descargar </button>
+ 								<button type="button" class="btn btn-success btn-xs descargaCertificado" id="descargar_certificadoNormasParticulares" onclick="abrirCertificadoNormaParticulares();"  hidden="hidden"> <span class="glyphicon glyphicon glyphicon-download"></span>Descargar </button>
+ 								<!-- <button hidden="hidden" type='button' class='btn btn-success btn-xs descargaCertificado' id='descargar_certificadoDebito' onclick="abrirCertificadoDebito();"> <span class='glyphicon glyphicon glyphicon-download'></span>Descargar </button>
+@@ -639,13 +640,11 @@
+ 								<br>
+ 								<button type="button" class="btn btn-success btn-xs descargaCertificado" id="descargar_FichaCotizacion" onclick="generarReporteCotizacion();"> <span class="glyphicon glyphicon glyphicon-download"></span> Descargar </button>
+ 								<button type="button" class="btn btn-success btn-xs descargaCertificado" id="descargar_certificadoCotizacion" onclick="abrirCertificadoCotizacion();" hidden="hidden"> <span class="glyphicon glyphicon glyphicon-download"></span>Descargar </button>
+ 								<button type="button" class="btn btn-success btn-xs descargaCertificado" id="descargar_certificadoNormasParticulares" onclick="abrirCertificadoNormaParticulares();"  hidden="hidden"> <span class="glyphicon glyphicon glyphicon-download"></span>Descargar </button>
+ 								<!-- <button hidden="hidden" type='button' class='btn btn-success btn-xs descargaCertificado' id='descargar_certificadoDebito' onclick="abrirCertificadoDebito();"> <span class='glyphicon glyphicon glyphicon-download'></span>Descargar </button>
+-								<button hidden="hidden" type='button' class='btn btn-success btn-xs descargaCertificado' id='descargar_certificadoUPLA' onclick="abrirCertificadoUPLA();"> <span class='glyphicon glyphicon glyphicon-download'></span>Descargar </button>
+-								<button hidden="hidden" type='button' class='btn btn-success btn-xs descargaCertificado' id='descargar_certificadoPoliza' onclick="abrirCertificadoPoliza();"> <span class='glyphicon glyphicon glyphicon-download'></span>Descargar </button>-->
+ 								
+ 								</td>
+ 								<!-- <td colspan="2">
+ 								
+ 								<button type='button' class='btn btn-success btn-xs descargaCertificado' id='enviar_certificadoCotizacion' onclick="$('#correos_certificado').dialog( 'open' );"> <span class='glyphicon glyphicon glyphicon-send'></span>Enviar CotizaciÃ³n </button></td>
+ 								 -->
+@@ -646,13 +645,12 @@
+ 								
+ 								</td>
+ 								<!-- <td colspan="2">
+ 								
+ 								<button type='button' class='btn btn-success btn-xs descargaCertificado' id='enviar_certificadoCotizacion' onclick="$('#correos_certificado').dialog( 'open' );"> <span class='glyphicon glyphicon glyphicon-send'></span>Enviar CotizaciÃ³n </button></td>
+ 								 -->
+-								</tr>
+-							
++								</tr>							
+ 							<tr height="30px"></tr>
+ 							<tr></tr></tbody></table>
+ 						
+ 						
+ 							<div id="tabbable" class="tabbable">
+@@ -654,7 +652,7 @@
+ 							<tr height="30px"></tr>
+ 							<tr></tr></tbody></table>
+ 						
+ 						
+ 							<div id="tabbable" class="tabbable">
+-								<ul class="nav nav-tabs">
++								<ul class="nav nav-tabs">								
+ 								<li class="active"><a href="#primero" data-toggle="tab">Resumen de Valores</a></li>								
+@@ -660,6 +658,5 @@
+ 								<li class="active"><a href="#primero" data-toggle="tab">Resumen de Valores</a></li>								
+-								</ul>
+-								
++								</ul>								
+ 								<!-- Inicio tab valor a pagar -->
+ 								<div id="primero">
+ 									<br>
+@@ -731,11 +728,9 @@
+ 											</div>
+ 										</div>
+ 									</div>
+-
+-
+ 								</div>
+ 								<!--  Fin tab valor a pagar -->								
+ 							</div>
+ 					</div>
+ 				</div>
+ 			</section>					
+@@ -736,41 +731,11 @@
+ 								</div>
+ 								<!--  Fin tab valor a pagar -->								
+ 							</div>
+ 					</div>
+ 				</div>
+ 			</section>					
+-		</form>		
+-				
+-		<!-- Inicio tabla de tabla previa de cotizaciones -->				
+-		
+-		<!-- <div class="panel panel-primary" style="width:100%; overflow-x: scroll; display: none;" id="preCotizaciones">
+-			<div class="panel-heading" style="width:100%;">Seleccione una Pre CotizaciÃ³n. </div>
+-			<div class="panel-body">
+-				<table class="table table-striped table-bordered table-hover"
+-					id="dataTable" style="font-size: x-small;">
+-					<thead>
+-						<tr>
+-							<th>CANAL</th>
+-							<th>NOMBRES</th>
+-							<th>IDENTIFICACI&Oacute;N</th>
+-							<th>MONTO ASEGURADO</th>
+-							<th>FECHA SOLICITUD</th>
+-							<th>FECHA SIEMIEMBRA </th>
+-							<th>CULTIVO</th>
+-							<th>HECTAREAS ASEGURABLES</th>
+-							<th>HECTAREAS LOTE</th>							
+-							<th>PROVINCIA</th>
+-							<th>CANT&Oacute;N</th>
+-							<th>PARROQUIA</th>
+-							<th>REFERENCIA</th>						
+-							<th></th>
+-						</tr>
+-					</thead >
+-					<tbody>							
+-					</tbody>
+-				</table>
+-			</div>
+-		</div> -->
++		</form>					
++		<!-- Inicio tabla de tabla previa de cotizaciones -->	
+ 	</div>
+ </body>
+ </html>
+diff --git a/WebContent/static/js/agricola/carga.inicial.cotizador.agricolaArchivoPlano.js b/WebContent/static/js/agricola/carga.inicial.cotizador.agricolaArchivoPlano.js
+--- a/WebContent/static/js/agricola/carga.inicial.cotizador.agricolaArchivoPlano.js
++++ b/WebContent/static/js/agricola/carga.inicial.cotizador.agricolaArchivoPlano.js
+@@ -81,7 +81,8 @@
+ 			//cambiarEstadoAgricola(estado);
+ 			
+ 			var id1=$("#cotizacion_id").text();
+-			eliminarCotizacionProcesada($("#cargaPreviaId").val(), $("#hectareas_asegurables").val(),id1);
++			alert("la cotizacion  N.- "+id1 + " fue registrada correctamente.");
++			//eliminarCotizacionProcesada($("#cargaPreviaId").val(), $("#hectareas_asegurables").val(),id1);
+ 			window.location= "CotizacionesPrecargadasAgricola.jsp";
+ 		},
+ 		labels: {
+diff --git a/WebContent/static/js/agricola/metodos.agricolaArchivoPlano.js b/WebContent/static/js/agricola/metodos.agricolaArchivoPlano.js
+--- a/WebContent/static/js/agricola/metodos.agricolaArchivoPlano.js
++++ b/WebContent/static/js/agricola/metodos.agricolaArchivoPlano.js
+@@ -891,13 +891,6 @@
+ 	}
+ }
+ 
+-function generarReporteCotizacion() {
+-	$("#descargar_FichaCotizacion").show();
+-	$("#wizard .actions a[href='#finish']").hide();
+-	alert("Por favor una vez descargada la poliza, presionar el boton Finalizar para que la cotización sea valida.");
+-	window.open('../AgriCotizacionReporte?tipoConsulta=generarReporte&codigoCotizacion=' + $("#cotizacion_id").text());
+-	alert("Por favor precionar boton finalizar en la ventana de cotización");
+-}
+ function cargarDireccionFactura(formulario, datos) {
+ 	if (datos != null) {
+ 		if (formulario == "solicitante") {
+@@ -3536,28 +3529,7 @@
+ 
+ 
+ function generarReporteCotizacion() {
+-	/*$.ajax({
+-		url : '../AgriCotizacionReporte',
+-		data : {
+-			"codigoCotizacion" : $("#cotizacion_id").text()
+-		},
+-		type : 'post',
+-		datatype : 'json',
+-		success : function (datos) {
+-			if (datos.success) {
+-				$("#codigoPagoRegistrado").val(datos.pagoId);
+-				$("#msgPopupPago").attr("class", "alert alert-success").html("La forma de pago se ha registrado correctamente.").fadeIn("slow");
+-			} else {
+-				$("#codigoPagoRegistrado").val("");
+-				$("#msgPopupPago").attr("class", "alert alert-danger").html(datos.error).fadeIn("slow");
+-			}
+-			$("#save-pagoContado").removeAttr("disabled");
+-			$("#save-pagoDebitoBanco").removeAttr("disabled");
+-			$("#save-pagoDebitoTarjeta").removeAttr("disabled");
+-			$("#save-pagoCuotas").removeAttr("disabled");
+-			
+-		}
+-	});*/
++	
+ 	$("#wizard .actions a[href='#finish']").show();
+ 	$("#descargar_FichaCotizacion").hide();
+ 	alert("Por favor una vez descargada la poliza, presionar el boton Finalizar para que la cotización sea valida.");	
+@@ -3561,7 +3533,11 @@
+ 	$("#wizard .actions a[href='#finish']").show();
+ 	$("#descargar_FichaCotizacion").hide();
+ 	alert("Por favor una vez descargada la poliza, presionar el boton Finalizar para que la cotización sea valida.");	
+-	window.open('../AgriCotizacionReporte?tipoConsulta=generarReporte&codigoCotizacion=' + $("#cotizacion_id").text()+'&IsCotizacion_=true');
++	var cotizacionId=$("#cotizacion_id").text();
++	var numHectareas=$("#hectareas_asegurables").val();	
++	var previaId=$("#cargaPreviaId").val();	
++	var rutaTota="../AgriCotizacionReporte?proceso=Pronaca&tipoConsulta=generarReporte&codigoCotizacion=" +cotizacionId+"&numHectareas="+numHectareas+"&previaID="+previaId;
++	window.open('../AgriCotizacionReporte?proceso=Pronaca&tipoConsulta=generarReporte&codigoCotizacion=' +cotizacionId+'&numHectareas='+numHectareas+'&previaID='+previaId);
+ 	alert("Por favor precionar boton finalizar en la ventana de cotización");
+ }
+ 
+diff --git a/WebContent/wsdl/SolicitudAgricola.wsdl b/WebContent/wsdl/SolicitudAgricola.wsdl
+--- a/WebContent/wsdl/SolicitudAgricola.wsdl
++++ b/WebContent/wsdl/SolicitudAgricola.wsdl
+@@ -88,49 +88,6 @@
+      <element name="prima" type="xsd:float"/>
+     </sequence>
+    </complexType>
+-   <element name="solicitudCambioFecha">
+-    <complexType>
+-     <sequence>
+-      <element name="tramite" type="xsd:string"/>
+-      <element name="fechaSiembra" type="xsd:string"/>
+-     </sequence>
+-    </complexType>
+-   </element>
+-   <element name="solicitudCambioFechaResponse">
+-    <complexType>
+-     <sequence>
+-      <element name="solicitudCambioFechaReturn" type="impl:RespuestaCambio"/>
+-     </sequence>
+-    </complexType>
+-   </element>
+-   <complexType name="RespuestaCambio">
+-    <sequence>
+-     <element name="estado" nillable="true" type="xsd:string"/>
+-     <element name="fechaCambio" nillable="true" type="xsd:string"/>
+-     <element name="observacion" nillable="true" type="xsd:string"/>
+-     <element name="tramite" nillable="true" type="xsd:string"/>
+-    </sequence>
+-   </complexType>
+-   <element name="solicitudCambiolugarSiembra">
+-    <complexType>
+-     <sequence>
+-      <element name="tramite" type="xsd:string"/>
+-      <element name="codProvincia" type="xsd:string"/>
+-      <element name="codCanton" type="xsd:string"/>
+-      <element name="codParroquia" type="xsd:string"/>
+-      <element name="direccionSiembra" type="xsd:string"/>
+-      <element name="latitud" type="xsd:string"/>
+-      <element name="longitud" type="xsd:string"/>
+-     </sequence>
+-    </complexType>
+-   </element>
+-   <element name="solicitudCambiolugarSiembraResponse">
+-    <complexType>
+-     <sequence>
+-      <element name="solicitudCambiolugarSiembraReturn" type="impl:RespuestaCambio"/>
+-     </sequence>
+-    </complexType>
+-   </element>
+    <element name="registrarEmision">
+     <complexType>
+      <sequence>
+@@ -158,6 +115,7 @@
+      <element name="numHectAseguradas" type="xsd:double"/>
+      <element name="numHectFnanciadas" type="xsd:double"/>
+      <element name="numeroFactura" nillable="true" type="xsd:string"/>
++     <element name="numeroHectareasMov" type="xsd:double"/>
+      <element name="numeroResolucion" nillable="true" type="xsd:string"/>
+      <element name="ordenPago" nillable="true" type="xsd:string"/>
+      <element name="parroquia" nillable="true" type="xsd:string"/>
+@@ -168,6 +126,7 @@
+      <element name="referencia" nillable="true" type="xsd:string"/>
+      <element name="terrenoTecnificado" nillable="true" type="xsd:string"/>
+      <element name="tipoEndoso" nillable="true" type="xsd:string"/>
++     <element name="tipoSubEndoso" type="xsd:int"/>
+      <element name="variedad" nillable="true" type="xsd:string"/>
+     </sequence>
+    </complexType>
+@@ -184,6 +143,73 @@
+      <element name="observacion" nillable="true" type="xsd:string"/>
+     </sequence>
+    </complexType>
++   <element name="solicitudCambiolugarSiembra">
++    <complexType>
++     <sequence>
++      <element name="tramite" type="xsd:string"/>
++      <element name="codProvincia" type="xsd:string"/>
++      <element name="codCanton" type="xsd:string"/>
++      <element name="codParroquia" type="xsd:string"/>
++      <element name="direccionSiembra" type="xsd:string"/>
++      <element name="latitud" type="xsd:string"/>
++      <element name="longitud" type="xsd:string"/>
++     </sequence>
++    </complexType>
++   </element>
++   <element name="solicitudCambiolugarSiembraResponse">
++    <complexType>
++     <sequence>
++      <element name="solicitudCambiolugarSiembraReturn" type="impl:RespuestaCambio"/>
++     </sequence>
++    </complexType>
++   </element>
++   <complexType name="RespuestaCambio">
++    <sequence>
++     <element name="estado" nillable="true" type="xsd:string"/>
++     <element name="fechaCambio" nillable="true" type="xsd:string"/>
++     <element name="observacion" nillable="true" type="xsd:string"/>
++     <element name="tramite" nillable="true" type="xsd:string"/>
++    </sequence>
++   </complexType>
++   <element name="solicitudCambioFecha">
++    <complexType>
++     <sequence>
++      <element name="tramite" type="xsd:string"/>
++      <element name="fechaSiembra" type="xsd:string"/>
++     </sequence>
++    </complexType>
++   </element>
++   <element name="solicitudCambioFechaResponse">
++    <complexType>
++     <sequence>
++      <element name="solicitudCambioFechaReturn" type="impl:RespuestaCambio"/>
++     </sequence>
++    </complexType>
++   </element>
++   <element name="registroSiniestros">
++    <complexType>
++     <sequence>
++      <element name="Tramite" type="xsd:string"/>
++      <element name="identificacion" type="xsd:string"/>
++      <element name="NombreCliente" type="xsd:string"/>
++      <element name="ApellidoCliente" type="xsd:string"/>
++      <element name="valorIndemnizacion" type="xsd:double"/>
++      <element name="fechaPago" type="xsd:string"/>
++      <element name="cultivo" type="xsd:string"/>
++      <element name="hectareas" type="xsd:double"/>
++      <element name="sumaAseguradaIndemnizacion" type="xsd:double"/>
++      <element name="fechaNotificacionCliente" type="xsd:string"/>
++      <element name="tipoIndemnizacion" type="xsd:string"/>
++     </sequence>
++    </complexType>
++   </element>
++   <element name="registroSiniestrosResponse">
++    <complexType>
++     <sequence>
++      <element name="registroSiniestrosReturn" type="impl:RespuestaCambio"/>
++     </sequence>
++    </complexType>
++   </element>
+   </schema>
+  </wsdl:types>
+ 
+@@ -219,6 +245,14 @@
+ 
+    </wsdl:message>
+ 
++   <wsdl:message name="registroSiniestrosResponse">
++
++      <wsdl:part element="impl:registroSiniestrosResponse" name="parameters">
++
++      </wsdl:part>
++
++   </wsdl:message>
++
+    <wsdl:message name="registrarSolicitudRequest">
+ 
+       <wsdl:part element="impl:registrarSolicitud" name="parameters">
+@@ -227,6 +261,14 @@
+ 
+    </wsdl:message>
+ 
++   <wsdl:message name="registroSiniestrosRequest">
++
++      <wsdl:part element="impl:registroSiniestros" name="parameters">
++
++      </wsdl:part>
++
++   </wsdl:message>
++
+    <wsdl:message name="solicitudCambiolugarSiembraRequest">
+ 
+       <wsdl:part element="impl:solicitudCambiolugarSiembra" name="parameters">
+@@ -265,5 +307,5 @@
+ 
+       </wsdl:operation>
+ 
+-      <wsdl:operation name="solicitudCambioFecha">
++      <wsdl:operation name="registrarEmision">
+ 
+@@ -269,5 +311,5 @@
+ 
+-         <wsdl:input message="impl:solicitudCambioFechaRequest" name="solicitudCambioFechaRequest">
++         <wsdl:input message="impl:registrarEmisionRequest" name="registrarEmisionRequest">
+ 
+        </wsdl:input>
+ 
+@@ -271,7 +313,7 @@
+ 
+        </wsdl:input>
+ 
+-         <wsdl:output message="impl:solicitudCambioFechaResponse" name="solicitudCambioFechaResponse">
++         <wsdl:output message="impl:registrarEmisionResponse" name="registrarEmisionResponse">
+ 
+        </wsdl:output>
+ 
+@@ -289,5 +331,5 @@
+ 
+       </wsdl:operation>
+ 
+-      <wsdl:operation name="registrarEmision">
++      <wsdl:operation name="solicitudCambioFecha">
+ 
+@@ -293,5 +335,5 @@
+ 
+-         <wsdl:input message="impl:registrarEmisionRequest" name="registrarEmisionRequest">
++         <wsdl:input message="impl:solicitudCambioFechaRequest" name="solicitudCambioFechaRequest">
+ 
+        </wsdl:input>
+ 
+@@ -295,7 +337,19 @@
+ 
+        </wsdl:input>
+ 
+-         <wsdl:output message="impl:registrarEmisionResponse" name="registrarEmisionResponse">
++         <wsdl:output message="impl:solicitudCambioFechaResponse" name="solicitudCambioFechaResponse">
++
++       </wsdl:output>
++
++      </wsdl:operation>
++
++      <wsdl:operation name="registroSiniestros">
++
++         <wsdl:input message="impl:registroSiniestrosRequest" name="registroSiniestrosRequest">
++
++       </wsdl:input>
++
++         <wsdl:output message="impl:registroSiniestrosResponse" name="registroSiniestrosResponse">
+ 
+        </wsdl:output>
+ 
+@@ -325,7 +379,7 @@
+ 
+       </wsdl:operation>
+ 
+-      <wsdl:operation name="solicitudCambioFecha">
++      <wsdl:operation name="registrarEmision">
+ 
+          <wsdlsoap:operation soapAction=""/>
+ 
+@@ -329,9 +383,9 @@
+ 
+          <wsdlsoap:operation soapAction=""/>
+ 
+-         <wsdl:input name="solicitudCambioFechaRequest">
++         <wsdl:input name="registrarEmisionRequest">
+ 
+             <wsdlsoap:body use="literal"/>
+ 
+          </wsdl:input>
+ 
+@@ -333,9 +387,9 @@
+ 
+             <wsdlsoap:body use="literal"/>
+ 
+          </wsdl:input>
+ 
+-         <wsdl:output name="solicitudCambioFechaResponse">
++         <wsdl:output name="registrarEmisionResponse">
+ 
+             <wsdlsoap:body use="literal"/>
+ 
+@@ -361,7 +415,7 @@
+ 
+       </wsdl:operation>
+ 
+-      <wsdl:operation name="registrarEmision">
++      <wsdl:operation name="solicitudCambioFecha">
+ 
+          <wsdlsoap:operation soapAction=""/>
+ 
+@@ -365,9 +419,9 @@
+ 
+          <wsdlsoap:operation soapAction=""/>
+ 
+-         <wsdl:input name="registrarEmisionRequest">
++         <wsdl:input name="solicitudCambioFechaRequest">
+ 
+             <wsdlsoap:body use="literal"/>
+ 
+          </wsdl:input>
+ 
+@@ -369,9 +423,27 @@
+ 
+             <wsdlsoap:body use="literal"/>
+ 
+          </wsdl:input>
+ 
+-         <wsdl:output name="registrarEmisionResponse">
++         <wsdl:output name="solicitudCambioFechaResponse">
++
++            <wsdlsoap:body use="literal"/>
++
++         </wsdl:output>
++
++      </wsdl:operation>
++
++      <wsdl:operation name="registroSiniestros">
++
++         <wsdlsoap:operation soapAction=""/>
++
++         <wsdl:input name="registroSiniestrosRequest">
++
++            <wsdlsoap:body use="literal"/>
++
++         </wsdl:input>
++
++         <wsdl:output name="registroSiniestrosResponse">
+ 
+             <wsdlsoap:body use="literal"/>
+ 
+diff --git a/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java b/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java
+--- a/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java
++++ b/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java
+@@ -2,7 +2,6 @@
+ 
+ import java.math.BigDecimal;
+ import java.math.BigInteger;
+-import java.text.DecimalFormat;
+ import java.text.ParseException;
+ import java.text.SimpleDateFormat;
+ import java.util.ArrayList;
+@@ -6,7 +5,6 @@
+ import java.text.ParseException;
+ import java.text.SimpleDateFormat;
+ import java.util.ArrayList;
+-import java.util.Calendar;
+ import java.util.Date;
+ import java.util.List;
+ 
+@@ -23,7 +21,6 @@
+ import com.qbe.cotizador.dao.entidad.ClienteDAO;
+ import com.qbe.cotizador.dao.entidad.DireccionDAO;
+ import com.qbe.cotizador.dao.entidad.EntidadDAO;
+-import com.qbe.cotizador.dao.entidad.ParroquiaDAO;
+ import com.qbe.cotizador.dao.entidad.ProvinciaDAO;
+ import com.qbe.cotizador.dao.entidad.PuntoVentaDAO;
+ import com.qbe.cotizador.dao.entidad.TipoDireccionDAO;
+@@ -31,7 +28,6 @@
+ import com.qbe.cotizador.dao.entidad.TipoIdentificacionDAO;
+ import com.qbe.cotizador.dao.entidad.UsuarioDAO;
+ import com.qbe.cotizador.dao.entidad.ZonaDAO;
+-import com.qbe.cotizador.dao.producto.agricola.AgriArchivosCotizacionDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriAuditoriaCotizacionDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriCicloDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriCotizacionEndosoDAO;
+@@ -44,10 +40,9 @@
+ import com.qbe.cotizador.dao.producto.agricola.AgriSucreDetalleDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriTipoCalculoDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriTipoCultivoDAO;
+-import com.qbe.cotizador.dao.producto.agricola.CotizacionAprobacionDAO;
+ import com.qbe.cotizador.dao.producto.vehiculocerrado.GrupoPorProductoDAO;
+ import com.qbe.cotizador.dao.seguridad.TipoVariableDAO;
+ import com.qbe.cotizador.dao.seguridad.VariableSistemaDAO;
+ import com.qbe.cotizador.model.ActividadEconomica;
+ import com.qbe.cotizador.model.AgriAuditoriaCotizacion;
+ import com.qbe.cotizador.model.AgriCiclo;
+@@ -48,9 +43,8 @@
+ import com.qbe.cotizador.dao.producto.vehiculocerrado.GrupoPorProductoDAO;
+ import com.qbe.cotizador.dao.seguridad.TipoVariableDAO;
+ import com.qbe.cotizador.dao.seguridad.VariableSistemaDAO;
+ import com.qbe.cotizador.model.ActividadEconomica;
+ import com.qbe.cotizador.model.AgriAuditoriaCotizacion;
+ import com.qbe.cotizador.model.AgriCiclo;
+-import com.qbe.cotizador.model.AgriCotizacionAprobacion;
+ import com.qbe.cotizador.model.AgriCotizacionEndoso;
+ import com.qbe.cotizador.model.AgriCotizacionMax;
+@@ -55,3 +49,4 @@
+ import com.qbe.cotizador.model.AgriCotizacionEndoso;
+ import com.qbe.cotizador.model.AgriCotizacionMax;
++import com.qbe.cotizador.model.AgriIndemnizacion;
+ import com.qbe.cotizador.model.AgriObjetoCotizacion;
+@@ -57,5 +52,4 @@
+ import com.qbe.cotizador.model.AgriObjetoCotizacion;
+-import com.qbe.cotizador.model.AgriObjetoDetalle;
+ import com.qbe.cotizador.model.AgriParametroXPuntoVenta;
+ import com.qbe.cotizador.model.AgriParroquia;
+ import com.qbe.cotizador.model.AgriRegla;
+@@ -73,7 +67,6 @@
+ import com.qbe.cotizador.model.Entidad;
+ import com.qbe.cotizador.model.Estado;
+ import com.qbe.cotizador.model.GrupoPorProducto;
+-import com.qbe.cotizador.model.Parroquia;
+ import com.qbe.cotizador.model.ProductoXPuntoVenta;
+ import com.qbe.cotizador.model.Provincia;
+ import com.qbe.cotizador.model.PuntoVenta;
+@@ -91,6 +84,7 @@
+ import com.qbe.cotizador.transaction.entidad.EntidadTransaction;
+ import com.qbe.cotizador.transaction.producto.agricola.AgriAuditoriaCotizacionTransaction;
+ import com.qbe.cotizador.transaction.producto.agricola.AgriCotizacionEndosoTransaction;
++import com.qbe.cotizador.transaction.producto.agricola.AgriIndemnizacionTransaction;
+ import com.qbe.cotizador.transaction.producto.agricola.AgriObjetoCotizacionTransaction;
+ import com.qbe.cotizador.transaction.producto.agricola.AgriSucreAuditoriaTransaction;
+ import com.qbe.cotizador.transaction.producto.agricola.AgriSucreDetalleTransaction;
+@@ -900,7 +894,6 @@
+ 				double valorSuperBancos = 0;
+ 				double valorIva = 0;
+ 				double valorSubTotal = 0;
+-				double valorTotal = 0;
+ 				if (variablesistema.size() > 0) {
+ 					for (VariableSistema variable : variablesistema) {
+ 						if(tasa==0|| tasa==0.0){
+@@ -1344,8 +1337,7 @@
+ 			  else	  
+ 				  throw new Exception ("Error tipo de endoso: "+in0.getTipoEndoso()+ " desconocido");
+ 			  //no se aceptan movimientos diferentes al 01/10/2016
+-			  Date fechaPagoS=formatoDelTexto.parse(in0.getFechaPago().trim());
+ 			  Date fechaFiltro=formatoDelTexto.parse("30/09/2016");
+ 			  //if(fechaPagoS.before(fechaFiltro))
+ 				//	 throw new Exception ("La fecha del pago movimiento  "+in0.getFechaPago()+" no puede ser menos al 01/10/2016 el sistema no registrara tramites movimientos anteriores");
+ 			  //Tomo el numero de tramite para la comprobacion
+@@ -1348,8 +1340,7 @@
+ 			  Date fechaFiltro=formatoDelTexto.parse("30/09/2016");
+ 			  //if(fechaPagoS.before(fechaFiltro))
+ 				//	 throw new Exception ("La fecha del pago movimiento  "+in0.getFechaPago()+" no puede ser menos al 01/10/2016 el sistema no registrara tramites movimientos anteriores");
+ 			  //Tomo el numero de tramite para la comprobacion
+-			  Date fechaEmsionS=formatoDelTexto.parse(in0.getFechaEmision().trim()); 
+ 			  //if(fechaEmsionS.before(fechaFiltro))
+ 					 //throw new Exception ("La fecha de la emision del  movimiento  "+in0.getFechaEmision()+" no puede ser menos al 01/10/2016 el sistema no registrara tramites movimientos anteriores");
+ 			  String NumeroTramite = in0.getNumeroResolucion().trim();
+@@ -1367,7 +1358,6 @@
+ 				AgriObjetoCotizacion agriObjetoCotizacion= agriObjetoCotizacionDAO.buscarPorId(new BigInteger(cotizacionDetalle.getObjetoId()));
+ 				//variables globales
+ 				java.util.Date date = new java.util.Date();
+-				java.sql.Timestamp sq = new java.sql.Timestamp(date.getTime());	
+ 				String ObservacionSucre="";
+ 				/**COMIENZA EL PROCESO CON LA COTIZACION**/
+ 				if (ExisteCotizacion.getId() != null) {	
+@@ -2424,7 +2414,6 @@
+ 			Provincia provincia = new Provincia();
+ 			CantonDAO elCanton = new CantonDAO();
+ 			Canton canton = new Canton();
+-			TipoDireccionDAO tipoDireccionDAO = new TipoDireccionDAO();
+ 			AgriParroquiaDAO laParroquia = new AgriParroquiaDAO();
+ 			AgriParroquia parroquia = new AgriParroquia();
+ 			
+@@ -2572,4 +2561,126 @@
+ 		
+ 		return respuesta;
+ 	}
++
++	public RespuestaCambio registroSiniestros(String Tramite, String identificacion, String NombreCliente,String ApellidoCliente, double valorIndemnizacion,
++			String fechaPago, String cultivo, double hectareas, double sumaAseguradaIndemnizacion, String fechaNotificacionCliente, String tipoIndemnizacion ){
++		RespuestaCambio respuesta = new RespuestaCambio();
++		/* Proceso de validacion de campos obligatorios */
++		
++		/*PROCESO DE AUDITORIA */
++		AgriSucreAuditoria auditoria = new AgriSucreAuditoria();
++		AgriSucreAuditoriaTransaction procesoAuditoria = new AgriSucreAuditoriaTransaction();
++		auditoria.setTramite(Tramite);
++		auditoria.setObjeto("Tramite: "+Tramite+" identificacion : "+identificacion+" NombreCliente : "+NombreCliente+
++				" ApellidoCliente : "+ApellidoCliente+" valorIndemnizacion : "+valorIndemnizacion
++				+" fechaPago : "+fechaPago+" cultivo : "+cultivo+ " hectareas : "+hectareas+" sumaAseguradaHectareas : "+sumaAseguradaIndemnizacion
++				+" fechaNotificacionCliente : "+fechaNotificacionCliente+" tipoIndemnizacion : "+tipoIndemnizacion);
++		
++		java.util.Date date2 = new java.util.Date();
++		java.sql.Timestamp sq2 = new java.sql.Timestamp(date2.getTime());
++		auditoria.setFecha(sq2);
++		auditoria.setCanal("SUCRE INDEMNIZACION");
++		try{
++			auditoria=procesoAuditoria.crear(auditoria);			
++		}catch(Exception e){
++			e.printStackTrace();
++		}
++	
++		/***TODO: PROCESO SOLICITADO POR AGRICOLA ref: Leonardo regalado, el proceso toma la informacion
++		 * de seguros sucre para que notifique el pago al cliente que previamente ya deposito qbe en sucre***/
++		try{
++			/**Verificamos que la cotizacion exista con el numero de tramite**/
++			CotizacionDAO cotizacionDAO = new CotizacionDAO();
++			Cotizacion cotizacion = cotizacionDAO.buscarPorNumeroTramite(Tramite.trim());
++			if(cotizacion==null)
++				throw new Exception("El numero de trámite no existe");	
++						
++			/**Verificamos que el usuario exista en la base del cotizador**/
++			EntidadDAO entidadDAO = new EntidadDAO();
++			Entidad entidad = entidadDAO.buscarEntidadPorIdentificacion(identificacion.trim());
++			if(entidad==null)
++				throw new Exception("El cliente no existe");
++			ClienteDAO clienteDAO = new ClienteDAO();
++			Cliente cliente = clienteDAO.buscarPorEntidadId(entidad);
++			if(cliente==null)
++				throw new Exception("El cliente no existe");
++			
++			Cliente clienteCotizacion = clienteDAO.buscarPorId(cotizacion.getClienteId().toString());
++			
++			if(!clienteCotizacion.getEntidad().getIdentificacion().equals(cliente.getEntidad().getIdentificacion()))
++				throw new Exception("El cliente asegurado es diferente al cliente de cotizacion");
++			
++			/**Verificamos el tipo de cultivo**/
++			CotizacionDetalleDAO cotizacionDetalleDAO= new CotizacionDetalleDAO();
++			CotizacionDetalle cotizacionDetalle= cotizacionDetalleDAO.buscarCotizacionDetallePorCotizacion(cotizacion).get(0);
++			AgriObjetoCotizacionDAO agriObjetoCotizacionDAO= new AgriObjetoCotizacionDAO();
++			AgriObjetoCotizacion agriObjetoCotizacion=agriObjetoCotizacionDAO.buscarPorId(new BigInteger(cotizacionDetalle.getObjetoId()));
++			
++			BigInteger idCultivo=agriObjetoCotizacion.getTipoCultivoId();
++			AgriTipoCultivoDAO agriTipoCultivoDAO = new AgriTipoCultivoDAO(); 
++			AgriTipoCultivo agriTipoCultivo = agriTipoCultivoDAO.BuscarPorId(idCultivo);
++			
++			if(!agriTipoCultivo.getCodIntSucre().equals(cultivo.trim()))
++				throw new Exception("El tipo de cultivo no corresponde al de la cotizacion: N.C.C= "+agriTipoCultivo.getNombre());
++			/**validacion que esta aprobada y confirmada**/
++			if(!cotizacion.getEstado().getNombre().equals("Pendiente de Emitir"))
++				throw new Exception("La cotizacion no se encuentra confirmada como emitida, no se puede aplicar siniestros");
++			if(agriObjetoCotizacion.getConfirEmiCanal()==false)
++				throw new Exception("La cotizacion no esta confirmada como emitida, no se puede aplicar siniestros");
++			/**validacion de fechas**/
++			SimpleDateFormat formatoDelTexto = new SimpleDateFormat("dd/MM/yyyy");
++			Date fechaPagoV= null;
++			Date fechaNotificacionV=null;
++			try{
++				fechaPagoV=formatoDelTexto.parse(fechaPago.trim());
++			}catch (Exception e) {
++					throw new Exception("la fecha de pago al cliente no se encuentra en el formato: dd/MM/yyyy "+fechaPago);
++			}
++			try{
++				fechaNotificacionV=formatoDelTexto.parse(fechaNotificacionCliente.trim());
++			}catch (Exception e) {
++					throw new Exception("la fecha de pago al cliente no se encuentra en el formato: dd/MM/yyyy "+fechaPago);
++			}
++			
++			/**Guardamos la informacion de la indemnizacion**/
++			AgriIndemnizacion agriIndemnizacion= new AgriIndemnizacion();
++			agriIndemnizacion.setClienteId(new BigInteger(cliente.getId()));
++			agriIndemnizacion.setCultivoId(agriTipoCultivo.getTipoCultivoId());
++			agriIndemnizacion.setFechaNotificacionCliente(fechaNotificacionV);
++			agriIndemnizacion.setFechaPago(fechaPagoV);
++			agriIndemnizacion.setHectareas(hectareas);
++			agriIndemnizacion.setSumaAseguradaIndemnizacion(sumaAseguradaIndemnizacion);
++			agriIndemnizacion.setValorIndemnizacion(valorIndemnizacion);
++			agriIndemnizacion.setTramite(Tramite);
++			
++			AgriIndemnizacionTransaction agriIndemnizacionTransaction = new AgriIndemnizacionTransaction();
++			agriIndemnizacionTransaction.crear(agriIndemnizacion);
++			
++			respuesta.setEstado("OK");
++			respuesta.setObservacion("Correcto");
++			
++		}catch(Exception e){
++			
++			//SI EXISTE ERROR ENVIAR UN MENSAJE DE ERROR
++			List<String> usuario = new ArrayList<>();
++			usuario.add("luis.caiza@smartwork.com.ec");
++			String asunto="Error en Proceso Indemnizacion Sucre";
++			AgriSucreNotificacionErrores notificacionErrores= new AgriSucreNotificacionErrores();
++			String Html=notificacionErrores.GeneradorHtml(Tramite, e.getMessage(), "");
++			
++			for(String receptor:usuario){
++				//Utilitarios.envioMail(receptor, asunto, cuerpo);
++				Utilitarios.envioMail(receptor, asunto, Html);
++			}
++			
++			respuesta.setEstado("Error");
++			respuesta.setObservacion("Error: "+e.getMessage());
++			e.printStackTrace();
++		}
++		
++		return respuesta;
++	}
++	
++
++
+ }
+\ No newline at end of file
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java
+@@ -33,6 +33,7 @@
+ import com.google.common.io.Files;
+ import com.qbe.cotizador.dao.cotizacion.CotizacionDAO;
+ import com.qbe.cotizador.dao.cotizacion.EndosoBeneficiarioDAO;
++import com.qbe.cotizador.dao.cotizacion.EstadoDAO;
+ import com.qbe.cotizador.dao.entidad.ClienteDAO;
+ import com.qbe.cotizador.dao.entidad.EntidadDAO;
+ import com.qbe.cotizador.dao.entidad.UsuarioDAO;
+@@ -36,8 +37,9 @@
+ import com.qbe.cotizador.dao.entidad.ClienteDAO;
+ import com.qbe.cotizador.dao.entidad.EntidadDAO;
+ import com.qbe.cotizador.dao.entidad.UsuarioDAO;
++import com.qbe.cotizador.dao.producto.agricola.AgriCargaPreviaArchivoPlanoDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriParametroXCanalDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriParametroXPuntoVentaDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriTipoCultivoDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriTipoCultivoXTipoCalculoDAO;
+ import com.qbe.cotizador.dao.producto.agricola.CotizacionAprobacionDAO;
+@@ -39,8 +41,9 @@
+ import com.qbe.cotizador.dao.producto.agricola.AgriParametroXCanalDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriParametroXPuntoVentaDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriTipoCultivoDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriTipoCultivoXTipoCalculoDAO;
+ import com.qbe.cotizador.dao.producto.agricola.CotizacionAprobacionDAO;
++import com.qbe.cotizador.model.AgriCargaPreviaArchivoPlano;
+ import com.qbe.cotizador.model.AgriCotizacionAprobacion;
+ import com.qbe.cotizador.model.AgriParametroXCanal;
+ import com.qbe.cotizador.model.AgriParametroXPuntoVenta;
+@@ -50,4 +53,5 @@
+ import com.qbe.cotizador.model.Cotizacion;
+ import com.qbe.cotizador.model.EndosoBeneficiario;
+ import com.qbe.cotizador.model.Entidad;
++import com.qbe.cotizador.model.Estado;
+ import com.qbe.cotizador.model.Usuario;
+@@ -53,4 +57,6 @@
+ import com.qbe.cotizador.model.Usuario;
++import com.qbe.cotizador.transaction.cotizacion.CotizacionTransaction;
++import com.qbe.cotizador.transaction.producto.agricola.AgriCargaPreviaArchivoPlanoTransaction;
+ 
+ import net.sf.json.JSONObject;
+ 
+@@ -93,6 +99,40 @@
+ 		CotizacionDAO procesosCotizacion = new CotizacionDAO();
+ 		cotizacion=procesosCotizacion.buscarPorId(codigoCotizacion);
+ 		
++		String proceso = request.getParameter("proceso") == null ? "false" : request.getParameter("proceso");
++		if(proceso.equals("Pronaca")){
++			String numHectareas = request.getParameter("numHectareas") == null ? "false" : request.getParameter("numHectareas");
++			String previaID = request.getParameter("previaID") == null ? "false" : request.getParameter("previaID");
++			
++			CotizacionDAO cotizacionDAO = new CotizacionDAO();
++			Cotizacion cotizacion2=cotizacionDAO.buscarPorId(codigoCotizacion);
++			
++			AgriCargaPreviaArchivoPlano cargaPreviaArchivo = new AgriCargaPreviaArchivoPlano();
++			AgriCargaPreviaArchivoPlanoDAO cargaPreviaArchivoDAO = new AgriCargaPreviaArchivoPlanoDAO();
++			AgriCargaPreviaArchivoPlanoTransaction cargaPreviaArchivoTransaction = new AgriCargaPreviaArchivoPlanoTransaction();
++			
++			Double hasAseguradasRestantes = 0.0;
++			cargaPreviaArchivo = cargaPreviaArchivoDAO.buscarPorId(new BigInteger(previaID));
++			hasAseguradasRestantes = cargaPreviaArchivo.getNumerHasAseguradas() - Double.parseDouble(numHectareas);
++			
++			if(hasAseguradasRestantes <= 0){
++				cargaPreviaArchivo.setEstado(0);
++				cargaPreviaArchivo.setNumerHasAseguradas(hasAseguradasRestantes);
++			}else{
++				cargaPreviaArchivo.setNumerHasAseguradas(hasAseguradasRestantes);
++			}
++			cargaPreviaArchivoTransaction.editar(cargaPreviaArchivo);
++			String mensaje="La Cotizacion N.-"+cotizacion.getId()+" se encuentra en Estado: "+cotizacion.getEstado().getNombre() +" y a sido procesada correctamente.";
++			
++			//Cambio de estado de la cotizacion en el final de los pasos todos quedan como pendiente de emitir
++			Estado estado = new Estado();
++			EstadoDAO estadoDAO = new EstadoDAO();
++			estado=estadoDAO.buscarPorNombre("Pendiente de Emitir", "Cotizacion");
++			cotizacion2.setEstado(estado);
++			CotizacionTransaction cotizacionTransaction= new CotizacionTransaction();
++			cotizacionTransaction.editar(cotizacion2);			
++		}
++		
+ 		CotizacionAprobacionDAO cDAO = new CotizacionAprobacionDAO();
+ 		AgriTipoCultivoXTipoCalculoDAO coberturasDAO = new AgriTipoCultivoXTipoCalculoDAO();
+ 		List<AgriTipoCultivoXTipoCalculo> Coberturas = new ArrayList<AgriTipoCultivoXTipoCalculo>();
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriObjetoCotizacionController.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriObjetoCotizacionController.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriObjetoCotizacionController.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriObjetoCotizacionController.java
+@@ -698,10 +698,6 @@
+ 								System.out.print("No hay longitud");
+ 							}
+ 						}
+-						if(sucursalCanalId.length() > 0)
+-							agriObjetoCotizacion.setSucursalCanalId(new BigInteger(sucursalCanalId));
+-						else
+-							throw new Exception("Seleccione una sucursal.");
+ 						if(dateCredito!=null)
+ 						{
+ 							try{
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriProcesarCotizacionOffline.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriProcesarCotizacionOffline.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriProcesarCotizacionOffline.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriProcesarCotizacionOffline.java
+@@ -61,8 +61,14 @@
+ 		AgriSucreAuditoria auditoria = new AgriSucreAuditoria();
+ 		AgriSucreAuditoriaTransaction procesoAuditoria = new AgriSucreAuditoriaTransaction();
+ 		auditoria.setTramite("" + nuevaCotizacion.getNumeroIdentificacion());
+-		String DatosRecibidos = " AUDITORIA CANALES OFFLINE: Correos Provenientes: "+correo+"|"+CCCorreos+"  Apellidos : "+nuevaCotizacion.getApellidos()+" Celular : "+nuevaCotizacion.getCelular()
+-				+" DireccionSiembra : "+nuevaCotizacion.getDireccionSiembra()+ " Email : "+nuevaCotizacion.getEmail()+ " Nombres : "+nuevaCotizacion.getNombres()
++		String DatosRecibidos = " AUDITORIA CANALES OFFLINE: Correos Provenientes: "+correo+"|"+CCCorreos+"  Apellidos : "+nuevaCotizacion.getApellidos()+" ApellidosENCRIP"+nuevaCotizacion.getApellidos().replace("|A", "Á").replace("|E","É").replace("|I","Í").replace("|O","Ó").replace("|U", "Ú")
++                .replace("|a", "á").replace("|e", "é").replace("|i","í").replace("|o","ó").replace("|u","ú")
++                .replace("-", "Ñ").replace("_", "ñ")+ " Celular : "+nuevaCotizacion.getCelular()
++				+" DireccionSiembra : "+nuevaCotizacion.getDireccionSiembra()+" DireccionSiembraEncrip : "+nuevaCotizacion.getDireccionSiembra().replace("|A", "Á").replace("|E","É").replace("|I","Í").replace("|O","Ó").replace("|U", "Ú")
++                .replace("|a", "á").replace("|e", "é").replace("|i","í").replace("|o","ó").replace("|u","ú")
++                .replace("-", "Ñ").replace("_", "ñ")+ " Email : "+nuevaCotizacion.getEmail()+ " Nombres : "+nuevaCotizacion.getNombres()+" apellidosENCRIP"+nuevaCotizacion.getNombres().replace("|A", "Á").replace("|E","É").replace("|I","Í").replace("|O","Ó").replace("|U", "Ú")
++                .replace("|a", "á").replace("|e", "é").replace("|i","í").replace("|o","ó").replace("|u","ú")
++                .replace("-", "Ñ").replace("_", "ñ")
+ 				+ " NumeroIdentificacion : "+nuevaCotizacion.getNumeroIdentificacion()+" ObjetoCotizacionId : "+nuevaCotizacion.getObjetoCotizacionId()
+ 				+ " Observaciones : "+nuevaCotizacion.getObservaciones()+ " PuntoVentaId : "+nuevaCotizacion.getPuntoVentaId()+ " Telefono : "+nuevaCotizacion.getTelefono()
+ 				+ " UsuarioApellido : "+nuevaCotizacion.getUsuarioApellido()+ " UsuarioNombre : "+nuevaCotizacion.getUsuarioNombre()+" AnalisisMontoAsegurado : "+nuevaCotizacion.getAnalisisMontoAsegurado()
+@@ -113,6 +119,9 @@
+ 			ClienteTransaction clienteTransaction = new ClienteTransaction();
+ 			AgriObjetoCotizacionTransaction agriObjetoCotizacionTransaction = new AgriObjetoCotizacionTransaction();
+ 	
++			if(nuevaCotizacion.getDireccionSiembra()==null||nuevaCotizacion.getDireccionSiembra().equals(""))
++				throw new Exception("No tiene lugar de siembra");
++			
+ 			//Busco si la entidad existe
+ 			entidad = entidadDAO.buscarEntidadPorIdentificacion(nuevaCotizacion.getNumeroIdentificacion());
+ 	
+@@ -120,6 +129,8 @@
+ 				entidad.setIdentificacion(nuevaCotizacion.getNumeroIdentificacion());
+ 			
+ 			if(!nuevaCotizacion.getNombres().equals(""))
+-				entidad.setNombres(""+nuevaCotizacion.getNombres().trim());
++				entidad.setNombres(""+nuevaCotizacion.getNombres().replace("|A", "Á").replace("|E","É").replace("|I","Í").replace("|O","Ó").replace("|U", "Ú")
++                        .replace("|a", "á").replace("|e", "é").replace("|i","í").replace("|o","ó").replace("|u","ú")
++                        .replace("-", "Ñ").replace("_", "ñ").trim());
+ 			
+ 			if(!nuevaCotizacion.getApellidos().equals(""))
+@@ -124,6 +135,8 @@
+ 			
+ 			if(!nuevaCotizacion.getApellidos().equals(""))
+-				entidad.setApellidos(""+nuevaCotizacion.getApellidos().trim());
++				entidad.setApellidos(""+nuevaCotizacion.getApellidos().trim().replace("|A", "Á").replace("|E","É").replace("|I","Í").replace("|O","Ó").replace("|U", "Ú")
++                        .replace("|a", "á").replace("|e", "é").replace("|i","í").replace("|o","ó").replace("|u","ú")
++                        .replace("-", "Ñ").replace("_", "ñ"));
+ 				
+ 			entidad.setNombreCompleto(""+nuevaCotizacion.getApellidos()+ " " + nuevaCotizacion.getNombres());
+ 	
+@@ -259,10 +272,9 @@
+ 			agriObjetoCotizacion.setDisponeAsistencia(nuevaCotizacion.getDisponeAsistencia());
+ 			agriObjetoCotizacion.setAgricultorTecnificado(nuevaCotizacion.getAgricultorTecnificado());
+ 			
+-			agriObjetoCotizacion.setDireccionSiembra(nuevaCotizacion.getDireccionSiembra());
+-			if(nuevaCotizacion.getDireccionSiembra()==null||nuevaCotizacion.getDireccionSiembra().equals(""))
+-				throw new Exception("No tiene lugar de siembra");
+-						
++			agriObjetoCotizacion.setDireccionSiembra(nuevaCotizacion.getDireccionSiembra().replace("|A", "Á").replace("|E","É").replace("|I","Í").replace("|O","Ó").replace("|U", "Ú")
++                    .replace("|a", "á").replace("|e", "é").replace("|i","í").replace("|o","ó").replace("|u","ú")
++                    .replace("-", "Ñ").replace("_", "ñ"));
+ 			agriObjetoCotizacion.setTipoSeguro(nuevaCotizacion.getTipoSeguro());
+ 			agriObjetoCotizacion.setAniosCultivo(nuevaCotizacion.getEdadCultivo());
+ 			agriObjetoCotizacion.setHectareasLote(new Float(nuevaCotizacion.getHectareasLote()));

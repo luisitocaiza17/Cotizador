@@ -1,0 +1,69 @@
+package com.qbe.cotizador.model;
+
+import java.io.Serializable;
+
+import javax.persistence.*;
+
+
+/**
+ * The persistent class for the AGRI_PARROQUIAS database table.
+ * 
+ */
+@Entity
+@Table(name="AGRI_PARROQUIAS")
+@NamedQueries({
+	@NamedQuery(name="AgriParroquia.buscarTodos", query="SELECT a FROM AgriParroquia a"),
+	@NamedQuery(name="AgriParroquia.obtenerPorSBS", query="SELECT a FROM AgriParroquia a where a.parroquiaSbs=:CodigoSBS")
+})
+
+public class AgriParroquia implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	private int id;
+
+	@Column(name="PARROQUIA_NOMBRE")
+	private String parroquiaNombre;
+
+	@Column(name="PARROQUIA_SBS")
+	private String parroquiaSbs;
+	
+	@Column(name="CANTON_ID")
+	private String cantonId;
+		
+	public String getCantonId() {
+		return cantonId;
+	}
+
+	public void setCantonId(String cantonId) {
+		this.cantonId = cantonId;
+	}
+
+	public AgriParroquia() {
+	}
+
+	public int getId() {
+		return this.id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getParroquiaNombre() {
+		return this.parroquiaNombre;
+	}
+
+	public void setParroquiaNombre(String parroquiaNombre) {
+		this.parroquiaNombre = parroquiaNombre;
+	}
+
+	public String getParroquiaSbs() {
+		return this.parroquiaSbs;
+	}
+
+	public void setParroquiaSbs(String parroquiaSbs) {
+		this.parroquiaSbs = parroquiaSbs;
+	}
+
+}

@@ -1,0 +1,24 @@
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java
+@@ -345,7 +345,7 @@
+ 		//Numero de contenedor
+ 		
+ 		//Armado Final de parametros a mostrar en la poliza
+-		parametersHeader.put("NumeroPoliza", agriParametroXCanal.getContenedorEnsuranceId()+"-"+detalleCotizacion.getId().toString());
++		parametersHeader.put("NumeroPoliza", agriParametroXCanal.getContenedorNumero()+"-"+detalleCotizacion.getId().toString());
+ 		//buscamos el cliente
+ 		Cliente cliente = new Cliente();
+ 		ClienteDAO clienteDAO = new ClienteDAO();
+diff --git a/WebContent/dashboard/ConsultaCanal.jsp b/WebContent/dashboard/ConsultaCanal.jsp
+--- a/WebContent/dashboard/ConsultaCanal.jsp
++++ b/WebContent/dashboard/ConsultaCanal.jsp
+@@ -44,7 +44,7 @@
+ 	 -->
+ 
+ <script>
+-function NEetQueryStringByParameter(name) {
++function GetQueryStringByParameter(name) {
+     name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+     results = regex.exec(location.search);

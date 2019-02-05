@@ -1,0 +1,86 @@
+diff --git a/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java b/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java
+--- a/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java
++++ b/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java
+@@ -659,8 +659,8 @@
+ 				}
+ 				Date fechaAprobacion = null;
+ 				Date fechaSiembra=null;
+-				SimpleDateFormat formatoDelTexto = new SimpleDateFormat("dd/mm/yyyy");			
+-				try {
+-					fechaSiembra = formatoDelTexto.parse(in0.getFechaTentativaSiembra());
++				SimpleDateFormat formatoDelTexto = new SimpleDateFormat("dd/MM/yyyy");
++				fechaSiembra = formatoDelTexto.parse(in0.getFechaTentativaSiembra());		
++				try {					
+ 					fechaAprobacion = formatoDelTexto.parse(in0.getFechaAprobacionCredito());
+ 				} catch (Exception e) {
+@@ -665,7 +665,6 @@
+ 					fechaAprobacion = formatoDelTexto.parse(in0.getFechaAprobacionCredito());
+ 				} catch (Exception e) {
+-					fechaAprobacion = null;
+-					fechaSiembra=null;
++					fechaAprobacion = null;					
+ 				}			
+ 				agriObjetoCotizacion.setFechaCredito(fechaAprobacion);
+ 				agriObjetoCotizacion.setFechaSiembra(fechaSiembra);	
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java
+@@ -295,7 +295,8 @@
+ 				pg.setTotal((int)total);
+ 				pg.setData(data);
+ 				
+-				Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
++				//Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
++				Gson gson = new GsonBuilder().setDateFormat("MM/dd/yyyy HH:mm:ss").create();
+ 				// convert the DataSourceReslt to JSON and write it to the response
+ 				response.setContentType("application/json; charset=ISO-8859-1");
+ 			    response.getWriter().print(gson.toJson(pg));
+@@ -891,7 +892,8 @@
+ 				pg.setTotal((int)contador);
+ 				pg.setData(cotizacionList);
+ 				
+-				Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
++				//Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
++				Gson gson = new GsonBuilder().setDateFormat("MM/dd/yyyy HH:mm:ss").create();
+ 				// convert the DataSourceReslt to JSON and write it to the response
+ 				response.setContentType("application/json; charset=ISO-8859-1");
+ 			    response.getWriter().print(gson.toJson(pg));
+@@ -953,7 +955,8 @@
+ 				pg.setData(cotizacionList);
+ 				
+ 				
+-				Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
++				//Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
++				Gson gson = new GsonBuilder().setDateFormat("MM/dd/yyyy HH:mm:ss").create();
+ 				// convert the DataSourceReslt to JSON and write it to the response
+ 				response.setContentType("application/json; charset=ISO-8859-1");
+ 			    response.getWriter().print(gson.toJson(pg));
+@@ -1001,7 +1004,8 @@
+ 				pg.setData(cotizacionList);
+ 				
+ 				//Gson gson = new Gson();
+-				Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
++				//Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
++				Gson gson = new GsonBuilder().setDateFormat("MM/dd/yyyy HH:mm:ss").create();
+ 				// convert the DataSourceReslt to JSON and write it to the response
+ 				response.setContentType("application/json; charset=ISO-8859-1");
+ 			    response.getWriter().print(gson.toJson(pg));
+@@ -1449,6 +1453,7 @@
+ 						// Cambiar estados
+ 						EstadoDAO estadoDAO = new EstadoDAO();
+ 						cotizacionC.setEstado(estadoDAO.buscarPorNombre("Revocado","Cotizacion"));
++						cotizacionC.setNumeroTramite(null);
+ 						// Actualiza estado tabla cotizacion
+ 						cotizacionC = cotizacionTransaction.editar(cotizacionC);
+ 						// /TODO: Auditoria de aprobaciones y rechazos
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriEmisionPoliza.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriEmisionPoliza.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriEmisionPoliza.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriEmisionPoliza.java
+@@ -304,6 +304,7 @@
+ 			result=wsEntidadEnsurance.crearActualizarEntidad(entidadEnsurance);
+ 		}
+ 		catch(Exception ex){
++			ex.printStackTrace();
+ 			throw new Exception("Error al crear la entidad ensurance");
+ 		}
+ 		

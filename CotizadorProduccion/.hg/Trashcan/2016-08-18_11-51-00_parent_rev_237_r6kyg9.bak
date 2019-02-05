@@ -1,0 +1,47 @@
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriExportarDatos.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriExportarDatos.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriExportarDatos.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriExportarDatos.java
+@@ -92,7 +92,7 @@
+ 	 */
+ 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+ 		
+-		//Cotizador 1.- Credife 2.- Cooprogreso
++		//Cotizador 1.- Credife 2.- Cooprogreso 3.- Agripac
+ 		String Cotizador = request.getParameter("cotizador") == null ? "" : request.getParameter("cotizador");
+ 		
+ 		//JSONObject retorno=new JSONObject();
+@@ -179,6 +179,24 @@
+ 				listadoTipoCultivo.add(nuevoTipo);
+ 			}
+ 			break;
++		case "3":
++			
++			List<AgriCultivoCanal> agriCultivoCanalAgripac= agriCultivoCanalDAO.buscarTipoCalculo(new BigInteger("31"));
++			for (AgriCultivoCanal tipoCultivo: agriCultivoCanalAgripac)
++			{
++				TipoCultivo nuevoTipo=new TipoCultivo();
++				nuevoTipo.setTipoCultivoId(tipoCultivo.getTipoCultivoId());
++				nuevoTipo.setNombre(tipoCultivo.getNombre());
++				nuevoTipo.setTipo(tipoCultivo.getTipo());
++				nuevoTipo.setVigenciaDias(tipoCultivo.getVigenciaDias());
++				//TODO: se agrega el precio de ajuste y nombre de plantilla 
++				nuevoTipo.setPrecioAjuste(tipoCultivo.getPrecioAjuste());
++				nuevoTipo.setPrecioAjuste2(tipoCultivo.getPrecioAjuste2());
++				nuevoTipo.setUnidadMedida(tipoCultivo.getUnidadMedida());
++				nuevoTipo.setUnidadMedida2(tipoCultivo.getUnidadMedida2());
++				listadoTipoCultivo.add(nuevoTipo);
++			}
++			break;
+ 		default:
+ 			break;
+ 		}
+@@ -194,6 +212,9 @@
+ 		case "2":
+ 			NombreCotizado="COOPROGRESO";
+ 			break;
++		case "3":
++			NombreCotizado="AGRIPAC";
++			break;
+ 		default:
+ 			break;
+ 		}

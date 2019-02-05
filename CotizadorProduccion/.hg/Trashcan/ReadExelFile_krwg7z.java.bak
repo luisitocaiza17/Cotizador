@@ -1,0 +1,575 @@
+package com.qbe.cotizador.servlets.producto.agricola;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.math.BigInteger;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFDateUtil;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFDataFormat;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
+import com.qbe.cotizador.dao.producto.agricola.AgriCotizacionEM;
+import com.qbe.cotizador.model.Cotizacion;
+import com.sun.xml.wss.core.Timestamp;
+
+public class ReadExelFile {
+
+	public static List<CotizacionArchivoPlano> readXLSFile(String rutaArchivo) throws IOException, ParseException		{
+		List<CotizacionArchivoPlano> cotizacionArray = new ArrayList<CotizacionArchivoPlano>();
+		InputStream ExcelFileToRead = new FileInputStream(rutaArchivo);
+		HSSFWorkbook wb = new HSSFWorkbook(ExcelFileToRead);
+
+		HSSFSheet sheet=wb.getSheetAt(0);
+		HSSFRow row; 
+		HSSFCell cell;
+
+		Iterator rows = sheet.rowIterator();
+		int i = 0;
+
+		while (rows.hasNext())
+		{
+
+			if(i<1){
+				rows.next();
+				i++;				
+				continue;				
+			}				
+			row=(HSSFRow) rows.next();
+
+			String existeSiguiente=(readCell(row.getCell(0)).trim());
+			if(existeSiguiente==""||existeSiguiente.equals("")||existeSiguiente==null||existeSiguiente.equals(null))
+				break;
+			//Iterator cells = row.cellIterator();
+			CotizacionArchivoPlano cotizacion = new CotizacionArchivoPlano();
+
+			//cotizacion.setCanal(row.getCell(0).getStringCellValue());
+			cotizacion.setCanal(readCell(row.getCell(0)).trim());
+			cotizacion.setClienteApellido(readCell(row.getCell(1)).trim());
+			cotizacion.setClienteNombre(readCell(row.getCell(2)).trim());
+			if(readCell(row.getCell(3)).trim().length() > 0 )
+				row.getCell(3).setCellType(Cell.CELL_TYPE_STRING);
+			cotizacion.setClienteIdentificacion(readCell(row.getCell(3)).trim());
+			cotizacion.setMontoAsegurado(Double.parseDouble(readCell(row.getCell(4)).trim()));
+			cotizacion.setFechaSolicitud(stringToTimestamp(readCell(row.getCell(5)).trim()));
+			cotizacion.setFechaSiembra(stringToTimestamp(readCell(row.getCell(6)).trim()));
+			cotizacion.setTipoCultivoNombre(readCell(row.getCell(7)).trim());
+			cotizacion.setNumeroHectareasAseguradas(Double.parseDouble(readCell(row.getCell(8)).trim()));
+			cotizacion.setNumeroHectareasLote(Double.parseDouble(readCell(row.getCell(9)).trim()));
+			if(readCell(row.getCell(10)).trim().equalsIgnoreCase("SI"))
+				cotizacion.setEsTecnificado(true);
+			else
+				cotizacion.setEsTecnificado(false);
+			cotizacion.setProvinciaNombre(readCell(row.getCell(11)).trim());
+			cotizacion.setCantonNombre(readCell(row.getCell(12)).trim());
+			cotizacion.setParroquiaNombre(readCell(row.getCell(13)).trim());
+			cotizacion.setUbicacionCultivo(readCell(row.getCell(14)).trim());
+			if(readCell(row.getCell(14)).trim().length() > 0 )
+				row.getCell(14).setCellType(Cell.CELL_TYPE_STRING);
+			cotizacion.setTelefono(readCell(row.getCell(15)).trim());
+			cotizacion.setGpsX(readCell(row.getCell(16)).trim());
+			cotizacion.setGpsY(readCell(row.getCell(17)).trim());
+			cotizacionArray.add(cotizacion);		
+		}
+		return cotizacionArray;
+
+	}
+
+
+
+	public static List<CotizacionArchivoPlano> readXLSXFile(String rutaArchivo) throws IOException, ParseException
+	{
+		List<CotizacionArchivoPlano> cotizacionArray = new ArrayList<CotizacionArchivoPlano>();
+		try{
+		InputStream ExcelFileToRead = new FileInputStream(rutaArchivo);
+		XSSFWorkbook  wb = new XSSFWorkbook(ExcelFileToRead);	
+
+		XSSFSheet sheet = wb.getSheetAt(0);
+		XSSFRow row; 
+		XSSFCell cell;
+
+		Iterator rows = sheet.rowIterator();
+		int i = 0;
+
+		while (rows.hasNext())
+		{
+
+			if(i<1){
+				rows.next();
+				i++;				
+				continue;				
+			}				
+			
+			row=(XSSFRow) rows.next();
+			String existeSiguiente=(readCell(row.getCell(0)));
+			if(existeSiguiente==""||existeSiguiente.equals("")||existeSiguiente==null||existeSiguiente.equals(null))
+				break;
+			//Iterator cells = row.cellIterator();
+			CotizacionArchivoPlano cotizacion = new CotizacionArchivoPlano();
+
+			//cotizacion.setCanal(row.getCell(0).getStringCellValue());
+			cotizacion.setCanal(readCell(row.getCell(0)).trim());
+			cotizacion.setClienteApellido(readCell(row.getCell(1)).trim());
+			cotizacion.setClienteNombre(readCell(row.getCell(2)).trim());			
+			if(readCell(row.getCell(3)).trim().length() > 0 )
+				row.getCell(3).setCellType(Cell.CELL_TYPE_STRING);
+			cotizacion.setClienteIdentificacion(readCell(row.getCell(3)).trim());
+				cotizacion.setMontoAsegurado(Double.parseDouble(readCell(row.getCell(4)).trim()));
+				cotizacion.setFechaSolicitud(stringToTimestamp(readCell(row.getCell(5)).trim()));
+				cotizacion.setFechaSiembra(stringToTimestamp(readCell(row.getCell(6)).trim()));
+				cotizacion.setTipoCultivoNombre(readCell(row.getCell(7)).trim());
+				cotizacion.setNumeroHectareasAseguradas(Double.parseDouble(readCell(row.getCell(8)).trim()));
+				cotizacion.setNumeroHectareasLote(Double.parseDouble(readCell(row.getCell(9)).trim()));
+				if(readCell(row.getCell(10)).trim().equalsIgnoreCase("SI"))
+					cotizacion.setEsTecnificado(true);
+				else
+					cotizacion.setEsTecnificado(false);
+				cotizacion.setProvinciaNombre(readCell(row.getCell(11)).trim());
+				cotizacion.setCantonNombre(readCell(row.getCell(12)).trim());
+				cotizacion.setParroquiaNombre(readCell(row.getCell(13)).trim());
+				cotizacion.setUbicacionCultivo(readCell(row.getCell(14)).trim());
+				if(readCell(row.getCell(15)).trim().length() > 0) 
+					row.getCell(15).setCellType(Cell.CELL_TYPE_STRING);
+				cotizacion.setTelefono(readCell(row.getCell(15)).trim());
+				cotizacion.setGpsX(readCell(row.getCell(16)).trim());
+				cotizacion.setGpsY(readCell(row.getCell(17)).trim());
+				cotizacionArray.add(cotizacion);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return cotizacionArray;
+	}
+	
+	public static List<CotizacionArchivoPlano> readXLSXFileAgriPac(String rutaArchivo) throws IOException, ParseException
+	{
+
+		List<CotizacionArchivoPlano> cotizacionArray = new ArrayList<CotizacionArchivoPlano>();
+		InputStream ExcelFileToRead = new FileInputStream(rutaArchivo);
+		XSSFWorkbook  wb = new XSSFWorkbook(ExcelFileToRead);	
+
+		XSSFSheet sheet = wb.getSheetAt(0);
+		XSSFRow row; 
+		XSSFCell cell;
+
+		Iterator rows = sheet.rowIterator();
+		int i = 0;
+
+		while (rows.hasNext())
+		{
+
+			if(i<1){
+				rows.next();
+				i++;				
+				continue;				
+			}				
+			
+			row=(XSSFRow) rows.next();
+			String existeSiguiente=(readCell(row.getCell(0)));
+			if(existeSiguiente==""||existeSiguiente.equals("")||existeSiguiente==null||existeSiguiente.equals(null))
+				break;
+			//Iterator cells = row.cellIterator();
+			CotizacionArchivoPlano cotizacion = new CotizacionArchivoPlano();
+
+			//cotizacion.setCanal(row.getCell(0).getStringCellValue());
+			cotizacion.setCanal(readCell(row.getCell(0)).trim());
+			cotizacion.setClienteApellido(readCell(row.getCell(1)).trim());
+			cotizacion.setClienteNombre(readCell(row.getCell(2)).trim());			
+			if(readCell(row.getCell(3)).trim().length() > 0 )
+				row.getCell(3).setCellType(Cell.CELL_TYPE_STRING);
+			cotizacion.setClienteIdentificacion(readCell(row.getCell(3)).trim());
+			cotizacion.setMontoAsegurado(Double.parseDouble(readCell(row.getCell(4)).trim()));
+			cotizacion.setFechaSolicitud(stringToTimestamp(readCell(row.getCell(5)).trim()));
+			cotizacion.setFechaSiembra(stringToTimestamp(readCell(row.getCell(6)).trim()));
+			cotizacion.setTipoCultivoNombre(readCell(row.getCell(7)).trim());
+			cotizacion.setNumeroHectareasAseguradas(Double.parseDouble(readCell(row.getCell(8)).trim()));
+			cotizacion.setNumeroHectareasLote(Double.parseDouble(readCell(row.getCell(9)).trim()));
+			if(readCell(row.getCell(10)).trim().equalsIgnoreCase("SI"))
+				cotizacion.setEsTecnificado(true);
+			else
+				cotizacion.setEsTecnificado(false);
+			cotizacion.setProvinciaNombre(readCell(row.getCell(11)).trim());
+			cotizacion.setCantonNombre(readCell(row.getCell(12)).trim());
+			cotizacion.setParroquiaNombre(readCell(row.getCell(13)).trim());
+			cotizacion.setUbicacionCultivo(readCell(row.getCell(14)).trim());
+			if(readCell(row.getCell(15)).trim().length() > 0) 
+				row.getCell(15).setCellType(Cell.CELL_TYPE_STRING);
+			cotizacion.setTelefono(readCell(row.getCell(15)).trim());
+			cotizacion.setGpsX(readCell(row.getCell(16)).trim());
+			cotizacion.setGpsY(readCell(row.getCell(17)).trim());
+			cotizacionArray.add(cotizacion);
+		}
+		return cotizacionArray;
+	}
+
+	public static List<AgriRecotizacionMasivas> readXLSXFileRecMas(String rutaArchivo) throws IOException, ParseException
+	{
+
+		List<AgriRecotizacionMasivas> cotizacionArray = new ArrayList<AgriRecotizacionMasivas>();
+		InputStream ExcelFileToRead = new FileInputStream(rutaArchivo);
+		XSSFWorkbook  wb = new XSSFWorkbook(ExcelFileToRead);	
+		XSSFSheet sheet = wb.getSheetAt(0);
+		XSSFRow row; 
+		XSSFCell cell;
+		Iterator rows = sheet.rowIterator();
+		int i = 0;
+		while (rows.hasNext())
+		{
+			if(i<1){
+				rows.next();
+				i++;				
+				continue;				
+			}
+			row=(XSSFRow) rows.next();
+			String existeSiguiente=(readCell(row.getCell(0)));
+			if(existeSiguiente==""||existeSiguiente.equals("")||existeSiguiente==null||existeSiguiente.equals(null))
+				break;
+			AgriRecotizacionMasivas agriRecotizacionMasivas= new AgriRecotizacionMasivas();
+			if(readCell(row.getCell(0)).trim().length() > 0 )
+				row.getCell(0).setCellType(Cell.CELL_TYPE_STRING);
+			agriRecotizacionMasivas.setIdCotizacion(readCell(row.getCell(0)).trim());
+			agriRecotizacionMasivas.setCostoProduccion(readCell(row.getCell(1)).trim());
+			agriRecotizacionMasivas.setNumeroHectareas(readCell(row.getCell(2)).trim());
+			agriRecotizacionMasivas.setTasa(readCell(row.getCell(3)).trim());
+			cotizacionArray.add(agriRecotizacionMasivas);
+		}
+		return cotizacionArray;
+	}
+	
+	public static List<AgriProcesoEmisiones> readXLSXFileEmisiones(String rutaArchivo) throws IOException, ParseException
+	{
+
+		List<AgriProcesoEmisiones> cotizacionArray = new ArrayList<AgriProcesoEmisiones>();
+		InputStream ExcelFileToRead = new FileInputStream(rutaArchivo);
+		XSSFWorkbook  wb = new XSSFWorkbook(ExcelFileToRead);	
+		XSSFSheet sheet = wb.getSheetAt(0);
+		XSSFRow row; 
+		XSSFCell cell;
+		Iterator rows = sheet.rowIterator();
+		int i = 0;
+		while (rows.hasNext())
+		{
+			if(i<1){
+				rows.next();
+				i++;				
+				continue;				
+			}
+			row=(XSSFRow) rows.next();
+			String existeSiguiente=(readCell(row.getCell(0)));
+			if(existeSiguiente==""||existeSiguiente.equals("")||existeSiguiente==null||existeSiguiente.equals(null))
+				break;
+			AgriProcesoEmisiones agriProcesoEmisiones= new AgriProcesoEmisiones();
+			if(readCell(row.getCell(0)).trim().length() > 0 )
+				row.getCell(0).setCellType(Cell.CELL_TYPE_STRING);
+			agriProcesoEmisiones.setNumeroTramite(readCell(row.getCell(0)).trim());
+			agriProcesoEmisiones.setNumeroHectares(Double.parseDouble(readCell(row.getCell(1)).trim()));
+			agriProcesoEmisiones.setSumaAsegurada(Double.parseDouble(readCell(row.getCell(2)).trim()));
+			agriProcesoEmisiones.setPrimaNeta(Double.parseDouble(readCell(row.getCell(3)).trim()));
+			agriProcesoEmisiones.setFechaEmision(readCell(row.getCell(4)).trim());
+			cotizacionArray.add(agriProcesoEmisiones);
+		}
+		return cotizacionArray;
+	}
+	
+	
+	public static List<AgriCruceFacturacion> readXLSXFileCruceFacturacionList(String rutaArchivo) throws IOException, ParseException
+	{
+
+		List<AgriCruceFacturacion> cotizacionArray = new ArrayList<AgriCruceFacturacion>();
+		InputStream ExcelFileToRead = new FileInputStream(rutaArchivo);
+		XSSFWorkbook  wb = new XSSFWorkbook(ExcelFileToRead);	
+		XSSFSheet sheet = wb.getSheetAt(0);
+		XSSFRow row; 
+		XSSFCell cell;
+		Iterator rows = sheet.rowIterator();
+		int i = 0;
+		while (rows.hasNext())
+		{
+			if(i<1){
+				rows.next();
+				i++;				
+				continue;				
+			}
+			row=(XSSFRow) rows.next();
+			String existeSiguiente=(readCell(row.getCell(0)));
+			if(existeSiguiente==""||existeSiguiente.equals("")||existeSiguiente==null||existeSiguiente.equals(null))
+				break;
+			AgriCruceFacturacion agriCruceFacturacion= new AgriCruceFacturacion();
+			if(readCell(row.getCell(0)).trim().length() > 0 )
+				row.getCell(0).setCellType(Cell.CELL_TYPE_STRING);
+			agriCruceFacturacion.setTramite(readCell(row.getCell(0)).trim());
+			if(readCell(row.getCell(1)).trim().length() > 0 )
+				row.getCell(1).setCellType(Cell.CELL_TYPE_STRING);
+			agriCruceFacturacion.setCliente(readCell(row.getCell(1)).trim());
+			agriCruceFacturacion.setSumaAsegurada(Double.parseDouble(row.getCell(2).getRawValue() .toString().trim()));
+			agriCruceFacturacion.setSumaAseguradaDes(Double.parseDouble(row.getCell(3).getRawValue().toString().trim()));
+			agriCruceFacturacion.setPrimaAsegurada(Double.parseDouble(row.getCell(4).getRawValue().toString().trim()));
+			agriCruceFacturacion.setPrimaAseguradaDes(Double.parseDouble(row.getCell(5).getRawValue().toString().trim()));
+			cotizacionArray.add(agriCruceFacturacion);
+		}
+		return cotizacionArray;
+	}
+	
+	
+	public static List<AgriRecotizacionMasivas> readXLSXFileLug(String rutaArchivo) throws IOException, ParseException
+	{
+
+		List<AgriRecotizacionMasivas> cotizacionArray = new ArrayList<AgriRecotizacionMasivas>();
+		InputStream ExcelFileToRead = new FileInputStream(rutaArchivo);
+		XSSFWorkbook  wb = new XSSFWorkbook(ExcelFileToRead);	
+		XSSFSheet sheet = wb.getSheetAt(0);
+		XSSFRow row; 
+		XSSFCell cell;
+		Iterator rows = sheet.rowIterator();
+		int i = 0;
+		while (rows.hasNext())
+		{
+			if(i<1){
+				rows.next();
+				i++;				
+				continue;				
+			}
+			row=(XSSFRow) rows.next();
+			String existeSiguiente=(readCell(row.getCell(0)));
+			if(existeSiguiente==""||existeSiguiente.equals("")||existeSiguiente==null||existeSiguiente.equals(null))
+				break;
+			AgriRecotizacionMasivas agriRecotizacionMasivas= new AgriRecotizacionMasivas();
+			if(readCell(row.getCell(0)).trim().length() > 0 )
+				row.getCell(0).setCellType(Cell.CELL_TYPE_STRING);
+			agriRecotizacionMasivas.setIdCotizacion(readCell(row.getCell(0)).trim());
+			agriRecotizacionMasivas.setLugar(readCell(row.getCell(1)).trim());
+			cotizacionArray.add(agriRecotizacionMasivas);
+		}
+		return cotizacionArray;
+	}
+	public static List<AgriRecotizacionMasivas> readXLSXFileFecha(String rutaArchivo) throws IOException, ParseException
+	{
+
+		List<AgriRecotizacionMasivas> cotizacionArray = new ArrayList<AgriRecotizacionMasivas>();
+		InputStream ExcelFileToRead = new FileInputStream(rutaArchivo);
+		XSSFWorkbook  wb = new XSSFWorkbook(ExcelFileToRead);	
+		XSSFSheet sheet = wb.getSheetAt(0);
+		XSSFRow row; 
+		XSSFCell cell;
+		Iterator rows = sheet.rowIterator();
+		int i = 0;
+		while (rows.hasNext())
+		{
+			if(i<1){
+				rows.next();
+				i++;				
+				continue;				
+			}
+			row=(XSSFRow) rows.next();
+			String existeSiguiente=(readCell(row.getCell(0)));
+			if(existeSiguiente==""||existeSiguiente.equals("")||existeSiguiente==null||existeSiguiente.equals(null))
+				break;
+			AgriRecotizacionMasivas agriRecotizacionMasivas= new AgriRecotizacionMasivas();
+			if(readCell(row.getCell(0)).trim().length() > 0 )
+				row.getCell(0).setCellType(Cell.CELL_TYPE_STRING);
+			agriRecotizacionMasivas.setIdCotizacion(readCell(row.getCell(0)).trim());
+			agriRecotizacionMasivas.setFecha(stringToDateString(readCell(row.getCell(1)).trim()));
+			cotizacionArray.add(agriRecotizacionMasivas);
+		}
+		return cotizacionArray;
+	}
+	
+	public static String readCell (XSSFCell cell){		
+		String val = "";
+		if (cell!=null) {
+			switch (cell.getCellType()) {
+			case XSSFCell.CELL_TYPE_STRING:
+				val = cell.getStringCellValue();
+				break;
+			case XSSFCell.CELL_TYPE_NUMERIC:
+				DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+				if(HSSFDateUtil.isCellDateFormatted(cell))
+					val = formatter.format(cell.getDateCellValue());
+				else
+					val = Double.toString(cell.getNumericCellValue());
+				break;		        
+			}
+		}
+		return val;		
+	}
+
+	public static String readCell (HSSFCell cell){		
+		String val = "";
+		if (cell!=null) {
+			switch (cell.getCellType()) {
+			case XSSFCell.CELL_TYPE_STRING:
+				val = cell.getStringCellValue();
+				break;
+			case XSSFCell.CELL_TYPE_NUMERIC:
+				DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+				if(HSSFDateUtil.isCellDateFormatted(cell))		        		
+					val = formatter.format(cell.getDateCellValue());
+				else
+					val = Double.toString(cell.getNumericCellValue());
+				break;
+			}
+		}
+		return val;		
+	}
+
+
+	public static java.sql.Timestamp stringToTimestamp(String str_date) {
+		try {
+			DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			// you can change format of date
+			Date date = formatter.parse(str_date);
+			java.sql.Timestamp timeStampDate = new java.sql.Timestamp(date.getTime());
+			return timeStampDate;
+		} catch (Exception e) {
+			System.out.println("Exception :" + e);
+			return null;
+		}
+	}
+	
+	public static String stringToDateString(String str_date) {
+		try {
+			DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			// you can change format of date
+			Date date = formatter.parse(str_date);
+			DateFormat formatter2 = new SimpleDateFormat("dd/MM/yyyy");			
+			return formatter2.format(date);
+		} catch (Exception e) {
+			System.out.println("Exception :" + e);
+			return null;
+		}
+	}
+
+	public static List<Cotizacion> readXLSFileAprovacionMasiva(String rutaArchivo) throws IOException, ParseException		{
+		List<Cotizacion> cotizacionArray = new ArrayList<Cotizacion>();
+		InputStream ExcelFileToRead = new FileInputStream(rutaArchivo);
+		HSSFWorkbook wb = new HSSFWorkbook(ExcelFileToRead);
+
+		HSSFSheet sheet=wb.getSheetAt(0);
+		HSSFRow row; 
+		HSSFCell cell;
+
+		Iterator rows = sheet.rowIterator();
+		int i = 0;
+
+		while (rows.hasNext())
+		{
+
+			if(i<1){
+				rows.next();
+				i++;				
+				continue;				
+			}				
+
+			row=(HSSFRow) rows.next();
+
+			Cotizacion cotizacion = new Cotizacion();
+			if(readCell(row.getCell(0)).length() > 0 )
+				row.getCell(0).setCellType(Cell.CELL_TYPE_STRING);
+			String a = readCell(row.getCell(0));
+			if(a==null||a.trim().equals("")||a.trim().equals("null"))
+				break;
+			cotizacion.setId(readCell(row.getCell(0)));
+			cotizacionArray.add(cotizacion);	
+		}
+		return cotizacionArray;
+
+	}
+
+
+
+	public static List<Cotizacion> readXLSXFileAprobacionMasiva(String rutaArchivo) throws IOException, ParseException
+	{
+
+		List<Cotizacion> cotizacionArray = new ArrayList<Cotizacion>();
+		InputStream ExcelFileToRead = new FileInputStream(rutaArchivo);
+		XSSFWorkbook  wb = new XSSFWorkbook(ExcelFileToRead);	
+
+		XSSFSheet sheet = wb.getSheetAt(0);
+		XSSFRow row; 
+		XSSFCell cell;
+
+		Iterator rows = sheet.rowIterator();
+		int i = 0;
+
+		while (rows.hasNext())
+		{
+
+			if(i<1){
+				rows.next();
+				i++;				
+				continue;				
+			}				
+
+			row=(XSSFRow) rows.next();
+
+			//Iterator cells = row.cellIterator();
+			Cotizacion cotizacion = new Cotizacion();
+			if(readCell(row.getCell(0)).length() > 0 )
+				row.getCell(0).setCellType(Cell.CELL_TYPE_STRING);
+			String Id=readCell(row.getCell(0));
+			if(Id==null||Id.trim().equals("")||Id.trim().equals("null"))
+				break;
+			cotizacion.setId((Id));
+			cotizacionArray.add(cotizacion);
+		}
+		return cotizacionArray;
+	}
+
+	public static List<AgriCotizacionEM> readXLSXFileEstadoMasiva(String rutaArchivo) throws IOException, ParseException
+	{
+
+		List<AgriCotizacionEM> cotizacionArray = new ArrayList<AgriCotizacionEM>();
+		InputStream ExcelFileToRead = new FileInputStream(rutaArchivo);
+		XSSFWorkbook  wb = new XSSFWorkbook(ExcelFileToRead);	
+
+		XSSFSheet sheet = wb.getSheetAt(0);
+		XSSFRow row; 
+		XSSFCell cell;
+
+		Iterator rows = sheet.rowIterator();
+		int i = 0;
+
+		while (rows.hasNext())
+		{
+
+			if(i<1){
+				rows.next();
+				i++;				
+				continue;				
+			}				
+
+			row=(XSSFRow) rows.next();
+
+			//Iterator cells = row.cellIterator();
+			AgriCotizacionEM AgriCotizacionEM = new AgriCotizacionEM();
+			if(readCell(row.getCell(0)).length() > 0 )
+				row.getCell(0).setCellType(Cell.CELL_TYPE_STRING);
+			String Id=readCell(row.getCell(0));
+			String Estado=readCell(row.getCell(1));
+			if(Id==null||Id.trim().equals("")||Id.trim().equals("null"))
+				break;
+			AgriCotizacionEM.setCotizacionId(Id);
+			AgriCotizacionEM.setEstado(Estado);
+			cotizacionArray.add(AgriCotizacionEM);
+		}
+		return cotizacionArray;
+	}
+
+}

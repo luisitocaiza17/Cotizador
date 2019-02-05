@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Deducibles" pageWidth="556" pageHeight="842" columnWidth="556" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="f8e12e18-99aa-4234-8fb8-b4b092a160a1">
+	<property name="com.jaspersoft.studio.unit." value="cm"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="cotizador"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="cm"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="COTIZACION" class="java.lang.String"/>
+	<parameter name="COBERTURA" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[select DISTINCT
+    texto,orden_presentacion,cobertura_id
+from
+    (  SELECT distinct -- por cobertura
+        DEDU.texto, DEDU.orden_presentacion,DEDU.cobertura_id
+    FROM
+        DETALLE_PRODUCTO DP, CONFIGURACION_PRODUCTO CP, COBERTURAS_CONJUNTO CC, CONJUNTO_COBERTURAS COC, COBERTURA C, COTIZACION COT, PRODUCTO_X_PUNTO_VENTA PPPV, PRODUCTO P, GRUPO_POR_PRODUCTO GPP, DEDUCIBLES DEDU
+    WHERE
+        COT.producto_id = P.id
+            AND COT.punto_venta_id = PPPV.punto_venta_id
+AND COT.producto_x_punto_venta_id=PPPV.id
+            and DP.config_producto_id = CP.id
+            AND CP.producto_id = COT.producto_id
+            AND CP.producto_id = GPP.producto_id
+            AND DP.plan_id = PPPV.plan_id
+            AND CC.id = DP.coberturas_conj_id
+            AND COC.id = CC.conjunto_cober_id
+            AND C.id = CC.cobertura_id
+            AND GPP.producto_id = P.id
+            AND GPP.producto_id = DEDU.producto_id
+            AND PPPV.plan_id = DEDU.plan_id
+            AND C.id = DEDU.cobertura_id
+            AND P.id = DEDU.producto_id
+AND C.id=DEDU.cobertura_id
+            AND COT.id =  $P{COTIZACION}
+UNION SELECT distinct  -- deducibles por plan
+ DEDU.texto,DEDU.orden_presentacion,DEDU.cobertura_id
+FROM
+  --  DETALLE_PRODUCTO DP,
+  --  CONFIGURACION_PRODUCTO CP,
+   -- COBERTURAS_CONJUNTO CC,
+   -- CONJUNTO_COBERTURAS COC,
+  --  COBERTURA C,
+    COTIZACION COT,
+    PRODUCTO_X_PUNTO_VENTA PPPV,
+    PRODUCTO P,
+    GRUPO_POR_PRODUCTO GPP,
+    DEDUCIBLES DEDU
+WHERE
+    COT.producto_id = P.id -- PRODUCTO COTIZACION
+        AND COT.punto_venta_id = PPPV.punto_venta_id -- COTIZACION PRODUCTO POR PUNTO DE VENTA
+  --      and DP.config_producto_id =  	CP.id -- DETALLE CONFIGURACION
+  --      AND CP.producto_id = COT.producto_id -- CONFIGURACION COTIZACION
+  --      AND CP.producto_id = GPP.producto_id -- CONFIGURACION DRUPO POR PRODUCTO
+  --      AND DP.plan_id = PPPV.plan_id -- DETALLE PRODUCTO POR PUNTO DE VENTA
+  --      AND CC.id = DP.coberturas_conj_id -- COBERTURAS CONJUNTO DETALLE PRODUCTO
+  --      AND COC.id = CC.conjunto_cober_id -- CONJUNTO COBERTURAS COBERTURAS CONJUNTO
+  --      AND C.id = CC.cobertura_id -- COBERTURA COBERTURAS CONJUNTO
+        AND GPP.producto_id = P.id -- GRUPO POR PRODUCTO PRODUCTO
+        AND GPP.producto_id = DEDU.producto_id -- GRUPO POR PRODUCTO DEDUCIBLE
+        AND PPPV.plan_id = DEDU.plan_id -- PRODUCTO POR PUNTO DE VENTA DEDUCIBLE
+        AND P.id = DEDU.producto_id -- PRODUCTO DEDUCIBLE
+		and PPPV.id=COT.producto_x_punto_venta_id -- PRODUCTO POR  PUNTO DE VENTA COTIZACION
+		AND COT.grupo_por_producto_id = GPP.id -- COTIZACION GRUPO POR PRODUCTO
+         AND (isnull(DEDU.cobertura_id ) or DEDU.cobertura_id ='') -- DEDUCIBLE COBERTURA NULL
+  AND COT.id =  $P{COTIZACION} union
+  SELECT distinct -- deducibles por producto
+ DEDU.texto,DEDU.orden_presentacion,DEDU.cobertura_id
+FROM
+  --  DETALLE_PRODUCTO DP,
+  --  CONFIGURACION_PRODUCTO CP,
+   -- COBERTURAS_CONJUNTO CC,
+   -- CONJUNTO_COBERTURAS COC,
+  --  COBERTURA C,
+    COTIZACION COT,
+    PRODUCTO_X_PUNTO_VENTA PPPV,
+    PRODUCTO P,
+    GRUPO_POR_PRODUCTO GPP,
+    DEDUCIBLES DEDU
+WHERE
+    COT.producto_id = P.id -- PRODUCTO COTIZACION
+        AND COT.punto_venta_id = PPPV.punto_venta_id -- COTIZACION PRODUCTO POR PUNTO DE VENTA
+  --      and DP.config_producto_id = CP.id -- DETALLE CONFIGURACION
+  --      AND CP.producto_id = COT.producto_id -- CONFIGURACION COTIZACION
+  --      AND CP.producto_id = GPP.producto_id -- CONFIGURACION DRUPO POR PRODUCTO
+  --      AND DP.plan_id = PPPV.plan_id -- DETALLE PRODUCTO POR PUNTO DE VENTA
+  --      AND CC.id = DP.coberturas_conj_id -- COBERTURAS CONJUNTO DETALLE PRODUCTO
+  --      AND COC.id = CC.conjunto_cober_id -- CONJUNTO COBERTURAS COBERTURAS CONJUNTO
+  --      AND C.id = CC.cobertura_id -- COBERTURA COBERTURAS CONJUNTO
+        AND GPP.producto_id = P.id -- GRUPO POR PRODUCTO PRODUCTO
+        AND GPP.producto_id = DEDU.producto_id -- GRUPO POR PRODUCTO DEDUCIBLE
+        AND (isnull(DEDU.plan_id) or DEDU.plan_id='') -- PRODUCTO POR PUNTO DE VENTA DEDUCIBLE
+        AND P.id = DEDU.producto_id -- PRODUCTO DEDUCIBLE
+		and PPPV.id=COT.producto_x_punto_venta_id -- PRODUCTO POR  PUNTO DE VENTA COTIZACION
+		AND COT.grupo_por_producto_id = GPP.id -- COTIZACION GRUPO POR PRODUCTO
+     AND (isnull(DEDU.cobertura_id )or DEDU.cobertura_id ='') -- DEDUCIBLE COBERTURA NULL
+  AND COT.id =  $P{COTIZACION}
+) as A where (isnull(cobertura_id) or cobertura_id in (select CC.cobertura_id from  COTIZACION_DETALLE CD,COTIZACION_COBERTURA CC WHERE CD.cotizacion_id= $P{COTIZACION} and CD.id= CC.cotizacion_detalle_id and CC.cobertura_id not in ('40037') ) ) -- no mostramos perdida total
+order by A.orden_presentacion]]>
+	</queryString>
+	<field name="texto" class="java.lang.String"/>
+	<field name="orden_presentacion" class="java.lang.Integer"/>
+	<field name="cobertura_id" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<printWhenExpression><![CDATA[$P{COBERTURA}.contains("TR")]]></printWhenExpression>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="0" y="0" width="556" height="20" isRemoveLineWhenBlank="true" forecolor="#000000" uuid="2b6f1ef6-ff3a-44fa-becf-ee8390c2bac9"/>
+				<textFieldExpression><![CDATA[$F{texto}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

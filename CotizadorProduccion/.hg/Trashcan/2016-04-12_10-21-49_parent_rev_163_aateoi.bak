@@ -1,0 +1,26 @@
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java
+@@ -345,7 +345,7 @@
+ 		//Numero de contenedor
+ 		
+ 		//Armado Final de parametros a mostrar en la poliza
+-		parametersHeader.put("NumeroPoliza", agriParametroXCanal.getContenedorEnsuranceId()+"-"+detalleCotizacion.getId().toString());
++		parametersHeader.put("NumeroPoliza", agriParametroXCanal.getContenedorNumero()+"-"+detalleCotizacion.getId().toString());
+ 		//buscamos el cliente
+ 		Cliente cliente = new Cliente();
+ 		ClienteDAO clienteDAO = new ClienteDAO();
+diff --git a/WebContent/dashboard/ResumenCotizaciones.jsp b/WebContent/dashboard/ResumenCotizaciones.jsp
+--- a/WebContent/dashboard/ResumenCotizaciones.jsp
++++ b/WebContent/dashboard/ResumenCotizaciones.jsp
+@@ -350,7 +350,9 @@
+ 				{ field: "ObservacionRegla", title: "Observación", width: "160px"},
+ 				{ field: "ObservacionQBE", title: "ObservacionQBE", width: "160px"},
+ 				{ field: "Confirmacion", title: "Confirmación Canal", width: "160px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+-				{ field: "EstadoCotizacion", title: "Estado", width: "100px"}, 
++				{ field: "EstadoCotizacion", title: "Estado", width: "100px"},
++				{ field: "polizaNumero", title: "Poliza Numero", width: "100px"},
++				{ field: "polizaFechaVencimiento", title: "Poliza Fecha", width: "100px"},
+ 				{ field: "usuarioCotizador", title: "Usuario Offline", width: "80px", hidden: true, exportar: true},
+                       { command: { text: "Ver Detalle", click: fnEventoClick }, title: " ", width: "100px"}],
+                 height: 500,

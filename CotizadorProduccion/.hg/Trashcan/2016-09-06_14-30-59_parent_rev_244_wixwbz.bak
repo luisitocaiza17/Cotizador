@@ -1,0 +1,70 @@
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriProcesarCotizacionAP.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriProcesarCotizacionAP.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriProcesarCotizacionAP.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriProcesarCotizacionAP.java
+@@ -515,9 +515,9 @@
+ 					/* Busco la provincia, canton, parroquia y tipo de cultivo */
+ 					Provincia provincia = provinciaDAO
+ 							.buscarPorNombre(nuevaCotizacion
+-									.getProvinciaNombre());
++									.getProvinciaNombre().replace("_", " ").trim());
+ 					if (provincia.getId() == null) {
+ 						throw new Exception(
+ 								"No se encontro la provincia en la lista.");
+ 					}
+ 					Canton canton = cantonDAO.buscarPorNombre(nuevaCotizacion
+@@ -519,12 +519,12 @@
+ 					if (provincia.getId() == null) {
+ 						throw new Exception(
+ 								"No se encontro la provincia en la lista.");
+ 					}
+ 					Canton canton = cantonDAO.buscarPorNombre(nuevaCotizacion
+-							.getCantonNombre());
++							.getCantonNombre().replace("_", " ").trim());
+ 					if (canton.getId() == null) {
+ 						throw new Exception(
+ 								"No se encontro el cantón en la lista.");
+ 					}
+ 					AgriParroquiaDAO agriParroquiaDAO = new AgriParroquiaDAO();
+ 					AgriParroquia parroquia = agriParroquiaDAO.BuscarPorNombreYCanton(nuevaCotizacion
+@@ -525,10 +525,10 @@
+ 					if (canton.getId() == null) {
+ 						throw new Exception(
+ 								"No se encontro el cantón en la lista.");
+ 					}
+ 					AgriParroquiaDAO agriParroquiaDAO = new AgriParroquiaDAO();
+ 					AgriParroquia parroquia = agriParroquiaDAO.BuscarPorNombreYCanton(nuevaCotizacion
+-									.getParroquiaNombre(), canton.getId());
++									.getParroquiaNombre().replace("_", " ").trim(), canton.getId());
+ 							
+ 					if(parroquia.getParroquiaNombre()==null){
+ 						throw new Exception(
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCargaPreviaArchivoPlanoController.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCargaPreviaArchivoPlanoController.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCargaPreviaArchivoPlanoController.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCargaPreviaArchivoPlanoController.java
+@@ -89,7 +89,7 @@
+ 							String rutaPlantilla = AgriSucreNotificacionErrores.class.getProtectionDomain().getCodeSource()
+ 									.getLocation().getPath();
+ 							rutaPlantilla=rutaPlantilla.replace("AgriSucreNotificacionErrores.class", "");
+-							String rutaRelativaReporte="../../../../../../../../static/plantillas/Agricola/CotizacionesArchivoPlano";
++							String rutaRelativaReporte=".."+File.separator+".."+File.separator+".."+File.separator+".."+File.separator+".."+File.separator+".."+File.separator+".."+File.separator+".."+File.separator+"static"+File.separator+"plantillas"+File.separator+"Agricola"+File.separator+"CotizacionesArchivoPlano";
+ 							rutaPlantilla=rutaPlantilla+rutaRelativaReporte;
+ 							
+ 							String fileName = item.getName();
+@@ -144,8 +144,7 @@
+ 				int skip = request.getParameter("skip") == null ? 0 : Integer.parseInt(request.getParameter("skip"));
+ 				int take = request.getParameter("take") == null ? 20 : Integer.parseInt(request.getParameter("take"));
+ 
+-				String rutaPlantilla = this.getServletContext().getRealPath("") + "/static/plantillas/Agricola/CotizacionesArchivoPlano/"+nombreArchivo;
+-				FileInputStream input = new FileInputStream(rutaPlantilla);
++				String rutaPlantilla = this.getServletContext().getRealPath("") + File.separator+"static"+File.separator+"plantillas"+File.separator+"Agricola"+File.separator+"CotizacionesArchivoPlano"+File.separator+nombreArchivo;
+ 				List<CotizacionArchivoPlano> cotizacionList = new ArrayList<CotizacionArchivoPlano>();
+ 				
+ 				
+@@ -226,7 +225,6 @@
+ 				Cotizacion cotizacion=cotizacionDAO.buscarPorId(cotizacionId);
+ 				
+ 				Double hasAseguradasRestantes = 0.0;
+-				Double hasLoteRestantes = 0.0;
+ 				cargaPreviaArchivo = cargaPreviaArchivoDAO.buscarPorId(new BigInteger(id));
+ 				hasAseguradasRestantes = cargaPreviaArchivo.getNumerHasAseguradas() - Double.parseDouble(hasAseguradas);
+ 				

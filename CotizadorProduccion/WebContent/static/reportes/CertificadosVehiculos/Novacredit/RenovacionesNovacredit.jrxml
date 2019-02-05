@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2016-10-06T23:37:43 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RenovacionesNovacredit" pageWidth="2380" pageHeight="1684" orientation="Landscape" columnWidth="2380" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="c1fcc344-a875-4df3-9180-0869c624fe43">
+	<property name="ireport.zoom" value="0.826446280991737"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT 
+    tc.poliza CONTENEDOR,
+    e.apellidos APELLIDOS,
+    e.nombres NOMBRES,
+    e.identificacion CI_RUC,
+    CONCAT(d.calle_principal,
+            ' ',
+            d.numero,
+            ' ',
+            d.calle_secundaria) DIRECCION,
+    CONCAT(e.telefono, ' - ', e.celular) TELEFONOS,
+    e.mail CORREO,
+    DATE_FORMAT(c.vigencia_desde, '%d/%m/%Y') INICIO,
+    DATE_FORMAT(c.vigencia_hasta, '%d/%m/%Y') FIN,
+    ma.nombre MARCA,
+    m.nombre MODELO,
+    ov.motor MOTOR,
+    ov.chasis CHASIS,
+    co.nombre COLOR,
+    ov.anio_fabricacion AÑO,
+    (SELECT 
+            cxp.valor_asegurado
+        FROM
+            VH_NOVACREDIT_COTIZACION_X_PERIODO cxp,
+            VH_NOVACREDIT_PERIODO p
+        WHERE
+            cxp.VH_NOVACREDIT_PERIODO_id = p.id
+                AND cxp.vh_novacredit_cotizacion_id = c.id
+                AND p.anios = '1') 1er_año,
+    (SELECT 
+            cxp.valor_asegurado
+        FROM
+            VH_NOVACREDIT_COTIZACION_X_PERIODO cxp,
+            VH_NOVACREDIT_PERIODO p
+        WHERE
+            cxp.VH_NOVACREDIT_PERIODO_id = p.id
+                AND cxp.vh_novacredit_cotizacion_id = c.id
+                AND p.anios = '2') 2do_año,
+    (SELECT 
+            cxp.valor_asegurado
+        FROM
+            VH_NOVACREDIT_COTIZACION_X_PERIODO cxp,
+            VH_NOVACREDIT_PERIODO p
+        WHERE
+            cxp.VH_NOVACREDIT_PERIODO_id = p.id
+                AND cxp.vh_novacredit_cotizacion_id = c.id
+                AND p.anios = '3') 3er_año,
+    (SELECT 
+            cxp.valor_asegurado
+        FROM
+            VH_NOVACREDIT_COTIZACION_X_PERIODO cxp,
+            VH_NOVACREDIT_PERIODO p
+        WHERE
+            cxp.VH_NOVACREDIT_PERIODO_id = p.id
+                AND cxp.vh_novacredit_cotizacion_id = c.id
+                AND p.anios = '4') 4to_año,
+    (SELECT 
+            cxp.valor_asegurado
+        FROM
+            VH_NOVACREDIT_COTIZACION_X_PERIODO cxp,
+            VH_NOVACREDIT_PERIODO p
+        WHERE
+            cxp.VH_NOVACREDIT_PERIODO_id = p.id
+                AND cxp.vh_novacredit_cotizacion_id = c.id
+                AND p.anios = '5') 5to_año,
+    c.prima_total PRIMA_NETA_TOTAL,
+    (SELECT 
+            ROUND((c.valor_total / p.anios), 2)
+        FROM
+            VH_NOVACREDIT_PERIODO p
+        WHERE
+            c.VH_NOVACREDIT_PERIODO_id = p.id) PN_FACTURADA,
+    es.nombre ESTADO
+FROM
+    VH_NOVACREDIT_COTIZACION c,
+    VH_NOVACREDIT_PERIODO p,
+    VH_NOVACREDIT_TIPO_COBERTURA tc,
+    VH_NOVACREDIT_TIPO_TASA tt,
+    VH_NOVACREDIT_TASA t,
+    ENTIDAD e,
+    OBJETO_VEHICULO ov,
+    DIRECCION d,
+    MODELO m,
+    MARCA ma,
+    COLOR co,
+    ESTADO es
+WHERE
+    c.vh_novacredit_periodo_id = p.id
+        AND c.vh_novacredit_tipo_cobertura_id = tc.id
+        AND c.vh_novacredit_tipo_tasa_id = tt.id
+        AND tt.id = t.vh_novacredit_tipo_tasa_id
+        AND tc.id = t.vh_novacredit_tipo_cobertura_id
+        AND d.id = c.direccion_id
+        AND c.entidad_id = e.id
+        AND es.id = c.estado_id
+        AND c.objeto_id = ov.id
+        AND ov.modelo_id = m.id
+        AND ma.id = m.marca_id
+        AND ov.color_id = co.id
+        AND EXISTS( SELECT 
+            1
+        FROM
+            VH_NOVACREDIT_COTIZACION_X_PERIODO cxp
+        WHERE
+            cxp.vh_novacredit_cotizacion_id = c.id
+                AND DATE_FORMAT(cxp.vigencia_hasta, '%m-%Y') = DATE_FORMAT(NOW(), '%m-%Y'))]]>
+	</queryString>
+	<field name="CONTENEDOR" class="java.lang.String"/>
+	<field name="APELLIDOS" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="NOMBRES" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CI_RUC" class="java.lang.String"/>
+	<field name="DIRECCION" class="java.lang.String"/>
+	<field name="TELEFONOS" class="java.lang.String"/>
+	<field name="CORREO" class="java.lang.String"/>
+	<field name="INICIO" class="java.lang.String"/>
+	<field name="FIN" class="java.lang.String"/>
+	<field name="MARCA" class="java.lang.String"/>
+	<field name="MODELO" class="java.lang.String"/>
+	<field name="MOTOR" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CHASIS" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="COLOR" class="java.lang.String"/>
+	<field name="AÑO" class="java.lang.String"/>
+	<field name="1er_año" class="java.lang.Double"/>
+	<field name="2do_año" class="java.lang.Double"/>
+	<field name="3er_año" class="java.lang.Double"/>
+	<field name="4to_año" class="java.lang.Double"/>
+	<field name="5to_año" class="java.lang.Double"/>
+	<field name="PRIMA_NETA_TOTAL" class="java.lang.Double"/>
+	<field name="PN_FACTURADA" class="java.lang.Double"/>
+	<field name="ESTADO" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="87" height="20" uuid="4536b982-8acb-46da-95cf-10ceb76f71b3"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CONTENEDOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="87" y="0" width="133" height="20" uuid="edbe186e-9808-4b17-b609-f6e9cc005bf7"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[APELLIDOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="220" y="0" width="142" height="20" uuid="0f1eea5a-e09d-41e4-b732-e0583bea5ec5"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[NOMBRES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="362" y="0" width="99" height="20" uuid="2799a1b3-e7f3-4e56-98a6-bc5b6aa2a0fe"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CI_RUC]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="461" y="0" width="229" height="20" uuid="d41896e2-fd23-4177-868d-b821939c6a52"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DIRECCION]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="690" y="0" width="151" height="20" uuid="1f027486-6041-467d-84cd-52f4fa7127a6"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TELEFONOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="841" y="0" width="161" height="20" uuid="824370fa-2c74-4f5d-9767-ccdb6e777a5a"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CORREO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1002" y="0" width="68" height="20" uuid="f60c8466-513c-4684-b46a-c6ac328dc20e"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[INICIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1070" y="0" width="71" height="20" uuid="1b7d569e-88c6-437a-85f0-9aa6b3b83213"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[FIN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1141" y="0" width="70" height="20" uuid="35acaa99-4f01-436a-bc8c-672c6e1fc0cd"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[MARCA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1211" y="0" width="118" height="20" uuid="420b4007-9123-4f16-8ac1-ffd207330ef0"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[MODELO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1330" y="0" width="93" height="20" uuid="4d6db00c-c899-4973-af7e-50b478225507"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[MOTOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1423" y="0" width="97" height="20" uuid="45a89397-11da-482b-a331-ee6950a05ec6"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CHASIS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1520" y="0" width="71" height="20" uuid="d775bd13-183e-414f-a9f1-0ef3b9635d2f"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[COLOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1591" y="0" width="47" height="20" uuid="8db265db-f1b2-43a3-ba11-fc509ea9d711"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[AÑO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1638" y="0" width="76" height="20" uuid="d30e0e41-587d-444e-979e-6827605b70fc"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[1ER_AÑO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1714" y="0" width="78" height="20" uuid="645ee8a0-83b9-4b88-adcb-c0214455d779"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[2DO_AÑO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1792" y="0" width="76" height="20" uuid="085dbcbe-de10-4a0f-aeaa-f050806288fe"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[3ER_AÑO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1868" y="0" width="76" height="20" uuid="08d7527f-de63-43e3-a8c0-90dae6a3282b"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[4TO_AÑO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1944" y="0" width="77" height="20" uuid="7fadd82f-8d85-476d-adfa-efa17a1671e1"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[5TO_AÑO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2021" y="0" width="126" height="20" uuid="4d07ba4a-9865-46fa-ba90-c5543036d117"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PRIMA_NETA_TOTAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2147" y="0" width="114" height="20" uuid="3ba467c7-d7f8-4a14-9ba3-eb9743046bfe"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PN_FACTURADA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2261" y="0" width="119" height="20" uuid="5d93c2a4-8cf1-4e92-8af4-9ff497adc4a7"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ESTADO]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="87" height="20" isPrintWhenDetailOverflows="true" uuid="a80a3c19-b72b-4694-a0ad-6af986b8850b">
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.row" value="true"/>
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.column" value="true"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{CONTENEDOR}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="87" y="0" width="133" height="20" isPrintWhenDetailOverflows="true" uuid="a89b9417-945f-4328-9c57-d7c22a47e7b3">
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.row" value="true"/>
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.column" value="true"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{APELLIDOS}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="220" y="0" width="142" height="20" isPrintWhenDetailOverflows="true" uuid="512229b3-a313-431d-b6fa-a64b62bc7f77">
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.row" value="true"/>
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.column" value="true"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{NOMBRES}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="362" y="0" width="99" height="20" isPrintWhenDetailOverflows="true" uuid="52b47545-11f3-4ff7-9c60-0c730794b42a">
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.row" value="true"/>
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.column" value="true"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{CI_RUC}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="461" y="0" width="229" height="20" isPrintWhenDetailOverflows="true" uuid="bedb831f-ff09-422f-bd84-6ee937542650">
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.row" value="true"/>
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.column" value="true"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{DIRECCION}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="690" y="0" width="151" height="20" isPrintWhenDetailOverflows="true" uuid="7358a7e2-1252-4ecb-bd1a-9064bcce2075">
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.row" value="true"/>
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.column" value="true"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{TELEFONOS}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="841" y="0" width="161" height="20" isPrintWhenDetailOverflows="true" uuid="354301e5-004a-41fc-ad3d-dae8461ce88c">
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.row" value="true"/>
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.column" value="true"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{CORREO}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="1002" y="0" width="68" height="20" isPrintWhenDetailOverflows="true" uuid="719e2710-a802-4a65-992a-eddb92d91646">
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.row" value="true"/>
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.column" value="true"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{INICIO}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="1070" y="0" width="71" height="20" isPrintWhenDetailOverflows="true" uuid="d3b64a7f-8b42-4792-9468-8a9ae4022641">
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.row" value="true"/>
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.column" value="true"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{FIN}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="1141" y="0" width="70" height="20" isPrintWhenDetailOverflows="true" uuid="a7a78eb0-36ba-4fb7-a71b-ce8d00adc745">
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.row" value="true"/>
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.column" value="true"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{MARCA}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="1211" y="0" width="118" height="20" isPrintWhenDetailOverflows="true" uuid="d309ef9b-8563-4e52-aad4-553fabf6a88a">
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.row" value="true"/>
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.column" value="true"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{MODELO}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="1330" y="0" width="93" height="20" isPrintWhenDetailOverflows="true" uuid="f1152d60-3171-47fa-8c9d-77fc355c29d1">
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.row" value="true"/>
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.column" value="true"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{MOTOR}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="1423" y="0" width="97" height="20" isPrintWhenDetailOverflows="true" uuid="295bb126-7e20-4d3e-8435-95cd67b6104c">
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.row" value="true"/>
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.column" value="true"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{CHASIS}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="1520" y="0" width="71" height="20" isPrintWhenDetailOverflows="true" uuid="30cdcd5c-41e2-47e2-b084-df95f20dde63">
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.row" value="true"/>
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.column" value="true"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{COLOR}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="1591" y="0" width="47" height="20" isPrintWhenDetailOverflows="true" uuid="9251d9d3-7557-4a1a-97fd-4847b55e9017">
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.row" value="true"/>
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.column" value="true"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{AÑO}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="1638" y="0" width="76" height="20" isPrintWhenDetailOverflows="true" uuid="c7d85d5c-b03f-46f4-95cc-41890a853507">
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.row" value="true"/>
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.column" value="true"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{1er_año}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="1714" y="0" width="78" height="20" isPrintWhenDetailOverflows="true" uuid="70685e8c-689c-4b17-a999-afd6fb74f01b">
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.row" value="true"/>
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.column" value="true"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{2do_año}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="1792" y="0" width="76" height="20" isPrintWhenDetailOverflows="true" uuid="ca9dd541-af30-403a-9128-4cbeeec246ae">
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.row" value="true"/>
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.column" value="true"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{3er_año}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="1868" y="0" width="76" height="20" isPrintWhenDetailOverflows="true" uuid="64a81b57-e2fa-4673-866d-b50a47b47cde">
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.row" value="true"/>
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.column" value="true"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{4to_año}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="1944" y="0" width="77" height="20" isPrintWhenDetailOverflows="true" uuid="07212ceb-d793-4c0c-acdd-b52eb71755ae">
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.row" value="true"/>
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.column" value="true"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{5to_año}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="2021" y="0" width="126" height="20" isPrintWhenDetailOverflows="true" uuid="4af74a5a-f500-49d4-bdcc-9708b9d9d2b2">
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.row" value="true"/>
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.column" value="true"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{PRIMA_NETA_TOTAL}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="2147" y="0" width="114" height="20" isPrintWhenDetailOverflows="true" uuid="0f755e6e-2ad9-467e-9285-ccb7736fb424">
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.row" value="true"/>
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.column" value="true"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{PN_FACTURADA}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="2261" y="0" width="119" height="20" isPrintWhenDetailOverflows="true" uuid="cd30be95-dcde-4d17-8047-55cda80171f5">
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.row" value="true"/>
+					<property name="net.sf.jasperreports.export.xlsx.auto.fit.column" value="true"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{ESTADO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

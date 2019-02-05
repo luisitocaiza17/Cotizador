@@ -1,0 +1,1094 @@
+diff --git a/WebContent/dashboard/AgriParametrosPuntoVenta.jsp b/WebContent/dashboard/AgriParametrosPuntoVenta.jsp
+--- a/WebContent/dashboard/AgriParametrosPuntoVenta.jsp
++++ b/WebContent/dashboard/AgriParametrosPuntoVenta.jsp
+@@ -44,9 +44,10 @@
+ 	var tipoConsulta = "";
+ 	var puntoVentaId = "";
+ 	var tipoCalculoId = "";
++	var agenteId="";
+ 	var contenedorEnsuranceId = "";
+ 	var plantillaEnsuranceId = "";
+ 	var codigoIntegracion = "";	
+ 	var tieneEmisionDirecta = "";
+ 	var emailPuntoVenta="";
+ 	var formaNotificacion="";
+@@ -47,12 +48,11 @@
+ 	var contenedorEnsuranceId = "";
+ 	var plantillaEnsuranceId = "";
+ 	var codigoIntegracion = "";	
+ 	var tieneEmisionDirecta = "";
+ 	var emailPuntoVenta="";
+ 	var formaNotificacion="";
+-	var sucursalEmisionId="";
+ 	var beneficiarioId="";
+ 	var tieneEmisionObligatoria="";
+     var canalIdList="";
+ 	var puntoVentaList = "";
+ 	var tipoCalculoList = "";
+@@ -54,8 +54,9 @@
+ 	var beneficiarioId="";
+ 	var tieneEmisionObligatoria="";
+     var canalIdList="";
+ 	var puntoVentaList = "";
+ 	var tipoCalculoList = "";
++	var agenteList="";
+ 
+ 	$(document)
+ 			.ready(
+@@ -92,4 +93,10 @@
+ 						tipoCalculoList = $("#tipoCalculoId").data(
+ 						"kendoMultiSelect");
+ 						
++						$("#agenteId").kendoMultiSelect({
++							dataTextField : "nombre",
++							dataValueField : "id",
++							animation : false,
++							maxSelectedItems : 1
++						});
+ 						
+@@ -95,4 +102,5 @@
+ 						
++						agenteList = $("#agenteId").data("kendoMultiSelect");
+ 
+ 						cargar();
+ 
+@@ -112,7 +120,7 @@
+ 										return false;
+ 									}
+ 								});
+-							}else{							
++							}else{			
+ 										puntoVentaId = $("#puntoVentaId option:selected").val();
+ 										canalId=$("#canalId option:selected").val();
+ 										tipoCalculoId = $("#tipoCalculoId option:selected").val();
+@@ -122,7 +130,6 @@
+ 										
+ 										emailPuntoVenta=$("#emailPuntoVenta").val();
+ 										formaNotificacion=$("#formaNotificacion").val();
+-										sucursalEmisionId=$("#sucursalId").val();
+ 										beneficiarioId=$("#beneficiarioId").val();
+ 										excepcionesCultivos=$("#tiposCultivosExcepxion").val();
+ 										
+@@ -132,8 +139,8 @@
+ 										tipoConsulta = "crear";									
+ 
+ 										enviarDatos(puntoVentaId,tipoCalculoId,codigoIntegracion,tieneEmisionDirecta,tipoConsulta,
+-												emailPuntoVenta,formaNotificacion,sucursalEmisionId,beneficiarioId,tieneEmisionObligatoria,excepcionesCultivos);
++												emailPuntoVenta,formaNotificacion,beneficiarioId,tieneEmisionObligatoria,excepcionesCultivos);
+ 									}
+ 							}
+ 
+ 						});
+@@ -136,14 +143,40 @@
+ 									}
+ 							}
+ 
+ 						});
+-						/*Fin controloes grabar*/
+-
+-						$("#puntoVentaId").change(
+-								function() {
+-									actualizar($(
+-											"#puntoVentaId option:selected")
+-											.val());
+-								});
+-
++						
++						///TODO: al seleccionar el combo canal
++						$("#canalId").change(function(){	
++							$("#puntoVentaId").children().remove();
++							$("select option:selected").each(function(){
++								CargarCombo();
++							});
++						});
++				});
++	
++	
++	function CargarCombo() {
++		var listPuntoVenta="";
++		var puntoId = $("#canalId option:selected").val() ? $(
++		"#canalId option:selected").val() : "";
++		if (puntoId==""){
++			$("#puntoVentaId").children().remove();
++		}
++		else {
++			$.ajax({
++				url : '../AgriCotizacionAprobacionController',
++				data : {
++					"tipoConsulta" : "cargarCombosPuntoVenta",
++					"canalId" : puntoId,
++				},
++				async : false,
++				type : 'post',
++				datatype : 'json',
++				success : function(data) {
++					
++					$("#puntoVentaId").children().remove();
++					$("#puntoVentaId").append("<option value=''>Seleccione una opción</option>");
++					listPuntoVenta = data.listPuntoVenta;
++					$.each(listPuntoVenta, function (index){								
++						$("#puntoVentaId").append("<option value='"+ listPuntoVenta[index].puntoVentaId +"'>"+ listPuntoVenta[index].nombre +"</option>");
+ 					});
+@@ -149,6 +182,12 @@
+ 					});
++					puntoVentaList.dataSource.filter({});
++					puntoVentaList.setDataSource(listPuntoVenta);
++				}
++			});
++		}
++	}
+ 
+ 	function cargar() {
+ 
+ 		$("#dataTableContent").children().remove();
+ 		$.ajax({
+@@ -150,28 +189,8 @@
+ 
+ 	function cargar() {
+ 
+ 		$("#dataTableContent").children().remove();
+ 		$.ajax({
+-			url : '../AgriParametrosPuntoVentaController',
+-			data : {
+-				"tipoConsulta" : "encontrarTodosPuntoVenta"
+-			},
+-			async : false,
+-			type : 'POST',
+-			datatype : 'json',
+-			success : function(data) {
+-				/*Activo los select*/
+-				puntoVentaList.enable(true);
+-
+-				/*Cargo el select puntoVenta*/
+-				puntoVentaList.dataSource.filter({});
+-				puntoVentaList.setDataSource(data.listadoPuntoVenta);
+-
+-			}
+-		});
+-
+-		//cargar los canales
+-		$.ajax({
+ 			url : '../AgriCanalController',
+ 			data : {
+ 				"tipoConsulta" : "encontrarTodos"
+@@ -195,7 +214,7 @@
+ 		$.ajax({
+ 		url : '../BeneficiarioController',
+ 		data : {
+-			"tipoConsulta" : "cargarSelect2"
++			"tipoConsulta" : "cargarSelect3"
+ 		},
+ 		async: false,
+ 		type : 'post',
+@@ -213,5 +232,5 @@
+ 			}
+ 		});
+ 		
+-		//Carga los sucursales
++		/**Cargamos los agentes**/
+ 		$.ajax({
+@@ -217,18 +236,14 @@
+ 		$.ajax({
+-		url : '../SucursalController',
+-		data : {
+-			"tipoConsulta" : "encontrarTodos"
+-		},
+-		async: false,
+-		type : 'post',
+-		datatype : 'json',
+-		success : function (data) {
+-			var sucursales = data.listadoSucursal;
+-			/*$('#beneficiario').select2({
+-				data : beneficiarios,
+-				placeholder : 'Seleccione un beneficiario'
+-			});*/
+-			$("#sucursalId").append("<option value=''>Seleccione una opcion</option>");
+-			$.each(sucursales, function (index) {
+-				$("#sucursalId").append("<option value='" + sucursales[index].codigo + "'>" + sucursales[index].nombre + "</option>");
++				url : '../AgriParametrosPuntoVentaController',
++				data : {
++					"tipoConsulta" : "buscarAgente"
++				},
++				async : false,
++				type : 'post',
++				datatype : 'json',
++				success : function(data) {					
++					$("#agenteId").children().remove();
++					agenteList.dataSource.filter({});
++					agenteList.setDataSource(data.listaAgentes);
++				}
+ 			});
+@@ -234,6 +249,4 @@
+ 			});
+-			}
+-		});
+ 		
+ 		$.ajax({
+ 					url : '../AgriParametrosPuntoVentaController',
+@@ -289,4 +302,17 @@
+ 	}
+ 
+ 	function actualizar(puntoVenta) {
++		
++		/**Cargamos los puntos de venta**/
++		$.ajax({
++			url : '../AgriParametrosPuntoVentaController',
++			data : {
++				"tipoConsulta" : "encontrarTodosPuntoVenta"
++			},
++			async : false,
++			type : 'POST',
++			datatype : 'json',
++			success : function(data) {
++				/*Activo los select*/
++				puntoVentaList.enable(true);
+ 
+@@ -292,4 +318,12 @@
+ 
++				/*Cargo el select puntoVenta*/
++				puntoVentaList.dataSource.filter({});
++				puntoVentaList.setDataSource(data.listadoPuntoVenta);
++
++			}
++		});
++		
++		
+ 		$("#tipoCalculoId").val("");
+ 		$("#emailPuntoVenta").val("");
+ 		$("#formaNotificacion").val("");
+@@ -293,7 +327,6 @@
+ 		$("#tipoCalculoId").val("");
+ 		$("#emailPuntoVenta").val("");
+ 		$("#formaNotificacion").val("");
+-		$("#sucursalId").val("");
+ 		$("#beneficiarioId").val("");
+ 		$("#tiposCultivosExcepxion").val("");
+ 		$("#codigoIntegracion").val("");
+@@ -313,9 +346,10 @@
+ 			datatype : 'json',
+ 			success : function(data) {				
+ 				$("#puntoVentaId").data("kendoMultiSelect").value(data.puntoVentaId);
++				$("#agenteId").data("kendoMultiSelect").value(data.agenteId);
+ 				$("#canalId").data("kendoMultiSelect").value(data.canalId);
+ 				$("#tipoCalculoId").data("kendoMultiSelect").value(data.tipoCalculoId);
+ 				$("#codigoIntegracion").val(data.codigoIntegracion);
+ 				$("#canalId").data("kendoMultiSelect").value(data.canalId);
+ 				$("#emailPuntoVenta").val(data.emailPuntoVenta);
+ 				$("#formaNotificacion").val(data.formaNotificacion);
+@@ -316,8 +350,7 @@
+ 				$("#canalId").data("kendoMultiSelect").value(data.canalId);
+ 				$("#tipoCalculoId").data("kendoMultiSelect").value(data.tipoCalculoId);
+ 				$("#codigoIntegracion").val(data.codigoIntegracion);
+ 				$("#canalId").data("kendoMultiSelect").value(data.canalId);
+ 				$("#emailPuntoVenta").val(data.emailPuntoVenta);
+ 				$("#formaNotificacion").val(data.formaNotificacion);
+-				$("#sucursalId").val(data.sucursalEmisionId);
+ 				$("#beneficiarioId").val(data.beneficiarioId);
+@@ -323,4 +356,5 @@
+ 				$("#beneficiarioId").val(data.beneficiarioId);
++				$("#comision").val(data.comision);
+ 				$("#tiposCultivosExcepxion").val(data.excepcionesCultivos);
+ 				
+ 				if (data.tieneEmisionDirecta) {
+@@ -349,9 +383,8 @@
+ 			tieneEmisionDirecta = "";
+ 			emailPuntoVenta="";
+ 			formaNotificacion="";
+-			sucursalEmisionId="";
+ 			beneficiarioId="";
+ 			tieneEmisionObligatoria="";
+ 			excepcionesCultivos="";
+ 			tipoConsulta = "eliminar";
+ 
+@@ -353,11 +386,11 @@
+ 			beneficiarioId="";
+ 			tieneEmisionObligatoria="";
+ 			excepcionesCultivos="";
+ 			tipoConsulta = "eliminar";
+ 
+-			enviarDatos(puntoVentaId,tipoCalculoId,codigoIntegracion,tieneEmisionDirecta,tipoConsulta);
++			enviarDatos(puntoVentaId,tipoCalculoId,codigoIntegracion,tieneEmisionDirecta,tipoConsulta,emailPuntoVenta,formaNotificacion,beneficiarioId,tieneEmisionObligatoria,excepcionesCultivos);
+ 			cargar();
+ 		}
+ 	}
+ 
+ 	function enviarDatos(puntoVentaId,tipoCalculoId,codigoIntegracion,tieneEmisionDirecta,tipoConsulta,
+@@ -359,8 +392,8 @@
+ 			cargar();
+ 		}
+ 	}
+ 
+ 	function enviarDatos(puntoVentaId,tipoCalculoId,codigoIntegracion,tieneEmisionDirecta,tipoConsulta,
+-			emailPuntoVenta,formaNotificacion,sucursalEmisionId,beneficiarioId,tieneEmisionObligatoria,excepcionesCultivos) {
++			emailPuntoVenta,formaNotificacion,beneficiarioId,tieneEmisionObligatoria,excepcionesCultivos) {
+ 		
+ 		canalId=$("#canalId option:selected").val();
+@@ -365,9 +398,10 @@
+ 		
+ 		canalId=$("#canalId option:selected").val();
+-		
++		var agenteSeleccionado= $("#agenteId option:selected").val();
++		var comisionSeleccionada=$("#comision").val();
+ 		$.ajax({
+ 			url : '../AgriParametrosPuntoVentaController',
+ 			async : false,
+ 			data : {
+ 				"canalId":canalId,
+ 				"tipoConsulta" : tipoConsulta,
+@@ -368,10 +402,12 @@
+ 		$.ajax({
+ 			url : '../AgriParametrosPuntoVentaController',
+ 			async : false,
+ 			data : {
+ 				"canalId":canalId,
+ 				"tipoConsulta" : tipoConsulta,
++				"agenteId":agenteSeleccionado,
++				"comision":comisionSeleccionada,
+ 				"puntoVentaId" : puntoVentaId,
+ 				"tipoCalculoId" : tipoCalculoId,
+ 				"emailPuntoVenta" :emailPuntoVenta,
+ 				"formaNotificacion" : formaNotificacion,
+@@ -374,8 +410,7 @@
+ 				"puntoVentaId" : puntoVentaId,
+ 				"tipoCalculoId" : tipoCalculoId,
+ 				"emailPuntoVenta" :emailPuntoVenta,
+ 				"formaNotificacion" : formaNotificacion,
+-				"sucursalEmisionId" : sucursalEmisionId,
+ 				"beneficiarioId" : beneficiarioId,
+ 				"codigoIntegracion" : codigoIntegracion,
+ 				"excepcionesCultivos" : excepcionesCultivos,
+@@ -426,5 +461,5 @@
+ 							<div class="form-group">
+ 								<input type="hidden" class="form-control" id="parametroPPVId">
+ 								<input type="hidden" id="idCotizacion">
+-								<table style="width: 100%">
++								<table class="table table-striped" style="width: 100%">
+ 									<tr>
+@@ -430,5 +465,5 @@
+ 									<tr>
+-										<td colspan="2"><label style="width: 100%">Sponsor:</label></td>
++										<td colspan="2"><label style="width: 100%">Sponsor: *</label></td>
+ 									</tr>
+ 									<tr>
+ 										<td colspan="2"><select id="canalId" name="canalId" style ="width: 450px"
+@@ -436,8 +471,10 @@
+ 										</select></td>
+ 									</tr>
+ 									<tr>
+-										<td colspan="2"><label style="width: 100%">Punto
+-												de Venta:</label></td>
++										<br>&nbsp;
++									</tr>
++									<tr>
++										<td colspan="2"><label style="width: 100%">Punto de Venta: *</label></td>
+ 									</tr>
+ 									<tr>
+ 										<td colspan="2"><select id="puntoVentaId" name="puntoVentaId" style ="width: 450px"
+@@ -445,7 +482,7 @@
+ 										</select></td>
+ 									</tr>
+ 									<tr>
+-										<td colspan="2"><label style="width: 100%">Tipo de Calculo:</label></td>
++										<td colspan="2"><label style="width: 100%">Tipo de Calculo: *</label></td>
+ 									</tr>									
+ 									<tr>
+ 										<td colspan="2"><select id="tipoCalculoId" name="tipoCalculoId"  style ="width: 450px"
+@@ -453,7 +490,7 @@
+ 										</select></td>
+ 									</tr>
+ 									<tr>
+-										<td colspan="2"><label style="width: 100%">Beneficiario para el Endoso::</label></td>
++										<td colspan="2"><label style="width: 100%">Beneficiario para el Endoso: *</label></td>
+ 									</tr>
+ 									<tr>
+ 										<td colspan="2"><select id="beneficiarioId" name="beneficiarioId"  style ="width: 450px"
+@@ -461,6 +498,6 @@
+ 										</select></td>
+ 									</tr>
+ 									<tr>
+-										<td colspan="2"><label style="width: 100%">Sucursal para la Emisión:</label></td>
++										<td colspan="2"><label style="width: 100%">Agente para la Emision: *</label></td>
+ 									</tr>
+ 									<tr>
+@@ -465,6 +502,6 @@
+ 									</tr>
+ 									<tr>
+-										<td colspan="2"><select id="sucursalId" name="sucursalId"  style ="width: 450px"
+-											data-placeholder="Seleccione una opción..." validationMessage="Campo requerido!!!" required>
++										<td colspan="2"><select id="agenteId" name="agenteId"  style ="width: 450px"
++											data-placeholder="Seleccione una opción si aplica...">
+ 										</select></td>
+ 									</tr>
+@@ -469,4 +506,3 @@
+ 										</select></td>
+ 									</tr>
+-									<br>
+ 									<tr><br>
+@@ -472,6 +508,6 @@
+ 									<tr><br>
+-										<td><label style="width: 100%">Email para notificaciones:</label></td>
+-										<td><input type="text" id="emailPuntoVenta"></td>
++										<td><label style="width: 100%">Email para facturacion Electronica: *</label></td>
++										<td><input type="email" id="emailPuntoVenta"></td>
+ 
+ 									</tr>								
+ 									<tr>
+@@ -475,7 +511,7 @@
+ 
+ 									</tr>								
+ 									<tr>
+-										<td><label style="width: 100%">Forma de Notificación:</label></td>
++										<td><label style="width: 100%">Forma de Notificación: *</label></td>
+ 										<td><select id="formaNotificacion">
+ 												<option value="1">General</option>
+ 												<option value="2">Web Service(Sucre)</option>
+@@ -486,7 +522,7 @@
+ 
+ 									</tr>
+ 									<tr>
+-										<td><label style="width: 100%">Código Integración:</label></td>
++										<td><label style="width: 100%">Código Integración: *</label></td>
+ 										<td><input type="text" id="codigoIntegracion"></td>
+ 									</tr>
+ 									<tr>
+@@ -490,6 +526,14 @@
+ 										<td><input type="text" id="codigoIntegracion"></td>
+ 									</tr>
+ 									<tr>
++										<td><label style="width: 100%">Porcentaje de comision para Emision: *</label></td>
++										<td><input type="text" id="comision"></td>
++									</tr>
++									<tr>
++										<td><label style="width: 100%">Emite Directamente : *</label></td>
++										<td><input type="checkbox" id="tieneEmisionDirecta"></td>
++									</tr>
++									<tr>
+ 										<td><label style="width: 100%">Tipos de Cultivo Excepciones:</label></td>
+ 										<td><input type="text" id="tiposCultivosExcepxion"></td>
+ 									</tr>
+@@ -493,10 +537,7 @@
+ 										<td><label style="width: 100%">Tipos de Cultivo Excepciones:</label></td>
+ 										<td><input type="text" id="tiposCultivosExcepxion"></td>
+ 									</tr>
+-									<tr>
+-										<td><label style="width: 100%">Emite Directamente ?:</label></td>
+-										<td><input type="checkbox" id="tieneEmisionDirecta"></td>
+-									</tr>
++									
+ 									<tr>
+ 										<td><label style="width: 100%">Emisión Obligatoria ?:</label></td>
+ 										<td><input type="checkbox" id="tieneEmisionObligatoria"></td>
+diff --git a/build/classes/com/qbe/cotizador/servlets/entidad/BeneficiarioController.class b/build/classes/com/qbe/cotizador/servlets/entidad/BeneficiarioController.class
+index 54de06468b74df530b0edd38c86f68fb4de82d98..97b4c3d381d7841ddcce8e16ca0d85b549ad265f
+GIT binary patch
+literal 5536
+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
+
+diff --git a/src/com/qbe/cotizador/dao/producto/agricola/AgriReglaVtaDAO.java b/src/com/qbe/cotizador/dao/producto/agricola/AgriReglaVtaDAO.java
+--- a/src/com/qbe/cotizador/dao/producto/agricola/AgriReglaVtaDAO.java
++++ b/src/com/qbe/cotizador/dao/producto/agricola/AgriReglaVtaDAO.java
+@@ -9,6 +9,7 @@
+ import javax.naming.NamingException;
+ import javax.persistence.EntityManager;
+ import javax.persistence.PersistenceContext;
++import javax.persistence.Query;
+ import javax.persistence.TypedQuery;
+ 
+ import com.qbe.cotizador.entitymanagerfactory.EntityManagerFactoryDAO;
+@@ -81,4 +82,80 @@
+ 		
+ 		return query.getResultList();
+ 	}
++	public List<AgriReglaVta> BuscarPorParametrosKendo (String reglaId, String tipoCultivoId,String tipoCalculoId,String provinciaId,String cantonId,int skip,int take, int Estado){
++		
++		Query query = null;
++		
++		String stringQuery= "SELECT c FROM AgriReglaVta c where (c.estado =:estado)";					
++		String valoresWhereQuery = "";
++		
++		if(reglaId.length() > 0)
++			valoresWhereQuery +=" AND c.reglaId =:reglaId ";
++		if(tipoCultivoId.length() > 0)
++			valoresWhereQuery +=" AND c.tipoCultivoId =:tipoCultivoId ";
++		if(tipoCalculoId.length() > 0)
++			valoresWhereQuery +=" AND c.tipoCalculoId =:tipoCalculoId ";
++		if(provinciaId.length() > 0)
++			valoresWhereQuery +=" AND c.provinciaId =:provinciaId ";
++		if(cantonId.length() > 0)
++			valoresWhereQuery +=" AND c.cantonId =:cantonId ";
++		
++		stringQuery = stringQuery + valoresWhereQuery + " ORDER BY c.cultivoNombre, c.provinciaId, c.cantonId, c.tipoCalculoId ";
++		
++		query = getEntityManager().createQuery(stringQuery, AgriReglaVta.class);
++		
++		if(reglaId.length() > 0)
++			query.setParameter("reglaId", new BigInteger(reglaId));
++		if(tipoCultivoId.length() > 0)
++			query.setParameter("tipoCultivoId", new BigInteger(tipoCultivoId));
++		if(tipoCalculoId.length() > 0)
++			query.setParameter("tipoCalculoId", new BigInteger(tipoCalculoId));
++		if(provinciaId.length() > 0)
++			query.setParameter("provinciaId", new BigInteger(provinciaId));
++		if(cantonId.length() > 0)
++			query.setParameter("cantonId", new BigInteger(cantonId));
++		
++		query.setParameter("estado",Estado);
++		
++		List<AgriReglaVta> results= new ArrayList<AgriReglaVta>();
++		results = query.setMaxResults(take).setFirstResult(skip).getResultList();
++		return results;
++	}
++public long BuscarPorParametrosKendoPorNumero(String reglaId, String tipoCultivoId,String tipoCalculoId,String provinciaId,String cantonId,int skip,int take,int Estado){
++		
++		Query query = null;
++		
++		String stringQuery= "SELECT count(c.reglaId) FROM AgriReglaVta c where (c.estado =:estado)";					
++		String valoresWhereQuery = "";
++		
++		if(reglaId.length() > 0)
++			valoresWhereQuery +=" AND c.reglaId =:reglaId ";
++		if(tipoCultivoId.length() > 0)
++			valoresWhereQuery +=" AND c.tipoCultivoId =:tipoCultivoId ";
++		if(tipoCalculoId.length() > 0)
++			valoresWhereQuery +=" AND c.tipoCalculoId =:tipoCalculoId ";
++		if(provinciaId.length() > 0)
++			valoresWhereQuery +=" AND c.provinciaId =:provinciaId ";
++		if(cantonId.length() > 0)
++			valoresWhereQuery +=" AND c.cantonId =:cantonId ";
++		
++		stringQuery = stringQuery + valoresWhereQuery + " ORDER BY c.cultivoNombre, c.provinciaId, c.cantonId, c.tipoCalculoId ";
++		
++		query = getEntityManager().createQuery(stringQuery, AgriReglaVta.class);
++		
++		if(reglaId.length() > 0)
++			query.setParameter("reglaId", new BigInteger(reglaId));
++		if(tipoCultivoId.length() > 0)
++			query.setParameter("tipoCultivoId", new BigInteger(tipoCultivoId));
++		if(tipoCalculoId.length() > 0)
++			query.setParameter("tipoCalculoId", new BigInteger(tipoCalculoId));
++		if(provinciaId.length() > 0)
++			query.setParameter("provinciaId", new BigInteger(provinciaId));
++		if(cantonId.length() > 0)
++			query.setParameter("cantonId", new BigInteger(cantonId));
++		query.setParameter("estado",Estado);
++		
++		long results = (long)query.getSingleResult();
++		return results;
++	}
+ }
+diff --git a/src/com/qbe/cotizador/model/AgriRegla.java b/src/com/qbe/cotizador/model/AgriRegla.java
+--- a/src/com/qbe/cotizador/model/AgriRegla.java
++++ b/src/com/qbe/cotizador/model/AgriRegla.java
+@@ -15,6 +15,7 @@
+ @NamedQueries({
+ 	@NamedQuery(name="AgriRegla.findAll", query="SELECT a FROM AgriRegla a"),
+ 	@NamedQuery(name="AgriRegla.obtenerPorId", query="SELECT a FROM AgriRegla a where a.reglaId=:reglaId and a.estado=:estado"),
++	@NamedQuery(name="AgriRegla.obtenerPorIdTodos", query="SELECT a FROM AgriRegla a where a.reglaId=:reglaId"),
+ 	@NamedQuery(name="AgriRegla.obtenerPorParametros", query="SELECT a FROM AgriRegla a where a.cantonId=:cantonId and a.provinciaId=:provinciaId and a.tipoCultivoId=:tipoCultivoId and a.estado=:estado"),
+ 	@NamedQuery(name="AgriRegla.obtenerPorParametros2", query="SELECT a FROM AgriRegla a where a.cantonId=:cantonId and a.provinciaId=:provinciaId and a.tipoCultivoId=:tipoCultivoId and a.tipoCalculoId=:tipoCalculoId and a.estado=:estado"),
+ 	@NamedQuery(name="AgriRegla.obtenerPorTipoCultivo", query="SELECT a FROM AgriRegla a where  a.tipoCultivoId=:tipoCultivoId and a.tipoCalculoId=:tipoCalculoId and a.estado=:estado")
+diff --git a/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java b/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java
+--- a/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java
++++ b/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java
+@@ -630,14 +630,5 @@
+ 		                    cotizacion.setImpSuperBancos(valorSuperBancos);
+ 		                    valorBase = valorBase + valorSuperBancos;
+ 		        		}
+-		        		
+-		        		if(variable.getNombre().equals("COMISION_BANCACOMUNAL")){
+-		        			 cotizacion.setPorcentajeComision(Double.parseDouble(variable.getValor()));//%COMISION DE AGENTE
+-		        		}
+-		        		 	
+-		        		if(variable.getNombre().equals("AGENTE_BANCACOMUNAL")){
+-		        			cotizacion.setAgenteId(new BigInteger(variable.getValor()));//AGENTE AL QUE SE ATA
+-		        			
+-		        		}
+ 		        		else if(variable.getNombre().equals("SUBTOTAL")){
+ 		                    valorSubTotal = Math.rint(valorBase*100)/100;
+@@ -642,11 +633,6 @@
+ 		        		else if(variable.getNombre().equals("SUBTOTAL")){
+ 		                    valorSubTotal = Math.rint(valorBase*100)/100;
+-		                }
+-		                else if(variable.getNombre().equals("IVA")){
+-		                	//Proces de exoneracion del iva del 14% LEY DE SOLIDARIDAD provincia ESMERANLDAS Y MANABI
+-		                		                    
+-		                }
+-		        		
++		                }		               
+ 		        	}
+ 		        	
+ 		        	VariableSistema variableIva= variableDAO.buscarPorNombre("IVA");					
+@@ -668,6 +654,5 @@
+ 					double valorFactura=valorSubTotal+valorIva;
+ 					a = new BigDecimal(""+valorFactura);
+ 					roundOff = a.setScale(2, BigDecimal.ROUND_HALF_UP);
+-					cotizacion.setTotalFactura(Double.parseDouble(""+roundOff));
+-					
++					cotizacion.setTotalFactura(Double.parseDouble(""+roundOff));					
+ 		        }
+@@ -673,5 +658,7 @@
+ 		        }
+-		        cotizacion.setTasaProductoValor(nuestraTasa);//tasa QBE
++		        cotizacion.setAgenteId(new BigInteger(PPuntoVenta.getAgenteId()));
++	        	cotizacion.setPorcentajeComision(Double.parseDouble(PPuntoVenta.getPorcentajeComision()));
++	        	cotizacion.setTasaProductoValor(nuestraTasa);//tasa QBE
+ 		        cotizacion.setEtapaWizard(3);
+ 		        cotizacion.setAsegurado(entidad);
+ 		        cotizacion.setClienteId(new BigInteger(cliente.getId()));
+diff --git a/src/com/qbe/cotizador/servlets/entidad/BeneficiarioController.java b/src/com/qbe/cotizador/servlets/entidad/BeneficiarioController.java
+--- a/src/com/qbe/cotizador/servlets/entidad/BeneficiarioController.java
++++ b/src/com/qbe/cotizador/servlets/entidad/BeneficiarioController.java
+@@ -136,6 +136,20 @@
+ 	                result.put("numRegistros", i);
+ 	                result.put("listadoBeneficiarios", beneficiarioJSONArray);
+ 			 }
++			 
++			 if (tipoConsulta.equals("cargarSelect3")) {
++	                List<Beneficiario> results = beneficiarioDAO.buscarActivos();
++	                int i = 0;
++	                for (i = 0; i < results.size(); i++) {
++	                    beneficiario = results.get(i);
++	                    beneficiarioJSONObject.put("id", beneficiario.getId());
++	                    beneficiarioJSONObject.put("text", beneficiario.getNombre()+" (Ensurance Id: "+beneficiario.getCodigoEnsurance()+")");
++	                   
++	                    beneficiarioJSONArray.add(beneficiarioJSONObject);
++	                }
++	                result.put("numRegistros", i);
++	                result.put("listadoBeneficiarios", beneficiarioJSONArray);
++			 }
+ 			
+             result.put("success", Boolean.TRUE);
+             response.setContentType("application/json; charset=ISO-8859-1");
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriAgriPacController.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriAgriPacController.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriAgriPacController.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriAgriPacController.java
+@@ -649,16 +649,7 @@
+ 			        			valorSuperBancos = Math.rint(Double.parseDouble(variable.getValor())*valorFinalPrima/100*100)/100;
+ 			                    cotizacion.setImpSuperBancos(valorSuperBancos);
+ 			                    valorBase = valorBase + valorSuperBancos;
+-			        		}
+-			        		
+-			        		if(variable.getNombre().equals("COMISION_AGRIPAC")){
+-			        			 cotizacion.setPorcentajeComision(Double.parseDouble(variable.getValor()));//%COMISION DE AGENTE
+-			        		}
+-			        		 	
+-			        		if(variable.getNombre().equals("AGENTE_AGRIPAC")){
+-			        			cotizacion.setAgenteId(new BigInteger(variable.getValor()));//AGENTE AL QUE SE ATA id cotizador
+-			        			
+-			        		}
++			        		}	
+ 			        		else if(variable.getNombre().equals("SUBTOTAL")){
+ 			                    valorSubTotal = Math.rint(valorBase*100)/100;
+ 			                }
+@@ -691,6 +682,8 @@
+ 						cotizacion.setTotalFactura(Double.parseDouble(""+roundOff));
+ 						
+ 			        }
++					cotizacion.setAgenteId(new BigInteger(PPuntoVenta.getAgenteId()));
++					cotizacion.setPorcentajeComision(Double.parseDouble(PPuntoVenta.getPorcentajeComision()));
+ 					cotizacion.setTasaProductoValor(tasa);
+ 					cotizacion.setEtapaWizard(3);
+ 					cotizacion.setClienteId(new BigInteger(cliente.getId()));
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java
+@@ -242,6 +242,21 @@
+ 				result.put("listPuntoVenta", puntoVentaJsonArray);
+ 
+ 			}
++			if (tipoConsulta.equalsIgnoreCase("cargarCombosPuntoVenta")) {
++				String canalId = request.getParameter("canalId") == null ? "": request.getParameter("canalId").trim();
++				JSONObject puntoVentaJsonObject = new JSONObject();
++				JSONArray puntoVentaJsonArray = new JSONArray();
++				//PuntoVentaDAO puntoVentaDAO = new PuntoVentaDAO();
++				AgriCanal_Punto_VentaDAO puntoVentaDAO = new AgriCanal_Punto_VentaDAO();
++				List<AgriCanal_Punto_Venta> puntoVentaList = puntoVentaDAO.BuscarPorCanal(canalId);
++				for (AgriCanal_Punto_Venta r : puntoVentaList) {
++					puntoVentaJsonObject.put("codigo", r.getPuntoVentaId());
++					puntoVentaJsonObject.put("nombre", r.getNombrePuntoVenta());
++					puntoVentaJsonArray.add(puntoVentaJsonObject);
++				}
++				result.put("listPuntoVenta", puntoVentaJsonArray);
++
++			}
+ 			if (tipoConsulta.equals("CargarCanal"))
+ 			{
+ 				JSONObject canalJsonObject = new JSONObject();
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriEcuaquimicaController.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriEcuaquimicaController.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriEcuaquimicaController.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriEcuaquimicaController.java
+@@ -641,16 +641,7 @@
+ 			        			valorSuperBancos = Math.rint(Double.parseDouble(variable.getValor())*valorFinalPrima/100*100)/100;
+ 			                    cotizacion.setImpSuperBancos(valorSuperBancos);
+ 			                    valorBase = valorBase + valorSuperBancos;
+-			        		}
+-			        		
+-			        		if(variable.getNombre().equals("COMISION_ECUAQUIMICA")){
+-			        			 cotizacion.setPorcentajeComision(Double.parseDouble(variable.getValor()));//%COMISION DE AGENTE
+-			        		}
+-			        		 	
+-			        		if(variable.getNombre().equals("AGENTE_ECUAQUIMICA")){
+-			        			cotizacion.setAgenteId(new BigInteger(variable.getValor()));//AGENTE AL QUE SE ATA
+-			        			
+-			        		}
++			        		}			        		
+ 			        		else if(variable.getNombre().equals("SUBTOTAL")){
+ 			                    valorSubTotal = Math.rint(valorBase*100)/100;
+ 			                }
+@@ -686,6 +677,8 @@
+ 					cotizacion.setTasaProductoValor(tasa);
+ 					cotizacion.setEtapaWizard(3);
+ 					cotizacion.setClienteId(new BigInteger(cliente.getId()));
++					cotizacion.setAgenteId(new BigInteger(PPuntoVenta.getAgenteId()));
++					cotizacion.setPorcentajeComision(Double.parseDouble(PPuntoVenta.getPorcentajeComision()));
+ 					
+ 					cotizacion.setEstado(estadoDAO.buscarPorNombre(	"Pendiente de Emitir", "Cotizacion"));
+ 					cotizacion.setFechaEmision(sq);
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriProcesarCotizacionOffline.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriProcesarCotizacionOffline.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriProcesarCotizacionOffline.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriProcesarCotizacionOffline.java
+@@ -19,6 +19,7 @@
+ import com.qbe.cotizador.dao.entidad.TipoIdentificacionDAO;
+ import com.qbe.cotizador.dao.entidad.UsuarioDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriCotizacionMaxDAO;
++import com.qbe.cotizador.dao.producto.agricola.AgriParametroXPuntoVentaDAO;
+ import com.qbe.cotizador.dao.producto.vehiculocerrado.GrupoPorProductoDAO;
+ import com.qbe.cotizador.dao.seguridad.TipoVariableDAO;
+ import com.qbe.cotizador.dao.seguridad.VariableSistemaDAO;
+@@ -26,6 +27,7 @@
+ import com.qbe.cotizador.model.AgriAuditoriaCotizacion;
+ import com.qbe.cotizador.model.AgriCotizacionMax;
+ import com.qbe.cotizador.model.AgriObjetoCotizacion;
++import com.qbe.cotizador.model.AgriParametroXPuntoVenta;
+ import com.qbe.cotizador.model.AgriSucreAuditoria;
+ import com.qbe.cotizador.model.Beneficiario;
+ import com.qbe.cotizador.model.Cliente;
+@@ -175,30 +177,13 @@
+ 			java.sql.Timestamp sq = new java.sql.Timestamp(nuevaCotizacion.getFechaCreacionCotizacion().getTime());
+ 			cotizacion.setFechaElaboracion(sq);
+ 			
+-			/***VARIABLES IMPORTANTES PARA LA EMISION****/
+-			/*PROCESO DE CALCULO DE COMPONENTES*/
+-
+-	        String comision="";
+-	        String agente="";
+-			VariableSistemaDAO variableDAO= new VariableSistemaDAO();
+-			VariableSistema variablesistema = new VariableSistema();
+-	        if(puntoVenta.getNombre().equals("COOPROGRESO")){
+-	        	comision="COMISION_COOPROGRESO";
+-	        	agente="AGENTE_COOPROGRESO";
+-	        }else{
+-	        	if(puntoVenta.getNombre().equals("CREDIFE")){
+-		        	comision="COMISION_BANCACOMUNAL";
+-		        	agente="AGENTE_BANCACOMUNAL";
+-	        	}else{
+-	        		comision="COMISION_AGRIPAC";
+-		        	agente="AGENTE_AGRIPAC";
+-	        	}
+-	        }
+-	        variablesistema=variableDAO.buscarPorNombre(comision);
+-	        cotizacion.setAgenteId(new BigInteger(variablesistema.getValor()));//%COMISION DE AGENTE
+-	        variablesistema=variableDAO.buscarPorNombre(agente);
+-	        cotizacion.setPorcentajeComision(Double.parseDouble(variablesistema.getValor()));//%CUAL DE AGENTE
+-			
++	        AgriParametroXPuntoVentaDAO agriParametroXPuntoVentaDAO = new AgriParametroXPuntoVentaDAO();
++	        AgriParametroXPuntoVenta agriParametroXPuntoVenta = new AgriParametroXPuntoVenta();
++	        agriParametroXPuntoVenta=agriParametroXPuntoVentaDAO.buscarPorPuntoVentaId(new BigInteger(puntoVenta.getId()));
++	        
++	        cotizacion.setAgenteId(new BigInteger(agriParametroXPuntoVenta.getAgenteId()));
++	        cotizacion.setPorcentajeComision(Double.parseDouble(agriParametroXPuntoVenta.getPorcentajeComision()));
++	        
+ 			if(nuevaCotizacion.getDerechoEmision() == null)
+ 				cotizacion.setImpDerechoEmision(0.0);
+ 			else
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriReglaController.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriReglaController.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriReglaController.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriReglaController.java
+@@ -7,9 +7,10 @@
+ import java.text.SimpleDateFormat;
+ import java.util.Date;
+ import java.util.List;
++
+ import javax.servlet.ServletException;
+ import javax.servlet.annotation.WebServlet;
+ import javax.servlet.http.HttpServlet;
+ import javax.servlet.http.HttpServletRequest;
+ import javax.servlet.http.HttpServletResponse;
+ import javax.servlet.http.HttpSession;
+@@ -10,8 +11,9 @@
+ import javax.servlet.ServletException;
+ import javax.servlet.annotation.WebServlet;
+ import javax.servlet.http.HttpServlet;
+ import javax.servlet.http.HttpServletRequest;
+ import javax.servlet.http.HttpServletResponse;
+ import javax.servlet.http.HttpSession;
++
+ import net.sf.json.JSONArray;
+ import net.sf.json.JSONObject;
+@@ -16,8 +18,10 @@
+ import net.sf.json.JSONArray;
+ import net.sf.json.JSONObject;
++
++import com.google.gson.Gson;
+ import com.qbe.cotizador.dao.entidad.CantonDAO;
+ import com.qbe.cotizador.dao.entidad.ProvinciaDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriReglaAuditoriaDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriReglaAuditoriaNuevaDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriReglaAuditoriaOriginalDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriReglaDAO;
+@@ -18,12 +22,13 @@
+ import com.qbe.cotizador.dao.entidad.CantonDAO;
+ import com.qbe.cotizador.dao.entidad.ProvinciaDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriReglaAuditoriaDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriReglaAuditoriaNuevaDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriReglaAuditoriaOriginalDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriReglaDAO;
++import com.qbe.cotizador.dao.producto.agricola.AgriReglaVtaDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriTipoCalculoDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriTipoCultivoDAO;
+ import com.qbe.cotizador.model.AgriRegla;
+ import com.qbe.cotizador.model.AgriReglaAuditoria;
+ import com.qbe.cotizador.model.AgriReglaNueva;
+ import com.qbe.cotizador.model.AgriReglaOriginal;
+@@ -24,9 +29,10 @@
+ import com.qbe.cotizador.dao.producto.agricola.AgriTipoCalculoDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriTipoCultivoDAO;
+ import com.qbe.cotizador.model.AgriRegla;
+ import com.qbe.cotizador.model.AgriReglaAuditoria;
+ import com.qbe.cotizador.model.AgriReglaNueva;
+ import com.qbe.cotizador.model.AgriReglaOriginal;
++import com.qbe.cotizador.model.AgriReglaVta;
+ import com.qbe.cotizador.model.AgriTipoCalculo;
+ import com.qbe.cotizador.model.AgriTipoCultivo;
+ import com.qbe.cotizador.model.Canton;
+@@ -57,6 +63,7 @@
+ 	 */
+ 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+ 		// TODO Auto-generated method stub
++		doPost(request, response);
+ 	}
+ 
+ 	/**
+@@ -81,6 +88,7 @@
+ 			String AceptabilidadHasta = request.getParameter("AceptabilidadHasta")==null?"":request.getParameter("AceptabilidadHasta");
+ 			String Observaciones = request.getParameter("Observaciones")==null?"":request.getParameter("Observaciones");
+ 			String Copy = request.getParameter("Copy")==null?"":request.getParameter("Copy");
++			String Estado = request.getParameter("Estado")==null?"":request.getParameter("Estado");
+ 			
+ 			JSONObject ReglaJSONObjetc = new JSONObject();
+ 			JSONArray ReglaJSONArray = new JSONArray();
+@@ -93,6 +101,8 @@
+ 			
+ 			// Activacion de la sesion y agregamosclie
+ 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
++			if(!Estado.equals(""))
++				agriRegla.setEstado(Integer.parseInt(Estado));
+ 			if (!ReglaId.equals(""))
+ 				agriRegla.setReglaId(new BigInteger(ReglaId) );
+ 			if (!TipoCultivoId.equals(""))
+@@ -122,8 +132,32 @@
+ 			if (!Observaciones.equals(""))
+ 				agriRegla.setObservaciones(Observaciones);
+ 			
+-			//if (!Estado.equals(""))
+-			//agriRegla.setEstado(new Integer(Estado));
++			if(tipoConsulta.equals("encontrarPorParametros")){
++				/*cargamos la tabla*/
++				int skip = request.getParameter("skip") == null ? 0 : Integer.parseInt(request.getParameter("skip"));
++				int take = request.getParameter("take") == null ? 20 : Integer.parseInt(request.getParameter("take"));
++				int EstadoId=1;
++				
++				if(Estado.equals("1"))
++					EstadoId=1;
++				else
++					EstadoId=0;
++				
++				AgriReglaVtaDAO agriReglaVtaDAO = new AgriReglaVtaDAO();
++				List<AgriReglaVta> data = agriReglaVtaDAO.BuscarPorParametrosKendo(ReglaId,TipoCultivoId,TipoCalculoId,ProvinciaId,CantonId,skip, take,EstadoId);
++				long total=agriReglaVtaDAO.BuscarPorParametrosKendoPorNumero(ReglaId,TipoCultivoId,TipoCalculoId,ProvinciaId,CantonId,skip, take,EstadoId);
++				DataSourceResult pg = new DataSourceResult();
++				pg.setTotal((int)total);
++				pg.setData(data);
++				
++				Gson gson = new Gson(); 
++				// convert the DataSourceReslt to JSON and write it to the response
++				response.setContentType("application/json; charset=ISO-8859-1");
++			    response.getWriter().print(gson.toJson(pg));
++			    return;	
++			}
++			
++			
+ 			if (tipoConsulta.equals("encontrarTodos"))
+ 			{
+ 				List<AgriRegla> results = agriReglaDAO.BuscarTodos();
+@@ -155,4 +189,5 @@
+ 			}
+ 			if (tipoConsulta.equals("obtenerPorId"))
+ 			{
++				String EstadoId = request.getParameter("EstadoConsulta")==null?"":request.getParameter("EstadoConsulta");
+ 				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+@@ -158,8 +193,8 @@
+ 				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+-				AgriRegla results =agriReglaDAO.BuscarPorId(new BigInteger(ReglaId));
++				AgriRegla results =agriReglaDAO.BuscarPorId(new BigInteger(ReglaId),Integer.parseInt(EstadoId));
+ 				result.put("ReglaId", results.getReglaId());
+ 				result.put("TipoCultivoId", results.getTipoCultivoId());
+ 				result.put("CicloId", results.getClicloId());
+ 				result.put("TipoCalculoId", results.getTipoCalculoId());
+ 				result.put("ProvinciaId", results.getProvinciaId());
+ 				result.put("CantonId", results.getCantonId());
+@@ -160,10 +195,10 @@
+ 				result.put("ReglaId", results.getReglaId());
+ 				result.put("TipoCultivoId", results.getTipoCultivoId());
+ 				result.put("CicloId", results.getClicloId());
+ 				result.put("TipoCalculoId", results.getTipoCalculoId());
+ 				result.put("ProvinciaId", results.getProvinciaId());
+ 				result.put("CantonId", results.getCantonId());
+-				
++				result.put("activo", results.getEstado());
+ 				result.put("CostoProduccion", results.getCostoProduccion());
+ 				result.put("Tasa", results.getTasa());
+ 				result.put("CostoMantenimiento", results.getCostoMantenimiento());
+@@ -179,9 +214,8 @@
+ 				result.put("Estado", results.getEstado());
+ 			}
+ 			if (tipoConsulta.equals("crear")){				
+-				agriRegla.setEstado(1);
+ 				agriRegla = agriReglaTransaction.crear(agriRegla);
+ 				auditoria(agriRegla, tipoConsulta, session);
+ 			}
+ 			
+ 			if (tipoConsulta.equals("editar")){				
+@@ -183,10 +217,8 @@
+ 				agriRegla = agriReglaTransaction.crear(agriRegla);
+ 				auditoria(agriRegla, tipoConsulta, session);
+ 			}
+ 			
+ 			if (tipoConsulta.equals("editar")){				
+-				
+-				agriRegla.setEstado(1);
+ 				auditoria(agriRegla, tipoConsulta, session);
+ 				agriReglaTransaction.editar(agriRegla);
+ 			}
+@@ -195,48 +227,6 @@
+ 					auditoria(agriRegla, tipoConsulta, session);
+ 					agriReglaTransaction.eliminar(agriRegla);
+ 				}
+-			
+-			if (tipoConsulta.equals("copiar")){				
+-				
+-				String[] list = Copy.split(",");
+-				for(String r : list){
+-					if(!r.equals("")){
+-						AgriRegla results =agriReglaDAO.BuscarPorId(new BigInteger(r));
+-						if(results != null){
+-							if (!TipoCultivoId.equals(""))
+-								results.setTipoCultivoId(new BigInteger(TipoCultivoId));
+-							if (!CicloId.equals(""))
+-								results.setClicloId(new BigInteger(CicloId));
+-							if (!TipoCalculoId.equals(""))
+-								results.setTipoCalculoId(new BigInteger(TipoCalculoId));
+-							if (!ProvinciaId.equals(""))
+-								results.setProvinciaId(new BigInteger(ProvinciaId));
+-							if (!CantonId.equals(""))
+-								results.setCantonId(new BigInteger(CantonId));
+-							if (!CostoProduccion.equals(""))
+-								results.setCostoProduccion(new Float(CostoProduccion));
+-							if (!Tasa.equals(""))
+-								results.setTasa(new Float(Tasa));
+-							if (!CostoMantenimiento.equals(""))
+-								results.setCostoMantenimiento(new Float(CostoMantenimiento));
+-							if (!AceptabilidadDesde.equals("")){
+-								Date fechaD = df.parse(AceptabilidadDesde);
+-								results.setAceptabilidadDesde(fechaD);
+-							}
+-							if (!AceptabilidadHasta.equals("")){
+-								Date fechaH = df.parse(AceptabilidadHasta);
+-								results.setAceptabilidadHasta(fechaH);
+-							}
+-							if (!Observaciones.equals(""))
+-								results.setObservaciones(Observaciones);
+-							
+-							results.setEstado(1);
+-							results = agriReglaTransaction.crear(results);
+-							auditoria(results, tipoConsulta, session);							
+-						}
+-					}
+-				}
+-			}
+ 			result.put("success", Boolean.TRUE);
+ 			response.setContentType("application/json; charset=ISO-8859-1"); 
+ 			result.write(response.getWriter());
+@@ -267,7 +257,7 @@
+ 		
+ 		/*Busco si existe el registro*/
+ 		AgriReglaDAO agriReglaDAO = new AgriReglaDAO();
+-		AgriRegla results =agriReglaDAO.BuscarPorId(arg.getReglaId());		
++		AgriRegla results =agriReglaDAO.BuscarPorIdTodos(arg.getReglaId());		
+ 		/*Busco si existe el registro*/
+ 		agriAuditoriaRegla.setReglaId(results.getReglaId());
+ 		agriAuditoriaRegla.setFechaModificacion(fechaValidacion);
+diff --git a/src/com/qbe/cotizador/transaction/producto/agricola/AgriReglaTransaction.java b/src/com/qbe/cotizador/transaction/producto/agricola/AgriReglaTransaction.java
+--- a/src/com/qbe/cotizador/transaction/producto/agricola/AgriReglaTransaction.java
++++ b/src/com/qbe/cotizador/transaction/producto/agricola/AgriReglaTransaction.java
+@@ -64,7 +64,7 @@
+ 			ut.begin();
+ 			AgriReglaDAO AgriObjetoDAO = new AgriReglaDAO();
+ 			AgriRegla ObjetoAgriBuscado = new AgriRegla();
+-			ObjetoAgriBuscado = AgriObjetoDAO.BuscarPorId(agriRegla.getReglaId());
++			ObjetoAgriBuscado = AgriObjetoDAO.BuscarPorIdTodos(agriRegla.getReglaId());
+ 			if (ObjetoAgriBuscado!=null)
+ 			{
+ 				AgriObjetoDAO.eliminar(ObjetoAgriBuscado);

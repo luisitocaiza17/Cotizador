@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- Use this file to deploy some handlers/chains and services      --><!-- Two ways to do this:                                           --><!--   java org.apache.axis.client.AdminClient deploy.wsdd          --><!--      after the axis server is running                          --><!-- or                                                             --><!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   --><!--      from the same directory that the Axis engine runs         --><deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from ImportarCotizacionesService WSDL service -->
+
+  <service name="ImportarCotizaciones" provider="java:RPC" style="wrapped" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://archivoPlano.QBE.servicios.cotizador.qbe.com"/>
+      <parameter name="wsdlServiceElement" value="ImportarCotizacionesService"/>
+      <parameter name="schemaQualified" value="http://archivoPlano.QBE.servicios.cotizador.qbe.com"/>
+      <parameter name="wsdlServicePort" value="ImportarCotizaciones"/>
+      <parameter name="className" value="com.qbe.cotizador.servicios.QBE.archivoPlano.ImportarCotizaciones"/>
+      <parameter name="wsdlPortType" value="ImportarCotizaciones"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation xmlns:operNS="http://archivoPlano.QBE.servicios.cotizador.qbe.com" xmlns:retNS="http://archivoPlano.QBE.servicios.cotizador.qbe.com" xmlns:rtns="http://archivoPlano.QBE.servicios.cotizador.qbe.com" name="importarCotizaciones" qname="operNS:importarCotizaciones" returnQName="retNS:importarCotizacionesReturn" returnType="rtns:ObjetosRespuesta" soapAction="">
+        <parameter xmlns:pns="http://archivoPlano.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:textoJson" type="tns:string"/>
+        <parameter xmlns:pns="http://archivoPlano.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:correo" type="tns:string"/>
+        <parameter xmlns:pns="http://archivoPlano.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:CCCorreos" type="tns:string"/>
+      </operation>
+      <parameter name="allowedMethods" value="importarCotizaciones"/>
+
+      <typeMapping xmlns:ns="http://archivoPlano.QBE.servicios.cotizador.qbe.com" qname="ns:ObjetosRespuesta" type="java:com.qbe.cotizador.servicios.QBE.archivoPlano.ObjetosRespuesta" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+  </service>
+</deployment>

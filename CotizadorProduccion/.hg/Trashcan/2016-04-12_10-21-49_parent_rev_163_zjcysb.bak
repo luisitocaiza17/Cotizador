@@ -1,0 +1,877 @@
+diff --git a/WebContent/dashboard/CotizacionesPreviasAgricola.jsp b/WebContent/dashboard/CotizacionesPreviasAgricola.jsp
+--- a/WebContent/dashboard/CotizacionesPreviasAgricola.jsp
++++ b/WebContent/dashboard/CotizacionesPreviasAgricola.jsp
+@@ -205,8 +205,8 @@
+ 		$('#celular').prop('disabled', true);
+ 		//$('#email').prop('disabled', true);
+ 		$('#ubicacion_provincia').prop('disabled', true);
+-		$("#ubicacion_Canton").prop('disabled', true);
+-		$("#ubicacion_Parroquia").prop('disabled', true);
++		//$("#ubicacion_Canton").prop('disabled', true);
++		//$("#ubicacion_Parroquia").prop('disabled', true);
+ 		$("#agricultor_tecnificado_si").prop('disabled', true);
+ 		$("#agricultor_tecnificado_no").prop('disabled', true);
+ 		$("#tiene_riego_si").prop('disabled', true);
+@@ -398,5 +398,5 @@
+ 								<td><label><b>Provincia:*</b></label></td>
+ 								<td style="width: 35%"><select id="ubicacion_provincia"  required="required" class="datosGanadero" readonly></select></td>
+ 								<td><label><b>CantÃ³n:*</b></label></td>
+-								<td style="width: 35%"><select id="ubicacion_Canton" required="required" class="datosGanadero" readonly></select></td>
++								<td style="width: 35%"><select id="ubicacion_Canton" required="required" class="datosGanadero"></select></td>
+ 								<td><label><b>Parroquia:*</b></label></td>
+@@ -402,5 +402,5 @@
+ 								<td><label><b>Parroquia:*</b></label></td>
+-								<td style="width: 30%"><select id="ubicacion_Parroquia" class="datosGanadero" readonly></select></td>
++								<td style="width: 30%"><select id="ubicacion_Parroquia" class="datosGanadero"></select></td>
+ 							</tr>
+ 							<tr>
+ 								<td>
+@@ -409,7 +409,8 @@
+ 							</tr>
+ 							<tr>
+ 								<td><label><b>Sitio/Referencia:*</b></label></td>
+-								<td colspan="5"><input type="text" id="ubicacion_direccion" class="datosGanadero" required="required" readonly></td>
++								<td colspan="5"><input type="text" id="ubicacion_direccion" class="datosGanadero" required="required"></td>
++								<input type="hidden" id="previaId" class="datosGanadero">
+ 							</tr>
+ 							<tr>
+ 								<td>
+@@ -627,8 +628,12 @@
+ 								</select>
+ 								</td> -->
+ 								<td colspan="2"> 
+-								
+-								<button type="button" class="btn btn-success btn-xs descargaCertificado" id="descargar_FichaCotizacion" onclick="generarReporteCotizacion();"> <span class="glyphicon glyphicon glyphicon-download"></span>Descargar </button>
++								<br>
++								<b> <font color="red">DEBE DESCARGAR LA PREPOLIZA PARA PODER TERMINAR LA COTIZACION
++								</font></b>
++								<br>
++								<br>
++								<button type="button" class="btn btn-success btn-xs descargaCertificado" id="descargar_FichaCotizacion" onclick="generarReporteCotizacion();"> <span class="glyphicon glyphicon glyphicon-download"></span> Descargar </button>
+ 								<button type="button" class="btn btn-success btn-xs descargaCertificado" id="descargar_certificadoCotizacion" onclick="abrirCertificadoCotizacion();" hidden="hidden"> <span class="glyphicon glyphicon glyphicon-download"></span>Descargar </button>
+ 								<button type="button" class="btn btn-success btn-xs descargaCertificado" id="descargar_certificadoNormasParticulares" onclick="abrirCertificadoNormaParticulares();"  hidden="hidden"> <span class="glyphicon glyphicon glyphicon-download"></span>Descargar </button>
+ 								<!-- <button hidden="hidden" type='button' class='btn btn-success btn-xs descargaCertificado' id='descargar_certificadoDebito' onclick="abrirCertificadoDebito();"> <span class='glyphicon glyphicon glyphicon-download'></span>Descargar </button>
+diff --git a/WebContent/static/js/agricola/carga.inicial.cotizador.agricolaArchivoPlano.js b/WebContent/static/js/agricola/carga.inicial.cotizador.agricolaArchivoPlano.js
+--- a/WebContent/static/js/agricola/carga.inicial.cotizador.agricolaArchivoPlano.js
++++ b/WebContent/static/js/agricola/carga.inicial.cotizador.agricolaArchivoPlano.js
+@@ -8,7 +8,7 @@
+ 	//Se calcula la fecha de pago inicial
+ 
+ 	var today = new Date();
+-
++	
+ 	$('#datosAdicionalesJuridica').hide();
+ 	$('#datosAdicionalesNatural').hide();
+ 	$('#fechaNacimientoPN').datepicker();
+@@ -80,6 +80,7 @@
+ 		onFinished: function (event, currentIndex) {
+ 			//emitirPolizaAgricola();
+ 			//cambiarEstadoAgricola(estado);
++			
+ 			var id1=$("#cotizacion_id").text();
+ 			eliminarCotizacionProcesada($("#cargaPreviaId").val(), $("#hectareas_asegurables").val(),id1);
+ 			window.location= "CotizacionesPrecargadasAgricola.jsp";
+@@ -130,9 +131,10 @@
+ 						if(resultado){						
+ 							cargarValoresCotizacion();
+ 							//eliminarCotizacionProcesada($("#cargaPreviaId").val(), $("#hectareas_asegurables").val());
+-						}						
++						}
++						$("#wizard .actions a[href='#finish']").hide();
+ 						return resultado;
+ 					}else{
+ 						cargarValoresCotizacion();
+ 					}
+ 				}
+@@ -134,8 +136,9 @@
+ 						return resultado;
+ 					}else{
+ 						cargarValoresCotizacion();
+ 					}
+ 				}
++				
+ 			}			
+ 			//return $("#wizard").valid();
+ 			return validator;
+@@ -179,7 +182,6 @@
+ 			var idPrevio=QueryString.previaId;
+ 			cargarCotizacion(idPrevio);
+ 		}
+-		cargaInicialAgricola();
+ 	}
+ 	else{
+ 		cargaInicialAgricola();
+diff --git a/WebContent/static/js/agricola/metodos.agricola.js b/WebContent/static/js/agricola/metodos.agricola.js
+--- a/WebContent/static/js/agricola/metodos.agricola.js
++++ b/WebContent/static/js/agricola/metodos.agricola.js
+@@ -2739,6 +2739,7 @@
+ 			"tipoSeguro" : tipoSeguro,
+ 			"sucursalCanalId" : $("#sucursal_canal").val(),
+ 			"aniosCultivo" : $("#anios_cultivo").val(),
++			"previaId" : $("#previaId").val(),
+ 		},
+ 		type : 'post',
+ 		async : false,
+diff --git a/WebContent/static/js/agricola/metodos.agricolaArchivoPlano.js b/WebContent/static/js/agricola/metodos.agricolaArchivoPlano.js
+--- a/WebContent/static/js/agricola/metodos.agricolaArchivoPlano.js
++++ b/WebContent/static/js/agricola/metodos.agricolaArchivoPlano.js
+@@ -854,4 +854,6 @@
+ }
+ 
+ function generarReporteCotizacion() {
++	$("#descargar_FichaCotizacion").show();
++	$("#wizard .actions a[href='#finish']").hide();
+ 	window.open('../AgriCotizacionReporte?tipoConsulta=generarReporte&codigoCotizacion=' + $("#cotizacion_id").text());
+@@ -857,4 +859,5 @@
+ 	window.open('../AgriCotizacionReporte?tipoConsulta=generarReporte&codigoCotizacion=' + $("#cotizacion_id").text());
++	
+ }
+ function cargarDireccionFactura(formulario, datos) {
+ 	if (datos != null) {
+@@ -2718,6 +2721,7 @@
+ 	$("#msgPopupFichaAgricolaError").fadeOut("slow");
+ 	var resVal;
+ 	var tipoSeguro=0;
++	var IdPrevio=$("#previaId").val();
+ 	if($("#cultivoPerenne").css("visibility") == "visible")
+ 		tipoSeguro = $("#tipo_poliza").val();
+ 	
+@@ -2751,6 +2755,7 @@
+ 			"tipoSeguro" : tipoSeguro,
+ 			"sucursalCanalId" : $("#sucursal_canal").val(),
+ 			"aniosCultivo" : $("#anios_cultivo").val(),
++			"previaId" : IdPrevio,
+ 		},
+ 		type : 'post',
+ 		async : false,
+@@ -3514,7 +3519,8 @@
+ 			
+ 		}
+ 	});*/
+-
++	$("#wizard .actions a[href='#finish']").show();
++	$("#descargar_FichaCotizacion").hide();
+ 	window.open('../AgriCotizacionReporte?tipoConsulta=generarReporte&codigoCotizacion=' + $("#cotizacion_id").text()+'&IsCotizacion_=true');
+ }
+ 
+@@ -4078,7 +4084,7 @@
+ 	}
+ 	
+ 	function cargarCotizacion(arg){		
+-		
++			
+ 			$.ajax({
+ 				url : '../AgriCargaPreviaArchivoPlanoController',
+ 				data : {
+@@ -4113,6 +4119,7 @@
+ 					$("#hectareas_asegurables").val(data.hasAseguradas);
+ 					$("#agricultor_tecnificado_si").prop( "checked", data.esTecnificado);
+ 					$("#ubicacion_provincia").val(data.provinciaId);
++					$("#previaId").val(data.previaId);
+ 					obtenerCantonPorProvincia(data.cantonId);	
+ 					obtenerParroquiaPorCanton(data.parroquiaId);					
+ 					($("#tipo_cultivo").data("kendoComboBox")).value(data.tipoCultivoId);					
+diff --git a/src/com/qbe/cotizador/dao/producto/agricola/AgriAuditoriaCotizacionDAO.java b/src/com/qbe/cotizador/dao/producto/agricola/AgriAuditoriaCotizacionDAO.java
+--- a/src/com/qbe/cotizador/dao/producto/agricola/AgriAuditoriaCotizacionDAO.java
++++ b/src/com/qbe/cotizador/dao/producto/agricola/AgriAuditoriaCotizacionDAO.java
+@@ -1,6 +1,7 @@
+ package com.qbe.cotizador.dao.producto.agricola;
+ 
+ import java.math.BigInteger;
++
+ import java.util.List;
+ 
+ import javax.naming.Context;
+diff --git a/src/com/qbe/cotizador/model/AgriCotizacionAprobacion.java b/src/com/qbe/cotizador/model/AgriCotizacionAprobacion.java
+--- a/src/com/qbe/cotizador/model/AgriCotizacionAprobacion.java
++++ b/src/com/qbe/cotizador/model/AgriCotizacionAprobacion.java
+@@ -202,6 +202,7 @@
+ 	private String Confirmacion;
+ 	
+ 	
++	
+ 	//	@Column(name = "porcentajeComision")
+ 	//	private float PorcentajeComision;
+ 	
+diff --git a/src/com/qbe/cotizador/servicios/QBE/archivoPlano/GeneradorReporte.java b/src/com/qbe/cotizador/servicios/QBE/archivoPlano/GeneradorReporte.java
+--- a/src/com/qbe/cotizador/servicios/QBE/archivoPlano/GeneradorReporte.java
++++ b/src/com/qbe/cotizador/servicios/QBE/archivoPlano/GeneradorReporte.java
+@@ -252,6 +252,7 @@
+ 			ex.printStackTrace();
+ 		}
+ 		
++		
+ 	   EndosoBeneficiarioDAO endosoBeneficiarioDAO = new EndosoBeneficiarioDAO();
+ 	   EndosoBeneficiario endosoBeneficiario=	endosoBeneficiarioDAO.buscarPorCotizacion(cotizacion);
+ 	  
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCargaPreviaArchivoPlanoController.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCargaPreviaArchivoPlanoController.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCargaPreviaArchivoPlanoController.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCargaPreviaArchivoPlanoController.java
+@@ -242,6 +242,7 @@
+ 					id=previaId;
+ 				cargaPreviaArchivo = cargaPreviaArchivoDAO.buscarPorId(new BigInteger(id));
+ 				result.put("id",cargaPreviaArchivo.getId());
++				result.put("previaId",cargaPreviaArchivo.getId());
+ 				result.put("canal",cargaPreviaArchivo.getCanalNombre());
+ 				result.put("identificacion",cargaPreviaArchivo.getClienteIdentificacion());
+ 				result.put("cliente",cargaPreviaArchivo.getClienteNombre());
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java
+@@ -43,6 +43,10 @@
+ 
+ 
+ 
++
++
++
++
+ import com.google.gson.Gson;
+ import com.google.gson.GsonBuilder;
+ 
+@@ -55,6 +59,10 @@
+ 
+ 
+ 
++
++
++
++
+ //import com.google.common.io.Files;
+ import com.qbe.cotizador.dao.producto.agricola.CotizacionAprobacionDAO;
+ import com.qbe.cotizador.dao.cotizacion.CotizacionDAO;
+@@ -66,6 +74,7 @@
+ import com.qbe.cotizador.dao.entidad.PuntoVentaDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriCanalDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriCanal_Punto_VentaDAO;
++import com.qbe.cotizador.dao.producto.agricola.AgriCargaPreviaArchivoPlanoDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriCicloDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriObjetoCotizacionDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriParametroXPuntoVentaDAO;
+@@ -78,6 +87,7 @@
+ import com.qbe.cotizador.model.AgriAuditoriaCotizacion;
+ import com.qbe.cotizador.model.AgriCanal;
+ import com.qbe.cotizador.model.AgriCanal_Punto_Venta;
++import com.qbe.cotizador.model.AgriCargaPreviaArchivoPlano;
+ import com.qbe.cotizador.model.AgriCiclo;
+ import com.qbe.cotizador.model.AgriCotizacionAprobacion;
+ import com.qbe.cotizador.model.AgriObjetoCotizacion;
+@@ -100,6 +110,7 @@
+ import com.qbe.cotizador.transaction.cotizacion.CotizacionTransaction;
+ import com.qbe.cotizador.transaction.producto.agricola.AgriArchivosCotizacionTransaction;
+ import com.qbe.cotizador.transaction.producto.agricola.AgriAuditoriaCotizacionTransaction;
++import com.qbe.cotizador.transaction.producto.agricola.AgriCargaPreviaArchivoPlanoTransaction;
+ import com.qbe.cotizador.transaction.producto.agricola.AgriObjetoCotizacionTransaction;
+ import com.qbe.cotizador.transaction.producto.agricola.AgriSucreAuditoriaTransaction;
+ import com.qbe.cotizador.util.ResultAdjuntos;
+@@ -416,7 +427,7 @@
+ 										String erroresCadena="";
+ 										SdtResponseQBEErroresItem[] error = resultado.getRespuesta().getErrores();
+ 										for (SdtResponseQBEErroresItem item : error){
+-											String[] erroresU= item.getError().getErrorB();
++										String[] erroresU= item.getError().getErrorB();
+ 											for (String er : erroresU)
+ 											erroresCadena = erroresCadena+ er+" ";
+ 										}
+@@ -552,6 +563,26 @@
+ 							// Email rechazo cotizacion
+ 							EnviarMailCambioEstado(cotizacionC, null,AprobacionStatus);
+ 						}
++						
++						/*Pronaca Proceso de suma de hectareas en cotizaciones previas*/
++						if(cotizacionC.getPuntoVenta().getNombre().equals("PRONACA")){
++							CotizacionDetalleDAO cotizacionDetalleDAO= new CotizacionDetalleDAO();
++							CotizacionDetalle cotizacionDetalle= cotizacionDetalleDAO.buscarCotizacionDetallePorCotizacion(cotizacionC).get(0);
++							AgriObjetoCotizacionDAO agriObjetoCotizacionDAO = new AgriObjetoCotizacionDAO();
++							AgriObjetoCotizacion agriObjetoCotizacion=agriObjetoCotizacionDAO.buscarPorId(new BigInteger(cotizacionDetalle.getObjetoId()));
++							
++							AgriCargaPreviaArchivoPlanoDAO agriCargaPreviaArchivoPlanoDAO = new AgriCargaPreviaArchivoPlanoDAO();
++							AgriCargaPreviaArchivoPlano agriCargaPreviaArchivoPlano = agriCargaPreviaArchivoPlanoDAO.buscarPorId(new BigInteger(agriObjetoCotizacion.getObjetoOfflineId()));
++							double valorActual=agriCargaPreviaArchivoPlano.getNumerHasAseguradas();
++							double ValorRechazado=Double.parseDouble(""+objetoCotizacion.getHectareasAsegurables());
++							double valorTotal=valorActual+ValorRechazado;
++							agriCargaPreviaArchivoPlano.setNumerHasAseguradas(valorTotal);
++							agriCargaPreviaArchivoPlano.setEstado(1);
++							AgriCargaPreviaArchivoPlanoTransaction agriCargaPreviaArchivoPlanoTransaction= new AgriCargaPreviaArchivoPlanoTransaction();
++							agriCargaPreviaArchivoPlanoTransaction.editar(agriCargaPreviaArchivoPlano);
++						}
++						/*Fin de Proceso*/
++						
+ 						mensajeEstado = "La Cotización ha sido rechazada correctamente";
+ 						result.put("mensajeEstado", mensajeEstado);
+ 						}
+@@ -977,7 +1008,7 @@
+ 
+ 		} catch (Exception e) {
+ 			result.put("success", Boolean.FALSE);
+-			result.put("error", e.getLocalizedMessage());
++			result.put("error", e.getMessage());
+ 			response.setContentType("application/json; charset=ISO-8859-1");
+ 			result.write(response.getWriter());
+ 			e.printStackTrace();
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java
+@@ -36,8 +36,9 @@
+ import com.qbe.cotizador.dao.entidad.EntidadDAO;
+ import com.qbe.cotizador.dao.entidad.UsuarioDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriParametroXCanalDAO;
++import com.qbe.cotizador.dao.producto.agricola.AgriParametroXPuntoVentaDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriTipoCultivoDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriTipoCultivoXTipoCalculoDAO;
+ import com.qbe.cotizador.dao.producto.agricola.CotizacionAprobacionDAO;
+ import com.qbe.cotizador.model.AgriCotizacionAprobacion;
+ import com.qbe.cotizador.model.AgriParametroXCanal;
+@@ -39,8 +40,9 @@
+ import com.qbe.cotizador.dao.producto.agricola.AgriTipoCultivoDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriTipoCultivoXTipoCalculoDAO;
+ import com.qbe.cotizador.dao.producto.agricola.CotizacionAprobacionDAO;
+ import com.qbe.cotizador.model.AgriCotizacionAprobacion;
+ import com.qbe.cotizador.model.AgriParametroXCanal;
++import com.qbe.cotizador.model.AgriParametroXPuntoVenta;
+ import com.qbe.cotizador.model.AgriTipoCultivo;
+ import com.qbe.cotizador.model.AgriTipoCultivoXTipoCalculo;
+ import com.qbe.cotizador.model.Cotizacion;
+@@ -340,6 +342,7 @@
+ 		parametersHeader.put("VigenciaDesde", Fecha.format(detalleCotizacion.getFechaSiembra()));
+ 		parametersHeader.put("NombreCultivo",(detalleCotizacion.getTipoCultivoNombre()==null?"":detalleCotizacion.getTipoCultivoNombre()));
+ 		parametersHeader.put("Tasa",""+detalleCotizacion.getTasa());
++		parametersHeader.put("Prima",""+cotizacion.getTotalFactura());
+ 		parametersHeader.put("DiasVigencia", Fecha.format(calVigenciaHasta.getTime()));
+ 		if(tipoCultivo.getPrecioAjuste()!=null)
+ 			parametersHeader.put("PrecioAjuste", tipoCultivo.getPrecioAjuste());
+@@ -349,8 +352,33 @@
+ 		//Consultar los Beneficiarios
+ 		EndosoBeneficiarioDAO endosoBeneficiarioDAO = new EndosoBeneficiarioDAO();
+ 	    EndosoBeneficiario endosoBeneficiario=	endosoBeneficiarioDAO.buscarPorCotizacion(cotizacion);
+-	    if(endosoBeneficiario!=null)
+-	    	parametersHeader.put("NombreBeneficiario",endosoBeneficiario.getBeneficiario().getNombre() );   
++	    if(endosoBeneficiario!=null){
++	    	parametersHeader.put("NombreBeneficiario",endosoBeneficiario.getBeneficiario().getNombre() );
++	    }else{
++	    	AgriParametroXPuntoVentaDAO agriParametroXPuntoVentaDAO = new AgriParametroXPuntoVentaDAO();
++	    	AgriParametroXPuntoVenta agriParametroXPuntoVenta=agriParametroXPuntoVentaDAO.buscarPorPuntoVentaId(new BigInteger(cotizacion.getPuntoVenta().getId()));
++	    	
++	    	switch (""+agriParametroXPuntoVenta.getCanalId()) {
++			case "1":
++				parametersHeader.put("NombreBeneficiario","SUCRE" );
++				break;
++			case "2":
++				parametersHeader.put("NombreBeneficiario","PRONACA" );
++				break;
++			case "3":
++				parametersHeader.put("NombreBeneficiario","BANCO PICHINCHA" );
++				break;
++			case "4":
++				parametersHeader.put("NombreBeneficiario","DIRECTOS" );
++				break;
++			case "5":
++				parametersHeader.put("NombreBeneficiario","COOPROGRESO" );
++				break;
++			default:
++				break;
++			}
++	    	
++	    }
+ 		   
+ 		parametersHeader.put("DiasVigencia", detalleCotizacion.getVigenciaDias().toString());
+ 		
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriObjetoCotizacionController.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriObjetoCotizacionController.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriObjetoCotizacionController.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriObjetoCotizacionController.java
+@@ -37,7 +37,6 @@
+ import com.qbe.cotizador.model.CotizacionDetalle;
+ import com.qbe.cotizador.model.DerechoEmision;
+ import com.qbe.cotizador.model.Estado;
+-import com.qbe.cotizador.model.SumaAsegurada;
+ import com.qbe.cotizador.model.TipoVariable;
+ import com.qbe.cotizador.model.VariableSistema;
+ import com.qbe.cotizador.transaction.cotizacion.CotizacionDetalleTransaction;
+@@ -74,7 +73,7 @@
+ 		JSONObject result = new JSONObject();
+ 		try{
+ 			String tipoConsulta = request.getParameter("tipoConsulta") == null ? "" : request.getParameter("tipoConsulta");
+-
++			String previaId = request.getParameter("previaId") == null ? "" : request.getParameter("previaId");
+ 			CotizacionDAO cotizacionDAO=new CotizacionDAO();
+ 			CotizacionDetalleDAO cotizacionDetalleDAO=new CotizacionDetalleDAO();
+ 			ClienteDAO clienteDAO=new ClienteDAO();
+@@ -238,7 +237,6 @@
+ 						agriObjetoCotizacion.setDisponeAsistencia(Boolean.parseBoolean(disponeAsistencia));
+ 						agriObjetoCotizacion.setAgricultorTecnificado(Boolean.parseBoolean(agricultorTecnificado));
+ 						agriObjetoCotizacion.setDireccionSiembra(direccionSiembra);
+-						agriObjetoCotizacion.setCostoProduccionQBE(Float.parseFloat(""+sumaAseguradaTotal));
+ 						if(!aniosCultivo.equals(""))
+ 							agriObjetoCotizacion.setAniosCultivo(Integer.parseInt(aniosCultivo));
+ 						if(!tipoSeguro.equals(""))
+@@ -283,5 +281,4 @@
+ 						
+ 						agriObjetoCotizacion.setTipoCalculo(reglaId);
+ 						agriObjetoCotizacion.setObservacion(reglaDetalle);
+-						/***Proceso de creacion de las IdCotizaciones para facturacion***/
+ 						
+@@ -287,9 +284,4 @@
+ 						
+-						AgriCotizacionMaxDAO busquedaMax = new AgriCotizacionMaxDAO();
+-						AgriCotizacionMax numMaximo=busquedaMax.buscarTodos();
+-						int numeroActual=numMaximo.getMaximo().intValue();
+-						
+-						agriObjetoCotizacion.setIdCotizacion2(new BigInteger(""+(numeroActual+1)));
+ 						agriObjetoCotizacion=agriObjetoCotizacionTransaction.crear(agriObjetoCotizacion);
+ 
+ 						//Creo la cotización detalle
+@@ -401,320 +393,6 @@
+ 				}
+ 			}
+ 			
+-			if(tipoConsulta.equalsIgnoreCase("crearPronaca"))
+-			{
+-				String cotizacionId = request.getParameter("cotizacionId") == null ? "" : request.getParameter("cotizacionId").trim();
+-				String provinciaId = request.getParameter("provinciaId") == null ? "" : request.getParameter("provinciaId");
+-				String cantonId = request.getParameter("cantonId") == null ? "" : request.getParameter("cantonId");
+-				String parroquiaId = request.getParameter("parroquiaId") == null ? "" : request.getParameter("parroquiaId");
+-				String direccionSiembra = request.getParameter("direccionSiembra") == null ? "" : request.getParameter("direccionSiembra").trim();
+-				String altitudNivelMar = request.getParameter("altitudNivelMar") == null ? "" : request.getParameter("altitudNivelMar").trim();
+-				String fechaCredito = request.getParameter("fechaCredito") == null ? "" : request.getParameter("fechaCredito").trim();
+-				String montoCredito = request.getParameter("montoCredito") == null ? "" : request.getParameter("montoCredito").trim();
+-				String tipoCultivoId = request.getParameter("tipoCultivoId") == null ? "" : request.getParameter("tipoCultivoId").trim();
+-				String variedad = request.getParameter("variedad") == null ? "" : request.getParameter("variedad").trim();
+-				String fechaSiembra = request.getParameter("fechaSiembra") == null ? "" : request.getParameter("fechaSiembra").trim();
+-				String hectareasLote = request.getParameter("hectareasLote") == null ? "" : request.getParameter("hectareasLote").trim();
+-				String hectareasAsegurables = request.getParameter("hectareasAsegurables") == null ? "" : request.getParameter("hectareasAsegurables").trim();
+-				String agricultorTecnificado = request.getParameter("agricultorTecnificado") == null ? "" : request.getParameter("agricultorTecnificado").trim();
+-				String latitud = request.getParameter("latitud") == null ? "" : request.getParameter("latitud").trim();
+-				String longitud = request.getParameter("longitud") == null ? "" : request.getParameter("longitud").trim();
+-				String disponeRiego = request.getParameter("disponeRiego") == null ? "" : request.getParameter("disponeRiego").trim();
+-				String disponeAsistencia = request.getParameter("disponeAsistencia") == null ? "" : request.getParameter("disponeAsistencia").trim();
+-				String tipoSeguro = request.getParameter("tipoSeguro") == null ? "" : request.getParameter("tipoSeguro").trim();
+-				String sucursalCanalId = request.getParameter("sucursalCanalId") == null ? "" : request.getParameter("sucursalCanalId").trim();
+-				String aniosCultivo = request.getParameter("aniosCultivo") == null ? "" : request.getParameter("aniosCultivo").trim();
+-				
+-				AgriObjetoCotizacion agriObjetoCotizacion=new AgriObjetoCotizacion();
+-				
+-				/*campos para el id y detalle de la regla*/
+-				String reglaId = "";
+-				String reglaDetalle = "";
+-				/*campos para el id y detalle de la regla*/
+-				
+-				Date dateCredito=null;
+-				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+-				if(fechaCredito!="")
+-				{
+-					try{
+-						dateCredito=formatter.parse(fechaCredito);
+-					}catch(Exception e){
+-						System.out.print("fecha credito vacia");
+-					}
+-				}
+-
+-				Date dateSiembra=null;
+-				if(fechaSiembra!=""){
+-					dateSiembra=formatter.parse(fechaSiembra);
+-				}
+-
+-				/*if(Integer.parseInt(tipoSeguro)==0){
+-					Calendar c = Calendar.getInstance();    
+-					c.setTime(new Date());
+-					c.add(Calendar.DATE, -15);
+-					Date dateMenor=c.getTime();
+-					
+-					Calendar cM = Calendar.getInstance();    
+-					cM.setTime(new Date());
+-					cM.add(Calendar.DATE, 15);
+-					Date dateMayor=cM.getTime();
+-	
+-					if(!(dateSiembra.after(dateMenor) && dateSiembra.before(dateMayor)))
+-						throw new Exception("No se puede realizar la cotización. Porque la fecha de siembra debe estar entre 15 días más y 15 días menos de la fecha actual.");
+-				}*/
+-
+-				//Valido si existe la cotizacion
+-				Cotizacion objetoCotizacion=cotizacionDAO.buscarPorId(cotizacionId);
+-				if(objetoCotizacion!=null)
+-				{
+-					//
+-					Double sumaAseguradaTotal=0.0;
+-					Double primaNetaTotal=0.0;
+-					//Obtengo el id del tipo de canal
+-					AgriTipoCalculo agriTipoCalculo= new AgriTipoCalculo();
+-					AgriTipoCalculoDAO agriTipoCalculoDAO = new AgriTipoCalculoDAO();
+-					agriTipoCalculo=agriTipoCalculoDAO.BuscarPorNombre("PRONACA");
+-					
+-					//Obtengo el valor de la tabla de reglas
+-					List<AgriRegla> reglas= agriReglaDAO.BuscarPorParametros(new BigInteger(provinciaId), new BigInteger(cantonId), new BigInteger(tipoCultivoId),agriTipoCalculo.getTipoCalculoId());
+-					if(reglas.size()!=0)
+-					{	
+-						if(reglas.get(0).getCostoProduccion()!=0 || reglas.get(0).getTasa()!=0){
+-							Boolean valido=false;
+-							for(AgriRegla regla:reglas){
+-								if(regla.getClicloId()!=null){
+-									AgriCicloDAO cicloDAO=new AgriCicloDAO();
+-									AgriCiclo ciclo = cicloDAO.BuscarPorId(regla.getClicloId());
+-									Date fechafin=ciclo.getFechaFin();
+-									Date fechaInicio=ciclo.getFechaInicio();
+-									if(dateSiembra.after(fechaInicio) && dateSiembra.before(fechafin))
+-										valido=true;
+-								}
+-								else {
+-									if(regla.getAceptabilidadDesde()!=null && regla.getAceptabilidadHasta()!=null){
+-										if(dateSiembra.after(regla.getAceptabilidadDesde()) && dateSiembra.before(regla.getAceptabilidadHasta()))
+-											valido=true;
+-									}
+-									else
+-										valido=true;
+-								}
+-							}
+-							if(valido){							
+-								
+-								if(Integer.parseInt(tipoSeguro)==0){
+-									sumaAseguradaTotal=reglas.get(0).getCostoProduccion()*Double.parseDouble(hectareasAsegurables);
+-									primaNetaTotal=sumaAseguradaTotal*reglas.get(0).getTasa()/100;
+-								}
+-								else if(Integer.parseInt(tipoSeguro)==1){
+-									//long diffMSec = (new Date()).getTime()-dateSiembra.getTime();
+-									//long diff = (long)60 * (long)60 * (long)1000 * (long)24 * (long)365;
+-									//long diffYears = (long) (diffMSec / diff);
+-									Double costoMantenimiento = reglas.get(0).getCostoMantenimiento() * new Double(aniosCultivo) * Double.parseDouble(hectareasAsegurables);
+-									sumaAseguradaTotal=reglas.get(0).getCostoProduccion() * Double.parseDouble(hectareasAsegurables) + costoMantenimiento;
+-									primaNetaTotal=sumaAseguradaTotal*reglas.get(0).getTasa()/100;
+-								}
+-								else{
+-									Double costoMantenimiento = reglas.get(0).getCostoMantenimiento() * new Double(1) * Double.parseDouble(hectareasAsegurables);
+-									sumaAseguradaTotal=costoMantenimiento;
+-									primaNetaTotal=sumaAseguradaTotal*reglas.get(0).getTasa()/100;
+-								}
+-								
+-								reglaId = reglas.get(0).getReglaId().toString();
+-								reglaDetalle = reglas.get(0).getObservaciones();						
+-	
+-							}
+-							else{
+-								throw new Exception("No se puede realizar la cotización. Porque la fecha de siembra no esta permitida en ningun ciclo.");
+-							}
+-	
+-						}
+-						else{
+-							throw new Exception("No se puede realizar la cotización. Porque la provincia y ciudad seleccionadas no permite ese tipo de cultivo.");
+-						}
+-					}
+-					else{
+-						throw new Exception("No se puede realizar la cotización. Porque la provincia y ciudad seleccionadas no permite ese tipo de cultivo.");
+-					}
+-
+-
+-					//Cuento si ya hay al menos un detalle para la cotizacion
+-					List<CotizacionDetalle> listadoDetalles=cotizacionDetalleDAO.buscarCotizacionDetallePorCotizacion(objetoCotizacion);
+-					if(listadoDetalles.size()==0)
+-					{
+-						//Inserta el detalle de la cotización
+-						
+-						agriObjetoCotizacion.setProvinciaId(new BigInteger(provinciaId));
+-						agriObjetoCotizacion.setCantonId(new BigInteger(cantonId));
+-						agriObjetoCotizacion.setParroquiaId(new BigInteger(parroquiaId));
+-						agriObjetoCotizacion.setTipoCultivoId(new BigInteger(tipoCultivoId));
+-						agriObjetoCotizacion.setVariedad(variedad);
+-						agriObjetoCotizacion.setAgricultorTecnificado(Boolean.parseBoolean(agricultorTecnificado));
+-						agriObjetoCotizacion.setDisponeRiego(Boolean.parseBoolean(disponeRiego));
+-						agriObjetoCotizacion.setDisponeAsistencia(Boolean.parseBoolean(disponeAsistencia));
+-						agriObjetoCotizacion.setAgricultorTecnificado(Boolean.parseBoolean(agricultorTecnificado));
+-						agriObjetoCotizacion.setDireccionSiembra(direccionSiembra);
+-						agriObjetoCotizacion.setCostoProduccionQBE(Float.parseFloat(""+sumaAseguradaTotal));
+-						if(!aniosCultivo.equals(""))
+-							agriObjetoCotizacion.setAniosCultivo(Integer.parseInt(aniosCultivo));
+-						if(!tipoSeguro.equals(""))
+-							agriObjetoCotizacion.setTipoSeguro(Integer.parseInt(tipoSeguro));
+-						else
+-							agriObjetoCotizacion.setTipoSeguro(0);
+-						if(!hectareasLote.equals(""))
+-							agriObjetoCotizacion.setHectareasLote(Float.parseFloat(hectareasLote));
+-						if(!latitud.equals("")){
+-							
+-							try{
+-								agriObjetoCotizacion.setLatitud(Float.parseFloat(latitud));
+-							}catch(Exception e){
+-								System.out.println("Latitud vacia");
+-							}
+-						}
+-						if(!longitud.equals(""))
+-							try{
+-								agriObjetoCotizacion.setLongitud(Float.parseFloat(longitud));
+-							}catch(Exception e){
+-								System.out.println("Longitud vacia");
+-							}
+-						if(!hectareasAsegurables.equals(""))
+-							agriObjetoCotizacion.setHectareasAsegurables(Float.parseFloat(hectareasAsegurables));
+-						if(!montoCredito.equals(""))
+-							try{
+-								agriObjetoCotizacion.setMontoCredito(Float.parseFloat(montoCredito));
+-							}catch(Exception e){
+-								System.out.println("Monto vacio");
+-							}
+-						if(!sucursalCanalId.equals(""))
+-							agriObjetoCotizacion.setSucursalCanalId(new BigInteger(sucursalCanalId));
+-
+-						if(dateCredito!=null)
+-							agriObjetoCotizacion.setFechaCredito(dateCredito);
+-						if(dateSiembra!=null)
+-							agriObjetoCotizacion.setFechaSiembra(dateSiembra);
+-						if(!altitudNivelMar.equals(""))
+-							agriObjetoCotizacion.setAltitudNivelMar(Float.parseFloat(altitudNivelMar));
+-
+-						agriObjetoCotizacion.setTipoOrigen("COTIZADOR_ONLINE");
+-						
+-						agriObjetoCotizacion.setTipoCalculo(reglaId);
+-						agriObjetoCotizacion.setObservacion(reglaDetalle);
+-						/***Proceso de creacion de las IdCotizaciones para facturacion***/
+-						
+-						AgriCotizacionMaxDAO busquedaMax = new AgriCotizacionMaxDAO();
+-						AgriCotizacionMax numMaximo=busquedaMax.buscarTodos();
+-						int numeroActual=numMaximo.getMaximo().intValue();
+-						
+-						agriObjetoCotizacion.setIdCotizacion2(new BigInteger(""+(numeroActual+1)));
+-						agriObjetoCotizacion=agriObjetoCotizacionTransaction.crear(agriObjetoCotizacion);
+-
+-						//Creo la cotización detalle
+-						CotizacionDetalle nuevoCotizacionDetalle=new CotizacionDetalle();
+-						nuevoCotizacionDetalle.setCotizacion(objetoCotizacion);
+-						nuevoCotizacionDetalle.setNecesitaInspeccion(false);
+-						nuevoCotizacionDetalle.setTipoObjetoId(tipoObjetoDAO.buscarPorNombre("Agricola").getId());
+-						nuevoCotizacionDetalle.setObjetoId(agriObjetoCotizacion.getObjetoCotizacionId().toString());
+-						nuevoCotizacionDetalle.setSumaAseguradaItem(sumaAseguradaTotal);
+-						nuevoCotizacionDetalle.setPrimaNetaItem(primaNetaTotal);
+-						cotizacionDetalleTransaction.crear(nuevoCotizacionDetalle);
+-
+-						result.put("cotizacionId",objetoCotizacion.getId());
+-						result.put("objetoGanaderoId",agriObjetoCotizacion.getObjetoCotizacionId());
+-					}
+-					else
+-					{
+-						//Recupero el objeto detalle para actualizar
+-						CotizacionDetalle nuevoCotizacionDetalle=listadoDetalles.get(0);
+-
+-						//AgriObjetoCotizacion agriObjetoCotizacion;
+-
+-						//Valido si existe el objeto agricol para ese datalle, si existe lo recupero 
+-						//caso contrario me toca crearlo
+-
+-						if(nuevoCotizacionDetalle.getObjetoId().equals(""))
+-							agriObjetoCotizacion=new AgriObjetoCotizacion();
+-						else
+-							agriObjetoCotizacion=agriObjetoDAO.buscarPorId(new BigInteger(nuevoCotizacionDetalle.getObjetoId()));
+-
+-						//Inserta el detalle de la cotización
+-
+-						agriObjetoCotizacion.setProvinciaId(new BigInteger(provinciaId));
+-						agriObjetoCotizacion.setCantonId(new BigInteger(cantonId));
+-						agriObjetoCotizacion.setParroquiaId(new BigInteger(parroquiaId));
+-						agriObjetoCotizacion.setTipoCultivoId(new BigInteger(tipoCultivoId));
+-						agriObjetoCotizacion.setVariedad(variedad);
+-						agriObjetoCotizacion.setAgricultorTecnificado(Boolean.parseBoolean(agricultorTecnificado));
+-						agriObjetoCotizacion.setDisponeRiego(Boolean.parseBoolean(disponeRiego));
+-						agriObjetoCotizacion.setDisponeAsistencia(Boolean.parseBoolean(disponeAsistencia));
+-						agriObjetoCotizacion.setDireccionSiembra(direccionSiembra);
+-						if(!aniosCultivo.equals(""))
+-							agriObjetoCotizacion.setAniosCultivo(Integer.parseInt(aniosCultivo));
+-						if(!tipoSeguro.equals(""))
+-							agriObjetoCotizacion.setTipoSeguro(Integer.parseInt(tipoSeguro));
+-						else
+-							agriObjetoCotizacion.setTipoSeguro(0);
+-						if(!hectareasLote.equals(""))
+-							agriObjetoCotizacion.setHectareasLote(Float.parseFloat(hectareasLote));
+-						if(!hectareasAsegurables.equals(""))
+-							agriObjetoCotizacion.setHectareasAsegurables(Float.parseFloat(hectareasAsegurables));
+-						if(!montoCredito.equals("")){
+-							try{
+-								agriObjetoCotizacion.setMontoCredito(Float.parseFloat(montoCredito));
+-							}catch (Exception e) {
+-								System.out.print("No hay monto de credito");
+-							}
+-						}
+-						if(!latitud.equals("")){
+-							try{
+-								agriObjetoCotizacion.setLatitud(Float.parseFloat(latitud));
+-							}catch (Exception e) {
+-								System.out.print("No hay latitud");
+-							}
+-						}
+-						if(!longitud.equals("")){
+-							try{
+-								agriObjetoCotizacion.setLongitud(Float.parseFloat(longitud));
+-							}catch (Exception e) {
+-								System.out.print("No hay longitud");
+-							}
+-						}
+-						if(!sucursalCanalId.equals(""))
+-							agriObjetoCotizacion.setSucursalCanalId(new BigInteger(sucursalCanalId));
+-						if(dateCredito!=null)
+-						{
+-							try{
+-								agriObjetoCotizacion.setFechaCredito(dateCredito);
+-							}catch (Exception e) {
+-								System.out.print("No hay fechaCredito");
+-							}
+-						}
+-						if(fechaSiembra!=null)
+-						{
+-							agriObjetoCotizacion.setFechaSiembra(dateSiembra);
+-						}
+-						agriObjetoCotizacion.setAltitudNivelMar(Float.parseFloat(altitudNivelMar));
+-						
+-						agriObjetoCotizacion.setTipoOrigen("COTIZADOR_ONLINE");
+-						
+-						agriObjetoCotizacion.setTipoCalculo(reglaId);
+-						agriObjetoCotizacion.setObservacion(reglaDetalle);
+-
+-						agriObjetoCotizacion=agriObjetoCotizacionTransaction.editar(agriObjetoCotizacion);
+-
+-						//Cambio los valores de la poliza
+-						nuevoCotizacionDetalle.setSumaAseguradaItem(sumaAseguradaTotal);
+-						nuevoCotizacionDetalle.setPrimaNetaItem(primaNetaTotal);
+-						cotizacionDetalleTransaction.editar(nuevoCotizacionDetalle);
+-
+-
+-						result.put("cotizacionId",objetoCotizacion.getId());
+-						result.put("objetoGanaderoId",agriObjetoCotizacion.getObjetoCotizacionId());
+-					}
+-					objetoCotizacion.setSumaAseguradaTotal(sumaAseguradaTotal);
+-					objetoCotizacion.setPrimaNetaTotal(primaNetaTotal.toString());
+-					objetoCotizacion.setEtapaWizard(2);
+-					cotizacionTransaction.editar(objetoCotizacion);
+-				}
+-			}
+ 			
+ 			/*COTIZACIONES ARCHIVO PLANO CARGA PREVIA*/
+ 			if(tipoConsulta.equalsIgnoreCase("crearArchivoPlano")){
+@@ -739,7 +417,7 @@
+ 				String tipoSeguro = request.getParameter("tipoSeguro") == null ? "" : request.getParameter("tipoSeguro").trim();
+ 				String sucursalCanalId = request.getParameter("sucursalCanalId") == null ? "" : request.getParameter("sucursalCanalId").trim();
+ 				String aniosCultivo = request.getParameter("aniosCultivo") == null ? "" : request.getParameter("aniosCultivo").trim();
+-				
++				String previaId1 = request.getParameter("previaId") == null ? "" : request.getParameter("previaId").trim();
+ 				AgriObjetoCotizacion agriObjetoCotizacion=new AgriObjetoCotizacion();
+ 				
+ 				/*campos para el id y detalle de la regla*/
+@@ -833,4 +511,6 @@
+ 					AgriTipoCalculoDAO agriTipoCalculoDAO = new AgriTipoCalculoDAO();
+ 					agriTipoCalculo=agriTipoCalculoDAO.BuscarPorNombre("PRONACA");
+ 					//Obtengo el valor de la tabla de reglas
++					String nuestroCosto = "0.0";//para verificar si existen diferencias entre costo que llega y que tenemos
++					String idTipoCalculo = "";//para saber en base a que regla se calcularon los datos
+ 					List<AgriRegla> reglas= agriReglaDAO.BuscarPorParametros(new BigInteger(provinciaId), new BigInteger(cantonId), new BigInteger(tipoCultivoId), agriTipoCalculo.getTipoCalculoId());
+@@ -836,2 +516,4 @@
+ 					List<AgriRegla> reglas= agriReglaDAO.BuscarPorParametros(new BigInteger(provinciaId), new BigInteger(cantonId), new BigInteger(tipoCultivoId), agriTipoCalculo.getTipoCalculoId());
++
++					Boolean valido=false;	
+ 					if(reglas.size()!=0){
+@@ -837,6 +519,9 @@
+ 					if(reglas.size()!=0){
+-						Boolean valido=false;
+-						for(AgriRegla regla:reglas){
+-							if(regla.getCostoProduccion()==0||regla.getCostoProduccion()==0.0){
+-								throw new Exception("El tipo de cultivo no está configurado para el lugar donde se desea sembrar.");
++					for (AgriRegla rs : reglas) {
++						if(rs.getTasa()!=0 || rs.getTasa()!=0.0 ){//si tiene tasa debe tener o costo de produccion o costo de mantenimiento
++							tasa = Double.parseDouble(""+rs.getTasa());
++							if(rs.getCostoProduccion()!=0){
++								nuestroCosto = (""+rs.getCostoProduccion());
++							}else{
++								nuestroCosto = (""+rs.getCostoMantenimiento());
+ 							}
+@@ -842,18 +527,5 @@
+ 							}
+-							if(regla.getClicloId()!=null){
+-								AgriCicloDAO cicloDAO=new AgriCicloDAO();
+-								AgriCiclo ciclo = cicloDAO.BuscarPorId(regla.getClicloId());
+-								Date fechafin=ciclo.getFechaFin();
+-								Date fechaInicio=ciclo.getFechaInicio();
+-								if(dateSiembra.after(fechaInicio) && dateSiembra.before(fechafin))
+-									valido=true;
+-								if(!regla.getObservaciones().equals("")||!regla.getObservaciones().equals(""))
+-									esEmitido=false;
+-								else{
+-									esEmitido=false;
+-									observaciones= observaciones +" El cultivo no se encuentra dentro del periodo de siembra";
+-									valido=true;
+-								}
+-							}
+-							
++							observaciones = observaciones+" " + rs.getObservaciones();
++							idTipoCalculo = "" + rs.getReglaId();
++							valido=true;
+ 						}
+@@ -859,5 +531,5 @@
+ 						}
+-						if(valido){						
++						}if(valido){						
+ 							costoProduccion=reglas.get(0).getCostoProduccion();
+ 							tasa=reglas.get(0).getTasa();
+ 							if(Integer.parseInt(tipoSeguro)==0){
+@@ -939,6 +611,7 @@
+ 					{
+ 						//Inserta el detalle de la cotización
+ 						agriObjetoCotizacion.setCostoProduccion((float)costoProduccion);
++						agriObjetoCotizacion.setCostoProduccionQBE((float)costoProduccion);
+ 						agriObjetoCotizacion.setProvinciaId(new BigInteger(provinciaId));
+ 						agriObjetoCotizacion.setCantonId(new BigInteger(cantonId));
+ 						agriObjetoCotizacion.setParroquiaId(new BigInteger(parroquiaId));
+@@ -949,7 +622,8 @@
+ 						agriObjetoCotizacion.setDisponeAsistencia(Boolean.parseBoolean(disponeAsistencia));
+ 						agriObjetoCotizacion.setAgricultorTecnificado(Boolean.parseBoolean(agricultorTecnificado));
+ 						agriObjetoCotizacion.setDireccionSiembra(direccionSiembra);
+-						
++						agriObjetoCotizacion.setConfirEmiCanal(true);
++						agriObjetoCotizacion.setObjetoOfflineId(""+previaId1);
+ 						if(!aniosCultivo.equals(""))
+ 							agriObjetoCotizacion.setAniosCultivo(Integer.parseInt(aniosCultivo));
+ 						if(!tipoSeguro.equals(""))
+@@ -1007,6 +681,5 @@
+ 						
+ 						AgriCotizacionMaxDAO busquedaMax = new AgriCotizacionMaxDAO();
+ 						AgriCotizacionMax numMaximo=busquedaMax.buscarTodos();
+-						int numeroActual=numMaximo.getMaximo().intValue();
+-						agriObjetoCotizacion.setCostoProduccionQBE(Float.parseFloat(""+sumaAseguradaTotal));
++						int numeroActual=numMaximo.getMaximo().intValue();						
+ 						agriObjetoCotizacion.setIdCotizacion2(new BigInteger(""+(numeroActual+1)));
+@@ -1012,5 +685,5 @@
+ 						agriObjetoCotizacion.setIdCotizacion2(new BigInteger(""+(numeroActual+1)));
+-						
++						agriObjetoCotizacion.setObservacionCotizacion(previaId);
+ 						
+ 						agriObjetoCotizacion=agriObjetoCotizacionTransaction.crear(agriObjetoCotizacion);
+ 
+@@ -1045,6 +718,7 @@
+ 
+ 						//Inserta el detalle de la cotización
+ 						agriObjetoCotizacion.setCostoProduccion((float)costoProduccion);
++						agriObjetoCotizacion.setCostoProduccionQBE((float)costoProduccion);
+ 						agriObjetoCotizacion.setProvinciaId(new BigInteger(provinciaId));
+ 						agriObjetoCotizacion.setCantonId(new BigInteger(cantonId));
+ 						agriObjetoCotizacion.setParroquiaId(new BigInteger(parroquiaId));
+@@ -1054,6 +728,7 @@
+ 						agriObjetoCotizacion.setDisponeRiego(Boolean.parseBoolean(disponeRiego));
+ 						agriObjetoCotizacion.setDisponeAsistencia(Boolean.parseBoolean(disponeAsistencia));
+ 						agriObjetoCotizacion.setDireccionSiembra(direccionSiembra);
++						agriObjetoCotizacion.setConfirEmiCanal(true);
+ 						if(!aniosCultivo.equals(""))
+ 							agriObjetoCotizacion.setAniosCultivo(Integer.parseInt(aniosCultivo));
+ 						if(!tipoSeguro.equals(""))
+@@ -1131,5 +806,5 @@
+ 						observaciones= observaciones+" La suma asegurado es 0.";
+ 					}
+ 					
+-					if(esEmitido==false)
++					/*if(esEmitido==false)
+ 						estado = estadoDAO.buscarPorNombreClase("Pendiente Aprobar", "Cotizacion");
+@@ -1135,6 +810,6 @@
+ 						estado = estadoDAO.buscarPorNombreClase("Pendiente Aprobar", "Cotizacion");
+-					else
+-						estado = estadoDAO.buscarPorNombreClase("Pendiente de Emitir", "Cotizacion");
++					else*/
++					estado = estadoDAO.buscarPorNombreClase("Pendiente de Emitir", "Cotizacion");
+ 					//Las cotizaciones del canal pronaca no pasan por la etapa de carga de veneficiario o asegurado
+ 					//en este caso el cliente es el asegurado					
+ 					Cliente cliente = new Cliente();
+@@ -1313,4 +988,3 @@
+ 
+ 	
+ }
+-

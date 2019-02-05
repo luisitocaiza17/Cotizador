@@ -1,0 +1,53 @@
+diff --git a/.settings/org.eclipse.wst.ws.service.policy.prefs b/.settings/org.eclipse.wst.ws.service.policy.prefs
+--- a/.settings/org.eclipse.wst.ws.service.policy.prefs
++++ b/.settings/org.eclipse.wst.ws.service.policy.prefs
+@@ -1,2 +1,3 @@
+ eclipse.preferences.version=1
+-org.eclipse.wst.ws.service.policy.projectEnabled=false
++org.eclipse.wst.ws.service.policy.projectEnabled=true
++org.eclipse.wst.ws.service.policy.ui.servicepols.wsiprofilecomp.wsissbp.default.value.key=org.eclipse.wst.sug.ignore
+diff --git a/WebContent/WEB-INF/SolicitudAgricolaService/com/qbe/cotizador/servicios/QBE/agricolaSucre/deploy.wsdd b/WebContent/WEB-INF/SolicitudAgricolaService/com/qbe/cotizador/servicios/QBE/agricolaSucre/deploy.wsdd
+--- a/WebContent/WEB-INF/SolicitudAgricolaService/com/qbe/cotizador/servicios/QBE/agricolaSucre/deploy.wsdd
++++ b/WebContent/WEB-INF/SolicitudAgricolaService/com/qbe/cotizador/servicios/QBE/agricolaSucre/deploy.wsdd
+@@ -13,9 +13,8 @@
+       <operation xmlns:operNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:retNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:rtns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" name="registrarSolicitud" qname="operNS:registrarSolicitud" returnQName="retNS:registrarSolicitudReturn" returnType="rtns:RespuestaUN01DTO" soapAction="">
+         <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" qname="pns:in0" type="tns:SolicitudUN01DTO"/>
+       </operation>
+-      <operation xmlns:operNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:retNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:rtns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" name="solicitudCambioFecha" qname="operNS:solicitudCambioFecha" returnQName="retNS:solicitudCambioFechaReturn" returnType="rtns:RespuestaCambio" soapAction="">
+-        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:tramite" type="tns:string"/>
+-        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:fechaSiembra" type="tns:string"/>
++      <operation xmlns:operNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:retNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:rtns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" name="registrarEmision" qname="operNS:registrarEmision" returnQName="retNS:registrarEmisionReturn" returnType="rtns:RespuestaEMIDTO" soapAction="">
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" qname="pns:in0" type="tns:SolicitudEMIDTO"/>
+       </operation>
+       <operation xmlns:operNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:retNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:rtns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" name="solicitudCambiolugarSiembra" qname="operNS:solicitudCambiolugarSiembra" returnQName="retNS:solicitudCambiolugarSiembraReturn" returnType="rtns:RespuestaCambio" soapAction="">
+         <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:tramite" type="tns:string"/>
+@@ -26,6 +25,7 @@
+         <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:latitud" type="tns:string"/>
+         <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:longitud" type="tns:string"/>
+       </operation>
+-      <operation xmlns:operNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:retNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:rtns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" name="registrarEmision" qname="operNS:registrarEmision" returnQName="retNS:registrarEmisionReturn" returnType="rtns:RespuestaEMIDTO" soapAction="">
+-        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" qname="pns:in0" type="tns:SolicitudEMIDTO"/>
++      <operation xmlns:operNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:retNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:rtns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" name="solicitudCambioFecha" qname="operNS:solicitudCambioFecha" returnQName="retNS:solicitudCambioFechaReturn" returnType="rtns:RespuestaCambio" soapAction="">
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:tramite" type="tns:string"/>
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:fechaSiembra" type="tns:string"/>
+       </operation>
+@@ -31,5 +31,18 @@
+       </operation>
+-      <parameter name="allowedMethods" value="registrarSolicitud registrarEmision solicitudCambiolugarSiembra solicitudCambioFecha"/>
++      <operation xmlns:operNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:retNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:rtns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" name="registroSiniestros" qname="operNS:registroSiniestros" returnQName="retNS:registroSiniestrosReturn" returnType="rtns:RespuestaCambio" soapAction="">
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:Tramite" type="tns:string"/>
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:identificacion" type="tns:string"/>
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:NombreCliente" type="tns:string"/>
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:ApellidoCliente" type="tns:string"/>
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:valorIndemnizacion" type="tns:double"/>
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:fechaPago" type="tns:string"/>
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:cultivo" type="tns:string"/>
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:hectareas" type="tns:double"/>
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:sumaAseguradaIndemnizacion" type="tns:double"/>
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:fechaNotificacionCliente" type="tns:string"/>
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:tipoIndemnizacion" type="tns:string"/>
++      </operation>
++      <parameter name="allowedMethods" value="registrarSolicitud registroSiniestros registrarEmision solicitudCambiolugarSiembra solicitudCambioFecha"/>
+ 
+       <typeMapping xmlns:ns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" qname="ns:SolicitudEMIDTO" type="java:com.qbe.cotizador.servicios.QBE.agricolaSucre.SolicitudEMIDTO" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+       <typeMapping xmlns:ns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" qname="ns:RespuestaEMIDTO" type="java:com.qbe.cotizador.servicios.QBE.agricolaSucre.RespuestaEMIDTO" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>

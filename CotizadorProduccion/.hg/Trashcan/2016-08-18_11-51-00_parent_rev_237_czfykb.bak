@@ -1,0 +1,22 @@
+diff --git a/WebContent/dashboard/AgriUsuariosOffline.jsp b/WebContent/dashboard/AgriUsuariosOffline.jsp
+--- a/WebContent/dashboard/AgriUsuariosOffline.jsp
++++ b/WebContent/dashboard/AgriUsuariosOffline.jsp
+@@ -169,6 +169,10 @@
+ 	            type: "json",
+ 	            serverPaging: true,
+ 	            serverSorting: true,
++	            serverFiltering: true,
++	            filterable: {
++                    mode: "row"
++                },
+ 	            pageSize: 20,
+ 	            transport:{
+ 	            	read: {
+@@ -357,6 +361,7 @@
+ 		<!-- Button trigger modal -->
+ 		<button class="btn btn-primary" data-toggle="modal" data-target="#add" id="addButton">
+ 			<span class="glyphicon glyphicon-plus"></span> &nbsp; Nuevo
++			
+ 		</button>
+ 
+ 		<!-- Modal -->

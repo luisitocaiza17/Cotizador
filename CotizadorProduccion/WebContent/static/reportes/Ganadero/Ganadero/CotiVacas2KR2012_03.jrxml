@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CotiVacas2KR2012_03" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="a273db76-ce42-4d2e-80e7-527f34570559">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="COTIZADOR"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="Cot_Id" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT DISTINCT 
+COT.SUMA_ASEGURADA_TOTAL ,COUNT(OBJD.ID) AS TOTALANIMALES
+FROM ENTIDAD ENT INNER JOIN CLIENTE CLI
+ON ENT.ID = CLI.ENTIDAD_ID INNER JOIN COTIZACION COT
+ON CLI.ID = COT.CLIENTE_ID INNER JOIN COTIZACION_DETALLE COTD
+ON COT.ID = COTD.COTIZACION_ID INNER JOIN OBJETO_GANADERO OBJ
+ON COTD.OBJETO_ID = OBJ.ID INNER JOIN OBJETO_GANADERO_DETALLE OBJD
+ON OBJ.ID = OBJD.OBJETO_GANADERO_ID INNER JOIN RAZA RA
+ON OBJD.RAZA_ID = RA.ID INNER JOIN TIPO_GANADO TG
+ON OBJD.TIPO_ID COLLATE utf8_general_ci = TG.ID COLLATE utf8_general_ci
+AND COT.ID =  $P{Cot_Id}  
+ORDER BY TG.NOMBRE ASC]]>
+	</queryString>
+	<field name="SUMA_ASEGURADA_TOTAL" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TOTALANIMALES" class="java.lang.Long"/>
+	<pageHeader>
+		<band height="50">
+			<staticText>
+				<reportElement x="168" y="5" width="280" height="45" uuid="c9b422ad-ae7a-44db-bcc3-3c0bda3bb2af"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<text><![CDATA[• Quito: Av. Eloy Alfaro N.40-270 y Jose Quero Telf. (593 2) 398 9700 / 398 9800  Fa. Ext 2213 /2220     
+• Guayaquil: Av. Miguel H. Alcivar Edif. Torres del Norte Torre B  Of. 301 – 308   pisos  # 3. Teléfs: 688 313/15/16/20/25/26. Fax: 688314
+• Cuenca: Av. Federico Malo 170 y Av. 12 de Abril. Teléfonos: 841 285, 840 758, 842 876. Fax: 838 732
+• Riobamba: Calle Vargas Torre s/n entre Primera Constituyente y Veloz  Telfs: 940 863. Fax: 940 864 
+• Ambato: Ficoa Av. De los Guaytambos No. 04-102, Teléfono: 824 496/823495/820571]]></text>
+			</staticText>
+			<image>
+				<reportElement x="0" y="5" width="160" height="30" uuid="d01100d0-d739-40cb-b387-3d74324ec09f"/>
+				<imageExpression><![CDATA["imagenes/logo_qbe.png"]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="669" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="24" width="440" height="30" uuid="9852ccb0-1568-4c2b-8440-8b6d7e8ea625">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Justified">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[• DEDUCIBLE: 30% del valor del siniestro a consecuencia de muerte por accidente, enfermedad y sacrificio dictaminado por un veterinario.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="58" width="130" height="17" uuid="87a93a98-555c-4bcf-a6c2-cef20ad8eb3a">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Justified">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Animales Asegurados:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="158" width="50" height="20" uuid="83480c1c-6de9-4d24-8491-36ad34776fde"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Vigencia:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="53" y="158" width="187" height="20" uuid="d1463113-1bbb-4a93-9729-c21ca1097d8a"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Un año, a partir de la inspección.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="186" width="210" height="20" uuid="2311f29f-e88a-430a-acd7-581214fc15ba"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Requerimientos de Asegurabilidad:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="206" width="440" height="30" uuid="bba38e70-b767-4c66-b26c-d2d62eda3b20"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[1. Inspección física previa por parte de QBE, de los vacunos sujetos a su aseguramiento en los predios respectivos, para inicio de la cobertura.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="248" width="440" height="64" uuid="2231e451-d208-4e61-b6f9-077f7ee9974f"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[2. Toda Hacienda/Comunidad/Productor debe poseer cámara de fotos, ya que para todo siniestro es requisito presentar fotos del animal siniestrado. En este caso puntual dependerá de un análisis de cada comunidad  para llegar a un acuerdo entre las dos partes.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="69" y="319" width="370" height="30" uuid="9082ecc8-c10b-47d4-971b-2518946891b9"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Para obtener la cobertura del Seguro Ganadero se debe cumplir con el siguiente procedimiento:
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="319" width="70" height="20" uuid="4f1b4d07-de6a-4ae7-a38a-b4b0f0362a03"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Condiciones:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="360" width="440" height="50" uuid="35dfa2fc-f449-4d24-ab7a-7169beae71fa"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[1. Para ganado importado, no aclimatados a la zona de destino, se excluye muerte por mal de altura y afecciones cardíacas, durante los 60 días posteriores al día de llegada de los animales al predio definitivo.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="418" width="440" height="125" uuid="658255c1-e04b-4505-bbd0-abacb5478762"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[2.Todo ganado nacional debe poseer las vacunas contra aftosa (2 veces al año), Brucella (1 vez en la vida), Leptospirosis (1 vez al año), Triple (1 vez al año), DVB Diarrea Viral Bovina e IBR Rinotraqueitis (1 a 2 veces al año). Para ganado importado es requisito poseer las vacunas anteriormente citadas, pero existirá un tiempo perentorio para realizar dichas vacunaciones, el cual será fijado entre Colonial y el Propietario cuando el caso amerite.  En caso de ganado a asegurar en la zona oriental debe poseer la vacuna antirrábica.  Se debe anexar el certificado de vacunación o la factura de compra de dichas vacunas, así como el calendario de vacunaciones.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="555" width="440" height="114" uuid="10153175-6f2e-4f5c-97ba-6d27126c658d">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Justified">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[3. En zonas de valles cálidos de sierra, trópico y subtrópico se deberá prevenir la infestación por garrapatas, para lo cual sugerimos el plan de control garrapaticida que imparte la Asociación de Ganaderos de Sierra y Oriente (AGSO).  Evitando en vacas lecheras muertes por piroplasmosis y anaplasmosis (u otros protozoarios hemáticos).  En caso de suceder siniestros que se sospeche como causa las enfermedades anteriormente citadas, se requerirá que el ganadero realice un examen de sangre, para confirmar la causa de la muerte, si es positivo, la muerte se considerará negligencia.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="42" y="76" width="99" height="15" uuid="62dffbf7-bb1f-44e3-b364-710d4304411f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SUMA_ASEGURADA_TOTAL}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="133" y="58" width="100" height="17" uuid="7d11a1b3-bb09-49a0-9df6-c65d48d7c71c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TOTALANIMALES}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="150" height="20" uuid="d87fa89e-2bb2-47ad-91f5-2721d80c4972"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tasas y Deducibles:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="240" y="58" width="199" height="17" uuid="7ea96e07-dfd0-4f69-8d84-0e7f7bc8eb91">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Justified">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Animales, el valor total asegurado suma ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="75" width="41" height="17" uuid="f5244096-6460-4bc7-bd4a-cc5bd36c6ab9">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Justified">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[USD. ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="147" y="76" width="292" height="17" uuid="a2ad3277-6102-42e4-a288-28cf57b6890f">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Justified">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[de acuerdo a detalle presentado al momento. En caso de que ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="94" width="439" height="60" uuid="6ed70ed6-6e35-4742-aab6-9740551f95d1">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Justified">
+					<font fontName="Times New Roman" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[la cotización sea aceptada se realizará una inspección para confirmar el estado de los animales y su valor en función a cada uno; si existiera algún animal cuyas condiciones no estén dentro de los parámetros, quedará fuera hasta que este se recupere, o sea cambiado por otro animal.]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<summary>
+		<band height="19" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="440" height="19" uuid="75ac0a94-45b8-47c0-9656-9b09cc96213c"/>
+				<subreportParameter name="Cot_Id">
+					<subreportParameterExpression><![CDATA[$P{Cot_Id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["Ganadero/CotiVacas2KR2012_04.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

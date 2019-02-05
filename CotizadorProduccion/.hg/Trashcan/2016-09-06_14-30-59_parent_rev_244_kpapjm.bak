@@ -1,0 +1,13 @@
+diff --git a/src/com/qbe/cotizador/dao/producto/agricola/AgriParametroXPuntoVentaDAO.java b/src/com/qbe/cotizador/dao/producto/agricola/AgriParametroXPuntoVentaDAO.java
+--- a/src/com/qbe/cotizador/dao/producto/agricola/AgriParametroXPuntoVentaDAO.java
++++ b/src/com/qbe/cotizador/dao/producto/agricola/AgriParametroXPuntoVentaDAO.java
+@@ -64,4 +64,9 @@
+ 	{
+ 		return getEntityManager().createNamedQuery("AgriParametroXPuntoVenta.obtenerTodos").getResultList();
+ 	}
++	
++	public  List<AgriParametroXPuntoVenta> buscarTodosCanal(BigInteger canalId)
++	{
++		return getEntityManager().createNamedQuery("AgriParametroXPuntoVenta.obtenerCanal").setParameter("canalId", canalId).getResultList();
++	}
+ }

@@ -1,0 +1,13 @@
+diff --git a/src/com/qbe/cotizador/model/AgriParroquia.java b/src/com/qbe/cotizador/model/AgriParroquia.java
+--- a/src/com/qbe/cotizador/model/AgriParroquia.java
++++ b/src/com/qbe/cotizador/model/AgriParroquia.java
+@@ -15,7 +15,8 @@
+ 	@NamedQuery(name="AgriParroquia.buscarTodos", query="SELECT a FROM AgriParroquia a"),
+ 	@NamedQuery(name="AgriParroquia.obtenerPorSBS", query="SELECT a FROM AgriParroquia a where a.parroquiaSbs=:CodigoSBS"),
+ 	@NamedQuery(name="AgriParroquia.obtenerPorNombre", query="SELECT a FROM AgriParroquia a where a.parroquiaNombre=:nombre"),
+-	@NamedQuery(name="AgriParroquia.obtenerPorNombreYCanton", query="SELECT a FROM AgriParroquia a where a.parroquiaNombre LIKE :nombre AND a.cantonId=:canton")
++	@NamedQuery(name="AgriParroquia.obtenerPorNombreYCanton", query="SELECT a FROM AgriParroquia a where a.parroquiaNombre LIKE :nombre AND a.cantonId=:canton"),
++	@NamedQuery(name="AgriParroquia.obtenerPorCanton", query="SELECT a FROM AgriParroquia a where a.cantonId=:canton")
+ })
+ 
+ public class AgriParroquia implements Serializable {

@@ -1,0 +1,12 @@
+diff --git a/WebContent/dashboard/ConsultaCanal.jsp b/WebContent/dashboard/ConsultaCanal.jsp
+--- a/WebContent/dashboard/ConsultaCanal.jsp
++++ b/WebContent/dashboard/ConsultaCanal.jsp
+@@ -44,7 +44,7 @@
+ 	 -->
+ 
+ <script>
+-function GetQueryStringByParameter(name) {
++function NEetQueryStringByParameter(name) {
+     name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+     results = regex.exec(location.search);

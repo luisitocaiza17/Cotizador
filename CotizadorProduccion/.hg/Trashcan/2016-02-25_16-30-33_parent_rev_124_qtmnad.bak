@@ -1,0 +1,34 @@
+diff --git a/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java b/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java
+--- a/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java
++++ b/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java
+@@ -758,4 +758,5 @@
+ 				String nuestroCosto = "0.0";//para verificar si existen diferencias entre costo que llega y que tenemos
+ 				String idTipoCalculo = "";//para saber en base a que regla se calcularon los datos
+ 				
++				//ya se tiene el cultivo, la provincia, el canton y el tipo de calculo se busca los costos de produccion
+ 				for (AgriRegla rs : tasas) {
+@@ -761,3 +762,3 @@
+ 				for (AgriRegla rs : tasas) {
+-					if(rs.getCostoProduccion()!=0 || rs.getTasa()!=0){
++					if(rs.getTasa()!=0 || rs.getTasa()!=0.0 ){//si tiene tasa debe tener o costo de produccion o costo de mantenimiento
+ 						tasa = (double)rs.getTasa();
+@@ -763,5 +764,9 @@
+ 						tasa = (double)rs.getTasa();
+-						nuestroCosto = (""+rs.getCostoProduccion());
++						if(rs.getCostoProduccion()!=0){
++							nuestroCosto = (""+rs.getCostoProduccion());
++						}else{
++							nuestroCosto = (""+rs.getCostoMantenimiento());
++						}
+ 						Observacion = Observacion+" " + rs.getObservaciones();
+ 						idTipoCalculo = "" + rs.getReglaId();
+ 					}
+@@ -780,7 +785,7 @@
+ 				}
+ 				
+ 				//si no se tuviese la tasa, hallamos en base a la primera regla del cultivo
+-				if (tasa==0){
++				if (tasa==0|| tasa==0.0){
+ 					AgriTipoCultivoDAO agriTipoCultivoDAO= new AgriTipoCultivoDAO();
+ 					AgriTipoCultivo agriTipoCultivo=agriTipoCultivoDAO.BuscarPorId(new BigInteger( CodigoTipoCultivoProcesado));
+ 					tasa = agriTipoCultivo.getTasa();

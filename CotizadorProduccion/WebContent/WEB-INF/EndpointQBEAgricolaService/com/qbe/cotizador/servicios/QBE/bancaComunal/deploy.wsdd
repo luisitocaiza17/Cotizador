@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- Use this file to deploy some handlers/chains and services      --><!-- Two ways to do this:                                           --><!--   java org.apache.axis.client.AdminClient deploy.wsdd          --><!--      after the axis server is running                          --><!-- or                                                             --><!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   --><!--      from the same directory that the Axis engine runs         --><deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from EndpointQBEAgricolaService WSDL service -->
+
+  <service name="EndpointQBEAgricola" provider="java:RPC" style="wrapped" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://bancaComunal.QBE.servicios.cotizador.qbe.com"/>
+      <parameter name="wsdlServiceElement" value="EndpointQBEAgricolaService"/>
+      <parameter name="schemaQualified" value="http://bancaComunal.QBE.servicios.cotizador.qbe.com"/>
+      <parameter name="wsdlServicePort" value="EndpointQBEAgricola"/>
+      <parameter name="className" value="com.qbe.cotizador.servicios.QBE.bancaComunal.EndpointQBEAgricola"/>
+      <parameter name="wsdlPortType" value="EndpointQBEAgricola"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation xmlns:operNS="http://bancaComunal.QBE.servicios.cotizador.qbe.com" xmlns:retNS="http://bancaComunal.QBE.servicios.cotizador.qbe.com" xmlns:rtns="http://bancaComunal.QBE.servicios.cotizador.qbe.com" name="consultarPrepoliza" qname="operNS:consultarPrepoliza" returnQName="retNS:consultarPrepolizaReturn" returnType="rtns:PrepolizaSeguroAgricolaResponseDTO" soapAction="">
+        <parameter xmlns:pns="http://bancaComunal.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:codigoEntidadFinanciera" type="tns:int"/>
+        <parameter xmlns:pns="http://bancaComunal.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:numeroResolucion" type="tns:string"/>
+      </operation>
+      <operation xmlns:operNS="http://bancaComunal.QBE.servicios.cotizador.qbe.com" xmlns:retNS="http://bancaComunal.QBE.servicios.cotizador.qbe.com" xmlns:rtns="http://www.w3.org/2001/XMLSchema" name="generarDesenbolos" qname="operNS:generarDesenbolos" returnQName="retNS:generarDesenbolosReturn" returnType="rtns:string" soapAction="">
+        <parameter xmlns:pns="http://bancaComunal.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://bancaComunal.QBE.servicios.cotizador.qbe.com" qname="pns:solicitud" type="tns:DesembolsoDTO"/>
+      </operation>
+      <operation xmlns:operNS="http://bancaComunal.QBE.servicios.cotizador.qbe.com" xmlns:retNS="http://bancaComunal.QBE.servicios.cotizador.qbe.com" xmlns:rtns="http://www.w3.org/2001/XMLSchema" name="generarPrepoliza" qname="operNS:generarPrepoliza" returnQName="retNS:generarPrepolizaReturn" returnType="rtns:string" soapAction="">
+        <parameter xmlns:pns="http://bancaComunal.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://bancaComunal.QBE.servicios.cotizador.qbe.com" qname="pns:in0" type="tns:PrepolizaSeguroAgricolaDTO"/>
+      </operation>
+      <parameter name="allowedMethods" value="consultarPrepoliza generarPrepoliza generarDesenbolos"/>
+
+      <typeMapping xmlns:ns="http://bancaComunal.QBE.servicios.cotizador.qbe.com" qname="ns:DesembolsoDTO" type="java:com.qbe.cotizador.servicios.QBE.bancaComunal.DesembolsoDTO" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+      <typeMapping xmlns:ns="http://bancaComunal.QBE.servicios.cotizador.qbe.com" qname="ns:PrepolizaSeguroAgricolaDTO" type="java:com.qbe.cotizador.servicios.QBE.bancaComunal.PrepolizaSeguroAgricolaDTO" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+      <typeMapping xmlns:ns="http://bancaComunal.QBE.servicios.cotizador.qbe.com" qname="ns:PrepolizaSeguroAgricolaResponseDTO" type="java:com.qbe.cotizador.servicios.QBE.bancaComunal.PrepolizaSeguroAgricolaResponseDTO" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+  </service>
+</deployment>

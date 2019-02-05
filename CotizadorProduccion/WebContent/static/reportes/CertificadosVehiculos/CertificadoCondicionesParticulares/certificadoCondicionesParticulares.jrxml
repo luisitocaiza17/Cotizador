@@ -1,0 +1,833 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CertificadoCondicionesParticulares" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="99f15bf4-e0d5-45bd-9ac1-81c24a446c81">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="cotizador"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="147"/>
+	<parameter name="COTIZACION" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select DISTINCT
+    COT.id COTIZACION_NUMERO,
+    S.nombre SUCURSAL,
+    COT.tipo_objeto_id TIPO_OBJETO,
+(select group_concat((case when co.id= '40010' || co.id='30075' then 'TR'
+		when co.id='40037' then 'PT'
+		when co.id= '4540881508289' then 'RC' end))
+    from COTIZACION_DETALLE cd, COTIZACION_COBERTURA cc,COBERTURA co
+    where cd.cotizacion_id=COT.id and cd.id=cc.cotizacion_detalle_id
+    and cc.cobertura_id=co.id) AS COBERTURA,
+    E.identificacion IDENTIFICACION,
+    E.nombre_completo CLIENTE,
+ GPP.ID AS GRUPOPRODUCTO,
+    OV.placa PLACA,
+    OV.anio_fabricacion ANIO,
+    COT.pago_id PAGO,
+    MAR.nombre MARCA,
+    MO.nombre MODELO,
+    OV.suma_asegurada SUMA_ASEGURADA_CASCO,
+    COT.suma_asegurada_total SUMA_ASEGURADA_TOTAL,
+    CD.suma_asegurada_item SUMA_ASEGURADA_ITEM,
+    CD.valor_extras SUMA_ASEGURADA_EXTRAS,
+    OV.id VEHICULO,
+    CD.id COTIZACION_DETALLE,
+    CD.prima_neta_item PRIMA_ITEM,
+(select ifnull(sum(cb.valor_prima_otros),0) from COTIZACION_COBERTURA cb where cb.cotizacion_detalle_id = CD.id) as prima_otros_sin_iva,
+    (select ifnull(sum(cb.valor_prima_otros_iva),0) from COTIZACION_COBERTURA cb where cb.cotizacion_detalle_id = CD.id) as prima_otros_iva,
+    (select
+            pv.nombre
+        from
+            PUNTO_VENTA pv
+        WHERE
+            pv.id = COT.punto_venta_id) PUNTO_VENTA,
+    GPP.nombre_comercial_producto PRODUCTO,
+    AGENTI.nombre_completo NOMBRE_AGENTE,
+    (select
+            concat(DIR.calle_principal,
+                        ' ',
+                        DIR.numero,
+                        ' ',
+                        DIR.calle_secundaria)
+        from
+            DIRECCION DIR
+        where
+            E.id = DIR.entidad_id  limit 1) DIRECCION_CLIENTE,
+    USUENTI.nombre_completo NOMBRE_USUARIO,
+    USUENTI.mail MAIL_USUARIO,
+    E.mail MAIL_CLIENTE,
+    COT.numeroFactura NUMERO_FACTURA,
+    (select
+            CAR.nombre
+        from
+            EMPLEADO EMP,
+            CARGO CAR
+        WHERE
+            EMP.cargo_id = CAR.id
+                AND USUENTI.id = EMP.entidad_id) CARGO_USUARIO,
+    truncate((COT.prima_neta_total + 0.005),
+        2) PRIMA_SIN_IMPUESTOS,
+    (select
+            concat(DIR.calle_principal,
+                        ' ',
+                        DIR.numero,
+                        ' ',
+                        DIR.calle_secundaria)
+        from
+            DIRECCION DIR
+        where
+            AGENTI.id = DIR.entidad_id  limit 1) DIRECCION_AGENTE,
+    PXPV.unidad_negocio_id UNIDAD_NEGOCIO_ID,
+    PXPV.unidad_produccion_id UNIDAD_PRODUCCION_ID,
+    R.id RAMO_ID,
+    R.nombre RAMO,
+    R.nemotecnico RAMO_NEMOTECNICO,
+    CON.numero NUMERO_POLIZA,
+    COT.vigencia_desde VIGENCIA_DESDE_COTIZACION,
+    DATE_ADD(COT.vigencia_desde,
+        INTERVAL VP.valor YEAR) VIGENCIA_HASTA_COTIZACION,
+    CON.vigencia_desde VIGENCIA_DESDE_POLIZA,
+    CON.vigencia_hasta VIGENCIA_HASTA_POLIZA,
+    ASEGURADO.nombre_completo ASEGURADO,
+    ASEGURADO.identificacion IDENTIFICACION_ASEGURADO,
+    ASEGURADO.telefono TELEFONO_ASEGURADO,
+    (select
+            concat(DIR.calle_principal,
+                        ' ',
+                        DIR.numero,
+                        ' ',
+                        DIR.calle_secundaria)
+        from
+            DIRECCION DIR
+        where
+            ASEGURADO.id = DIR.entidad_id limit 1) DIRECCION_ASEGURADO,
+    COT.prima_neta_total PRIMA_TOTAL,
+    COT.imp_derecho_emision DERECHOS_EMISION,
+    COT.imp_iva IVA,
+    COT.imp_super_bancos SUPER_BANCOS,
+    COT.totalFactura TOTAL_FACTURA,
+    COT.imp_seguro_campesino SEGURO_CAMPESINO,
+    OV.motor MOTOR,
+    OV.chasis CHASIS,
+    COLOR.nombre COLOR,
+    FD.firma FIRMA,
+    USU.login USUARIO_LOGIN,
+    COT.fecha_emision FECHA_EMISION
+from
+    COTIZACION COT,
+    COTIZACION_DETALLE CD,
+    SUCURSAL S,
+    CLIENTE C,
+    OBJETO_VEHICULO OV,
+    PUNTO_VENTA PV,
+    ENTIDAD E,
+    MARCA MAR,
+    MODELO MO,
+    AGENTE AGE,
+    ENTIDAD AGENTI,
+    ENTIDAD USUENTI,
+    USUARIO USU,
+    PRODUCTO PRODU,
+    PRODUCTO_X_PUNTO_VENTA PXPV,
+    GRUPO_POR_PRODUCTO GPP,
+    RAMO R,
+    CONTENEDOR CON,
+    VIGENCIA_POLIZA VP,
+    ENTIDAD ASEGURADO,
+    COLOR COLOR,
+    FIRMAS_DIGITALES FD,
+    UNIDAD_PRODUCCION UP
+where
+    COT.id = CD.cotizacion_id
+        AND OV.color_id = COLOR.id
+        AND COT.vigencia_poliza_id = VP.id
+        AND COT.punto_venta_id = PV.id
+        AND C.id = COT.cliente_id
+        AND PXPV.contenedor_id = CON.id
+        AND S.ID = PV.sucursal_id
+        AND CD.objeto_id = OV.ID
+        AND C.entidad_id = E.ID
+        AND OV.modelo_id = MO.ID
+        AND MO.marca_id = MAR.ID
+        AND AGE.id = COT.agente_id
+        AND AGENTI.id = AGE.entidad_id
+        AND USU.id = COT.usuario_id
+        AND PRODU.ramo_id = R.id
+        AND USU.entidad_id = USUENTI.id
+        AND PXPV.punto_venta_id = PV.id
+        AND GPP.id = COT.grupo_por_producto_id
+        AND COT.producto_x_punto_venta_id = PXPV.id
+        AND PRODU.id = GPP.producto_id
+        AND ASEGURADO.id = COT.asegurado_id
+        AND FD.entidad_id = UP.entidad_id
+        AND PXPV.unidad_produccion_id = UP.id
+        AND FD.ramo_id = R.id
+        AND S.id = FD.sucursal_id
+        AND COT.id = $P{COTIZACION}]]>
+	</queryString>
+	<field name="COTIZACION_NUMERO" class="java.lang.Long"/>
+	<field name="SUCURSAL" class="java.lang.String"/>
+	<field name="TIPO_OBJETO" class="java.lang.Long"/>
+	<field name="COBERTURA" class="java.lang.String"/>
+	<field name="IDENTIFICACION" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CLIENTE" class="java.lang.String"/>
+	<field name="GRUPOPRODUCTO" class="java.lang.Long"/>
+	<field name="PLACA" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ANIO" class="java.lang.String"/>
+	<field name="PAGO" class="java.lang.Long"/>
+	<field name="MARCA" class="java.lang.String"/>
+	<field name="MODELO" class="java.lang.String"/>
+	<field name="SUMA_ASEGURADA_CASCO" class="java.lang.Double"/>
+	<field name="SUMA_ASEGURADA_TOTAL" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="SUMA_ASEGURADA_ITEM" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="SUMA_ASEGURADA_EXTRAS" class="java.lang.Double"/>
+	<field name="VEHICULO" class="java.lang.Long"/>
+	<field name="COTIZACION_DETALLE" class="java.lang.Long"/>
+	<field name="PRIMA_ITEM" class="java.lang.Double"/>
+	<field name="PUNTO_VENTA" class="java.lang.String"/>
+	<field name="PRODUCTO" class="java.lang.String"/>
+	<field name="NOMBRE_AGENTE" class="java.lang.String"/>
+	<field name="DIRECCION_CLIENTE" class="java.lang.String"/>
+	<field name="NOMBRE_USUARIO" class="java.lang.String"/>
+	<field name="MAIL_USUARIO" class="java.lang.String"/>
+	<field name="MAIL_CLIENTE" class="java.lang.String"/>
+	<field name="NUMERO_FACTURA" class="java.lang.String"/>
+	<field name="CARGO_USUARIO" class="java.lang.String"/>
+	<field name="PRIMA_SIN_IMPUESTOS" class="java.lang.Double"/>
+	<field name="DIRECCION_AGENTE" class="java.lang.String"/>
+	<field name="UNIDAD_NEGOCIO_ID" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="UNIDAD_PRODUCCION_ID" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="RAMO_ID" class="java.lang.Long"/>
+	<field name="RAMO" class="java.lang.String"/>
+	<field name="RAMO_NEMOTECNICO" class="java.lang.String"/>
+	<field name="NUMERO_POLIZA" class="java.lang.String"/>
+	<field name="VIGENCIA_DESDE_COTIZACION" class="java.sql.Date"/>
+	<field name="VIGENCIA_HASTA_COTIZACION" class="java.sql.Date"/>
+	<field name="VIGENCIA_DESDE_POLIZA" class="java.sql.Date"/>
+	<field name="VIGENCIA_HASTA_POLIZA" class="java.sql.Date"/>
+	<field name="ASEGURADO" class="java.lang.String"/>
+	<field name="IDENTIFICACION_ASEGURADO" class="java.lang.String"/>
+	<field name="TELEFONO_ASEGURADO" class="java.lang.String"/>
+	<field name="DIRECCION_ASEGURADO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PRIMA_TOTAL" class="java.lang.String"/>
+	<field name="DERECHOS_EMISION" class="java.lang.Double"/>
+	<field name="IVA" class="java.lang.Double"/>
+	<field name="SUPER_BANCOS" class="java.lang.Double"/>
+	<field name="TOTAL_FACTURA" class="java.lang.Double"/>
+	<field name="SEGURO_CAMPESINO" class="java.lang.Double"/>
+	<field name="MOTOR" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CHASIS" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="COLOR" class="java.lang.String"/>
+	<field name="FIRMA" class="java.sql.Blob">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="USUARIO_LOGIN" class="java.lang.String"/>
+	<field name="FECHA_EMISION" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="prima_otros_iva" class="java.lang.Double"/>
+	<field name="prima_otros_sin_iva" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="351" splitType="Stretch">
+			<image>
+				<reportElement x="0" y="0" width="120" height="40" isPrintWhenDetailOverflows="true" uuid="2b5c41ba-6639-47fa-a033-a2930e8ff129"/>
+				<imageExpression><![CDATA["QBE_blanco.png"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="464" y="0" width="90" height="30" isPrintWhenDetailOverflows="true" uuid="ea22a2bd-7833-4dae-8449-49bcb1a12cff"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{COTIZACION_NUMERO}+" "+$F{RAMO_NEMOTECNICO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="46" width="554" height="20" uuid="6cbcad92-7760-497a-a88e-7410e867126e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["MODIFICATORIO DE LAS CONDICIONES PARTICULARES DE LA POLIZA "+$F{NUMERO_POLIZA}]]></textFieldExpression>
+			</textField>
+			<frame>
+				<reportElement x="0" y="74" width="554" height="277" uuid="beb33f82-f457-4f06-b2cc-f4ba281904a3"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<staticText>
+					<reportElement x="11" y="5" width="40" height="18" uuid="9812ff6f-7210-4b6d-92c1-b8808161498a"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[RAMO:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="102" y="5" width="229" height="18" uuid="0787501b-0e05-4d5f-b96d-85b9ffa3ef96"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{RAMO}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="107" y="24" width="392" height="18" uuid="6030a0ef-49e9-44c1-a147-9054def10874"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{SUCURSAL}+", "+new SimpleDateFormat("d", new Locale("ES")).format($F{FECHA_EMISION}) + " de "+new SimpleDateFormat("MMMMMM", new Locale("ES")).format($F{FECHA_EMISION})+" del "+new SimpleDateFormat("yyyy", new Locale("ES")).format($F{FECHA_EMISION})]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="11" y="24" width="90" height="18" uuid="33424573-c5d5-4979-b431-cf0c29727f48"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[LUGAR Y FECHA:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="11" y="59" width="116" height="18" uuid="4d6c2592-e632-4645-b160-d791be66f2b3"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[VIGENCIA DEL ANEXO:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="11" y="41" width="128" height="18" uuid="7986eaec-eb32-478e-b855-595fd7245bf7"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[VIGENCIA DE LA POLIZA:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="139" y="59" width="411" height="18" uuid="fc9f51dd-7485-449d-b3dd-9b6585b66a78"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["DESDE "+new SimpleDateFormat("d", new Locale("ES")).format($F{VIGENCIA_DESDE_COTIZACION}) + " de "+new SimpleDateFormat("MMMMMM",new Locale("ES")).format($F{VIGENCIA_DESDE_COTIZACION})+" del "+new SimpleDateFormat("yyyy", new Locale("ES")).format($F{VIGENCIA_DESDE_COTIZACION})+
+"     HASTA "+new SimpleDateFormat("d", new Locale("ES")).format($F{VIGENCIA_HASTA_COTIZACION}) + " de "+new SimpleDateFormat("MMMMMM",new Locale("ES")).format($F{VIGENCIA_HASTA_COTIZACION})+" del "+new SimpleDateFormat("yyyy", new Locale("ES")).format($F{VIGENCIA_HASTA_COTIZACION})]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="11" y="77" width="78" height="18" uuid="48ab1b44-cfeb-4181-961a-156d73f22bcf"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[ASEGURADO:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="89" y="77" width="461" height="18" uuid="8c8fca97-6f81-4f8f-8146-687638086a42"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{ASEGURADO}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="396" y="6" width="68" height="18" uuid="5a8b0798-d7f5-4cd9-9dc4-e41be20d32dc"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[ENDOSO No.]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="464" y="6" width="90" height="18" uuid="393a00ab-b87e-4ec5-95b3-40d699af4f37"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{COTIZACION_NUMERO}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="14" y="98" width="66" height="16" uuid="9db2220e-4bce-4e26-80e8-b61fbe2c26e2"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[DIRECCION:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="14" y="114" width="66" height="16" uuid="ba00b964-fadc-46bd-a7cc-f07e75daabed"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[TELEFONO:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="14" y="130" width="66" height="16" uuid="d7e82f02-8e4b-42c4-9c18-7f43ff15dd99"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[C.I./RUC:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="80" y="114" width="229" height="16" uuid="9e539326-22f0-4049-8e23-476cf8056dd1"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{TELEFONO_ASEGURADO}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="80" y="130" width="229" height="16" uuid="6112aa08-37ba-4827-8349-523851cd9eef"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{IDENTIFICACION_ASEGURADO}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="80" y="98" width="470" height="16" uuid="7479917d-7237-44b8-9803-5271fe7ed5a7"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{DIRECCION_ASEGURADO}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="341" y="128" width="79" height="16" uuid="05dac78d-66f9-4816-b424-08c065c88295"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[PRIMA NETA]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="341" y="180" width="89" height="16" uuid="31d980e9-fe23-435a-b381-8a43e5518a89"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[3,50% S. BANCOS]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="341" y="196" width="109" height="16" uuid="165d531e-b4e4-416d-9dc2-920896f407ef"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[DERECHOS-EMISION]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="341" y="212" width="109" height="16" uuid="0d93fa21-5cf8-4244-b826-e69ace10309c"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[SEGURO CAMPESINO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="341" y="228" width="89" height="16" uuid="919a8466-e160-42fa-9280-5e882b870283"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[I.V.A.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="341" y="244" width="89" height="16" uuid="c4d33b0f-1027-4702-bc25-5b9bf61e59d5"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[FINANCIACION]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="341" y="260" width="89" height="16" uuid="b662a884-0200-4acc-b794-f634ddf8f68d"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[TOTAL]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="14" y="259" width="109" height="16" uuid="217b260e-9be0-4ab6-b2d4-8a8ad16ac00d"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[VALOR ASEGURADO:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="139" y="41" width="411" height="18" uuid="bb4174a2-19a3-4aa0-866b-fd9d7e7138c4"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["DESDE "+new SimpleDateFormat("d", new Locale("ES")).format($F{VIGENCIA_DESDE_COTIZACION}) + " de "+new SimpleDateFormat("MMMMMM",new Locale("ES")).format($F{VIGENCIA_DESDE_COTIZACION})+" del "+new SimpleDateFormat("yyyy", new Locale("ES")).format($F{VIGENCIA_DESDE_COTIZACION})+
+"     HASTA "+new SimpleDateFormat("d", new Locale("ES")).format($F{VIGENCIA_HASTA_COTIZACION}) + " de "+new SimpleDateFormat("MMMMMM",new Locale("ES")).format($F{VIGENCIA_HASTA_COTIZACION})+" del "+new SimpleDateFormat("yyyy", new Locale("ES")).format($F{VIGENCIA_HASTA_COTIZACION})]]></textFieldExpression>
+				</textField>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement x="464" y="128" width="86" height="16" uuid="a29c9164-2ee6-46e8-afc9-8c72000b936c"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{PRIMA_SIN_IMPUESTOS}]]></textFieldExpression>
+				</textField>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement x="464" y="180" width="86" height="16" uuid="fe94a331-3dc6-4f3d-9957-b8b94ad09c6d"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[String.format("%.2f", $F{SUPER_BANCOS}).replaceAll(",", ".")]]></textFieldExpression>
+				</textField>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement x="464" y="196" width="86" height="16" uuid="8cfff8a7-a51b-49e5-9683-82cd4739ddbb"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[String.format("%.2f", $F{DERECHOS_EMISION}).replaceAll(",", ".")]]></textFieldExpression>
+				</textField>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement x="464" y="212" width="86" height="16" uuid="b4e4442b-847d-4f5e-9549-3e5b2663c282"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[String.format("%.2f", $F{SEGURO_CAMPESINO}).replaceAll(",", ".")]]></textFieldExpression>
+				</textField>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement x="464" y="228" width="86" height="16" uuid="3d7c71f5-1bb7-4ee4-b7d5-f5462da1b66f"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[String.format("%.2f", $F{IVA}).replaceAll(",", ".")]]></textFieldExpression>
+				</textField>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement x="464" y="244" width="86" height="16" uuid="9289beed-b253-4a92-942e-ea53957c31c2"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["0.00"]]></textFieldExpression>
+				</textField>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement x="464" y="260" width="86" height="16" uuid="8f6c947c-6d0d-4390-a7ab-85e9c5dfa051"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[String.format("%.2f", $F{TOTAL_FACTURA}).replaceAll(",", ".")]]></textFieldExpression>
+				</textField>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement x="123" y="259" width="86" height="16" uuid="a9fa7e1b-3639-4191-af09-6034a5a25458"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{SUMA_ASEGURADA_TOTAL}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="341" y="144" width="79" height="16" uuid="fbdc587b-7722-4a67-a576-f8e9ea6b8387"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[OTROS]]></text>
+				</staticText>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement x="464" y="144" width="86" height="16" uuid="fd7f82aa-dfaf-496f-9e5b-c8184e708fcb"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{prima_otros_iva}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="342" y="161" width="79" height="16" uuid="8d2f27ce-d827-49a8-9afc-4c66d78b8408"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[OTROS IVA 0%]]></text>
+				</staticText>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement x="464" y="161" width="86" height="16" uuid="4ecee317-b303-4d40-873b-5986ce6f3ec8"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{prima_otros_sin_iva}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="18" splitType="Stretch">
+			<frame>
+				<reportElement x="0" y="0" width="554" height="18" uuid="683b4943-1430-4b9e-815a-4d6012eb464d"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<staticText>
+					<reportElement x="0" y="3" width="553" height="15" uuid="b746f64d-94bb-4422-a52a-28a532d90c9a"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[CARACTERISTICAS VEHICULO/S]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="170" splitType="Stretch">
+			<frame>
+				<reportElement x="0" y="0" width="554" height="170" uuid="a6aabd73-3156-482e-afa9-72b24cff4016"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<staticText>
+					<reportElement x="8" y="5" width="43" height="16" uuid="ded0cfa0-b0a8-4b33-bc4b-92d9a90c6ee9"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[MARCA:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="10" y="76" width="160" height="16" uuid="5d1549cc-dd60-49b8-bb78-1166b185b00b"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[VALOR ASEGURADO CASCO:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="11" y="92" width="160" height="16" uuid="8ce0fe8a-863b-4dfb-862c-51c2b55262f6"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[VALOR ASEGURADO EXTRAS:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="281" y="37" width="49" height="16" uuid="6f28141e-ee90-42dc-aadd-5d7ee8888aa0"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[COLOR:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="8" y="21" width="43" height="16" uuid="8e9225de-a0de-4fe6-a754-c4c078a6f06f"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[MOTOR:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="8" y="37" width="31" height="16" uuid="582c05b5-c484-4d30-8547-504defc1fc36"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[AÑO:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="281" y="53" width="49" height="16" uuid="14529d80-b21b-425a-aa7d-cbf09c312ff6"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[PLACAS:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="281" y="5" width="49" height="16" uuid="72c588a3-0b8b-4817-8400-f6226af0d008"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[MODELO:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="281" y="21" width="49" height="16" uuid="4515765c-c6e0-476a-a1d9-2351652daffc"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[CHASIS:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="282" y="76" width="76" height="16" uuid="f85375ea-a9c7-4614-ad24-713985cc8166"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[VALOR PRIMA:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="55" y="5" width="220" height="16" uuid="01ba3eac-52ea-422e-8cbe-680315ef764d"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{MARCA}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="55" y="21" width="220" height="16" uuid="124d6422-e5e5-4512-8ce1-6378d51b49aa"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{MOTOR}.toUpperCase()]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="46" y="37" width="219" height="16" uuid="158af112-f397-485e-830d-e97ea2f75656"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{ANIO}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="333" y="22" width="214" height="16" uuid="58c3a531-58a0-4c19-b8b0-b5691e74808e"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{CHASIS}.toUpperCase()]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="333" y="6" width="214" height="16" uuid="16a0d6bf-1a61-46d5-a1b1-148c712d9e2f"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{MODELO}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="332" y="38" width="213" height="16" uuid="7fb938b9-427e-4a27-b4cd-4ec60a581424"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{COLOR}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="332" y="54" width="213" height="16" uuid="55f24b93-53aa-47a4-992e-64ec890f657e"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{PLACA}.toUpperCase()]]></textFieldExpression>
+				</textField>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement x="173" y="76" width="86" height="16" uuid="cb73729d-a5cb-4a3c-b094-5b09aafe773e"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{SUMA_ASEGURADA_CASCO}]]></textFieldExpression>
+				</textField>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement x="173" y="92" width="86" height="16" uuid="0a93900a-5d2c-49be-bbc2-83614bb9d4f3"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{SUMA_ASEGURADA_EXTRAS}]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0.##" isBlankWhenNull="true">
+					<reportElement x="361" y="76" width="86" height="16" uuid="13ba1b73-c840-42e0-ad50-5bf1e06ee1e6"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{PRIMA_ITEM}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="12" y="124" width="109" height="16" uuid="f595d520-56aa-4ce0-b2c6-237822a8fde9"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[No ASISTENCIA]]></text>
+				</staticText>
+				<subreport>
+					<reportElement x="12" y="144" width="518" height="19" uuid="140f5159-67a5-40d1-b0de-4293182cc718">
+						<property name="local_mesure_unitwidth" value="cm"/>
+						<property name="com.jaspersoft.studio.unit.width" value="cm"/>
+					</reportElement>
+					<subreportParameter name="COTIZACION">
+						<subreportParameterExpression><![CDATA[$P{COTIZACION}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="VEHICULO">
+						<subreportParameterExpression><![CDATA[$F{VEHICULO}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["CertificadoCondicionesParticulares/accesoriosPorVehiculo.jasper"]]></subreportExpression>
+				</subreport>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="360" splitType="Immediate">
+			<frame>
+				<reportElement x="0" y="0" width="554" height="120" uuid="98f263ab-b692-4c27-97ac-aba0dd5cfea4"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<subreport>
+					<reportElement key="" positionType="Float" x="3" y="2" width="549" height="9" isRemoveLineWhenBlank="true" uuid="19aa99fa-2fef-4a0c-8c2e-3e6e504ff416"/>
+					<subreportParameter name="COTIZACION">
+						<subreportParameterExpression><![CDATA[$P{COTIZACION}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["CertificadoCondicionesParticulares/coberturasPrincipales.jasper"]]></subreportExpression>
+				</subreport>
+				<subreport>
+					<reportElement key="CoberturasAdicionales" positionType="Float" x="3" y="12" width="549" height="9" uuid="0f783c81-312c-4184-8a37-717568759bb3"/>
+					<subreportParameter name="COTIZACION">
+						<subreportParameterExpression><![CDATA[$P{COTIZACION}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["CertificadoCondicionesParticulares/coberturasAdicionalesTR.jasper"]]></subreportExpression>
+				</subreport>
+				<subreport>
+					<reportElement positionType="Float" x="3" y="44" width="549" height="9" uuid="3f814363-1040-463a-8ae8-0918c37fac5e">
+						<property name="local_mesure_unitheight" value="cm"/>
+						<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+					</reportElement>
+					<subreportParameter name="COTIZACION">
+						<subreportParameterExpression><![CDATA[$P{COTIZACION}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="COBERTURA">
+						<subreportParameterExpression><![CDATA[$F{COBERTURA}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["CertificadoCondicionesParticulares/textosDeducibles.jasper"]]></subreportExpression>
+				</subreport>
+				<subreport>
+					<reportElement key="CoberturasAdicionales" positionType="Float" x="3" y="22" width="549" height="9" uuid="a0f2a700-ba5e-4d77-93c7-d017ccba38b6"/>
+					<subreportParameter name="COTIZACION">
+						<subreportParameterExpression><![CDATA[$P{COTIZACION}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["CertificadoCondicionesParticulares/coberturasAdicionalesPT.jasper"]]></subreportExpression>
+				</subreport>
+				<subreport>
+					<reportElement positionType="Float" x="3" y="33" width="549" height="9" uuid="be205e60-7b36-425f-ada4-8f7d3b491efe">
+						<property name="local_mesure_unitheight" value="cm"/>
+						<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+					</reportElement>
+					<subreportParameter name="GRUPOPRODUCTO">
+						<subreportParameterExpression><![CDATA[$F{GRUPOPRODUCTO}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="COTIZACION">
+						<subreportParameterExpression><![CDATA[$P{COTIZACION}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="COBERTURA">
+						<subreportParameterExpression><![CDATA[$F{COBERTURA}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["CertificadoCondicionesParticulares/deduciblesPorDetalle.jasper"]]></subreportExpression>
+				</subreport>
+				<subreport>
+					<reportElement positionType="Float" x="3" y="67" width="549" height="9" uuid="347efb50-6f28-4026-9ff9-05f1983c6fa2">
+						<property name="local_mesure_unitheight" value="cm"/>
+						<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+					</reportElement>
+					<subreportParameter name="COTIZACION">
+						<subreportParameterExpression><![CDATA[$P{COTIZACION}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["CertificadoCondicionesParticulares/clausulasAdicionalesTR.jasper"]]></subreportExpression>
+				</subreport>
+				<subreport>
+					<reportElement positionType="Float" isPrintRepeatedValues="false" x="3" y="78" width="549" height="9" uuid="78ac71d4-fc54-4ac3-a769-8f8b4950bd2d">
+						<property name="local_mesure_unitheight" value="cm"/>
+					</reportElement>
+					<subreportParameter name="COTIZACION">
+						<subreportParameterExpression><![CDATA[$P{COTIZACION}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["CertificadoCondicionesParticulares/clausulasAdicionalesPT.jasper"]]></subreportExpression>
+				</subreport>
+				<subreport>
+					<reportElement positionType="Float" x="3" y="89" width="549" height="9" uuid="0fe3e417-77f7-45ab-a879-d79ab006db35">
+						<property name="local_mesure_unitheight" value="cm"/>
+						<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+					</reportElement>
+					<subreportParameter name="COTIZACION">
+						<subreportParameterExpression><![CDATA[$P{COTIZACION}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["CertificadoCondicionesParticulares/textosAdicionalesTR.jasper"]]></subreportExpression>
+				</subreport>
+				<subreport>
+					<reportElement positionType="Float" isPrintRepeatedValues="false" x="3" y="100" width="549" height="9" uuid="2f0e2de6-56d0-409c-9b4b-2d7b379c1107">
+						<property name="local_mesure_unitheight" value="cm"/>
+					</reportElement>
+					<subreportParameter name="COTIZACION">
+						<subreportParameterExpression><![CDATA[$P{COTIZACION}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["CertificadoCondicionesParticulares/textosAdicionalesPT.jasper"]]></subreportExpression>
+				</subreport>
+				<subreport>
+					<reportElement positionType="Float" x="3" y="56" width="549" height="9" uuid="deb24a96-2514-432e-a410-0f95796d56f2">
+						<property name="local_mesure_unitheight" value="cm"/>
+						<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+					</reportElement>
+					<subreportParameter name="COTIZACION">
+						<subreportParameterExpression><![CDATA[$P{COTIZACION}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["CertificadoCondicionesParticulares/formaPago.jasper"]]></subreportExpression>
+				</subreport>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="0" y="120" width="554" height="70" uuid="411d1c8d-0410-4e30-a5a8-3d2f216d67ee"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<staticText>
+					<reportElement x="0" y="0" width="552" height="20" uuid="002cdeac-3267-426f-9e17-901c75765650"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[ORDEN PARA INSTALACION Y RENOVACION DEL DISPOSITIVO DE SEGURIDAD]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="8" y="25" width="539" height="40" uuid="d2eb51d6-f7e3-46de-b053-d2db3b0a816e"/>
+					<textElement textAlignment="Justified"/>
+					<text><![CDATA[El presente certificado puede ser usado como orden de instalación o de renovación del dispositivo de seguridad,
+según Garantía de la Póliza.
+Los demás términos y condiciones particulares continuan vigentes y sin modificación alguna.]]></text>
+				</staticText>
+			</frame>
+			<image hAlign="Center" vAlign="Middle">
+				<reportElement positionType="Float" x="310" y="204" width="189" height="70" uuid="d9479ddd-e53a-4228-8cd3-199a893298b4"/>
+				<imageExpression><![CDATA[javax.imageio.ImageIO.read( $F{FIRMA}.getBinaryStream() )]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement positionType="Float" x="30" y="274" width="142" height="20" uuid="e9cc7fc7-f5a1-43f2-80d5-5aaf991072b5"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[EL ASEGURADO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="341" y="274" width="142" height="20" uuid="3379aed1-bbbe-4fd6-bd31-2fce936c99b5"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[LA ASEGURADORA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="5" y="310" width="546" height="30" uuid="01f700d7-b6ed-40fd-97a2-347bde292378"/>
+				<textElement textAlignment="Justified">
+					<font size="8" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[NOTA: El presente formulario ha sido aprobado por la Superintendencia de Bancos mediante Resolución No. SBS-INSP-2007-439 del 17 de
+diciembre de 2007]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="3" y="340" width="100" height="20" uuid="32387940-3ce9-442e-a591-17393edc5024"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{USUARIO_LOGIN}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CondicionesParticulares5" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="f247d4e3-238c-4b01-8ffa-c5fffb99f7be">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="COTIZADOR"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="cot_Id" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT DISTINCT COT.ID AS COTIZACIONID, ENT.ID, COT.AGENTE_ID, ENT.NOMBRE_COMPLETO,
+VIGP.NOMBRE, COT.TASA_PRODUCTO_VALOR, COT.SUMA_ASEGURADA_TOTAL, VIGP.ID AS VIGENCIA
+FROM ENTIDAD ENT INNER JOIN CLIENTE CLI
+ON ENT.ID = CLI.entidad_id INNER JOIN COTIZACION COT
+ON CLI.ID = COT.CLIENTE_ID INNER JOIN AGENTE AGE
+ON COT.AGENTE_ID = AGE.ID INNER JOIN VIGENCIA_POLIZA VIGP
+ON COT.VIGENCIA_POLIZA_ID = VIGP.ID
+AND COT.ID = $P{cot_Id}]]>
+	</queryString>
+	<field name="COTIZACIONID" class="java.lang.Long"/>
+	<field name="ID" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="AGENTE_ID" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="NOMBRE_COMPLETO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="NOMBRE" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TASA_PRODUCTO_VALOR" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="SUMA_ASEGURADA_TOTAL" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="VIGENCIA" class="java.lang.Long"/>
+	<detail>
+		<band height="569" splitType="Stretch">
+			<staticText>
+				<reportElement x="69" y="42" width="370" height="20" uuid="d436a0c5-94d0-45eb-9436-c986e3719d0c"/>
+				<textElement>
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Es la determinación de dar muerte a un animal, por razones humanitarias]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="42" width="69" height="20" uuid="eceaba7f-d462-465f-84f4-3d1b56b178ff"/>
+				<textElement>
+					<font fontName="Calibri" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sacrificio.-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="190" width="400" height="20" uuid="85b253c6-1dc3-4a9f-bdf3-8f4c104f43ac"/>
+				<textElement>
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Conjunto de documentos que contienen las condiciones reguladoras del seguro, e]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="270" width="39" height="20" uuid="a6e6e9a1-6160-4026-9174-2d7b39cfb4bb"/>
+				<textElement>
+					<font fontName="Calibri" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Prima.-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="270" width="400" height="20" uuid="c05f4cc9-3615-4174-9ced-1188db2b95e3"/>
+				<textElement>
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[El precio del seguro.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="140" width="69" height="20" uuid="ce367496-286c-4872-93a5-8d92be622d5d"/>
+				<textElement>
+					<font fontName="Calibri" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Siniestro.-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="210" width="439" height="31" uuid="416e284d-f83b-4e87-b6ae-28e073860430"/>
+				<textElement>
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[incluye, las condiciones generales, las especiales de cada seguro, las particulares que se adicionen en su caso, y la declaración de seguro individual o colectivo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="190" width="39" height="20" uuid="5e03af9a-146a-4df1-ace1-348b0bd16f3b"/>
+				<textElement>
+					<font fontName="Calibri" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Póliza.-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="62" width="439" height="51" uuid="9f9f7a37-9bce-425d-a016-b81800aad3a6"/>
+				<textElement>
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[evitando sufrimiento innecesario, recomendado por un médico veterinario y autorizado por un funcionario de Seguros Sucre S.A, en un plazo no mayor de veinticuatro (24) horas después de haber recibido el aviso.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="316" width="79" height="20" uuid="6a5ebb79-302a-4449-8f05-91caf9985ef0"/>
+				<textElement>
+					<font fontName="Calibri" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Recuperación.-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="69" y="140" width="370" height="20" uuid="1f81aef8-39b4-4a7e-ac3d-e1b530248141"/>
+				<textElement>
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Es la realización del riesgo previsto en el, contrato.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="79" y="316" width="359" height="20" uuid="2d235538-2f1a-46fa-99a6-6ecaf457e5e3"/>
+				<textElement>
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Es la cantidad con cargo a EL ASEGURADO que se deduce del monto de la]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="336" width="439" height="31" uuid="d17b4e59-cf74-4e36-87d3-c0f1059f8d9d"/>
+				<textElement>
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[indemnización en los casos de encontrarse vivo el animal siniestrado y que éste sea consumible.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="420" width="439" height="19" uuid="a6ba08bf-8265-40e3-8ca5-cd05cc9502cc"/>
+				<textElement>
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[límites y las circunstancias previas en el contrato.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="60" y="400" width="379" height="20" uuid="ad60f70f-7349-43ac-a26e-1293b44ec4d5"/>
+				<textElement>
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[El hecho que constituye la realización del riesgo, en las condiciones, con los]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="400" width="59" height="20" uuid="c3f16987-d628-4b48-88f7-e75d41ed3bf3"/>
+				<textElement>
+					<font fontName="Calibri" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Siniestro.-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="470" width="90" height="20" uuid="0dcc6a54-cdcb-49d8-a73d-06879718a15f"/>
+				<textElement>
+					<font fontName="Calibri" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Suma asegurada.-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="490" width="439" height="60" uuid="95caa31c-b6f9-41c9-95bd-310eb3812b18"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[indemnización a pagar por todos los conceptos y sobre el que se gira la pauta de prima. Estará fijado en la forma que se establezcan las condiciones particulares del seguro, bien por el valor de cada ejemplar, o bien globalmente sobre las existencias de animales del mismo tipo y destino. ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="91" y="470" width="348" height="20" uuid="e8bcf8c2-1d69-4935-b3ea-65d295626d59"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[La cantidad fijada en la póliza, que representa el límite máximo de]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<summary>
+		<band height="56">
+			<subreport>
+				<reportElement x="0" y="0" width="550" height="50" uuid="fb4b4146-7d28-43ac-8d72-e44144f2bdb6"/>
+				<subreportParameter name="cot_Id">
+					<subreportParameterExpression><![CDATA[$P{cot_Id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["Ganadero/CondicionesParticulares6.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

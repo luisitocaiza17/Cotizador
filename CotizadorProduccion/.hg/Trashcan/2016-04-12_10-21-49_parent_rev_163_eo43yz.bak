@@ -1,0 +1,146 @@
+diff --git a/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java b/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java
+--- a/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java
++++ b/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java
+@@ -257,7 +257,28 @@
+ 				/**PROCESO DE CREACION DE LA ENTIDAD, CLIENTE Y DIRECCION NECESARIOS PARA LA COTIZACION****/
+ 				/*Verificamos si la entidad existe en la base de datos, caso contrario, la creamos*/
+ 				entidad.setIdentificacion(in0.getCedulaRUCCliente());
+-				TipoIdentificacion identificacion = tipoIDentificacion.buscarPorId("3");
++				String identificacionCliente=in0.getCedulaRUCCliente().trim();
++				TipoIdentificacion identificacion = new TipoIdentificacion();
++				
++				if(identificacionCliente.length()>13)
++					 identificacion = tipoIDentificacion.buscarPorId("2");
++				else{
++					if(identificacionCliente.length()==13){
++						identificacion = tipoIDentificacion.buscarPorId("3");
++						String caracterNumerico=""+identificacionCliente.charAt(2);
++						if(caracterNumerico.equals("9")){
++							identificacion = tipoIDentificacion.buscarPorId("4");
++						}
++					}
++					else{
++						if(identificacionCliente.length()==10){
++							identificacion = tipoIDentificacion.buscarPorId("1");
++						}else{
++							mensajeError="Cedula invalida : "+identificacionCliente;
++							throw new Exception("101");
++						}
++					}
++				}
+ 				entidad.setTipoIdentificacion(identificacion);
+ 				entidad.setTipoEntidad(tipoEntidadDAO.buscarPorId("1"));
+ 				entidad.setNombres(in0.getNombreCliente().trim());
+@@ -728,6 +749,7 @@
+ 				mensaje="107";
+ 			}
+ 		}catch(Exception e){
++			String detalle=mensaje;
+ 			mensaje=""+e.getMessage();
+ 			e.printStackTrace();
+ 			System.out.println("Detalle de error: "+mensajeError);
+@@ -744,6 +766,7 @@
+ 			
+ 			try{
+ 				auditoria.setEstado("101");
++				auditoria.setObjeto(""+auditoria.getObjeto()+"||"+detalle+"||"+mensajeError);
+ 				procesoAuditoria.editar(auditoria);
+ 				}catch(Exception e1){
+ 					e1.printStackTrace();
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriEmisionPoliza.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriEmisionPoliza.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriEmisionPoliza.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriEmisionPoliza.java
+@@ -33,6 +33,7 @@
+ import com.qbe.cotizador.model.AgriObjetoCotizacion;
+ import com.qbe.cotizador.model.AgriParametroXCanal;
+ import com.qbe.cotizador.model.AgriParametroXPuntoVenta;
++import com.qbe.cotizador.model.AgriSucreAuditoria;
+ import com.qbe.cotizador.model.AgriTipoCultivo;
+ import com.qbe.cotizador.model.Beneficiario;
+ import com.qbe.cotizador.model.Canton;
+@@ -54,6 +55,8 @@
+ import com.qbe.cotizador.transaction.cotizacion.EndosoBeneficiarioTransaction;
+ import com.qbe.cotizador.transaction.entidad.DireccionTransaction;
+ import com.qbe.cotizador.transaction.entidad.EntidadTransaction;
++import com.qbe.cotizador.transaction.producto.agricola.AgriAuditoriaCotizacionTransaction;
++import com.qbe.cotizador.transaction.producto.agricola.AgriSucreAuditoriaTransaction;
+ import com.qbe.cotizador.util.Utilitarios;
+ import com.qbe.ensurance.services.WSActualizarCrearEntidadesONBASE.WSActualizarCrearEntidadesONBASEProxy;
+ import com.tandi.entidad.dto.EntidadWSONBASE;
+@@ -323,6 +326,8 @@
+ 	
+ 	private static AgriResultadoEmision generarXML(Cotizacion cotizacion){
+ 		AgriResultadoEmision resultado=new AgriResultadoEmision();
++		AgriSucreAuditoria agriSucreAuditoria = new AgriSucreAuditoria();
++		
+ 		if(cotizacion.getAsegurado()==null)
+ 		{
+ 			resultado.setGeneradoXMLCorrectamente(false);
+@@ -428,6 +433,9 @@
+ 				endosoBeneficiario=endosoBeneficiarioTransaction.crear(endosoBeneficiario);
+ 			}
+ 		
++		//Proceso de Auditoria	
++		
++			
+ 	    AgriAuditoriaCotizacion  agriAuditoriaCotizacion = new AgriAuditoriaCotizacion();
+ 	    AgriAuditoriaCotizacionDAO agriAuditoriaCotizacionDAO = new AgriAuditoriaCotizacionDAO();
+ 	    agriAuditoriaCotizacion = agriAuditoriaCotizacionDAO.BuscarPorCotizacinId(new BigInteger(cotizacion.getId()));
+@@ -463,6 +471,8 @@
+ 			e.printStackTrace();
+ 			.append("<puerto>8084</puerto>")
+ 		}*/
++		
++		
+ 		StringBuilder xml=new StringBuilder("<superObjetoXML><detallesPoliza><identificador>").append(cotizacion.getId()).append("</identificador>")
+ 		.append("<login>WS_AGRICOLA</login>")
+ 		.append("<pass>5sMCNw4JQhUyIENa</pass>")
+@@ -487,7 +497,8 @@
+ 		.append("<mnemotecnicoRamo>SA</mnemotecnicoRamo>")
+ 		.append("<unidadNegocioId>").append(productoXPV.getUnidadNegocio().getUnEnsurance()).append("</unidadNegocioId>")
+ 		.append("<unidadProduccionId>").append(productoXPV.getUnidadProduccion().getUpEnsurance()).append("</unidadProduccionId>")
+-		.append("<numeroPoliza>").append(cotizacion.getId()).append("</numeroPoliza>")
++		//NUMERO DE COTIZACION 2
++		.append("<numeroPoliza>").append(objetoCotizacion.getIdCotizacion2()).append("</numeroPoliza>")
+ 		.append("<codigoIntegracion>998000008</codigoIntegracion>")
+ 		.append("<fechaAprobacion>").append(Utilitarios.actualDate()).append("</fechaAprobacion>");
+ 		if(endosoBeneficiario!=null){
+@@ -527,5 +538,5 @@
+ 		.append("<cliente>")
+ 		.append("<id>no</id>")
+ 				.append("<entidadId>")
+-				.append(cliente.getEntidad().getEntEnsurance()==null?"no":cliente.getEntidad().getEntEnsurance()).append("</entidadId>")
++				.append(cliente.getEntidad().getEntEnsurance()==null||cliente.getEntidad().getEntEnsurance().trim().equals("0")?"no":cliente.getEntidad().getEntEnsurance()).append("</entidadId>")
+ 		.append("<nombres>").append(cliente.getEntidad().getNombres()).append("</nombres>")
+@@ -531,5 +542,5 @@
+ 		.append("<nombres>").append(cliente.getEntidad().getNombres()).append("</nombres>")
+-		.append("<apellidos>").append(cliente.getEntidad().getApellidos()).append("</apellidos>")
++		.append("<apellidos>").append(cliente.getEntidad().getApellidos()==null?" ":cliente.getEntidad().getApellidos()).append("</apellidos>")
+ 		.append("<tipoIdentificacion>")
+ 		.append(cliente.getEntidad().getTipoIdentificacion().getId().equals("1") ? "c":cliente.getEntidad().getTipoIdentificacion().equals("2") ? "p":"r")
+ 		.append("</tipoIdentificacion>")
+@@ -542,7 +553,7 @@
+ 			xml.append("<email>").append(cliente.getEntidad().getMail()).append("</email>");
+ 		xml.append("<genero>f</genero>")
+ 		.append("<esEmpresa>")
+-		.append(cliente.getEntidad().getTipoIdentificacion().getId()=="1" ? "false":cliente.getEntidad().getTipoIdentificacion().getId()=="2" ? "false":cliente.getEntidad().getTipoIdentificacion().getId()=="3"?"false":"true")
++		.append(cliente.getEntidad().getTipoIdentificacion().getId().equals("1") ? "false":cliente.getEntidad().getTipoIdentificacion().getId().equals("2") ? "false":cliente.getEntidad().getTipoIdentificacion().getId().equals("3")?"false":"true")
+ 		.append("</esEmpresa>")
+ 		.append("<DireccionDTO><direccion>")
+ 		.append("<paisId>6815744</paisId>")
+@@ -656,6 +667,15 @@
+ 		}
+ 		xml.append("</superObjetoXML>");
+ 		
++		agriSucreAuditoria.setCanal("EMISION");
++		agriSucreAuditoria.setTramite(cotizacion.getNumeroTramite());
++		agriSucreAuditoria.setObjeto(xml.toString());
++		Date fechaActual = new Date();
++		agriSucreAuditoria.setFecha(fechaActual);
++		agriSucreAuditoria.setEstado("Correcto");
++		AgriSucreAuditoriaTransaction agriSucreAuditoriaTransaction= new AgriSucreAuditoriaTransaction();
++		agriSucreAuditoriaTransaction.crear(agriSucreAuditoria);
++		
+ 		resultado.setGeneradoXMLCorrectamente(true);
+ 		resultado.setXmlEmision(xml.toString());
+ 		return resultado;

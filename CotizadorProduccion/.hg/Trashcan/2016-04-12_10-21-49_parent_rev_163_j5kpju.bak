@@ -1,0 +1,126 @@
+diff --git a/.settings/.jsdtscope b/.settings/.jsdtscope
+--- a/.settings/.jsdtscope
++++ b/.settings/.jsdtscope
+@@ -1,5 +1,12 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <classpath>
++	<classpathentry kind="con" path="org.eclipse.wst.jsdt.launching.JRE_CONTAINER"/>
++	<classpathentry kind="con" path="org.eclipse.wst.jsdt.launching.WebProject">
++		<attributes>
++			<attribute name="hide" value="true"/>
++		</attributes>
++	</classpathentry>
++	<classpathentry kind="con" path="org.eclipse.wst.jsdt.launching.baseBrowserLibrary"/>
+ 	<classpathentry kind="src" path="WebContent"/>
+ 	<classpathentry kind="output" path=""/>
+ </classpath>
+diff --git a/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java b/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java
+--- a/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java
++++ b/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java
+@@ -6,6 +6,7 @@
+ import java.text.ParseException;
+ import java.text.SimpleDateFormat;
+ import java.util.ArrayList;
++import java.util.Calendar;
+ import java.util.Date;
+ import java.util.List;
+ 
+@@ -699,4 +700,5 @@
+ 				List<AgriTipoCultivo> agriSucreQbeCultivo = tipoCultivoSucreProceso.BuscarTodosIntegracionSucre(codigoTipoCultivo);
+ 				Date dateSiembra=null;
+ 				SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");//formato de fecha de siembra
++				
+ 				try{
+@@ -702,5 +704,5 @@
+ 				try{
+-					dateSiembra=formatter.parse(in0.getFechaSiembra().trim());
++					dateSiembra=formatter.parse(in0.getFechaSiembra().trim());					
+ 				}catch(Exception e){
+ 					throw new Exception(
+ 							"Error la fecha de siembra "+in0.getFechaSiembra()+ " no esta en el formato dd/MM/yyyy");
+diff --git a/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java b/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java
+--- a/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java
++++ b/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java
+@@ -659,8 +659,8 @@
+ 				}
+ 				Date fechaAprobacion = null;
+ 				Date fechaSiembra=null;
+-				SimpleDateFormat formatoDelTexto = new SimpleDateFormat("dd/mm/yyyy");			
+-				try {
+-					fechaSiembra = formatoDelTexto.parse(in0.getFechaTentativaSiembra());
++				SimpleDateFormat formatoDelTexto = new SimpleDateFormat("dd/MM/yyyy");
++				fechaSiembra = formatoDelTexto.parse(in0.getFechaTentativaSiembra());		
++				try {					
+ 					fechaAprobacion = formatoDelTexto.parse(in0.getFechaAprobacionCredito());
+ 				} catch (Exception e) {
+@@ -665,7 +665,6 @@
+ 					fechaAprobacion = formatoDelTexto.parse(in0.getFechaAprobacionCredito());
+ 				} catch (Exception e) {
+-					fechaAprobacion = null;
+-					fechaSiembra=null;
++					fechaAprobacion = null;					
+ 				}			
+ 				agriObjetoCotizacion.setFechaCredito(fechaAprobacion);
+ 				agriObjetoCotizacion.setFechaSiembra(fechaSiembra);	
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java
+@@ -295,7 +295,8 @@
+ 				pg.setTotal((int)total);
+ 				pg.setData(data);
+ 				
+-				Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
++				//Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
++				Gson gson = new GsonBuilder().setDateFormat("MM/dd/yyyy HH:mm:ss").create();
+ 				// convert the DataSourceReslt to JSON and write it to the response
+ 				response.setContentType("application/json; charset=ISO-8859-1");
+ 			    response.getWriter().print(gson.toJson(pg));
+@@ -891,7 +892,8 @@
+ 				pg.setTotal((int)contador);
+ 				pg.setData(cotizacionList);
+ 				
+-				Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
++				//Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
++				Gson gson = new GsonBuilder().setDateFormat("MM/dd/yyyy HH:mm:ss").create();
+ 				// convert the DataSourceReslt to JSON and write it to the response
+ 				response.setContentType("application/json; charset=ISO-8859-1");
+ 			    response.getWriter().print(gson.toJson(pg));
+@@ -953,7 +955,8 @@
+ 				pg.setData(cotizacionList);
+ 				
+ 				
+-				Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
++				//Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
++				Gson gson = new GsonBuilder().setDateFormat("MM/dd/yyyy HH:mm:ss").create();
+ 				// convert the DataSourceReslt to JSON and write it to the response
+ 				response.setContentType("application/json; charset=ISO-8859-1");
+ 			    response.getWriter().print(gson.toJson(pg));
+@@ -1001,7 +1004,8 @@
+ 				pg.setData(cotizacionList);
+ 				
+ 				//Gson gson = new Gson();
+-				Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
++				//Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
++				Gson gson = new GsonBuilder().setDateFormat("MM/dd/yyyy HH:mm:ss").create();
+ 				// convert the DataSourceReslt to JSON and write it to the response
+ 				response.setContentType("application/json; charset=ISO-8859-1");
+ 			    response.getWriter().print(gson.toJson(pg));
+@@ -1449,6 +1453,7 @@
+ 						// Cambiar estados
+ 						EstadoDAO estadoDAO = new EstadoDAO();
+ 						cotizacionC.setEstado(estadoDAO.buscarPorNombre("Revocado","Cotizacion"));
++						cotizacionC.setNumeroTramite(null);
+ 						// Actualiza estado tabla cotizacion
+ 						cotizacionC = cotizacionTransaction.editar(cotizacionC);
+ 						// /TODO: Auditoria de aprobaciones y rechazos
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriEmisionPoliza.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriEmisionPoliza.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriEmisionPoliza.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriEmisionPoliza.java
+@@ -304,6 +304,7 @@
+ 			result=wsEntidadEnsurance.crearActualizarEntidad(entidadEnsurance);
+ 		}
+ 		catch(Exception ex){
++			ex.printStackTrace();
+ 			throw new Exception("Error al crear la entidad ensurance");
+ 		}
+ 		

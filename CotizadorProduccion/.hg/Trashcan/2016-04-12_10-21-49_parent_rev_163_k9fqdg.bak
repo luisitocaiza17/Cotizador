@@ -1,0 +1,177 @@
+diff --git a/WebContent/dashboard/ConsultaCanal.jsp b/WebContent/dashboard/ConsultaCanal.jsp
+--- a/WebContent/dashboard/ConsultaCanal.jsp
++++ b/WebContent/dashboard/ConsultaCanal.jsp
+@@ -44,7 +44,7 @@
+ 	 -->
+ 
+ <script>
+-function GetQueryStringByParameter(name) {
++function NEetQueryStringByParameter(name) {
+     name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+     results = regex.exec(location.search);
+diff --git a/build/classes/com/qbe/cotizador/servlets/producto/pymes/ObjetoPymesController.class b/build/classes/com/qbe/cotizador/servlets/producto/pymes/ObjetoPymesController.class
+deleted file mode 100644
+index cccbd34c31309b142ccfd5c109670d7c19576e9f..e69de29bb2d1d6434b8b29ae775ad8c2e48c5391
+GIT binary patch
+literal 0
+Hc$@<O00001
+
+diff --git a/src/com/qbe/cotizador/dao/seguridad/VariableSistemaDAO.java b/src/com/qbe/cotizador/dao/seguridad/VariableSistemaDAO.java
+--- a/src/com/qbe/cotizador/dao/seguridad/VariableSistemaDAO.java
++++ b/src/com/qbe/cotizador/dao/seguridad/VariableSistemaDAO.java
+@@ -1,5 +1,8 @@
+ package com.qbe.cotizador.dao.seguridad;
+ 
++import java.math.BigInteger;
++import java.text.ParseException;
++import java.text.SimpleDateFormat;
+ import java.util.ArrayList;
+ import java.util.List;
+ 
+@@ -11,5 +14,6 @@
+ import javax.persistence.PersistenceContext;
+ import javax.persistence.Query;
+ import javax.persistence.StoredProcedureQuery;
++import javax.persistence.TypedQuery;
+ 
+ import com.qbe.cotizador.entitymanagerfactory.EntityManagerFactoryDAO;
+@@ -14,5 +18,6 @@
+ 
+ import com.qbe.cotizador.entitymanagerfactory.EntityManagerFactoryDAO;
++import com.qbe.cotizador.model.AgriSucreAuditoria;
+ import com.qbe.cotizador.model.TipoVariable;
+ import com.qbe.cotizador.model.VariableSistema;
+ 
+@@ -52,6 +57,14 @@
+ 		return variable;
+ 	}
+ 	
++	public VariableSistema buscarPorId2(int id){
++		VariableSistema variable = new VariableSistema();
++		List<VariableSistema> query = getEntityManager().createNamedQuery("VariableSistema.buscarPorId").setParameter("id", id).getResultList();
++		if(!query.isEmpty())
++			variable =  query.get(0);
++		return variable;
++	}
++	
+ 	public VariableSistema buscarPorNombre(String nombre){
+ 		VariableSistema variable = new VariableSistema();
+ 		List<VariableSistema> query = getEntityManager().createNamedQuery("VariableSistema.buscarPorNombre").setParameter("nombre", nombre).getResultList();
+@@ -113,4 +126,55 @@
+         Double valorIva = (Double)storedProcedure.getOutputParameterValue("valor_iva_retorno");        		
+ 		return valorIva;						
+ 	}
++	
++	public List<VariableSistema> buscarVariableK( String nombre, int Skip, int Take){ 
++				
++		BigInteger cotiID;
++				
++		List<VariableSistema> results = new ArrayList<VariableSistema>();
++		TypedQuery<VariableSistema> query = null;
++		
++		String stringQuery= "SELECT c FROM VariableSistema c ";					
++		
++		String valoresWhereQuery="";
++		
++		if(nombre.length()>0)
++			valoresWhereQuery = " where c.nombre = :nombre";
++		
++		stringQuery = stringQuery+valoresWhereQuery;
++		
++		query = getEntityManager().createQuery(stringQuery, VariableSistema.class);
++		
++		if(nombre.length()>0)
++			query.setParameter("nombre", nombre);
++		
++		results = query.setMaxResults(Take).setFirstResult(Skip).getResultList();
++		return results;
++	}
++	
++	public long buscarVarNum(String nombre, int Skip, int Take){ 
++
++				
++		Query query = null;
++		
++				
++		String stringQuery= "SELECT count(c.id) FROM VariableSistema c ";					
++		
++		String valoresWhereQuery="";
++		
++		if(nombre.length()>0)
++			valoresWhereQuery = " where c.nombre = :nombre";
++		
++		stringQuery = stringQuery+valoresWhereQuery;
++		
++		query = getEntityManager().createQuery(stringQuery);
++		
++
++		if(nombre.length()>0)
++			query.setParameter("nombre", nombre);
++	
++		long results = (long)query.getSingleResult();
++		return results;
++	}
++	
+ }
+diff --git a/src/com/qbe/cotizador/model/AgriCotizacionAprobacion.java b/src/com/qbe/cotizador/model/AgriCotizacionAprobacion.java
+--- a/src/com/qbe/cotizador/model/AgriCotizacionAprobacion.java
++++ b/src/com/qbe/cotizador/model/AgriCotizacionAprobacion.java
+@@ -203,4 +203,7 @@
+ 	
+ 	@Column(name = "USUARIO_COTIZADOR")
+ 	private String usuarioCotizador;
++		
++	@Column(name = "ciclo_id")
++	private String cicloId;
+ 	
+@@ -206,4 +209,23 @@
+ 	
++	@Column(name = "cliente_id")
++	private String clienteId;
++		
++	public String getClienteId() {
++		return clienteId;
++	}
++
++	public void setClienteId(String clienteId) {
++		this.clienteId = clienteId;
++	}
++
++	public String getCicloId() {
++		return cicloId;
++	}
++
++	public void setCicloId(String cicloId) {
++		this.cicloId = cicloId;
++	}
++
+ 	public String getUsuarioCotizador() {
+ 		return usuarioCotizador;
+ 	}
+diff --git a/src/com/qbe/cotizador/model/AgriParroquia.java b/src/com/qbe/cotizador/model/AgriParroquia.java
+--- a/src/com/qbe/cotizador/model/AgriParroquia.java
++++ b/src/com/qbe/cotizador/model/AgriParroquia.java
+@@ -15,7 +15,9 @@
+ 	@NamedQuery(name="AgriParroquia.buscarTodos", query="SELECT a FROM AgriParroquia a"),
+ 	@NamedQuery(name="AgriParroquia.obtenerPorSBS", query="SELECT a FROM AgriParroquia a where a.parroquiaSbs=:CodigoSBS"),
+ 	@NamedQuery(name="AgriParroquia.obtenerPorNombre", query="SELECT a FROM AgriParroquia a where a.parroquiaNombre=:nombre"),
+-	@NamedQuery(name="AgriParroquia.obtenerPorNombreYCanton", query="SELECT a FROM AgriParroquia a where a.parroquiaNombre LIKE :nombre AND a.cantonId=:canton")
++	@NamedQuery(name="AgriParroquia.obtenerPorNombreYCanton", query="SELECT a FROM AgriParroquia a where a.parroquiaNombre LIKE :nombre AND a.cantonId=:canton"),
++	@NamedQuery(name="AgriParroquia.obtenerPorId", query="SELECT a FROM AgriParroquia a where a.id=:id"),
++	@NamedQuery(name="AgriParroquia.obtenerPorCanton", query="SELECT a FROM AgriParroquia a where a.cantonId=:canton")
+ })
+ 
+ public class AgriParroquia implements Serializable {
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java
+@@ -345,7 +345,7 @@
+ 		//Numero de contenedor
+ 		
+ 		//Armado Final de parametros a mostrar en la poliza
+-		parametersHeader.put("NumeroPoliza", agriParametroXCanal.getContenedorEnsuranceId()+"-"+detalleCotizacion.getId().toString());
++		parametersHeader.put("NumeroPoliza", agriParametroXCanal.getContenedorNumero()+"-"+detalleCotizacion.getId().toString());
+ 		//buscamos el cliente
+ 		Cliente cliente = new Cliente();
+ 		ClienteDAO clienteDAO = new ClienteDAO();

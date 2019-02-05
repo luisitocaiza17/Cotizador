@@ -1,0 +1,113 @@
+diff --git a/WebContent/dashboard/AgriParametrosPuntoVenta.jsp b/WebContent/dashboard/AgriParametrosPuntoVenta.jsp
+--- a/WebContent/dashboard/AgriParametrosPuntoVenta.jsp
++++ b/WebContent/dashboard/AgriParametrosPuntoVenta.jsp
+@@ -425,6 +425,7 @@
+ 								configuración se grabo con exito.</div>
+ 							<div class="form-group">
+ 								<input type="hidden" class="form-control" id="parametroPPVId">
++								<input type="hidden" id="idCotizacion">
+ 								<table style="width: 100%">
+ 									<tr>
+ 										<td colspan="2"><label style="width: 100%">Sponsor:</label></td>
+diff --git a/src/com/qbe/cotizador/dao/producto/agricola/UsuariosOfflineDAO.java b/src/com/qbe/cotizador/dao/producto/agricola/UsuariosOfflineDAO.java
+--- a/src/com/qbe/cotizador/dao/producto/agricola/UsuariosOfflineDAO.java
++++ b/src/com/qbe/cotizador/dao/producto/agricola/UsuariosOfflineDAO.java
+@@ -1,4 +1,5 @@
+ package com.qbe.cotizador.dao.producto.agricola;
+ 
+ import com.qbe.cotizador.entitymanagerfactory.EntityManagerFactoryDAO;
++import com.qbe.cotizador.model.AgriCargaPreviaArchivoPlano;
+ import com.qbe.cotizador.model.UsuariosOffline;
+@@ -4,2 +5,3 @@
+ import com.qbe.cotizador.model.UsuariosOffline;
++
+ import java.math.BigInteger;
+@@ -5,2 +7,5 @@
+ import java.math.BigInteger;
++import java.text.ParseException;
++import java.text.SimpleDateFormat;
++import java.util.ArrayList;
+ import java.util.List;
+@@ -6,4 +11,5 @@
+ import java.util.List;
++
+ import javax.naming.InitialContext;
+ import javax.naming.NamingException;
+ import javax.persistence.EntityManager;
+@@ -65,4 +71,33 @@
+         }
+         return usuarioOffline;
+     }
++    
++    public List<UsuariosOffline> cargarTodosKendo(int Skip, int Take){
++				
++		Query query = null;
++		
++		String stringQuery= "SELECT c FROM UsuariosOffline c";	
++				
++		query = getEntityManager().createQuery(stringQuery);
++		
++		List<UsuariosOffline> results = new ArrayList<UsuariosOffline>();
++		results = query.setMaxResults(Take).setFirstResult(Skip).getResultList();
++		
++		return results;
++	}
++    
++    public long cargarTodosKendoPorNumero(){
++		
++		Query query = null;
++		
++		String stringQuery= "SELECT count(c.id) FROM UsuariosOffline c ";	
++		
++		query = getEntityManager().createQuery(stringQuery);
++		
++		long results = (long)query.getSingleResult();
++		
++		return results;
++	}
++    
++    
+ }
+\ No newline at end of file
+diff --git a/src/com/qbe/cotizador/model/AgriParroquia.java b/src/com/qbe/cotizador/model/AgriParroquia.java
+--- a/src/com/qbe/cotizador/model/AgriParroquia.java
++++ b/src/com/qbe/cotizador/model/AgriParroquia.java
+@@ -1,6 +1,7 @@
+ package com.qbe.cotizador.model;
+ 
+ import java.io.Serializable;
++
+ import javax.persistence.*;
+ 
+ 
+@@ -10,7 +11,11 @@
+  */
+ @Entity
+ @Table(name="AGRI_PARROQUIAS")
+-@NamedQuery(name="AgriParroquia.obtenerPorSBS", query="SELECT a FROM AgriParroquia a where a.parroquiaSbs=:CodigoSBS")
++@NamedQueries({
++	@NamedQuery(name="AgriParroquia.buscarTodos", query="SELECT a FROM AgriParroquia a"),
++	@NamedQuery(name="AgriParroquia.obtenerPorSBS", query="SELECT a FROM AgriParroquia a where a.parroquiaSbs=:CodigoSBS")
++})
++
+ public class AgriParroquia implements Serializable {
+ 	private static final long serialVersionUID = 1L;
+ 
+@@ -22,6 +27,17 @@
+ 
+ 	@Column(name="PARROQUIA_SBS")
+ 	private String parroquiaSbs;
++	
++	@Column(name="CANTON_ID")
++	private String cantonId;
++		
++	public String getCantonId() {
++		return cantonId;
++	}
++
++	public void setCantonId(String cantonId) {
++		this.cantonId = cantonId;
++	}
+ 
+ 	public AgriParroquia() {
+ 	}

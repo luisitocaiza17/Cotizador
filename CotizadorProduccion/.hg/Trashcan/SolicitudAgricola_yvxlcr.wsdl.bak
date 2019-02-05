@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:intf="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="registrarSolicitud">
+    <complexType>
+     <sequence>
+      <element name="in0" type="impl:SolicitudUN01DTO"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="SolicitudUN01DTO">
+    <sequence>
+     <element name="actividadEconomica" nillable="true" type="xsd:string"/>
+     <element name="apellido1" nillable="true" type="xsd:string"/>
+     <element name="apellido2" nillable="true" type="xsd:string"/>
+     <element name="canton" nillable="true" type="xsd:string"/>
+     <element name="cedula" nillable="true" type="xsd:string"/>
+     <element name="celreferencia" nillable="true" type="xsd:string"/>
+     <element name="codigoAgenciaOSucursal" nillable="true" type="xsd:string"/>
+     <element name="codigoFacilitador" nillable="true" type="xsd:string"/>
+     <element name="codigoSubCanal" nillable="true" type="xsd:string"/>
+     <element name="codigoVariedadCultivo" nillable="true" type="xsd:string"/>
+     <element name="condicionPredio" nillable="true" type="xsd:string"/>
+     <element name="condicionPredioOtra" nillable="true" type="xsd:string"/>
+     <element name="costoEstablecimientoCultivo" nillable="true" type="xsd:string"/>
+     <element name="costoMantenimientoCultivo" nillable="true" type="xsd:string"/>
+     <element name="costoProduccion" nillable="true" type="xsd:string"/>
+     <element name="direccionNacimiento" nillable="true" type="xsd:string"/>
+     <element name="disponeRiego" nillable="true" type="xsd:string"/>
+     <element name="emailContacto" nillable="true" type="xsd:string"/>
+     <element name="estadoCivil" nillable="true" type="xsd:string"/>
+     <element name="estadoSolicitud" nillable="true" type="xsd:string"/>
+     <element name="fechaAprobacion" nillable="true" type="xsd:string"/>
+     <element name="fechaNacimiento" nillable="true" type="xsd:string"/>
+     <element name="fechaSiembra" nillable="true" type="xsd:string"/>
+     <element name="fechaVencimientoCredito" nillable="true" type="xsd:string"/>
+     <element name="fuenteIngreso" nillable="true" type="xsd:string"/>
+     <element name="genero" nillable="true" type="xsd:string"/>
+     <element name="ingresoAnual" nillable="true" type="xsd:string"/>
+     <element name="inversion" type="xsd:int"/>
+     <element name="latitud" nillable="true" type="xsd:string"/>
+     <element name="longitud" nillable="true" type="xsd:string"/>
+     <element name="lote" nillable="true" type="xsd:string"/>
+     <element name="lugarNacimiento" nillable="true" type="xsd:string"/>
+     <element name="montoRecomendado" nillable="true" type="xsd:string"/>
+     <element name="nacionalidad" nillable="true" type="xsd:string"/>
+     <element name="nombreContacto" nillable="true" type="xsd:string"/>
+     <element name="nombres" nillable="true" type="xsd:string"/>
+     <element name="numHectAseguradas" type="xsd:double"/>
+     <element name="numHectFinanciadas" type="xsd:double"/>
+     <element name="numeroResolucion" nillable="true" type="xsd:string"/>
+     <element name="otroRiego" nillable="true" type="xsd:string"/>
+     <element name="paqueteTecnologico" nillable="true" type="xsd:string"/>
+     <element name="parroquia" nillable="true" type="xsd:string"/>
+     <element name="pep" nillable="true" type="xsd:string"/>
+     <element name="provincia" nillable="true" type="xsd:string"/>
+     <element name="recinto" nillable="true" type="xsd:string"/>
+     <element name="referencia" nillable="true" type="xsd:string"/>
+     <element name="telfreferencia" nillable="true" type="xsd:string"/>
+     <element name="terrenoTecnificado" nillable="true" type="xsd:string"/>
+     <element name="tipoCanal" nillable="true" type="xsd:string"/>
+     <element name="tipoRiego" nillable="true" type="xsd:string"/>
+     <element name="tipoSemilla" nillable="true" type="xsd:string"/>
+     <element name="valorSubsidio" nillable="true" type="xsd:string"/>
+     <element name="variedad" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="registrarSolicitudResponse">
+    <complexType>
+     <sequence>
+      <element name="registrarSolicitudReturn" type="impl:RespuestaUN01DTO"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="RespuestaUN01DTO">
+    <sequence>
+     <element name="autorizacion" type="xsd:int"/>
+     <element name="diferenciaMonto" nillable="true" type="xsd:string"/>
+     <element name="estado" nillable="true" type="xsd:string"/>
+     <element name="fechaAprobacion" nillable="true" type="xsd:dateTime"/>
+     <element name="montoAprobadoQBE" type="xsd:float"/>
+     <element name="montoRecomendadoQBE" type="xsd:float"/>
+     <element name="numeroCotizacion" nillable="true" type="xsd:string"/>
+     <element name="observacion" nillable="true" type="xsd:string"/>
+     <element name="prima" type="xsd:float"/>
+    </sequence>
+   </complexType>
+   <element name="solicitudCambioFecha">
+    <complexType>
+     <sequence>
+      <element name="tramite" type="xsd:string"/>
+      <element name="fechaSiembra" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="solicitudCambioFechaResponse">
+    <complexType>
+     <sequence>
+      <element name="solicitudCambioFechaReturn" type="impl:RespuestaCambio"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="RespuestaCambio">
+    <sequence>
+     <element name="estado" nillable="true" type="xsd:string"/>
+     <element name="fechaCambio" nillable="true" type="xsd:string"/>
+     <element name="observacion" nillable="true" type="xsd:string"/>
+     <element name="tramite" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="solicitudCambiolugarSiembra">
+    <complexType>
+     <sequence>
+      <element name="tramite" type="xsd:string"/>
+      <element name="codProvincia" type="xsd:string"/>
+      <element name="codCanton" type="xsd:string"/>
+      <element name="codParroquia" type="xsd:string"/>
+      <element name="direccionSiembra" type="xsd:string"/>
+      <element name="latitud" type="xsd:string"/>
+      <element name="longitud" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="solicitudCambiolugarSiembraResponse">
+    <complexType>
+     <sequence>
+      <element name="solicitudCambiolugarSiembraReturn" type="impl:RespuestaCambio"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="registrarEmision">
+    <complexType>
+     <sequence>
+      <element name="in0" type="impl:SolicitudEMIDTO"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="SolicitudEMIDTO">
+    <sequence>
+     <element name="anexo" nillable="true" type="xsd:string"/>
+     <element name="apellido1" nillable="true" type="xsd:string"/>
+     <element name="apellido2" nillable="true" type="xsd:string"/>
+     <element name="canton" nillable="true" type="xsd:string"/>
+     <element name="causa" nillable="true" type="xsd:string"/>
+     <element name="cedula" nillable="true" type="xsd:string"/>
+     <element name="codigoFacilitador" nillable="true" type="xsd:string"/>
+     <element name="fechaEmision" nillable="true" type="xsd:string"/>
+     <element name="fechaPago" nillable="true" type="xsd:string"/>
+     <element name="fechaSiembra" nillable="true" type="xsd:string"/>
+     <element name="inversion" nillable="true" type="xsd:string"/>
+     <element name="lote" nillable="true" type="xsd:string"/>
+     <element name="montoAsegurado" nillable="true" type="xsd:string"/>
+     <element name="montoPago" nillable="true" type="xsd:float"/>
+     <element name="nombres" nillable="true" type="xsd:string"/>
+     <element name="numHectAseguradas" type="xsd:double"/>
+     <element name="numHectFnanciadas" type="xsd:double"/>
+     <element name="numeroFactura" nillable="true" type="xsd:string"/>
+     <element name="numeroResolucion" nillable="true" type="xsd:string"/>
+     <element name="ordenPago" nillable="true" type="xsd:string"/>
+     <element name="parroquia" nillable="true" type="xsd:string"/>
+     <element name="poliza" nillable="true" type="xsd:string"/>
+     <element name="primaCalculada" nillable="true" type="xsd:float"/>
+     <element name="provincia" nillable="true" type="xsd:string"/>
+     <element name="recinto" nillable="true" type="xsd:string"/>
+     <element name="referencia" nillable="true" type="xsd:string"/>
+     <element name="terrenoTecnificado" nillable="true" type="xsd:string"/>
+     <element name="tipoEndoso" nillable="true" type="xsd:string"/>
+     <element name="variedad" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="registrarEmisionResponse">
+    <complexType>
+     <sequence>
+      <element name="registrarEmisionReturn" type="impl:RespuestaEMIDTO"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="RespuestaEMIDTO">
+    <sequence>
+     <element name="estado" nillable="true" type="xsd:string"/>
+     <element name="observacion" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="registrarSolicitudResponse">
+
+      <wsdl:part element="impl:registrarSolicitudResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="registrarEmisionRequest">
+
+      <wsdl:part element="impl:registrarEmision" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="registrarEmisionResponse">
+
+      <wsdl:part element="impl:registrarEmisionResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="solicitudCambioFechaRequest">
+
+      <wsdl:part element="impl:solicitudCambioFecha" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="registrarSolicitudRequest">
+
+      <wsdl:part element="impl:registrarSolicitud" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="solicitudCambiolugarSiembraRequest">
+
+      <wsdl:part element="impl:solicitudCambiolugarSiembra" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="solicitudCambioFechaResponse">
+
+      <wsdl:part element="impl:solicitudCambioFechaResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="solicitudCambiolugarSiembraResponse">
+
+      <wsdl:part element="impl:solicitudCambiolugarSiembraResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:portType name="SolicitudAgricola">
+
+      <wsdl:operation name="registrarSolicitud">
+
+         <wsdl:input message="impl:registrarSolicitudRequest" name="registrarSolicitudRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:registrarSolicitudResponse" name="registrarSolicitudResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="solicitudCambioFecha">
+
+         <wsdl:input message="impl:solicitudCambioFechaRequest" name="solicitudCambioFechaRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:solicitudCambioFechaResponse" name="solicitudCambioFechaResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="solicitudCambiolugarSiembra">
+
+         <wsdl:input message="impl:solicitudCambiolugarSiembraRequest" name="solicitudCambiolugarSiembraRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:solicitudCambiolugarSiembraResponse" name="solicitudCambiolugarSiembraResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="registrarEmision">
+
+         <wsdl:input message="impl:registrarEmisionRequest" name="registrarEmisionRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:registrarEmisionResponse" name="registrarEmisionResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="SolicitudAgricolaSoapBinding" type="impl:SolicitudAgricola">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="registrarSolicitud">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="registrarSolicitudRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="registrarSolicitudResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="solicitudCambioFecha">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="solicitudCambioFechaRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="solicitudCambioFechaResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="solicitudCambiolugarSiembra">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="solicitudCambiolugarSiembraRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="solicitudCambiolugarSiembraResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="registrarEmision">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="registrarEmisionRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="registrarEmisionResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="SolicitudAgricolaService">
+
+      <wsdl:port binding="impl:SolicitudAgricolaSoapBinding" name="SolicitudAgricola">
+
+         <wsdlsoap:address location="http://localhost:8080/CotizadorWeb/services/SolicitudAgricola"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

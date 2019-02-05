@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CondicionesParticulares7" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="77cc2df8-dcba-4195-90e3-fbbc4d2deaf1">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="COTIZADOR"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table 1_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table 1_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="Dataset1" uuid="2ea9dc3a-25c8-4b7d-a299-ffbf0f27088b">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="COTIZADOR"/>
+		<parameter name="cot_Id" class="java.lang.String"/>
+		<queryString language="SQL">
+			<![CDATA[SELECT DISTINCT OBJDE.DEDUCIBLE_CATEGORIA, OBJDE.NUMERO_ANIMALES, OBJD.VALOR_PRIMA, OBJDE.DEDUCIBLE_NUMERO_SINIESTRO,
+OBJDE.DEDUCIBLE_PAGO_SINIESTRO, OBJDE.DEDUCIBLE_DEDUCIBLE
+FROM ENTIDAD ENT INNER JOIN CLIENTE CLI
+ON ENT.ID = CLI.ENTIDAD_ID INNER JOIN COTIZACION COT
+ON CLI.ID = COT.CLIENTE_ID INNER JOIN COTIZACION_DETALLE COTD
+ON COT.ID = COTD.COTIZACION_ID INNER JOIN OBJETO_GANADERO OBJ
+ON COTD.OBJETO_ID = OBJ.ID INNER JOIN OBJETO_GANADERO_DETALLE OBJD
+ON OBJ.ID = OBJD.OBJETO_GANADERO_ID INNER JOIN OBJETO_GANADERO_DEDUCIBLE OBJDE
+ON OBJ.ID = OBJDE.OBJETO_GANADERO_ID
+AND OBJ.TIPO_PRODUCCION = 'CARNE'
+AND COT.ID = $P{cot_Id}]]>
+		</queryString>
+		<field name="DEDUCIBLE_CATEGORIA" class="java.lang.String">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="NUMERO_ANIMALES" class="java.lang.Integer">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="VALOR_PRIMA" class="java.lang.Double">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="DEDUCIBLE_NUMERO_SINIESTRO" class="java.lang.String">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="DEDUCIBLE_PAGO_SINIESTRO" class="java.lang.Integer">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="DEDUCIBLE_DEDUCIBLE" class="java.lang.Integer">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+	</subDataset>
+	<parameter name="cot_Id" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT DISTINCT COT.ID AS COTIZACIONID, ENT.ID, COT.AGENTE_ID, ENT.NOMBRE_COMPLETO,
+VIGP.NOMBRE, COT.TASA_PRODUCTO_VALOR, COT.SUMA_ASEGURADA_TOTAL, VIGP.ID AS VIGENCIA
+FROM ENTIDAD ENT INNER JOIN CLIENTE CLI
+ON ENT.ID = CLI.entidad_id INNER JOIN COTIZACION COT
+ON CLI.ID = COT.CLIENTE_ID INNER JOIN AGENTE AGE
+ON COT.AGENTE_ID = AGE.ID INNER JOIN VIGENCIA_POLIZA VIGP
+ON COT.VIGENCIA_POLIZA_ID = VIGP.ID
+AND COT.ID = $P{cot_Id}]]>
+	</queryString>
+	<field name="COTIZACIONID" class="java.lang.Long"/>
+	<field name="ID" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="AGENTE_ID" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="NOMBRE_COMPLETO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="NOMBRE" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TASA_PRODUCTO_VALOR" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="SUMA_ASEGURADA_TOTAL" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="VIGENCIA" class="java.lang.Long"/>
+	<detail>
+		<band height="733" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="40" width="446" height="60" uuid="0718c148-2fe9-4be9-8ea0-80523d3e01f5"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[CUADRO 1.- SISTEMA DE OPERACIÓN DEL SEGURO GANADERO 
+
+(CARNE)]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement x="-1" y="114" width="420" height="90" uuid="646fc543-e232-4826-9107-38bb3c4c1c21"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="Dataset1" uuid="611d6937-e59a-4c0f-bfab-f678872ad19f">
+						<datasetParameter name="cot_Id">
+							<datasetParameterExpression><![CDATA[$P{cot_Id}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="70" uuid="8f775055-fd23-4c58-99fd-e693530887f7">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<jr:columnHeader style="Table 1_CH" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="70" height="30" uuid="7d76aeb0-da24-4649-ae7e-60a6e35bf557">
+									<property name="local_mesure_unitwidth" value="pixel"/>
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Calibri"/>
+								</textElement>
+								<text><![CDATA[CATEGORIAS]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="Table 1_CH" height="30"/>
+						<jr:detailCell style="Table 1_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="70" height="30" uuid="b43c2010-7e2a-4963-b592-e9ecf9529818">
+									<property name="local_mesure_unitwidth" value="pixel"/>
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Calibri"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{DEDUCIBLE_CATEGORIA}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="70" uuid="93ea59fa-e6ac-4f53-bcc4-8c9fc50e8786">
+						<jr:columnHeader style="Table 1_CH" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="70" height="30" uuid="0756d939-acd6-408e-b0f5-8288108e7e51">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Calibri"/>
+								</textElement>
+								<text><![CDATA[N° DE ANIMALES A ASEGRAR]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="Table 1_CH" height="30"/>
+						<jr:detailCell style="Table 1_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="70" height="30" uuid="5c6f7e9f-da72-4ad3-86ac-35e176ec50b3">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Calibri"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{NUMERO_ANIMALES}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="70" uuid="1df28169-07fa-4fb4-b2ec-61561a7a316c">
+						<jr:columnHeader style="Table 1_CH" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="70" height="30" uuid="8166bf65-afa7-4f44-b6b1-7a983ad0cbd5">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Calibri"/>
+								</textElement>
+								<text><![CDATA[VALOR % DE LA PRIMA]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="Table 1_CH" height="30"/>
+						<jr:detailCell style="Table 1_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="70" height="30" uuid="4cda3acc-3de8-4976-bd45-abb10f59f99a">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Calibri"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{VALOR_PRIMA}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="70" uuid="a756cfe2-3807-4c80-9171-1f2883e85f6d">
+						<jr:columnHeader style="Table 1_CH" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="70" height="30" uuid="0b924fae-d60a-405d-95cf-5cf7ca4253be">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Calibri"/>
+								</textElement>
+								<text><![CDATA[N° SINIESTRO]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="Table 1_CH" height="30"/>
+						<jr:detailCell style="Table 1_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="70" height="30" uuid="98311fd2-482a-456b-b3df-89961ef955e9">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Calibri"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{DEDUCIBLE_NUMERO_SINIESTRO}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="70" uuid="7e519724-aea9-449b-b8ee-46fc75d3e869">
+						<jr:columnHeader style="Table 1_CH" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="70" height="30" uuid="e9bd5c14-2e4a-4a66-978e-5f5b894b8ef7">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Calibri"/>
+								</textElement>
+								<text><![CDATA[PAGO DEL SINIESTRO]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="Table 1_CH" height="30"/>
+						<jr:detailCell style="Table 1_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="70" height="30" uuid="df94ee18-6c4f-46b9-b7fc-6c46f87efac7">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Calibri"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{DEDUCIBLE_PAGO_SINIESTRO}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="70" uuid="8cd791ee-2f35-4813-8f05-8fffd4b524fd">
+						<jr:columnHeader style="Table 1_CH" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="70" height="30" uuid="a782564b-9b7a-480a-936a-599c87c5f311">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Calibri"/>
+								</textElement>
+								<text><![CDATA[DEDUCIBLE]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="Table 1_CH" height="30"/>
+						<jr:detailCell style="Table 1_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="70" height="30" uuid="9959150f-1ffc-4290-9ef3-0fda8453a3e3">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Calibri"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{DEDUCIBLE_DEDUCIBLE}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+	</detail>
+	<summary>
+		<band height="56">
+			<subreport>
+				<reportElement x="0" y="0" width="550" height="50" uuid="fb4b4146-7d28-43ac-8d72-e44144f2bdb6"/>
+				<subreportParameter name="cot_Id">
+					<subreportParameterExpression><![CDATA[$P{cot_Id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["Ganadero/CondicionesParticulares9.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="DeduciblesPorDetalle" pageWidth="556" pageHeight="842" columnWidth="556" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="cd4c8ad1-7435-490d-91a7-28eb8c9c76e1">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="cotizador"/>
+	<property name="com.jaspersoft.studio.unit." value="cm"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="cm"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="COTIZACION" class="java.lang.String"/>
+	<parameter name="COBERTURA" class="java.lang.String"/>
+	<parameter name="GRUPOPRODUCTO" class="java.lang.Long"/>
+	<queryString>
+		<![CDATA[SELECT distinct
+    COTCOB.porcentaje_suma_asegurada,
+    COTCOB.porcentaje_valor_siniestro,
+    COTCOB.monto_fijo,C.id
+FROM
+  COTIZACION_COBERTURA COTCOB, COBERTURA C, COTIZACION_DETALLE CD
+WHERE
+C.id=COTCOB.cobertura_id
+  AND C.tipo_cobertura_id=1
+  AND COTCOB.cotizacion_detalle_id=CD.id
+  AND CD.cotizacion_id=$P{COTIZACION}
+--        AND COTCOB.cotizacion_detalle_id = 30
+-- AND CP.producto_id='2913639534387'
+-- AND DP.plan_id=1]]>
+	</queryString>
+	<field name="porcentaje_suma_asegurada" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="porcentaje_valor_siniestro" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="monto_fijo" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="15" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="200" height="15" uuid="149ba4a3-e83a-4386-8634-9664aef08bf3">
+					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["DEDUCIBLES"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<printWhenExpression><![CDATA[(($P{GRUPOPRODUCTO}.toString().equals("148")) && ($P{COBERTURA}.contains("TR")) ?true:false)]]></printWhenExpression>
+			<textField isStretchWithOverflow="true" pattern="">
+				<reportElement positionType="Float" isPrintRepeatedValues="false" x="0" y="0" width="556" height="15" isRemoveLineWhenBlank="true" forecolor="#000000" uuid="27fc1a23-46de-41d2-b0f4-2a4ebd7eb8ed"/>
+				<textFieldExpression><![CDATA["" +(($F{porcentaje_suma_asegurada}>0?$F{porcentaje_suma_asegurada}+" % Suma Asegurada, ":" ")) +  (($F{porcentaje_valor_siniestro}>0?($F{porcentaje_valor_siniestro})+" % Valor Siniestro, ":" ")) +
+ (($F{monto_fijo}>0?" Mínimo $"+$F{monto_fijo}+"; el que sea mayor":" "))]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="15" splitType="Stretch">
+			<printWhenExpression><![CDATA[(($P{GRUPOPRODUCTO}.toString().equals("148")) && (($P{COBERTURA}.contains("PT,RC"))||($P{COBERTURA}.contains("RC,PT"))) ?true:false)]]></printWhenExpression>
+			<textField isStretchWithOverflow="true" pattern="">
+				<reportElement positionType="Float" isPrintRepeatedValues="false" x="0" y="0" width="556" height="15" isRemoveLineWhenBlank="true" forecolor="#000000" uuid="7983737f-22b3-4aab-81f6-45433cdfed63"/>
+				<textFieldExpression><![CDATA[""+(($F{porcentaje_valor_siniestro}>0?($F{porcentaje_valor_siniestro})+" % Deducible Perdida Total, ":" ")) + (($F{monto_fijo}>0?"$"+$F{monto_fijo}+" Deducible RC":" "))]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="15" splitType="Stretch">
+			<printWhenExpression><![CDATA[(($P{GRUPOPRODUCTO}.toString().equals("148")) && ($P{COBERTURA}.contains("PT")) ?true:false)]]></printWhenExpression>
+			<textField isStretchWithOverflow="true" pattern="">
+				<reportElement positionType="Float" isPrintRepeatedValues="false" x="0" y="0" width="556" height="15" isRemoveLineWhenBlank="true" forecolor="#000000" uuid="f1fd479d-a7fa-46c3-972a-0050d268988b"/>
+				<textFieldExpression><![CDATA["" +(($F{porcentaje_suma_asegurada}>0 ? $F{porcentaje_suma_asegurada}+" % Deducible Perdida Total, ":" "))]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="15" splitType="Immediate">
+			<printWhenExpression><![CDATA[(($P{GRUPOPRODUCTO}.toString().equals("148")) && (($P{COBERTURA}.equals("RC")) || ($P{COBERTURA}.contains("RC,RC"))) ?true:false)]]></printWhenExpression>
+			<textField isStretchWithOverflow="true" pattern="">
+				<reportElement positionType="Float" x="0" y="0" width="556" height="15" isRemoveLineWhenBlank="true" forecolor="#000000" uuid="77b17bd9-98c1-4185-a340-7dfa0343992b"/>
+				<textFieldExpression><![CDATA[""+(($F{monto_fijo}>0? "$"+$F{monto_fijo}+" Deducible RC":" "))]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

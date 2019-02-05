@@ -1,0 +1,100 @@
+package com.qbe.cotizador.dao.producto.agricola;
+
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+
+import com.qbe.cotizador.entitymanagerfactory.EntityManagerFactoryDAO;
+import com.qbe.cotizador.model.AgriCiclo;
+import com.qbe.cotizador.model.AgriRegla;
+import com.qbe.cotizador.model.AgriTipoCalculo;
+import com.qbe.cotizador.model.AgriTipoCultivo;
+
+public class AgriReglaDAO extends EntityManagerFactoryDAO<AgriRegla> {
+	@PersistenceContext(name="CotizadorWebPC", unitName = "CotizadorWebPU" )	
+	private EntityManager em;
+	
+	@Override
+	protected EntityManager getEntityManager() {
+		if(em == null){
+			Context initCtx = null;
+			try {
+				initCtx = new InitialContext();
+				em = (javax.persistence.EntityManager) initCtx.lookup("java:comp/env/CotizadorWebPC");
+			} catch (NamingException e) { 
+				e.printStackTrace();
+			}		
+		}
+		return em;
+	}
+
+	public AgriReglaDAO() {
+		// TODO Auto-generated constructor stub
+		super(AgriRegla.class);
+	}
+	public AgriRegla BuscarPorId (BigInteger ReglaId, int Estado){
+		AgriRegla agriRegla = new AgriRegla();
+		List<AgriRegla> result = getEntityManager().createNamedQuery("AgriRegla.obtenerPorId").setParameter("reglaId", ReglaId).setParameter("estado", Estado).getResultList();
+		if (result.size()>0)
+			agriRegla = result.get(0);
+		return agriRegla;
+	}
+	public AgriRegla BuscarPorId (BigInteger ReglaId){
+		AgriRegla agriRegla = new AgriRegla();
+		List<AgriRegla> result = getEntityManager().createNamedQuery("AgriRegla.obtenerPorId").setParameter("reglaId", ReglaId).setParameter("estado", 1).getResultList();
+		if (result.size()>0)
+			agriRegla = result.get(0);
+		return agriRegla;
+	}
+	public AgriRegla BuscarPorIdTodos (BigInteger ReglaId){
+		AgriRegla agriRegla = new AgriRegla();
+		List<AgriRegla> result = getEntityManager().createNamedQuery("AgriRegla.obtenerPorIdTodos").setParameter("reglaId", ReglaId).getResultList();
+		if (result.size()>0)
+			agriRegla = result.get(0);
+		return agriRegla;
+	}
+	public List<AgriRegla>BuscarTodos(){
+		return getEntityManager().createNamedQuery("AgriRegla.findAll").getResultList();
+	}
+	
+	public List<AgriRegla> BuscarPorParametros(BigInteger provinciaId, BigInteger cantonId, BigInteger tipoCultivoId){
+		return getEntityManager().createNamedQuery("AgriRegla.obtenerPorParametros")
+				.setParameter("estado", 1)
+				.setParameter("provinciaId", provinciaId)
+				.setParameter("cantonId", cantonId)
+				.setParameter("tipoCultivoId", tipoCultivoId).getResultList();
+	}
+	
+	public List<AgriRegla> BuscarPorParametros(BigInteger provinciaId, BigInteger cantonId, BigInteger tipoCultivoId,BigInteger tipoCalculoId){
+		return getEntityManager().createNamedQuery("AgriRegla.obtenerPorParametros2")
+				.setParameter("provinciaId", provinciaId)
+				.setParameter("cantonId", cantonId)
+				.setParameter("tipoCultivoId", tipoCultivoId)
+				.setParameter("tipoCalculoId", tipoCalculoId)
+				.setParameter("estado", 1).getResultList();
+	}
+	 public List<AgriRegla> BuscarPorTipoCalculoNombre(String TipoCalculoNombre){
+			List<AgriRegla>results = new ArrayList<AgriRegla>();
+			AgriTipoCalculoDAO calculoDAO = new AgriTipoCalculoDAO();
+			AgriTipoCalculo tipoCalculo = calculoDAO.BuscarPorNombre(TipoCalculoNombre);
+			BigInteger tipoCalculoId = tipoCalculo.getTipoCalculoId();
+			TypedQuery<AgriRegla>query = null;
+			String stringQuery= "SELECT c FROM AgriRegla c where (c.tipoCalculoId =:tipoCalculoId) and c.estado =:estado";					
+			query = getEntityManager().createQuery(stringQuery, AgriRegla.class);
+			query.setParameter("tipoCalculoId",tipoCalculoId).setParameter("estado", 1);
+			results = query.getResultList();
+			return results;
+		}
+	 public List<AgriRegla> obtenerPorTipoCultivo(BigInteger tipoCultivoId,BigInteger tipoCalculoId){
+			return getEntityManager().createNamedQuery("AgriRegla.obtenerPorTipoCultivo").setParameter("estado", 1)
+					.setParameter("tipoCultivoId", tipoCultivoId)
+					.setParameter("tipoCalculoId", tipoCalculoId).getResultList();
+		}
+}

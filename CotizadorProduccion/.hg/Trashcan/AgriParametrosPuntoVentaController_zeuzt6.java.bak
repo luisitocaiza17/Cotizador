@@ -1,0 +1,210 @@
+package com.qbe.cotizador.servlets.producto.agricola;
+
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
+import com.qbe.cotizador.dao.cotizacion.ProductoXPuntoVentaDAO;
+import com.qbe.cotizador.dao.entidad.PuntoVentaDAO;
+import com.qbe.cotizador.dao.producto.agricola.AgriParametroXPuntoVentaDAO;
+import com.qbe.cotizador.dao.producto.agricola.AgriTipoCalculoDAO;
+import com.qbe.cotizador.dao.producto.vehiculocerrado.GrupoPorProductoDAO;
+import com.qbe.cotizador.model.AgriParametroXPuntoVenta;
+import com.qbe.cotizador.model.AgriTipoCalculo;
+import com.qbe.cotizador.model.GrupoPorProducto;
+import com.qbe.cotizador.model.ProductoXPuntoVenta;
+import com.qbe.cotizador.model.PuntoVenta;
+import com.qbe.cotizador.servlets.producto.vehiculocerrado.GrupoPorProductoController;
+import com.qbe.cotizador.transaction.producto.agricola.AgriParametroXPuntoVentaTransaction;
+
+/**
+ * Servlet implementation class AgriParametrosPuntoVenta
+ */
+@WebServlet("/AgriParametrosPuntoVentaController")
+public class AgriParametrosPuntoVentaController extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public AgriParametrosPuntoVentaController() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		JSONObject result = new JSONObject();
+		try {
+			String tipoConsulta = request.getParameter("tipoConsulta") == null ? "" : request.getParameter("tipoConsulta");
+			String puntoVentaId = request.getParameter("puntoVentaId") == null ? "" : request.getParameter("puntoVentaId");
+			String tipoCalculoId = request.getParameter("tipoCalculoId")== null ? "" : request.getParameter("tipoCalculoId");						
+			String emailPuntoVenta = request.getParameter("emailPuntoVenta")== null ? "" : request.getParameter("emailPuntoVenta");
+			String formaNotificacion = request.getParameter("formaNotificacion")== null ? "" : request.getParameter("formaNotificacion");
+			String sucursalEmisionId = request.getParameter("sucursalEmisionId")== null ? "" : request.getParameter("sucursalEmisionId");
+			String beneficiarioId = request.getParameter("beneficiarioId")== null ? "" : request.getParameter("beneficiarioId");
+			String excepcionesCultivos = request.getParameter("excepcionesCultivos")== null ? "" : request.getParameter("excepcionesCultivos");
+			String codigoIntegracion = request.getParameter("codigoIntegracion")== null ? "" : request.getParameter("codigoIntegracion");
+			String tieneEmisionDirecta = request.getParameter("tieneEmisionDirecta")== null ? "" : request.getParameter("tieneEmisionDirecta");
+			String tieneEmisionObligatoria = request.getParameter("tieneEmisionObligatoria")== null ? "" : request.getParameter("tieneEmisionObligatoria");
+			String canalId = request.getParameter("canalId")== null ? "" : request.getParameter("canalId");
+			
+			
+			AgriParametroXPuntoVenta parametroPymeXPV = new AgriParametroXPuntoVenta();
+			AgriParametroXPuntoVentaDAO parametroPymeXPVDAO = new AgriParametroXPuntoVentaDAO();
+			AgriParametroXPuntoVentaTransaction parametroPymeXPVTransaction = new AgriParametroXPuntoVentaTransaction();
+									
+			PuntoVenta puntoVenta = new PuntoVenta();
+			PuntoVentaDAO puntoVentaDAO = new PuntoVentaDAO();
+			
+			AgriTipoCalculo agriTipoCalculo = new AgriTipoCalculo();
+			AgriTipoCalculoDAO agriTipoCalculoDAO = new AgriTipoCalculoDAO();
+ 			
+ 			JSONObject parametroXPVJSONbject = new JSONObject();
+			JSONArray parametroXPVJSONArray = new JSONArray();
+			
+			JSONObject tipoCalculoJSONbject = new JSONObject();
+			JSONArray tipoCalculoJSONArray = new JSONArray();
+			
+			if(!puntoVentaId.equals(""))
+				parametroPymeXPV.setPuntoVentaId(new BigInteger(puntoVentaId));
+			if(!tipoCalculoId.equals(""))
+				parametroPymeXPV.setTipoCalculoId(new BigInteger(tipoCalculoId));			
+			if(!tieneEmisionDirecta.equals(""))
+				parametroPymeXPV.setEmisionDirecta(Boolean.parseBoolean(tieneEmisionDirecta));
+			if(!tieneEmisionObligatoria.equals(""))
+				parametroPymeXPV.setEmisionObligatoria(Boolean.parseBoolean(tieneEmisionObligatoria));
+			if(!codigoIntegracion.equals(""))
+				parametroPymeXPV.setCodigoIntegracion(codigoIntegracion);			
+			if(!emailPuntoVenta.equals(""))
+				parametroPymeXPV.setEmailPuntoVenta(emailPuntoVenta);
+			
+			if(!formaNotificacion.equals(""))
+				parametroPymeXPV.setFormaNotificacion(Integer.parseInt(formaNotificacion));
+			
+			if(!beneficiarioId.equals(""))
+				parametroPymeXPV.setBeneficiarioId(beneficiarioId);
+			
+			if(!sucursalEmisionId.equals(""))
+				parametroPymeXPV.setSucursalEmisionId(Integer.parseInt(sucursalEmisionId));
+			
+			if(!excepcionesCultivos.equals(""))
+				parametroPymeXPV.setExcepcionesDirectasCultivos(excepcionesCultivos);
+			
+			if(!canalId.equals(""))
+				parametroPymeXPV.setCanalId(new BigInteger(canalId));
+				
+			if(tipoConsulta.equals("buscarTodos")){
+				List<AgriParametroXPuntoVenta> listParametro = parametroPymeXPVDAO.buscarTodos();
+				for(AgriParametroXPuntoVenta parametro: listParametro) {
+					parametroXPVJSONbject.put("puntoVentaId", parametro.getPuntoVentaId());
+					puntoVenta = puntoVentaDAO.buscarPorId(parametro.getPuntoVentaId().toString());
+					parametroXPVJSONbject.put("puntoVentaNombre", puntoVenta.getNombre());
+					agriTipoCalculo = agriTipoCalculoDAO.BuscarPorId(parametro.getTipoCalculoId());
+					parametroXPVJSONbject.put("tipoCalculoNombre", agriTipoCalculo.getNombre());
+					//parametroXPVJSONbject.put("contenedorEnsuranceId", parametro.getContenedorEnsuranceId());					
+					//parametroXPVJSONbject.put("plantillaEnsuranceId", parametro.getPlantillaEnsuranceId());
+					parametroXPVJSONbject.put("codigoIntegracion", parametro.getCodigoIntegracion());
+					if(parametro.getEmisionDirecta())
+						parametroXPVJSONbject.put("tieneEmisionDirecta", "SI");
+					else
+						parametroXPVJSONbject.put("tieneEmisionDirecta", "NO");
+					parametroXPVJSONArray.add(parametroXPVJSONbject);
+				}
+				result.put("parametroArr", parametroXPVJSONArray);
+				
+				List<AgriTipoCalculo> agriTipoCalculoList = agriTipoCalculoDAO.BuscarTodos();
+				for(AgriTipoCalculo tipoCalculo: agriTipoCalculoList) {
+					tipoCalculoJSONbject.put("tipoCalculoId", tipoCalculo.getTipoCalculoId());
+					tipoCalculoJSONbject.put("tipoCalculoNombre", tipoCalculo.getNombre());
+					tipoCalculoJSONArray.add(tipoCalculoJSONbject);
+				}
+				result.put("tipoCalculoArr", tipoCalculoJSONArray);
+			}
+					
+			if(tipoConsulta.equals("buscarPorId")){
+				parametroPymeXPV = parametroPymeXPVDAO.buscarPorId(new BigInteger(puntoVentaId));			 
+				result.put("puntoVentaId", parametroPymeXPV.getPuntoVentaId());
+				result.put("canalId", parametroPymeXPV.getCanalId());
+				result.put("tipoCalculoId", parametroPymeXPV.getTipoCalculoId());
+				result.put("tieneEmisionDirecta", parametroPymeXPV.getEmisionDirecta());
+				result.put("tieneEmisionObligatoria", parametroPymeXPV.isEmisionObligatoria());
+				result.put("emailPuntoVenta", parametroPymeXPV.getEmailPuntoVenta());
+				result.put("formaNotificacion", parametroPymeXPV.getFormaNotificacion());
+				result.put("sucursalEmisionId", parametroPymeXPV.getSucursalEmisionId());
+				result.put("beneficiarioId", parametroPymeXPV.getBeneficiarioId());
+				result.put("codigoIntegracion", parametroPymeXPV.getCodigoIntegracion());
+				result.put("excepcionesCultivos", parametroPymeXPV.getExcepcionesDirectasCultivos());
+			}
+			
+			if(tipoConsulta.equals("encontrarTodosPuntoVenta")){
+				JSONObject PuntoVentaJSONObject = new JSONObject();
+				JSONArray PuntoVentaJSONArray = new JSONArray();
+				/*Buscamos el grupo por Producto Agricola*/
+				GrupoPorProductoDAO grupoPorProductoDAO = new GrupoPorProductoDAO();
+				GrupoPorProducto GPProducto=grupoPorProductoDAO.buscarPorNombre("Agricola");
+				/*buscamos el Producto por punto de venta*/
+				ProductoXPuntoVentaDAO productoXPuntoVentaDAO= new ProductoXPuntoVentaDAO();
+				List<ProductoXPuntoVenta> productoXPuntoVenta=productoXPuntoVentaDAO.buscarPorProductoPuntoVentaListado(GPProducto);
+				for(ProductoXPuntoVenta rs:productoXPuntoVenta){
+					PuntoVentaJSONObject.put("nombre", rs.getPuntoVenta().getNombre());
+					PuntoVentaJSONObject.put("descripcion",rs.getPuntoVenta().getDescripcion());
+					PuntoVentaJSONObject.put("codigo", rs.getPuntoVenta().getId());
+					//PuntoVentaJSONObject.put("agente", agenteaux2);
+					//PuntoVentaJSONObject.put("agente", PuntoVenta.getAgenteId());
+					
+					PuntoVentaJSONArray.add(PuntoVentaJSONObject);
+				}
+				
+				result.put("listadoPuntoVenta", PuntoVentaJSONArray);
+				
+			}
+			
+			
+			if(tipoConsulta.equals("crear")){
+				AgriParametroXPuntoVenta objetoBusacado = new AgriParametroXPuntoVenta();
+				objetoBusacado = parametroPymeXPVDAO.buscarPorId(parametroPymeXPV.getPuntoVentaId());
+				if(objetoBusacado == null)
+					parametroPymeXPVTransaction.crear(parametroPymeXPV);
+				else
+					parametroPymeXPVTransaction.editar(parametroPymeXPV);
+				
+			}
+			
+			
+			if(tipoConsulta.equals("eliminar")){
+				parametroPymeXPVTransaction.eliminar(parametroPymeXPV);
+			}
+			
+			result.put("success", Boolean.TRUE);
+			response.setContentType("application/json; charset=ISO-8859-1"); 
+			result.write(response.getWriter());
+			
+		} catch (Exception e) {
+			result.put("success", Boolean.FALSE);
+			result.put("error", e.getLocalizedMessage());
+			response.setContentType("application/json; charset=ISO-8859-1"); 
+			result.write(response.getWriter());
+			e.printStackTrace();
+		}
+	}
+
+}

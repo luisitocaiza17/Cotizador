@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 6.0.3  -->
+<!-- 2015-02-13T08:13:13 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="coberturasAdicionalesTR" pageWidth="548" pageHeight="842" columnWidth="548" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="865b7234-28f9-4335-884c-a04399415e28">
+	<property name="com.jaspersoft.studio.unit." value="cm"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="cotizador"/>
+	<parameter name="COTIZACION" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT * FROM (
+SELECT distinct -- TEXTOS DEL DETALLE
+    convert( DP.texto using utf8) texto_cobertura,
+	C.orden,
+	C.id
+FROM
+    DETALLE_PRODUCTO DP,
+    CONFIGURACION_PRODUCTO CP,
+    COBERTURAS_CONJUNTO CC,
+    CONJUNTO_COBERTURAS COC,
+    COBERTURA C,
+    COTIZACION COT,
+    PRODUCTO_X_PUNTO_VENTA PPPV,
+    PRODUCTO P,
+    GRUPO_POR_PRODUCTO GPP
+WHERE
+    COT.producto_id = P.id
+        AND COT.punto_venta_id = PPPV.punto_venta_id
+        and DP.config_producto_id = CP.id
+        AND CP.producto_id = COT.producto_id
+        AND GPP.producto_id = CP.producto_id
+        AND DP.plan_id = PPPV.plan_id
+        AND CC.id = DP.coberturas_conj_id
+        AND COC.id = CC.conjunto_cober_id
+        AND C.id = CC.cobertura_id
+        AND COT.producto_x_punto_venta_id = PPPV.id
+        and C.tipo_cobertura_id = 4
+        AND COT.id = $P{COTIZACION}
+UNION SELECT distinct -- LOS TEXTOS QUE SE ENCUENTRAN EN LA COBERTURA NO EN EL DETALLE
+    convert( CO.texto using utf8) texto_cobertura,
+    CO.orden,
+	CO.id
+FROM
+    COBERTURA CO,
+    COTIZACION_COBERTURA CC,
+    COTIZACION_DETALLE CD
+WHERE
+    CO.id = CC.cobertura_id
+        AND CC.cotizacion_detalle_id = CD.id
+        AND CD.cotizacion_id = $P{COTIZACION}
+        AND CO.tipo_cobertura_id = 4
+        AND CO.id NOT IN (SELECT 
+            C.id
+        FROM
+            DETALLE_PRODUCTO DP,
+            CONFIGURACION_PRODUCTO CP,
+            COBERTURAS_CONJUNTO CC,
+            CONJUNTO_COBERTURAS COC,
+            COBERTURA C,
+            COTIZACION COT,
+            PRODUCTO_X_PUNTO_VENTA PPPV,
+            PRODUCTO P,
+            GRUPO_POR_PRODUCTO GPP
+        WHERE
+            COT.producto_id = P.id
+                AND COT.punto_venta_id = PPPV.punto_venta_id
+                and DP.config_producto_id = CP.id
+                AND CP.producto_id = COT.producto_id
+                AND GPP.producto_id = CP.producto_id
+                AND DP.plan_id = PPPV.plan_id
+                AND CC.id = DP.coberturas_conj_id
+                AND COC.id = CC.conjunto_cober_id
+                AND C.id = CC.cobertura_id
+                AND COT.producto_x_punto_venta_id = PPPV.id
+                and C.tipo_cobertura_id = 4
+                AND COT.id = $P{COTIZACION}) )AS A
+                WHERE '30075' IN  -- QUE LA PRINCIPAL SEA TODORIESGO
+                (SELECT 
+    B.id
+FROM
+    (
+SELECT distinct -- seleccionadas que se encuentren en el detalle producto
+        convert( DP.texto using utf8) texto_cobertura,
+            C.nemotecnico,
+            C.orden,
+			C.id
+    FROM
+        DETALLE_PRODUCTO DP, CONFIGURACION_PRODUCTO CP, COBERTURAS_CONJUNTO CC, CONJUNTO_COBERTURAS COC, COBERTURA C, COTIZACION_COBERTURA COTCOB, COTIZACION_DETALLE CD, COTIZACION COT, PRODUCTO_X_PUNTO_VENTA PPPV, PRODUCTO P, GRUPO_POR_PRODUCTO GPP
+    WHERE
+        COT.id = CD.cotizacion_id
+            and COTCOB.cobertura_id = C.id
+            and COT.producto_id = P.id
+            AND COT.punto_venta_id = PPPV.punto_venta_id
+            and CD.id = COTCOB.cotizacion_detalle_id
+            and DP.config_producto_id = CP.id
+            AND CP.producto_id = COT.producto_id
+            AND DP.plan_id = PPPV.plan_id
+            AND CC.id = DP.coberturas_conj_id
+            AND COC.id = CC.conjunto_cober_id
+            AND C.id = CC.cobertura_id
+            AND GPP.producto_id = P.id
+            AND COT.producto_x_punto_venta_id = PPPV.id
+            and C.tipo_cobertura_id = 1
+            and COT.id =  $P{COTIZACION} union 
+SELECT distinct  -- seleccionadas que no se encuentren en el detalle producto
+        convert( CO.texto using utf8) texto_cobertura,
+            CO.nemotecnico,
+            CO.orden,
+			CO.id
+    FROM
+        COBERTURA CO, COTIZACION_COBERTURA CC, COTIZACION_DETALLE CD
+    WHERE
+        CO.id = CC.cobertura_id
+            AND CC.cotizacion_detalle_id = CD.id
+            AND CO.tipo_cobertura_id = 1
+            and CD.cotizacion_id =  $P{COTIZACION}
+            AND CO.id NOT IN (SELECT 
+                C.id
+            FROM
+                DETALLE_PRODUCTO DP, CONFIGURACION_PRODUCTO CP, COBERTURAS_CONJUNTO CC, CONJUNTO_COBERTURAS COC, COBERTURA C, COTIZACION_COBERTURA COTCOB, COTIZACION_DETALLE CD, COTIZACION COT, PRODUCTO_X_PUNTO_VENTA PPPV, PRODUCTO P, GRUPO_POR_PRODUCTO GPP
+            WHERE
+                COT.id = CD.cotizacion_id
+                    and COTCOB.cobertura_id = C.id
+                    and COT.producto_id = P.id
+                    AND COT.punto_venta_id = PPPV.punto_venta_id
+                    and CD.id = COTCOB.cotizacion_detalle_id
+                    and DP.config_producto_id = CP.id
+                    AND CP.producto_id = COT.producto_id
+                    AND DP.plan_id = PPPV.plan_id
+                    AND CC.id = DP.coberturas_conj_id
+                    AND COC.id = CC.conjunto_cober_id
+                    AND C.id = CC.cobertura_id
+                    AND GPP.producto_id = P.id
+                    AND COT.producto_x_punto_venta_id = PPPV.id
+                    and COT.id =  $P{COTIZACION}
+                    and C.tipo_cobertura_id = 1)
+                    ) AS B
+                    ) OR
+'40010' IN -- QUE LA PRINCIPAL SEA TODORIESGO
+                (SELECT 
+    B.id
+FROM
+    (
+SELECT distinct -- seleccionadas que se encuentren en el detalle producto
+        convert( DP.texto using utf8) texto_cobertura,
+            C.nemotecnico,
+            C.orden,
+			C.id
+    FROM
+        DETALLE_PRODUCTO DP, CONFIGURACION_PRODUCTO CP, COBERTURAS_CONJUNTO CC, CONJUNTO_COBERTURAS COC, COBERTURA C, COTIZACION_COBERTURA COTCOB, COTIZACION_DETALLE CD, COTIZACION COT, PRODUCTO_X_PUNTO_VENTA PPPV, PRODUCTO P, GRUPO_POR_PRODUCTO GPP
+    WHERE
+        COT.id = CD.cotizacion_id
+            and COTCOB.cobertura_id = C.id
+            and COT.producto_id = P.id
+            AND COT.punto_venta_id = PPPV.punto_venta_id
+            and CD.id = COTCOB.cotizacion_detalle_id
+            and DP.config_producto_id = CP.id
+            AND CP.producto_id = COT.producto_id
+            AND DP.plan_id = PPPV.plan_id
+            AND CC.id = DP.coberturas_conj_id
+            AND COC.id = CC.conjunto_cober_id
+            AND C.id = CC.cobertura_id
+            AND GPP.producto_id = P.id
+            AND COT.producto_x_punto_venta_id = PPPV.id
+            and C.tipo_cobertura_id = 1
+            and COT.id =  $P{COTIZACION} union 
+SELECT distinct  -- seleccionadas que no se encuentren en el detalle producto
+        convert( CO.texto using utf8) texto_cobertura,
+            CO.nemotecnico,
+            CO.orden,
+			CO.id
+    FROM
+        COBERTURA CO, COTIZACION_COBERTURA CC, COTIZACION_DETALLE CD
+    WHERE
+        CO.id = CC.cobertura_id
+            AND CC.cotizacion_detalle_id = CD.id
+            AND CO.tipo_cobertura_id = 1
+            and CD.cotizacion_id =  $P{COTIZACION}
+            AND CO.id NOT IN (SELECT 
+                C.id
+            FROM
+                DETALLE_PRODUCTO DP, CONFIGURACION_PRODUCTO CP, COBERTURAS_CONJUNTO CC, CONJUNTO_COBERTURAS COC, COBERTURA C, COTIZACION_COBERTURA COTCOB, COTIZACION_DETALLE CD, COTIZACION COT, PRODUCTO_X_PUNTO_VENTA PPPV, PRODUCTO P, GRUPO_POR_PRODUCTO GPP
+            WHERE
+                COT.id = CD.cotizacion_id
+                    and COTCOB.cobertura_id = C.id
+                    and COT.producto_id = P.id
+                    AND COT.punto_venta_id = PPPV.punto_venta_id
+                    and CD.id = COTCOB.cotizacion_detalle_id
+                    and DP.config_producto_id = CP.id
+                    AND CP.producto_id = COT.producto_id
+                    AND DP.plan_id = PPPV.plan_id
+                    AND CC.id = DP.coberturas_conj_id
+                    AND COC.id = CC.conjunto_cober_id
+                    AND C.id = CC.cobertura_id
+                    AND GPP.producto_id = P.id
+                    AND COT.producto_x_punto_venta_id = PPPV.id
+                    and COT.id =  $P{COTIZACION}
+                    and C.tipo_cobertura_id = 1)
+                    ) AS B
+                    )
+                  ORDER BY A.orden]]>
+	</queryString>
+	<field name="texto_cobertura" class="java.lang.String"/>
+	<field name="orden" class="java.lang.Integer"/>
+	<field name="id" class="java.lang.Long"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement isPrintRepeatedValues="false" x="0" y="0" width="548" height="22" uuid="92bb5dba-f1a7-4814-b2c6-777a76c3734b">
+					<property name="local_mesure_unitwidth" value="cm"/>
+					<property name="local_mesure_unitheight" value="cm"/>
+					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+				</reportElement>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{texto_cobertura}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,136 @@
+diff --git a/WebContent/dashboard/AgriParametroPorCanal.jsp b/WebContent/dashboard/AgriParametroPorCanal.jsp
+--- a/WebContent/dashboard/AgriParametroPorCanal.jsp
++++ b/WebContent/dashboard/AgriParametroPorCanal.jsp
+@@ -487,8 +487,8 @@
+ 									</tr>
+ 									<tr>
+ 										<td>
+-											<label style="width: 100%">Sucursal ENSURANCE ID:</label>
+-											<input type="number" id="sucursalEmisionId" name="sucursalEmisionId" class="form-control" >
++											<label style="width: 100%">Numero Contenedor:</label>
++											<input type="text" id="sucursalEmisionId" name="sucursalEmisionId" class="form-control" >
+ 										</td>
+ 									</tr>
+ 									<tr id="soloActulizar">
+diff --git a/src/com/qbe/cotizador/model/AgriParametroXCanal.java b/src/com/qbe/cotizador/model/AgriParametroXCanal.java
+--- a/src/com/qbe/cotizador/model/AgriParametroXCanal.java
++++ b/src/com/qbe/cotizador/model/AgriParametroXCanal.java
+@@ -30,17 +30,6 @@
+ 	@Column(name="PUNTO_VENTA_ID")
+ 	private BigInteger puntoVentaId;
+ 	
+-	@Column(name="SUCURAL_EMISION_ID")
+-	private String sucursalEmisionId;
+-	
+-	public String getSucursalEmisionId() {
+-		return sucursalEmisionId;
+-	}
+-
+-	public void setSucursalEmisionId(String sucursalEmisionId) {
+-		this.sucursalEmisionId = sucursalEmisionId;
+-	}
+-
+ 	@Column(name="TIPO_CULTIVO_ID")
+ 	private BigInteger tipoCultivoId;
+ 	
+@@ -58,4 +47,6 @@
+ 	@Column(name="PLANTILLA_HTML")
+     private byte[] plantillaHtml;
+ 	
++	@Column(name="CONTENEDOR_NUMERO")
++	private String contenedorNumero;
+ 	
+@@ -61,4 +52,11 @@
+ 	
++	public String getContenedorNumero() {
++		return contenedorNumero;
++	}
++
++	public void setContenedorNumero(String contenedorNumero) {
++		this.contenedorNumero = contenedorNumero;
++	}
+ 
+ 	public byte[] getPlantillaHtml() {
+ 		return plantillaHtml;
+diff --git a/src/com/qbe/cotizador/servicios/QBE/archivoPlano/GeneradorReporte.java b/src/com/qbe/cotizador/servicios/QBE/archivoPlano/GeneradorReporte.java
+--- a/src/com/qbe/cotizador/servicios/QBE/archivoPlano/GeneradorReporte.java
++++ b/src/com/qbe/cotizador/servicios/QBE/archivoPlano/GeneradorReporte.java
+@@ -269,7 +269,7 @@
+ 		//Numero de contenedor
+ 		
+ 		//Armado Final de parametros a mostrar en la poliza
+-		parametersHeader.put("NumeroPoliza", agriParametroXCanal.getContenedorEnsuranceId()+"-"+detalleCotizacion.getId().toString());
++		parametersHeader.put("NumeroPoliza", agriParametroXCanal.getContenedorNumero()+"-"+detalleCotizacion.getId().toString());
+ 		//buscamos el cliente
+ 		Cliente cliente = new Cliente();
+ 		ClienteDAO clienteDAO = new ClienteDAO();
+@@ -281,8 +281,12 @@
+ 		parametersHeader.put("Cliente", cotizacion.getAsegurado().getNombreCompleto());
+ 		parametersHeader.put("Provincia", detalleCotizacion.getProvinciaNombre());
+ 		parametersHeader.put("Canton", detalleCotizacion.getCantonNombre());
+-		parametersHeader.put("Parroquia", detalleCotizacion.getParroquiaNombre());
++		if(detalleCotizacion.getParroquiaNombre()==null || detalleCotizacion.getParroquiaNombre().equals("")){
++			//nada
++		}else
++			parametersHeader.put("Parroquia", detalleCotizacion.getParroquiaNombre());
++		
+ 		parametersHeader.put("SitioReferencia", detalleCotizacion.getDireccionSiembra());
+ 		parametersHeader.put("Cultivo", detalleCotizacion.getTipoCultivoNombre());
+ 		parametersHeader.put("CostoProduccion", ""+detalleCotizacion.getCostoProduccion());
+ 		parametersHeader.put("Hectareas", ""+detalleCotizacion.getHectareasAsegurables());
+@@ -285,8 +289,7 @@
+ 		parametersHeader.put("SitioReferencia", detalleCotizacion.getDireccionSiembra());
+ 		parametersHeader.put("Cultivo", detalleCotizacion.getTipoCultivoNombre());
+ 		parametersHeader.put("CostoProduccion", ""+detalleCotizacion.getCostoProduccion());
+ 		parametersHeader.put("Hectareas", ""+detalleCotizacion.getHectareasAsegurables());
+-		parametersHeader.put("CultivoDias", ""+VigenciaCoberura);
+ 		parametersHeader.put("SumaAsegurada", (new BigDecimal(detalleCotizacion.getSumaAseguradaTotal()).setScale(2,RoundingMode.HALF_UP)).toString());
+ 		parametersHeader.put("PrecioAjuste", tipoCultivo.getPrecioAjuste());
+ 		parametersHeader.put("UnidadMedida", tipoCultivo.getUnidadMedida());
+@@ -290,4 +293,6 @@
+ 		parametersHeader.put("SumaAsegurada", (new BigDecimal(detalleCotizacion.getSumaAseguradaTotal()).setScale(2,RoundingMode.HALF_UP)).toString());
+ 		parametersHeader.put("PrecioAjuste", tipoCultivo.getPrecioAjuste());
+ 		parametersHeader.put("UnidadMedida", tipoCultivo.getUnidadMedida());
++		parametersHeader.put("CultivoDias", ""+VigenciaCoberura);
++		
+ 		if(tipoCultivo.getTipo()==2){
+@@ -293,3 +298,4 @@
+ 		if(tipoCultivo.getTipo()==2){
+-			parametersHeader.put("VigenciaCultivo", " d&iacute;as (desde la siembra hasta la madurez fisiol&oacute;gica del cultivo)");
++			
++			parametersHeader.put("VigenciaCultivo1",VigenciaCoberura+ " d&iacute;as (Desde la siembra hasta la madurez fisiol&oacute;gica del cultivo).");
+ 		}else{
+@@ -295,5 +301,6 @@
+ 		}else{
+-			parametersHeader.put("VigenciaCultivo", " 365 d&iacute;as.");
++			parametersHeader.put("VigenciaCultivo1", "365 D&iacute;as." );
++			
+ 		}
+ 		
+ 		
+@@ -303,7 +310,7 @@
+ 		}catch(Exception e){
+ 			
+ 		}
+-		parametersHeader.put("Prima",""+ detalleCotizacion.getPrimaNetaTotal());
++		parametersHeader.put("Prima",""+ detalleCotizacion.getTotalFactura());
+ 		parametersHeader.put("Tasa",""+""+ detalleCotizacion.getTasa());
+ 		if(cotizacion.getPuntoVenta().getNombre().equals("PRONACA")){
+ 			parametersHeader.put("Endoso", "FIDEICOMISO AGROINVERSIONES DOS");
+diff --git a/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java b/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java
+--- a/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java
++++ b/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java
+@@ -958,9 +958,10 @@
+ 						throw new Exception("105");
+ 					}
+ 					/*Verificamos valores iguales a pagar*/
+-					String valorPagar=""+existeCotizacion.getTotalFactura();
+-					if(!valorPagar.equals(in0.getValorDesembolso())){
+-						mensaje="EL VALOR DEL DESEMBOLSO NO COINCIDE CON EL VALOR DE LA CUOTA A PAGAR";
++					double valorPagar=existeCotizacion.getTotalFactura();
++					double valorBC=Double.parseDouble(in0.getValorDesembolso().trim());
++					if(valorPagar!=valorBC){
++						mensaje="EL VALOR DEL DESEMBOLSO NO COINCIDE CON EL VALOR DE LA CUOTA A PAGAR QBE:"+valorPagar+" BC: "+in0.getValorDesembolso();
+ 						throw new Exception("104");
+ 					}
+ 					/*Proceso de cambio de estado de cotizacion a Pendiente de Emitir*/

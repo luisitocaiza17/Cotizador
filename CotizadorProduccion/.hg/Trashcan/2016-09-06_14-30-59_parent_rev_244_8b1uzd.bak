@@ -1,0 +1,361 @@
+diff --git a/WebContent/WEB-INF/web.xml b/WebContent/WEB-INF/web.xml
+--- a/WebContent/WEB-INF/web.xml
++++ b/WebContent/WEB-INF/web.xml
+@@ -398,8 +398,8 @@
+   <servlet-mapping>
+     <servlet-name>com.qbe.cotizador.servlets.cotizacion.ContenedorController</servlet-name>
+     <url-pattern>/ContenedorController</url-pattern>
+-  </servlet-mapping>  
+-   <servlet>
++  </servlet-mapping>
++  <servlet>
+     <servlet-name>com.qbe.cotizador.servlets.cotizacion.vehiculos_dinamicos.tarificador.TarificadorController</servlet-name>
+     <servlet-class>com.qbe.cotizador.servlets.cotizacion.vehiculos_dinamicos.tarificador.TarificadorController</servlet-class>
+   </servlet>
+@@ -407,7 +407,7 @@
+     <servlet-name>com.qbe.cotizador.servlets.cotizacion.vehiculos_dinamicos.tarificador.TarificadorController</servlet-name>
+     <url-pattern>/TarificadorController</url-pattern>
+   </servlet-mapping>
+-    <servlet>
++  <servlet>
+     <servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.novacredit.VhNovacreditCotizacionController</servlet-name>
+     <servlet-class>com.qbe.cotizador.servlets.producto.vehiculo.novacredit.VhNovacreditCotizacionController</servlet-class>
+   </servlet>
+@@ -415,7 +415,6 @@
+     <servlet-name>com.qbe.cotizador.servlets.producto.vehiculo.novacredit.VhNovacreditCotizacionController</servlet-name>
+     <url-pattern>/VhNovacreditCotizacionController</url-pattern>
+   </servlet-mapping>
+-  
+   <filter>
+     <filter-name>sitemesh</filter-name>
+     <filter-class>com.opensymphony.sitemesh.webapp.SiteMeshFilter</filter-class>
+@@ -432,4 +431,4 @@
+     <persistence-context-ref-name>CotizadorWebPC</persistence-context-ref-name>
+     <persistence-unit-name>CotizadorWebPU</persistence-unit-name>
+   </persistence-context-ref>
+-</web-app>
++</web-app>
+\ No newline at end of file
+diff --git a/WebContent/dashboard/AgriAprobadosObservaciones.jsp b/WebContent/dashboard/AgriAprobadosObservaciones.jsp
+--- a/WebContent/dashboard/AgriAprobadosObservaciones.jsp
++++ b/WebContent/dashboard/AgriAprobadosObservaciones.jsp
+@@ -310,10 +310,12 @@
+             columns: [
+ 						{ field: "id", title: "Id Cotización", width: "60px"},
+ 						{ field: "idCotizacion2", title: "Id Agricola.", width: "60px"},
+-						{ field: "Ciclo", title: "Periodo" , width: "160px"},
++						{ field: "Confirmacion", title: "Confirmación Canal", width: "100px",headerAttributes: { style: "white-space: normal"},attributes:{style:"color: red;"}},
++						{ field: "EstadoCotizacion", title: "Estado", width: "100px"},	
++						{ field: "Ciclo", title: "Periodo" , width: "160px",hidden: true, exportar: true},
+ 						{ field: "FechaElaboracion", title: "Fecha Elaboración",type:"date", width: "100px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 						{ field: "IdentificacionCliente", title: "Identificación Cliente", width: "90px",headerAttributes: { style: "white-space: normal"}},
+ 						{ field: "NombresCliente", title: "Cliente", width: "100px",headerAttributes: { style: "white-space: normal"}},
+ 						{ field: "CanalNombre", title: "Sponsor", width: "80px"},
+ 						{ field: "PuntoVenta", title: "Canal", width: "120px"},
+ 						{ field: "NumeroTramite", title: "Nro. Trámite", width: "80px",headerAttributes: { style: "white-space: normal"}},
+@@ -314,10 +316,10 @@
+ 						{ field: "FechaElaboracion", title: "Fecha Elaboración",type:"date", width: "100px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 						{ field: "IdentificacionCliente", title: "Identificación Cliente", width: "90px",headerAttributes: { style: "white-space: normal"}},
+ 						{ field: "NombresCliente", title: "Cliente", width: "100px",headerAttributes: { style: "white-space: normal"}},
+ 						{ field: "CanalNombre", title: "Sponsor", width: "80px"},
+ 						{ field: "PuntoVenta", title: "Canal", width: "120px"},
+ 						{ field: "NumeroTramite", title: "Nro. Trámite", width: "80px",headerAttributes: { style: "white-space: normal"}},
+-						{ field: "VigenciaDias", title: "Vigencia en Dias", width: "120px"},
++						{ field: "VigenciaDias", title: "Vigencia en Dias", width: "120px",hidden: true, exportar: true},
+ 						{ field: "fechaVigenciaDesde", title: "Vigencia Desde" ,type:"date", width: "120px", hidden: true, exportar: true},
+ 						{ field: "fechaVigenciaHasta", title: "Vigencia Hasta",type:"date", width: "120px", hidden: true, exportar: true},
+ 						{ field: "tipoCultivoNombre", title: "Cultivo", width: "100px"},
+@@ -325,7 +327,7 @@
+ 						{ field: "cantonNombre", title: "Cantón", width: "100px"},
+ 						{ field: "parroquiaNombre", title: "Parroquia", width: "100px"},
+ 						{ field: "DireccionSiembra", title: "Sitio Inversión", width: "100px"},
+-						{ field: "Telefono", title: "Telefono", width: "100px"},
++						{ field: "Telefono", title: "Telefono", width: "100px",hidden: true, exportar: true},
+ 						{ field: "hectareasAsegurables", title: "Has. Aseg", width: "50px",headerAttributes: { style: "white-space: normal"}},
+ 						{ field: "sumaAseguradaTotal", title: "Monto Asegurado", width: "70px",headerAttributes: { style: "white-space: normal"}},
+ 						{ field: "fechaSiembra", title: "Fecha Siembra", type:"date", format:"{0:dd/MM/yyyy}", width: "100px",headerAttributes: { style: "white-space: normal"}},
+@@ -342,7 +344,7 @@
+ 						{ field: "DisponeRiego", title: "Dispone Riego", width: "50px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true },
+ 						{ field: "DisponeAsistencia", title: "Dispone Asistencia", width: "50px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 						{ field: "AgricultorTecnificado", title: "Agricultor es Tecnificado", width: "50px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+-						{ field: "ObservacionRegla", title: "Observación", width: "160px"},
++						{ field: "ObservacionRegla", title: "Observación", width: "160px",hidden: true, exportar: true},
+ 						{ field: "EstadoCotizacion", title: "Estado", width: "100px", hidden: true, exportar: true},                     
+                       { command: { text: "Ver Detalle", click: fnEventoClick }, title: " ", width: "100px"}],
+                 height: 500,
+@@ -356,8 +358,14 @@
+                 scrollable: {
+                     virtual: true
+                 },
+-            }); 
+-
++            }).on("click", "tbody td", function(e) {
++              	var cell = $(e.currentTarget);
++                var cellIndex = cell[0].cellIndex;
++                var grid = $("#grid").data("kendoGrid");
++                var column = grid.columns[0];
++                var dataItem = grid.dataItem(cell.closest("tr"));
++                cargarEndoso(dataItem[column.field]);
++            });
+ 		
+ 		var exportFlag=false;
+ 		$("#grid").data("kendoGrid").bind("excelExport", function (e) {
+@@ -424,6 +432,87 @@
+ 						});
+ 	});
+ 	
++	
++	function cargarEndoso (id){
++		$("#grid2").kendoGrid({
++			toolbar: ["excel"],
++            excel: {
++                fileName: "QBE_Endoso.xlsx",
++                filterable: true,
++                allPages: true
++            },
++			dataSource: {
++                type: "json",
++                serverPaging: true,
++                serverSorting: true,
++                pageSize: 20,
++                transport:{
++                	read: {
++                		url: "../AgriCotizacionEndosoController",
++                		data: {
++                			"tipoConsulta" : "cargarEndoso",
++    						"id" : id
++    					}
++                	}
++                	
++                },
++                schema: {
++                	data: "Data",
++                	total: "Total",
++                }
++            },
++            columns: [
++						{ field: "id", title: "Id Endoso", width: "90px",hidden: true, exportar: true},
++						{ field: "cotizacionId", title: "Id Cotizacion.", width: "60px", hidden: true, exportar: true},
++						{ field: "tipo", title: "Tipo Endoso", width: "80px"},
++						{ field: "sumaAsegurada", title: "Suma Asegurada", width: "90px"},
++						{ field: "prima", title: "Prima", width: "50px"},
++						{ field: "fecha_Proceso", title: "fecha",type:"date",format:"{0:dd/MM/yyyy}", width: "80px",headerAttributes: { style: "white-space: normal"}},
++						{ field: "valor", title: "valor", width: "60px"},
++						{ field: "tipoSubEndoso", title: "Tipo SubEndoso", width: "60px"},
++						{ field: "numHectareas", title: "Hectareas", width: "80px",headerAttributes: { style: "white-space: normal"}}
++						],
++                height: 500,
++                selectable: true,
++                resizable: true,
++                pageable: {
++                    info: true,
++                    numeric: false,
++                    previousNext: false
++                },
++                scrollable: {
++                    virtual: true
++                },
++            })
++		
++		var exportFlag=false;
++		$("#grid2").data("kendoGrid").bind("excelExport", function (e) {
++			var columns = e.sender.columns;
++			if (!exportFlag) {
++	            jQuery.each(columns, function (index) {
++	                if (this.exportar) {
++	                	e.sender.showColumn(this.field);
++	                }
++	            });
++	            
++	            //e.sender.showColumn("AgenteId");
++	            e.preventDefault();
++	            exportFlag = true;
++	            setTimeout(function () {
++	                e.sender.saveAsExcel();
++	            }, 1000);
++	        } else {
++	        	jQuery.each(columns, function (index) {
++	                if (this.exportar) {
++	                	e.sender.hideColumn(this.field);
++	                }
++	            });
++	            exportFlag = false;
++	        }
++		});
++		
++	}
++	
+ 	function fnEventoClick(e) {
+         e.preventDefault();
+         var dataItem = this.dataItem($(e.currentTarget).closest("tr"));       
+@@ -836,9 +925,9 @@
+ 	</div>	
+ 
+ 	<!-- Table -->
+-	<div class="row">
+-		<div class="col-lg-12">
++	<div class="row">		
++		<div class="col-lg-6">
+ 			<div class="table-responsive">				
+ 				<div id="grid"></div>
+ 			</div>
+ 		</div>
+@@ -841,7 +930,12 @@
+ 			<div class="table-responsive">				
+ 				<div id="grid"></div>
+ 			</div>
+ 		</div>
++		<div class="col-lg-1">
++		</div>
++		<div class="col-lg-5">
++			<div id="grid2"></div>
++		</div>
+ 	</div>
+ </body>
+ </html>
+\ No newline at end of file
+diff --git a/WebContent/dashboard/AgriCliente.jsp b/WebContent/dashboard/AgriCliente.jsp
+--- a/WebContent/dashboard/AgriCliente.jsp
++++ b/WebContent/dashboard/AgriCliente.jsp
+@@ -318,7 +318,7 @@
+ 				<thead>
+ 					<tr>
+ 						<td colspan="6" style="font-weight: bold;" align="center">Buscador
+-								Cotizaciones Pendientes por Aprobar</td>
++								de clientes</td>
+ 
+ 					</tr>
+ 					<tr>
+diff --git a/WebContent/dashboard/LogCotizaciones.jsp b/WebContent/dashboard/LogCotizaciones.jsp
+--- a/WebContent/dashboard/LogCotizaciones.jsp
++++ b/WebContent/dashboard/LogCotizaciones.jsp
+@@ -67,7 +67,7 @@
+ 		var agenteList = "";
+ 		
+ 		$(document).ready(function() {
+-				activarMenu("ResumenCotizaciones");
++				activarMenu("LogCotizaciones");
+ 				
+ 				$("#loading").hide();
+ 				
+diff --git a/WebContent/dashboard/agriVariables.jsp b/WebContent/dashboard/agriVariables.jsp
+--- a/WebContent/dashboard/agriVariables.jsp
++++ b/WebContent/dashboard/agriVariables.jsp
+@@ -6,7 +6,7 @@
+ <head>
+ <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ <meta http-equiv="Cache-control" content="no-cache">
+-<title>Cotizaciones Agr&iacute;cola Log - CotizadorQBE</title>
++<title>Variables - CotizadorQBE</title>
+ <!-- <script src="../static/js/jquery.min.js"></script> -->
+ <script src="../static/js/cotizador/comun.js"></script>
+ <link href="../static/css/loading.css" rel="stylesheet">
+@@ -67,7 +67,7 @@
+ 		var agenteList = "";
+ 		
+ 		$(document).ready(function() {
+-				activarMenu("agriVariable");
++				activarMenu("agriVariables");
+ 				
+ 				$("#loading").hide();
+ 				
+diff --git a/build/classes/com/qbe/cotizador/model/Cliente.class b/build/classes/com/qbe/cotizador/model/Cliente.class
+index a726db7131b3793cd13a36e1be2832277eb944a6..c866b59b23883a6c1d05180f27e0a6d4a62941cc
+GIT binary patch
+literal 2569
+zc$|e*ZFAE`5Z()ZA*pGIaY6|tnAbWXL=b2ThNPs90uD|>Y?BV*Lq?Ww%rUkOBsp#R
+zoBE-hDbtyL=nv?R>hw8DR$BR-c*Z{M-m}j>y4^kh{m-9&5zzyBoux5GS8drdKDM}F
+zOJDqKwWVwHWSe)5N>^~l=UGZII{)4}w2ZFhbc~(Wdv5z#$}lPfULlPJcZJnObgRn&
+z_5yQ{yPlBF>*_iqw#n#RMLM2uIsTs2?ejE+AI4}*v>D}V$0-`VE1b>~MwjY+#}_@m
+zCp-b_HOG;@<%85?G!q2;WPDI*JfAx@H>zy}UDs?p=MHx*pSOeD0G;)GWp|EF#3NJl
+z=tF?7uAAG<YV!@FjAi@cP~xTb8D()qqHW;?uGK~zq!~iMaz&GB%W{sIa>r3w@&UC1
+zo3?ahPuLct#gW8oLuhc!X>x2z;Z$U|-*W&+IaUu<nu&8A@Im;2s>BpZBszVLou~yE
+z&1y(v!u)Z-fjx-GJQa@cR~elt&F>*;1&Sx=4Bg7nHM-7dvL+n9-S4%y+YH+#Uz0Yv
+z#zODFj+`m~o$yXN+(;s1q&wWNLVuw&Kio^>#OQ90a&!(rF9c4PhH*;kIEdDw8bkfQ
+zihYoy0!?GjJKjr`_7!{raC6WFH<0|aK2Us*b2LL25$ydZ_-5(USe0;kpfAxVODE*k
+zw2G4PU5+l%EGRuar7>EOhEa(tC~?UKQmNK+G^b9#;AsFjh=%ODHs27c>bc0hr0S#Z
+zK6N1e5z1cFY;L2&+q->SL)=rHaj2$VKN>Mqaa|bXZS_6da$iYT^-21p+GcdSVb;t_
+zvuGDL>N{J-2n+MacihFgB-$%wH9@mOG*S5!+wy5F(T!4EDVF2QB_XUS+Y(c8aRe3W
+z`G0)av50s$D)|pD%({u>;oVkTDdWgw6o-MuAmE#(49!xO&f<9-clQ`g;ES1p{W<I@
+zSd&=K!=B=lrwedkYyv3SJ%VMhei8W4dy#JvmhxSO{iR1&V9v$7pJBZkZWIFpHwb=j
+z1pi{Vhq0y?{-B$`1*Es}t8@{~Q;HVoD?H^w5S8G=e-6BNA_5~O_?;GijR`V=^R6~{
+zDF{-*t3aznnT0!_Xfc`oK4O*whM5o*F{r2T&=}nVYFNnfF9{)EYlS?7KPlw$Ct6Ml
+zd5oCy2qCIGD)Be;twzYB<cX|kg_P-u?nE9Xg{&dw`w>FI{$TVJIfjL-CWV+<A<vLP
+zBV;uxq>7l$5kkVIWDu(BkxEj?mR5+V?~zJU$Sz{)BZPzlFh(0e%=2IrUgGIR@B)lB
+f-%{#X;K5+jXv?GR*xXU(tJvICW<53=%544%7qTs#
+
+diff --git a/build/classes/com/qbe/cotizador/model/Color.class b/build/classes/com/qbe/cotizador/model/Color.class
+index 9856aead0464997a1da2320328e0b95f5ba8f940..37865b1e5ec8c8a833e53e71da566ae889b1593b
+GIT binary patch
+literal 3655
+zc$}42`&Sc36ut{2fw+Q1q>2?&TWNsGw#BvzNR<#2jEN=@3f9N68N$+J2ls(uANKj*
+z^oRDGs(qZ(KcIh9Prun+LbBOV<ec4|J9F=MzkBD-o$$}UfBsEGlk`)JIwU%y@tX2@
+zohcf(^=E3Cn@WwBSyf5%DmP=)CDE}hbw^dIs!>t$>sw5-V-%HWz@62(Qe>vCR$;qd
+zWl*+UahaKx&W*c^^Abr*5*<x*!?IPwURJ9Pi;(vxNz|d2B}!!XT@-CoH!9N-ohmqn
+zt=HJHZs~x&W*FR7ZGc)54Y~$Tm2Kh1vYDYVWw8vSb0G`YnZZoeW@Xnml)5cj$d%m#
+z_2H?syY1>P&S!F^#nP%oQB||`9gd*ZB$72=%@~$rsxXsiC<F^xbZQ1Lx(u}joue>$
+z$o6fb2CuD~81!+Z*5=D>Q`ej-M~uh3q&T)-RkFYXNKa9(7^>|EgQ>vsOt#%l=9`eG
+zX9093glgVkC4Ngac16TBb$gqY=a8X@CJF&eXLLiiXC>-PjV>deG_d2;Nh30yqqh-2
+zRySDAsjV}!<ds4q%QaMjih6+TPj=axI)XdfmaSWNpb)7rdl9uUkQ!~RjvkU|LMEAx
+zLecURPo!G)1k)Y>UGsMh+}DKdMVSWZ1lFwmwXW2fQ163!x?x|1`em60g{wZRdCddQ
+zxmzgouE;bb^aO0q-`E5+^1;1L>;=`hyE845ud%1XeOji|^d``)5SPbOL60KZE5X^<
+za4GBuoA(&!#oy<CwOnqtkf@M4EcobQ72^o|rc9sG)gyF^@-fOu)Y}}9Ot<L{wjP86
+zMdEd{>Cv?~73pq_N)nA6&aX_%v?3abTMy!RoNFJOSJ5I{y*!YSLnj31z+^SP!<y$s
+z(4Wh6Uj!KS6eNnF;+BeeWMT*vWiVT@Hk2)k8;Y3qgN~7k-3wog(<2(`CRu!$OdC`|
+z`nDZgqDvv^3rT3}R5uO8X^W~c`U17FzdXlzm8phIH8Q|_M|9}?2AJV6W?R$%GlW3h
+z3?X|b+XW|4yvQ9>V+*>d#kjiz69O*0OJ{J=*t>1|Vp`QUnJ8+}lw5+H-qn>1QO=>u
+zm+v^Z1DOT=;e%9!!{Z*cb;r_F)9XYytC7cIS)%!3CYwo@l3H@1kiV65bs;?2WF|{$
+z6W(2vyfOt=+_z5V3-g&ma&8stdw0ulqm$d*MC;ZoyrGL-4)?QiBU8u#r}3JDx8_@~
+zKL9RT@%e*!>t&#bd%wxH#LFV~6QQ=45BS;ZuNM#U<=_@GQ+t^hg<Ee#Z=r8=;)zfc
+zEjvct824aXJ1C9^_X^}*$o-J|@I3~(pHYI2V**!)t2$U$JA&^Ucurb$3JbUdTm^Jv
+zywAAf;kx2kJV^@_dNIJ=iT6A1FEae9z&A4Xiq8M)+PsUm;6pS<T{KQ9jAT!VMlpvn
+z#O!-MfKmtejV}CB2Z*|p6QRZmz3&^(LR&bBj*Y*d3qkiE!e-J%81%G!1TpfGCD8}a
+zY9%uHbAZUlp+r8ye2~cL7c?0pG6kFIHblg>2*;m<X5>;ZBeS7IrouCFDM(}vHt9A*
+z2K|gohZ30y5?Kf(G8;~0CP-unHaFW48S;tXdaT#swH88iK|;AuLi3cVgDkipw;PGg
+z31XcM#0s!2wjm}ChD6uvUc}6>OX&tJ`eEmM^u*XpS{na@vK_QCj&WgppKmXTUc8KB
+zwSptM+Tblw_m-f~up+S6+G5`m*isnwePBNT_M`v7en1a>Y!h}uYvM0@wEBwHv*QU(
+zoXD3{UKvkpiZk&$>7K+zJ-EYtzk?+HJu0ImF?5>^^oa`UXtTlpgzvwbMrfNJ!*2(?
+z3VX|KG8!1z_&QkGS)(WPR1EG><SOk#2~Fx5eQD8Gb@6K<ep45p3-Q~!_?-~HuZuqj
+H@yGuFr(ZRL
+
+diff --git a/build/classes/com/qbe/cotizador/model/CotizacionCobertura.class b/build/classes/com/qbe/cotizador/model/CotizacionCobertura.class
+index b1ac1aae43a84b736ecade60b2bd9f62802b710b..06e8102b0abb22737cc2dcda2a7aeaf94842a0e4
+GIT binary patch
+literal 5878
+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
+

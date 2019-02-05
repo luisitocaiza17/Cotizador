@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://archivoPlano.QBE.servicios.cotizador.qbe.com" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://archivoPlano.QBE.servicios.cotizador.qbe.com" xmlns:intf="http://archivoPlano.QBE.servicios.cotizador.qbe.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="http://archivoPlano.QBE.servicios.cotizador.qbe.com" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="importarCotizaciones">
+    <complexType>
+     <sequence>
+      <element name="textoJson" type="xsd:string"/>
+      <element name="correo" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   
+   <element name="importarCotizacionesResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="importarCotizacionesReturn" type="impl:ObjetosRespuesta"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="ObjetosRespuesta">
+    <sequence>
+     <element name="comentario" nillable="true" type="xsd:string"/>
+     <element name="cotizacionID" nillable="true" type="xsd:string"/>
+     <element name="facturaID" nillable="true" type="xsd:string"/>
+     <element name="objetoCotizacionID" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="importarCotizacionesRequest">
+
+      <wsdl:part element="impl:importarCotizaciones" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="importarCotizacionesResponse">
+
+      <wsdl:part element="impl:importarCotizacionesResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:portType name="ImportarCotizaciones">
+
+      <wsdl:operation name="importarCotizaciones">
+
+         <wsdl:input message="impl:importarCotizacionesRequest" name="importarCotizacionesRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:importarCotizacionesResponse" name="importarCotizacionesResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="ImportarCotizacionesSoapBinding" type="impl:ImportarCotizaciones">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="importarCotizaciones">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="importarCotizacionesRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="importarCotizacionesResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="ImportarCotizacionesService">
+
+      <wsdl:port binding="impl:ImportarCotizacionesSoapBinding" name="ImportarCotizaciones">
+
+         <wsdlsoap:address location="http://localhost:8080/CotizadorWeb/services/ImportarCotizaciones"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

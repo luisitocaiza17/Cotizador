@@ -1,0 +1,150 @@
+diff --git a/WebContent/dashboard/ConsultaCanal.jsp b/WebContent/dashboard/ConsultaCanal.jsp
+--- a/WebContent/dashboard/ConsultaCanal.jsp
++++ b/WebContent/dashboard/ConsultaCanal.jsp
+@@ -44,7 +44,7 @@
+ 	 -->
+ 
+ <script>
+-function GetQueryStringByParameter(name) {
++function NEetQueryStringByParameter(name) {
+     name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+     results = regex.exec(location.search);
+diff --git a/WebContent/dashboard/CotizacionAprobacionAgricola.jsp b/WebContent/dashboard/CotizacionAprobacionAgricola.jsp
+--- a/WebContent/dashboard/CotizacionAprobacionAgricola.jsp
++++ b/WebContent/dashboard/CotizacionAprobacionAgricola.jsp
+@@ -801,7 +801,13 @@
+ 			}
+  			$('#grid').hide();
+  			$('#btnImportar').prop('disabled', true);
+-			/* $('#dataTable').hide();
++ 			var tableLimpiar = $('#dataTableMasiva').DataTable();
++ 			 
++ 			tableLimpiar
++ 			    .clear()
++ 			    .draw();
++ 			
++ 			/* $('#dataTable').hide();
+ 			$('#dataTableContent').html('');
+ 			$('#dataTable_wrapper').hide(); */
+ 			//$("#datos_temporal").val("");
+diff --git a/build/classes/com/qbe/cotizador/model/Entidad.class b/build/classes/com/qbe/cotizador/model/Entidad.class
+index 42d023e5650a3e5e678e09c442cf903213126643..2e1a0d26cf4c5e944d2d0dc6463f18d0bc0c925d
+GIT binary patch
+literal 8970
+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
+
+diff --git a/build/classes/com/qbe/cotizador/servicios/QBE/emisionGanaderoWS/WS_EMISIONServiceLocator.class b/build/classes/com/qbe/cotizador/servicios/QBE/emisionGanaderoWS/WS_EMISIONServiceLocator.class
+index c50564401813103660e28cf4eb8144dcc025aed7..c842967a43ff48c9181cfebcd15f22c40f300d50
+GIT binary patch
+literal 5320
+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
+P(i`!;N%*_B`XB!VkD~X(
+
+diff --git a/build/classes/com/qbe/cotizador/servlets/producto/ganadero/ObjetoGanaderoController.class b/build/classes/com/qbe/cotizador/servlets/producto/ganadero/ObjetoGanaderoController.class
+deleted file mode 100644
+index 9a6d40ab473a9be24ab025e84dabc5283dc49fe1..e69de29bb2d1d6434b8b29ae775ad8c2e48c5391
+GIT binary patch
+literal 0
+Hc$@<O00001
+
+diff --git a/build/classes/com/qbe/cotizador/servlets/producto/pymes/ObjetoPymesController.class b/build/classes/com/qbe/cotizador/servlets/producto/pymes/ObjetoPymesController.class
+deleted file mode 100644
+index cccbd34c31309b142ccfd5c109670d7c19576e9f..e69de29bb2d1d6434b8b29ae775ad8c2e48c5391
+GIT binary patch
+literal 0
+Hc$@<O00001
+

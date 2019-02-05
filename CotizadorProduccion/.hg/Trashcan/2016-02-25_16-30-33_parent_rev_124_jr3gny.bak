@@ -1,0 +1,12 @@
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriParametroXCanalController.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriParametroXCanalController.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriParametroXCanalController.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriParametroXCanalController.java
+@@ -127,7 +127,7 @@
+ 							String rutaPlantilla = AgriSucreNotificacionErrores.class.getProtectionDomain().getCodeSource()
+ 									.getLocation().getPath();
+ 							rutaPlantilla=rutaPlantilla.replace("AgriSucreNotificacionErrores.class", "");
+-							String rutaRelativaReporte="../../../../../../../../static/PlantillasCultivos/";
++							String rutaRelativaReporte="../../../../../../../../static/plantillas/Agricola/PlantillasCultivos/";
+ 							rutaPlantilla=rutaPlantilla+rutaRelativaReporte;
+ 							
+ 							String fileName = item.getName();

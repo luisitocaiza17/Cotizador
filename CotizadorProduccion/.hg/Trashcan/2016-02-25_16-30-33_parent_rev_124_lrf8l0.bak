@@ -1,0 +1,13 @@
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java
+@@ -1662,7 +1662,8 @@
+ 		}
+ 		
+ 		datos.setFechaAprobacion(fechaAprobacion);
+-		datos.setPrima(cotAct.getPrimaNetaTotal());
++		String Prima=""+cotAct.getPrimaNetaTotal();
++		datos.setPrima(Double.parseDouble(Prima));
+ 		return datos;
+ 	}
+ 	/*private JSONArray consultarCotizacion(String fInicio,

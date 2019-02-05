@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CondicionesParticulares3" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="87cefa75-5817-4f42-a868-d8ab56b90ece">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="COTIZADOR"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="cot_Id" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT DISTINCT COT.ID AS COTIZACIONID, ENT.ID, COT.AGENTE_ID, ENT.NOMBRE_COMPLETO,
+VIGP.NOMBRE, COT.TASA_PRODUCTO_VALOR, COT.SUMA_ASEGURADA_TOTAL, VIGP.ID AS VIGENCIA
+FROM ENTIDAD ENT INNER JOIN CLIENTE CLI
+ON ENT.ID = CLI.entidad_id INNER JOIN COTIZACION COT
+ON CLI.ID = COT.CLIENTE_ID INNER JOIN AGENTE AGE
+ON COT.AGENTE_ID = AGE.ID INNER JOIN VIGENCIA_POLIZA VIGP
+ON COT.VIGENCIA_POLIZA_ID = VIGP.ID
+AND COT.ID = $P{cot_Id}]]>
+	</queryString>
+	<field name="COTIZACIONID" class="java.lang.Long"/>
+	<field name="ID" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="AGENTE_ID" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="NOMBRE_COMPLETO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="NOMBRE" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TASA_PRODUCTO_VALOR" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="SUMA_ASEGURADA_TOTAL" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="VIGENCIA" class="java.lang.Long"/>
+	<detail>
+		<band height="638" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="40" width="450" height="30" uuid="2fe35e72-728e-47da-a585-7c96968b8457"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[7. Disponer de asistencia periódica de un Médico Veterinario, en el predio para control de los animales, que provea control y tratamiento, por lo menos una vez al mes.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="320" width="300" height="20" uuid="7f56703e-b91e-40c5-82af-e0f175186d03"/>
+				<textElement>
+					<font fontName="Calibri" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[4.3 REQUISITOS DE ASEGURABILIDAD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="351" width="450" height="112" uuid="3419f999-72f2-4518-abcb-be6f79a5a95f"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Presentar la solicitud de seguro con el detalle individualizado de los animales con su identificación oficial, raza, edad, fotos( Frente y dos costados) y valor a asegurar. (En formato de la aseguradora)
+Aprobación de la solicitud, en este caso confirmamos el listado de productores con sus datos completos y la información completa de los animales asegurados.
+Todo asegurado debe poseer cámara de fotos, ya que para todo siniestro es requisito indispensable presentar fotos del animal siniestrado.
+En caso de siniestro se deberá presentar los documentos solicitados por la compañía aseguradora de acuerdo a las causas de la muerte. 
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="480" width="300" height="20" uuid="1369b872-37b7-4e56-8c73-f2b2ff2d7b69"/>
+				<textElement>
+					<font fontName="Calibri" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ARTÍCULO N° 4: EXCLUSIONES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="517" width="450" height="20" uuid="48c190fb-cc42-40f6-9a4a-298d057eaa96"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[La Compañía no indemnizará en los siguientes casos:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-2" y="88" width="451" height="30" uuid="096ef350-f67c-474c-ba83-cfcbf53494a0"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[8. Se deben tomar en cuenta las condiciones generales de la póliza, con sus respectivas exclusiones, garantías y procedimientos.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="131" width="451" height="20" uuid="1512e3d9-63b7-4243-8556-b823e501c1eb"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[9. No se encuentra cubierto el vientre y las crías.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="164" width="451" height="30" uuid="b7b60385-8502-4b3d-af81-60a340554788"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[10. Debe mantener los animales asegurados identificados con arete y un dispositivo de Microchip.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="207" width="451" height="100" uuid="aada02ae-e10c-4474-aa3a-15146602f2e6"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[11. La cobertura de transporte interno y permanencia, se hará efectiva siempre y cuando exista la notificación por parte del cliente del traslado del o de los animales esta comunicación debe presentarse 24 horas antes del transporte, mencionar que animales se movilizan, el destino y el tiempo de este traslado (Informar si se movilizan de manera temporal o permanente). Adicionalmente los vehículos para transporte deben ser adecuados y los encargados deben contar con experiencia en este manejo, el lugar de destino tiene que presentar iguales o similares características del predio en el que se encontraba al momento de la suscripción, este traslado deberá estar debidamente sustentado con la guía de movilización de Agrocalidad.  
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="543" width="450" height="20" uuid="a495b475-9875-41e4-94b6-fea60ee5cfe1"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[a) Cuando el reclamo sea por causas diferentes a los riesgos cubiertos por la póliza.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="572" width="450" height="40" uuid="e2671f57-51b4-47b2-8b6b-47d256a0f1b3"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[b) Cuando el ganado se siniestre fuera de los límites del predio, por motivos ajenos a transporte interno debidamente autorizado por la compañía aseguradora.  
+]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<summary>
+		<band height="56">
+			<subreport>
+				<reportElement x="0" y="0" width="550" height="50" uuid="fb4b4146-7d28-43ac-8d72-e44144f2bdb6"/>
+				<subreportParameter name="cot_Id">
+					<subreportParameterExpression><![CDATA[$P{cot_Id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["Ganadero/CondicionesParticulares4.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

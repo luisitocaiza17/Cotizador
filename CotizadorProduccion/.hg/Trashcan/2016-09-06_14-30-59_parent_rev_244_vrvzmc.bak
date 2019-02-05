@@ -1,0 +1,131 @@
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriAgriPacController.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriAgriPacController.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriAgriPacController.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriAgriPacController.java
+@@ -318,6 +318,31 @@
+ 					} catch (Exception e) {
+ 						entidadId = "";
+ 					}
++					
++					Date dateSiembra=null;
++					SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");//formato de fecha de siembra
++					
++					/**Validacion de fechas**/
++					
++					try{
++						dateSiembra=nuevaCotizacion.getFechaSiembra();
++					}catch(Exception e){
++						throw new Exception(
++								"Error la fecha de siembra "+nuevaCotizacion.getFechaSiembra()+ " no esta en el formato dd/MM/yyyy");
++					}
++					
++					Date fechaControlInicio=null;
++					Date fechaControlFin=null;
++					fechaControlInicio=formatter.parse("01/01/2015");
++					fechaControlFin=formatter.parse("01/01/2019");
++					if(dateSiembra.after(fechaControlInicio) && dateSiembra.before(fechaControlFin)){
++						System.out.print("fechas correctas");
++					}
++					else{
++						throw new Exception(
++								"Error la fecha de siembra "+nuevaCotizacion.getFechaSiembra()+ " no esta dentro del rango de fechas permitidas");
++					}
++					
+ 					/* PROCESO DE CREACION DE LA ENTIDAD */
+ 					String nombre = "";
+ 					String apellidos = "";
+@@ -519,6 +544,4 @@
+ 					//Buscamos los tipos de cultivos tomamos el tipo de cultivo y la fecha para encontrar el ciclo
+ 					AgriTipoCultivoDAO agriTipoCultivoDAO = new AgriTipoCultivoDAO();
+ 					AgriTipoCultivo agriTipoCultivo = agriTipoCultivoDAO.BuscarPorNombre(nombreCultivo);
+-					Date dateSiembra=null;
+-					SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");//formato de fecha de siembra
+ 					
+@@ -524,10 +547,4 @@
+ 					
+-					try{
+-						dateSiembra=nuevaCotizacion.getFechaSiembra();
+-					}catch(Exception e){
+-						throw new Exception(
+-								"Error la fecha de siembra "+nuevaCotizacion.getFechaSiembra()+ " no esta en el formato dd/MM/yyyy");
+-					}
+ 					//encontramos el codigo del tipo de cultivo
+ 					Double nuestroCosto = 0.0;//para verificar si existen diferencias entre costo que llega y que tenemos
+ 					String idTipoCalculo = "";//para saber en base a que regla se calcularon los datos
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriEcuaquimicaController.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriEcuaquimicaController.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriEcuaquimicaController.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriEcuaquimicaController.java
+@@ -311,6 +311,30 @@
+ 					} catch (Exception e) {
+ 						entidadId = "";
+ 					}
++					
++					/**validacion**/
++					Date dateSiembra=null;
++					SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");//formato de fecha de siembra
++					
++					try{
++						dateSiembra=nuevaCotizacion.getFechaSiembra();
++					}catch(Exception e){
++						throw new Exception(
++								"Error la fecha de siembra "+nuevaCotizacion.getFechaSiembra()+ " no esta en el formato dd/MM/yyyy");
++					}
++					
++					Date fechaControlInicio=null;
++					Date fechaControlFin=null;
++					fechaControlInicio=formatter.parse("01/01/2015");
++					fechaControlFin=formatter.parse("01/01/2019");
++					if(dateSiembra.after(fechaControlInicio) && dateSiembra.before(fechaControlFin)){
++						System.out.print("fechas correctas");
++					}
++					else{
++						throw new Exception(
++								"Error la fecha de siembra "+nuevaCotizacion.getFechaSiembra()+ " no esta dentro del rango de fechas permitidas");
++					}
++					
+ 					/* PROCESO DE CREACION DE LA ENTIDAD */
+ 					String nombre = "";
+ 					String apellidos = "";
+@@ -512,6 +536,4 @@
+ 					//Buscamos los tipos de cultivos tomamos el tipo de cultivo y la fecha para encontrar el ciclo
+ 					AgriTipoCultivoDAO agriTipoCultivoDAO = new AgriTipoCultivoDAO();
+ 					AgriTipoCultivo agriTipoCultivo = agriTipoCultivoDAO.BuscarPorNombre(nombreCultivo);
+-					Date dateSiembra=null;
+-					SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");//formato de fecha de siembra
+ 					
+@@ -517,10 +539,4 @@
+ 					
+-					try{
+-						dateSiembra=nuevaCotizacion.getFechaSiembra();
+-					}catch(Exception e){
+-						throw new Exception(
+-								"Error la fecha de siembra "+nuevaCotizacion.getFechaSiembra()+ " no esta en el formato dd/MM/yyyy");
+-					}
+ 					//encontramos el codigo del tipo de cultivo
+ 					Double nuestroCosto = 0.0;//para verificar si existen diferencias entre costo que llega y que tenemos
+ 					String idTipoCalculo = "";//para saber en base a que regla se calcularon los datos
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriProcesarCotizacionAP.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriProcesarCotizacionAP.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriProcesarCotizacionAP.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriProcesarCotizacionAP.java
+@@ -529,6 +529,22 @@
+ 					String TipoCultivoSinCoincidencias="";
+ 					//tomo fecha siembra para verificar a que ciclo pertenece
+ 					Date dateSiembra=  nuevaCotizacion.getFechaSiembra();
++					
++					SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");//formato de fecha de siembra
++					
++					Date fechaControlInicio=null;
++					Date fechaControlFin=null;
++					fechaControlInicio=formatter.parse("01/01/2015");
++					fechaControlFin=formatter.parse("01/01/2019");
++					if(dateSiembra.after(fechaControlInicio) && dateSiembra.before(fechaControlFin)){
++						System.out.print("fechas correctas");
++					}
++					else{
++						throw new Exception(
++								"Error la fecha de siembra "+nuevaCotizacion.getFechaSiembra()+ " no esta dentro del rango de fechas permitidas");
++					}
++					
++					
+ 					if (agriTipoCultivoP.getNombre()!=null) {
+ 							AgriReglaDAO regla = new AgriReglaDAO();
+ 							List<AgriRegla> reglas = regla.BuscarPorParametros(new BigInteger(provincia.getId()),new BigInteger(canton.getId()),

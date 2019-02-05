@@ -1,0 +1,38 @@
+<!-- Use this file to deploy some handlers/chains and services      -->
+<!-- Two ways to do this:                                           -->
+<!--   java org.apache.axis.client.AdminClient deploy.wsdd          -->
+<!--      after the axis server is running                          -->
+<!-- or                                                             -->
+<!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   -->
+<!--      from the same directory that the Axis engine runs         -->
+
+<deployment
+    xmlns="http://xml.apache.org/axis/wsdd/"
+    xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from MidpointTaghService WSDL service -->
+
+  <service name="MidpointTagh" provider="java:RPC" style="wrapped" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://tagh.QBE.servicios.cotizador.qbe.com"/>
+      <parameter name="wsdlServiceElement" value="MidpointTaghService"/>
+      <parameter name="schemaQualified" value="http://tagh.QBE.servicios.cotizador.qbe.com"/>
+      <parameter name="wsdlServicePort" value="MidpointTagh"/>
+      <parameter name="className" value="com.qbe.cotizador.servicios.QBE.tagh.MidpointTaghSoapBindingImpl"/>
+      <parameter name="wsdlPortType" value="MidpointTagh"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation name="consultarPolizas" qname="operNS:consultarPolizas" xmlns:operNS="http://tagh.QBE.servicios.cotizador.qbe.com" returnQName="retNS:consultarPolizasReturn" xmlns:retNS="http://tagh.QBE.servicios.cotizador.qbe.com" returnType="rtns:DatosTagh" xmlns:rtns="http://tagh.QBE.servicios.cotizador.qbe.com" soapAction="" >
+        <parameter qname="pns:token" xmlns:pns="http://tagh.QBE.servicios.cotizador.qbe.com" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:identificacion" xmlns:pns="http://tagh.QBE.servicios.cotizador.qbe.com" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <parameter name="allowedMethods" value="consultarPolizas"/>
+
+      <typeMapping
+        xmlns:ns="http://tagh.QBE.servicios.cotizador.qbe.com"
+        qname="ns:DatosTagh"
+        type="java:com.qbe.cotizador.servicios.QBE.tagh.DatosTagh"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+  </service>
+</deployment>

@@ -1,0 +1,288 @@
+diff --git a/WebContent/dashboard/ConsultaCanal.jsp b/WebContent/dashboard/ConsultaCanal.jsp
+--- a/WebContent/dashboard/ConsultaCanal.jsp
++++ b/WebContent/dashboard/ConsultaCanal.jsp
+@@ -50,6 +50,7 @@
+     results = regex.exec(location.search);
+     return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+ 	}
++	var canalId=GetQueryStringByParameter('Canal');
+ 	var estadoConsulta="CEPE";//GetQueryStringByParameter('State');
+ 	var codigo = "";
+ 	var tipoConsulta = "";
+@@ -179,7 +180,8 @@
+ 		$.ajax({
+ 			url : '../AgriCanalController',
+ 			data : {				
+-				"tipoConsulta" : "encontrarTodos"
++				"tipoConsulta" : "encontrarPorCanalId",
++				"canalId" : canalId
+ 			},
+ 			async : false,
+ 			type : 'post',
+@@ -289,9 +291,9 @@
+ 						{ field: "hectareasAsegurables", title: "Has. Aseg", width: "50px",headerAttributes: { style: "white-space: normal"}},
+ 						{ field: "sumaAseguradaTotal", title: "Monto Asegurado", width: "70px",headerAttributes: { style: "white-space: normal"}},
+ 						{ field: "fechaSiembra", title: "Fecha Siembra",format: "{0:yyyy/MM/dd}", width: "100px",headerAttributes: { style: "white-space: normal"}},
+-						{ field: "primaNetaTotal", title: "Prima Total", width: "70px",headerAttributes: { style: "white-space: normal"}},
++						{ field: "primaNetaTotal", title: "Prima Neta", width: "70px",headerAttributes: { style: "white-space: normal"}},
+ 						{ field: "costoProduccion", title: "Costo de Producción", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 						{ field: "seguroBancos", title: "Super Bancos", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 						{ field: "seguroCampesino", title: "Seguro Campesino", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 						{ field: "derechoEmision", title: "Derecho de Emisión", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 						{ field: "iva", title: "IVA", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+@@ -293,9 +295,9 @@
+ 						{ field: "costoProduccion", title: "Costo de Producción", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 						{ field: "seguroBancos", title: "Super Bancos", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 						{ field: "seguroCampesino", title: "Seguro Campesino", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 						{ field: "derechoEmision", title: "Derecho de Emisión", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 						{ field: "iva", title: "IVA", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+-						{ field: "totalFactura", title: "Total Factura", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},                      
++						{ field: "totalFactura", title: "Prima Total", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},                      
+ 						{ field: "hectareasLote", title: "Has. Lote", width: "50px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 						{ field: "Longitud", title: "Longitud", width: "50px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true },
+ 						{ field: "Latitud", title: "Latitud", width: "50px",headerAttributes: { style: "white-space: normal"},hidden: true, exportar: true},                      
+diff --git a/WebContent/dashboard/CotizacionAprobacionAgricola.jsp b/WebContent/dashboard/CotizacionAprobacionAgricola.jsp
+--- a/WebContent/dashboard/CotizacionAprobacionAgricola.jsp
++++ b/WebContent/dashboard/CotizacionAprobacionAgricola.jsp
+@@ -409,9 +409,9 @@
+                       { field: "hectareasAsegurables", title: "Has. Aseg", width: "50px",headerAttributes: { style: "white-space: normal"}},
+                       { field: "sumaAseguradaTotal", title: "Monto Asegurado", width: "70px",headerAttributes: { style: "white-space: normal"}},
+                       { field: "fechaSiembra", title: "Fecha Siembra", type:"date", format:"{0:dd/MM/yyyy}", width: "100px",headerAttributes: { style: "white-space: normal"}},
+-                      { field: "primaNetaTotal", title: "Prima Total", width: "70px",headerAttributes: { style: "white-space: normal"}},
++                      { field: "primaNetaTotal", title: "Prima Neta", width: "70px",headerAttributes: { style: "white-space: normal"}},
+                       { field: "costoProduccion", title: "Costo de Producción", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+                       { field: "seguroBancos", title: "Super Bancos", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+                       { field: "seguroCampesino", title: "Seguro Campesino", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+                       { field: "derechoEmision", title: "Derecho de Emisión", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+                       { field: "iva", title: "IVA", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+@@ -413,9 +413,9 @@
+                       { field: "costoProduccion", title: "Costo de Producción", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+                       { field: "seguroBancos", title: "Super Bancos", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+                       { field: "seguroCampesino", title: "Seguro Campesino", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+                       { field: "derechoEmision", title: "Derecho de Emisión", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+                       { field: "iva", title: "IVA", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+-                      { field: "totalFactura", title: "Total Factura", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},                      
++                      { field: "totalFactura", title: "Prima Total", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},                      
+                       { field: "hectareasLote", title: "Has. Lote", width: "50px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+                       { field: "Longitud", title: "Longitud", width: "50px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true },
+                       { field: "Latitud", title: "Latitud", width: "50px",headerAttributes: { style: "white-space: normal"},hidden: true, exportar: true},                      
+diff --git a/WebContent/dashboard/CotizacionEmisionAgricola.jsp b/WebContent/dashboard/CotizacionEmisionAgricola.jsp
+--- a/WebContent/dashboard/CotizacionEmisionAgricola.jsp
++++ b/WebContent/dashboard/CotizacionEmisionAgricola.jsp
+@@ -331,9 +331,9 @@
+ 			{ field: "hectareasAsegurables", title: "Has. Aseg", width: "50px",headerAttributes: { style: "white-space: normal"}},
+ 			{ field: "sumaAseguradaTotal", title: "Monto Asegurado", width: "70px",headerAttributes: { style: "white-space: normal"}},
+ 			{ field: "fechaSiembra", title: "Fecha Siembra", type:"date", format:"{0:dd/MM/yyyy}", width: "100px",headerAttributes: { style: "white-space: normal"}},
+-            { field: "primaNetaTotal", title: "Prima Total", width: "70px",headerAttributes: { style: "white-space: normal"}},
++            { field: "primaNetaTotal", title: "Prima Neta", width: "70px",headerAttributes: { style: "white-space: normal"}},
+ 			{ field: "costoProduccion", title: "Costo de Producción", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 			{ field: "seguroBancos", title: "Super Bancos", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 			{ field: "seguroCampesino", title: "Seguro Campesino", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 			{ field: "derechoEmision", title: "Derecho de Emisión", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 			{ field: "iva", title: "IVA", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+@@ -335,9 +335,9 @@
+ 			{ field: "costoProduccion", title: "Costo de Producción", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 			{ field: "seguroBancos", title: "Super Bancos", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 			{ field: "seguroCampesino", title: "Seguro Campesino", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 			{ field: "derechoEmision", title: "Derecho de Emisión", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 			{ field: "iva", title: "IVA", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+-			{ field: "totalFactura", title: "Total Factura", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},                      
++			{ field: "totalFactura", title: "Prima Total", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},                      
+ 			{ field: "hectareasLote", title: "Has. Lote", width: "50px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 			{ field: "Longitud", title: "Longitud", width: "50px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true },
+ 			{ field: "Latitud", title: "Latitud", width: "50px",headerAttributes: { style: "white-space: normal"},hidden: true, exportar: true},                      
+diff --git a/WebContent/dashboard/CotizacionPymesCerrados.jsp b/WebContent/dashboard/CotizacionPymesCerrados.jsp
+--- a/WebContent/dashboard/CotizacionPymesCerrados.jsp
++++ b/WebContent/dashboard/CotizacionPymesCerrados.jsp
+@@ -36,8 +36,8 @@
+ <script src="../static/js/bootstrap-datepicker.js"></script>
+ 
+ <!-- KENDO -->
+-<!-- <link rel="stylesheet" href="http://kendo.cdn.telerik.com/2015.1.225/styles/kendo.mobile.all.min.css"> -->
++<link rel="stylesheet" href="http://kendo.cdn.telerik.com/2015.1.225/styles/kendo.mobile.all.min.css">
+ <link rel="stylesheet" href="../static/css/Kendo/kendo.common.min.css" />
+ <link rel="stylesheet" href="../static/css/Kendo/kendo.blueopal.min.css" />
+ <script src="../static/js/Kendo/kendo.all.min.js"></script>
+ <script src="../static/js/Kendo/kendo.web.min.js"></script>
+@@ -40,8 +40,8 @@
+ <link rel="stylesheet" href="../static/css/Kendo/kendo.common.min.css" />
+ <link rel="stylesheet" href="../static/css/Kendo/kendo.blueopal.min.css" />
+ <script src="../static/js/Kendo/kendo.all.min.js"></script>
+ <script src="../static/js/Kendo/kendo.web.min.js"></script>
+-<!-- <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css"> -->
++<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
+ 
+ 
+ 
+diff --git a/WebContent/dashboard/ResumenCotizaciones.jsp b/WebContent/dashboard/ResumenCotizaciones.jsp
+--- a/WebContent/dashboard/ResumenCotizaciones.jsp
++++ b/WebContent/dashboard/ResumenCotizaciones.jsp
+@@ -334,9 +334,9 @@
+ 				{ field: "hectareasAsegurables", title: "Has. Aseg", width: "50px",headerAttributes: { style: "white-space: normal"}},
+ 				{ field: "sumaAseguradaTotal", title: "Monto Asegurado", width: "70px",headerAttributes: { style: "white-space: normal"}},
+ 				{ field: "fechaSiembra", type:"date", format:"{0:dd/MM/yyyy}", title: "Fecha Siembra", width: "100px",headerAttributes: { style: "white-space: normal"}},
+-                { field: "primaNetaTotal", title: "Prima Total", width: "70px",headerAttributes: { style: "white-space: normal"}},
++                { field: "primaNetaTotal", title: "Prima Neta", width: "70px",headerAttributes: { style: "white-space: normal"}},
+ 				{ field: "costoProduccion", title: "Costo de Producción", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 				{ field: "seguroBancos", title: "Super Bancos", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 				{ field: "seguroCampesino", title: "Seguro Campesino", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 				{ field: "derechoEmision", title: "Derecho de Emisión", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 				{ field: "iva", title: "IVA", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+@@ -338,9 +338,9 @@
+ 				{ field: "costoProduccion", title: "Costo de Producción", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 				{ field: "seguroBancos", title: "Super Bancos", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 				{ field: "seguroCampesino", title: "Seguro Campesino", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 				{ field: "derechoEmision", title: "Derecho de Emisión", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 				{ field: "iva", title: "IVA", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+-				{ field: "totalFactura", title: "Total Factura", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},                      
++				{ field: "totalFactura", title: "Prima Total", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},                      
+ 				{ field: "hectareasLote", title: "Has. Lote", width: "50px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 				{ field: "Longitud", title: "Longitud", width: "50px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true },
+ 				{ field: "Latitud", title: "Latitud", width: "50px",headerAttributes: { style: "white-space: normal"},hidden: true, exportar: true},                      
+diff --git a/src/com/qbe/cotizador/dao/producto/agricola/User.java b/src/com/qbe/cotizador/dao/producto/agricola/User.java
+--- a/src/com/qbe/cotizador/dao/producto/agricola/User.java
++++ b/src/com/qbe/cotizador/dao/producto/agricola/User.java
+@@ -1,8 +1,7 @@
+ package com.qbe.cotizador.dao.producto.agricola;
+ 
+ public class User {
+-	
+-	private int UserID;
++    private int UserID;
+     private String Name;
+     private String UserName;
+     private String Password;
+@@ -11,59 +10,76 @@
+     private String PuntoVentaId;
+     private boolean admin;
+     private String Agencia;
+-	public int getUserID() {
+-		return UserID;
+-	}
+-	public void setUserID(int userID) {
+-		UserID = userID;
+-	}
+-	public String getName() {
+-		return Name;
+-	}
+-	public void setName(String name) {
+-		Name = name;
+-	}
+-	public String getUserName() {
+-		return UserName;
+-	}
+-	public void setUserName(String userName) {
+-		UserName = userName;
+-	}
+-	public String getPassword() {
+-		return Password;
+-	}
+-	public void setPassword(String password) {
+-		Password = password;
+-	}
+-	public String getCIUser() {
+-		return CIUser;
+-	}
+-	public void setCIUser(String cIUser) {
+-		CIUser = cIUser;
+-	}
+-	public String getLastName() {
+-		return LastName;
+-	}
+-	public void setLastName(String lastName) {
+-		LastName = lastName;
+-	}
+-	public String getPuntoVentaId() {
+-		return PuntoVentaId;
+-	}
+-	public void setPuntoVentaId(String puntoVentaId) {
+-		PuntoVentaId = puntoVentaId;
+-	}
+-	public boolean isAdmin() {
+-		return admin;
+-	}
+-	public void setAdmin(boolean admin) {
+-		this.admin = admin;
+-	}
+-	public String getAgencia() {
+-		return Agencia;
+-	}
+-	public void setAgencia(String agencia) {
+-		Agencia = agencia;
+-	}    
+-    
+-}
++
++    public int getUserID() {
++        return this.UserID;
++    }
++
++    public void setUserID(int userID) {
++        this.UserID = userID;
++    }
++
++    public String getName() {
++        return this.Name;
++    }
++
++    public void setName(String name) {
++        this.Name = name;
++    }
++
++    public String getUserName() {
++        return this.UserName;
++    }
++
++    public void setUserName(String userName) {
++        this.UserName = userName;
++    }
++
++    public String getPassword() {
++        return this.Password;
++    }
++
++    public void setPassword(String password) {
++        this.Password = password;
++    }
++
++    public String getCIUser() {
++        return this.CIUser;
++    }
++
++    public void setCIUser(String cIUser) {
++        this.CIUser = cIUser;
++    }
++
++    public String getLastName() {
++        return this.LastName;
++    }
++
++    public void setLastName(String lastName) {
++        this.LastName = lastName;
++    }
++
++    public String getPuntoVentaId() {
++        return this.PuntoVentaId;
++    }
++
++    public void setPuntoVentaId(String puntoVentaId) {
++        this.PuntoVentaId = puntoVentaId;
++    }
++
++    public boolean isAdmin() {
++        return this.admin;
++    }
++
++    public void setAdmin(boolean admin) {
++        this.admin = admin;
++    }
++
++    public String getAgencia() {
++        return this.Agencia;
++    }
++
++    public void setAgencia(String agencia) {
++        this.Agencia = agencia;
++    }
++}
+\ No newline at end of file

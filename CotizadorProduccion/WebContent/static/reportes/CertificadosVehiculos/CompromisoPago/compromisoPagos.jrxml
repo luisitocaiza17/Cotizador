@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="detallePagos" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1c55416b-8055-400e-b1cc-7debf605d4d6">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="cotizador"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="21"/>
+	<parameter name="COTIZACION" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select DISTINCT
+    COT.id COTIZACION_NUMERO,
+    S.nombre SUCURSAL,
+    COT.tipo_objeto_id TIPO_OBJETO,
+    E.identificacion IDENTIFICACION,
+    E.nombre_completo CLIENTE,
+    E.tipo_identificacion_id TIPO_IDENTIFICACION_CLIENTE,
+    COT.pago_id PAGO,
+    COT.suma_asegurada_total SUMA_ASEGURADA_TOTAL,
+    (select
+            pv.nombre
+        from
+            PUNTO_VENTA pv
+        WHERE
+            pv.id = COT.punto_venta_id) PUNTO_VENTA,
+    GPP.nombre_comercial_producto PRODUCTO,
+    AGENTI.nombre_completo NOMBRE_AGENTE,
+    (select
+            concat(DIR.calle_principal,
+                        ' ',
+                        DIR.numero,
+                        ' ',
+                        DIR.calle_secundaria)
+        from
+            DIRECCION DIR
+        where
+            E.id = DIR.entidad_id) DIRECCION_CLIENTE,
+    USUENTI.nombre_completo NOMBRE_USUARIO,
+    USUENTI.mail MAIL_USUARIO,
+    E.mail MAIL_CLIENTE,
+    COT.numeroFactura NUMERO_FACTURA,
+    (select
+            CAR.nombre
+        from
+            EMPLEADO EMP,
+            CARGO CAR
+        WHERE
+            EMP.cargo_id = CAR.id
+                AND USUENTI.id = EMP.entidad_id) CARGO_USUARIO,
+    truncate((COT.prima_neta_total + 0.005),
+        2) PRIMA_SIN_IMPUESTOS,
+    (select
+            concat(DIR.calle_principal,
+                        ' ',
+                        DIR.numero,
+                        ' ',
+                        DIR.calle_secundaria)
+        from
+            DIRECCION DIR
+        where
+            AGENTI.id = DIR.entidad_id) DIRECCION_AGENTE,
+    PXPV.unidad_negocio_id UNIDAD_NEGOCIO_ID,
+    PXPV.unidad_produccion_id UNIDAD_PRODUCCION_ID,
+    R.id RAMO_ID,
+    R.nombre RAMO,
+    R.nemotecnico RAMO_NEMOTECNICO,
+    CON.numero NUMERO_POLIZA,
+    COT.vigencia_desde VIGENCIA_DESDE_COTIZACION,
+    DATE_ADD(COT.vigencia_desde,
+        INTERVAL VP.valor YEAR) VIGENCIA_HASTA_COTIZACION,
+    CON.vigencia_desde VIGENCIA_DESDE_POLIZA,
+    CON.vigencia_hasta VIGENCIA_HASTA_POLIZA,
+    ASEGURADO.nombre_completo ASEGURADO,
+    ASEGURADO.tipo_identificacion_id TIPO_IDENTIFICACION_ASEGURADO,
+    ASEGURADO.identificacion IDENTIFICACION_ASEGURADO,
+    ASEGURADO.telefono TELEFONO_ASEGURADO,
+    (select
+            concat(DIR.calle_principal,
+                        ' ',
+                        DIR.numero,
+                        ' ',
+                        DIR.calle_secundaria)
+        from
+            DIRECCION DIR
+        where
+            ASEGURADO.id = DIR.entidad_id) DIRECCION_ASEGURADO,
+    COT.prima_neta_total PRIMA_TOTAL,
+    COT.imp_derecho_emision DERECHOS_EMISION,
+    COT.imp_iva IVA,
+    COT.imp_super_bancos SUPER_BANCOS,
+    COT.totalFactura TOTAL_FACTURA,
+    COT.imp_seguro_campesino SEGURO_CAMPESINO,
+    FD.firma FIRMA,
+    USU.login USUARIO_LOGIN,
+    COT.fecha_emision FECHA_EMISION,
+    IFNULL((select cuo2.valor from PAGO p2, COTIZACION c2, CUOTAS cuo2 WHERE p2.id=c2.pago_id and cuo2.pago_id=p2.id and c2.id=COT.id and cuo2.orden=0),0) CUOTA_INICIAL,
+    (select plazon_en_mes from PAGO pa where pa.id= COT.pago_id) PLAZO_MESES
+from
+    COTIZACION COT,
+    SUCURSAL S,
+    CLIENTE C,
+    PUNTO_VENTA PV,
+    ENTIDAD E,
+    AGENTE AGE,
+    ENTIDAD AGENTI,
+    ENTIDAD USUENTI,
+    USUARIO USU,
+    PRODUCTO PRODU,
+    PRODUCTO_X_PUNTO_VENTA PXPV,
+    GRUPO_POR_PRODUCTO GPP,
+    RAMO R,
+    CONTENEDOR CON,
+    VIGENCIA_POLIZA VP,
+    ENTIDAD ASEGURADO,
+    FIRMAS_DIGITALES FD,
+    UNIDAD_PRODUCCION UP
+where
+    COT.vigencia_poliza_id = VP.id
+        AND COT.punto_venta_id = PV.id
+        AND C.id = COT.cliente_id
+        AND PXPV.contenedor_id = CON.id
+        AND S.ID = PV.sucursal_id
+        AND C.entidad_id = E.ID
+        AND AGE.id = COT.agente_id
+        AND AGENTI.id = AGE.entidad_id
+        AND USU.id = COT.usuario_id
+        AND PRODU.ramo_id = R.id
+        AND USU.entidad_id = USUENTI.id
+        AND PXPV.punto_venta_id = PV.id
+        AND GPP.id = COT.grupo_por_producto_id
+        AND COT.producto_x_punto_venta_id = PXPV.id
+        AND PRODU.id = GPP.producto_id
+        AND ASEGURADO.id = COT.asegurado_id
+        AND FD.entidad_id = UP.entidad_id
+        AND PXPV.unidad_produccion_id = UP.id
+        AND FD.ramo_id = R.id
+        AND S.id = FD.sucursal_id
+        AND COT.id = $P{COTIZACION}]]>
+	</queryString>
+	<field name="COTIZACION_NUMERO" class="java.lang.Long"/>
+	<field name="SUCURSAL" class="java.lang.String"/>
+	<field name="TIPO_OBJETO" class="java.lang.Long"/>
+	<field name="IDENTIFICACION" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CLIENTE" class="java.lang.String"/>
+	<field name="TIPO_IDENTIFICACION_CLIENTE" class="java.lang.Long"/>
+	<field name="PAGO" class="java.lang.Long"/>
+	<field name="SUMA_ASEGURADA_TOTAL" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PUNTO_VENTA" class="java.lang.String"/>
+	<field name="PRODUCTO" class="java.lang.String"/>
+	<field name="NOMBRE_AGENTE" class="java.lang.String"/>
+	<field name="DIRECCION_CLIENTE" class="java.lang.String"/>
+	<field name="NOMBRE_USUARIO" class="java.lang.String"/>
+	<field name="MAIL_USUARIO" class="java.lang.String"/>
+	<field name="MAIL_CLIENTE" class="java.lang.String"/>
+	<field name="NUMERO_FACTURA" class="java.lang.String"/>
+	<field name="CARGO_USUARIO" class="java.lang.String"/>
+	<field name="PRIMA_SIN_IMPUESTOS" class="java.lang.Double"/>
+	<field name="DIRECCION_AGENTE" class="java.lang.String"/>
+	<field name="UNIDAD_NEGOCIO_ID" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="UNIDAD_PRODUCCION_ID" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="RAMO_ID" class="java.lang.Long"/>
+	<field name="RAMO" class="java.lang.String"/>
+	<field name="RAMO_NEMOTECNICO" class="java.lang.String"/>
+	<field name="NUMERO_POLIZA" class="java.lang.String"/>
+	<field name="VIGENCIA_DESDE_COTIZACION" class="java.sql.Date"/>
+	<field name="VIGENCIA_HASTA_COTIZACION" class="java.sql.Date"/>
+	<field name="VIGENCIA_DESDE_POLIZA" class="java.sql.Date"/>
+	<field name="VIGENCIA_HASTA_POLIZA" class="java.sql.Date"/>
+	<field name="ASEGURADO" class="java.lang.String"/>
+	<field name="TIPO_IDENTIFICACION_ASEGURADO" class="java.lang.Long"/>
+	<field name="IDENTIFICACION_ASEGURADO" class="java.lang.String"/>
+	<field name="TELEFONO_ASEGURADO" class="java.lang.String"/>
+	<field name="DIRECCION_ASEGURADO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PRIMA_TOTAL" class="java.lang.String"/>
+	<field name="DERECHOS_EMISION" class="java.lang.Double"/>
+	<field name="IVA" class="java.lang.Double"/>
+	<field name="SUPER_BANCOS" class="java.lang.Double"/>
+	<field name="TOTAL_FACTURA" class="java.lang.Double"/>
+	<field name="SEGURO_CAMPESINO" class="java.lang.Double"/>
+	<field name="FIRMA" class="java.lang.Object">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="USUARIO_LOGIN" class="java.lang.String"/>
+	<field name="FECHA_EMISION" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CUOTA_INICIAL" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PLAZO_MESES" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="273" splitType="Stretch">
+			<textField>
+				<reportElement x="2" y="0" width="550" height="20" uuid="49e21628-04e8-4014-87bc-245348b9eab8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["COMPROMISO DE PAGO"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="10" y="21" width="535" height="69" uuid="175e1adc-fbf2-418d-848f-bd01b0d3dbbe"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["En la ciudad de "+$F{SUCURSAL}+", a los "+new SimpleDateFormat("d", new Locale("ES")).format($F{FECHA_EMISION}) + " días del mes de "+new SimpleDateFormat("MMMMMM", new Locale("ES")).format($F{FECHA_EMISION})+" del año "+new SimpleDateFormat("yyyy", new Locale("ES")).format($F{FECHA_EMISION})+
+", comparece el(la) señor(a)(ita) "+$F{ASEGURADO}+($F{TIPO_IDENTIFICACION_CLIENTE}.intValue( ) == 4  ? " y como tal, representante legal de la compañia "+ $F{CLIENTE}:"")+
+", (en adelante, \"ASEGURADA\" o \"DEUDORA\"), quien libre y voluntariamente, se compromete para con QBE SEGUROS COLONIAL S.A."+
+" (en adelante, \"QBE\" o \"ACREEDORA\"), en base a las consideraciones que siguen a continuación, a los compromisos y declaraciones siguientes."]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="87" y="207" width="180" height="19" uuid="48592d2e-50f6-4eae-92b9-31d10838c142"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[VALOR TOTAL DEUDA]]></text>
+			</staticText>
+			<textField pattern="">
+				<reportElement x="275" y="207" width="142" height="19" uuid="2a674766-9837-47bb-8f47-5b449cdd0950"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{TOTAL_FACTURA}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="87" y="226" width="180" height="19" uuid="bb8361d3-318b-4e9e-8733-fcec60878091">
+					<printWhenExpression><![CDATA[$F{CUOTA_INICIAL}>0]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[(-) CUOTA INICIAL]]></text>
+			</staticText>
+			<textField pattern="">
+				<reportElement x="275" y="226" width="142" height="19" uuid="f39634d1-3b07-41f0-a579-a8f521995e93">
+					<printWhenExpression><![CDATA[$F{CUOTA_INICIAL}>0]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{CUOTA_INICIAL}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="275" y="245" width="142" height="19" uuid="f3ebee06-907e-4e6e-8afa-1cd72c608bcf"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{TOTAL_FACTURA}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="87" y="245" width="180" height="19" uuid="0dc0669d-8c81-4d29-9569-29acb9f542f5"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[FINANCIACION EN CUOTAS]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="10" y="96" width="535" height="20" uuid="b2c7a2f1-e6f0-4eef-a7df-38ca92a1efce"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["CONSIDERANDO que:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="126" width="506" height="38" uuid="b1ad6b55-38fb-4271-857f-f96a717154e7"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA["El(la) ASEGURADO(A) ha solicitado la emisión de pólizas de seguros en los ramos "+$F{RAMO}+
+", (en adelante \"Póliza(s)\")."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="166" width="506" height="38" uuid="14beadfb-e18f-4cc0-a8e8-e8b294bb6d6d"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Por la(s) Póliza(s) contratada(s) por el(la) ASEGURADO(A), se ha generado el valor de prima de"+
+" USD $"+$F{TOTAL_FACTURA}+" (en adelante, \"Prima\"), el mismo que el(la) ASEGURADO(A) se ha comprometido en pagar"+
+" de la siguiente manera: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="129" width="15" height="30" uuid="3deef26a-3d39-4cc0-8e81-5671ef6a6d60"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA["1."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="168" width="15" height="30" uuid="a57b83d4-76dc-447a-b24c-67f2fd9b9cb7"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA["2."]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="32" splitType="Stretch">
+			<elementGroup>
+				<subreport>
+					<reportElement stretchType="RelativeToTallestObject" x="16" y="5" width="529" height="22" uuid="1256b786-2a91-4a70-b406-08de6c1b7a87"/>
+					<subreportParameter name="COTIZACION">
+						<subreportParameterExpression><![CDATA[$P{COTIZACION}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["CompromisoPago/cuotas.jasper"]]></subreportExpression>
+				</subreport>
+			</elementGroup>
+		</band>
+		<band height="635">
+			<textField>
+				<reportElement x="40" y="12" width="506" height="38" uuid="c2f8a0e1-c330-4981-841b-bf8c35a60400"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["A la fecha de suscripción del presente instrumento, el(la) ASEGURADO(A) ha cancelado el valor total de la"+
+" cuota inicial de la Prima; y, QBE ha consentido en aceptar que el saldo sea cancelado por el(la) DEUDOR(A)"+
+" por mensualidades, de conformidad con los términos aquí convenidos. "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="14" width="15" height="30" uuid="7ae1debd-c11f-4fcd-a0a5-81f54ed81fcb"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA["3."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="13" y="55" width="535" height="20" uuid="b117dfee-8c04-44ff-9b35-2f6641482890"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["El(la) ASEGURADO(A) se COMPROMETE, irrestrictamente, a:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="78" width="506" height="30" uuid="c35bd4c9-a390-41b9-9d92-0c37530809d8"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Cancelar a QBE el saldo insoluto de la Prima, en "+$F{PLAZO_MESES}+" cuotas que serán pagadas de forma"+
+" mensual, de acuerdo al cronograma indicado en el número 2 de la cláusula primera."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="112" width="506" height="53" uuid="d3c24def-b76d-4cc4-8259-28b3c45f27f5"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Pagar, en caso de mora en el pago de una o cualesquiera de las cuotas a las que se obliga, desde su"+
+" vencimiento hasta su total cancelación, sobre el monto principal no pagado de la cuota que corresponda,"+
+" la máxima tasa de interés de mora que haya dispuesto el Directorio del Banco Central del Ecuador y que se halle"+
+" vigente a la respectiva fecha de vencimiento."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="12" y="174" width="535" height="20" uuid="a903a60d-a913-4d8e-a916-b5ac5598f2bd"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Además, el(la) ASEGURADO(A), DECLARA que acepta y reconoce que:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="80" width="15" height="30" uuid="481d5d16-bba3-4de5-b01f-b1a92b357fe6"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA["1."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="112" width="15" height="20" uuid="7d20104d-9df0-4995-ad6c-cde664ab4cbe"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA["2."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="39" y="206" width="506" height="117" uuid="c37403e0-e5fe-4b21-a88d-1ddb2f67ff8e"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Si incurriera en mora en el pago de dos o más de las cuotas convenidas, por cinco(5) días laborables o más,"+
+ " QBE podrá declarar, anticipadamente, de plazo vencido la totalidad de la deuda por el saldo insoluto de la Prima,"+
+ " y demandar al(la) ASEGURADO(A) el pago de: (a) Las cuotas o fracciones de cuotas vencidos, más el interés de mora"+
+ " calculado de acuerdo a lo establecido en este compromiso; (b) el saldo de la Prima reducido o cortado a la fecha de la"+
+ " última cuota en mora, con los intereses calculados en la forma antes expresada en esta misma cláusula y desde esa fecha"+
+ " hasta la completa cancelación de la obligación; y ,(c) los gastos judiciales y honorarios de los abogados que defienden a la "+
+ " ACREEDORA o la patrocinan para el cumplimiento o la ejecución de las obligaciones contraídas por el(la) ASEGURADO(A), así como "+
+ " cualquier otro gasto en el que QBE haya incurrido por cualquier concepto relativo a las gestiones judiciales y extrajudiciales de cobranza"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="326" width="506" height="45" uuid="bb930174-1abc-4a71-bf80-d4587caeee9d"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Cualquier tolerancia de parte de la ACREEDORA no podrá ser considerada como novación, confusión, condonación, o compensación de créditos."+
+ " El(la)DEUDOR(A) renuncia expresamente al beneficio del plazo que le otorga la ACREEDORA, pudiendo esta proceder entonces como si todas las cuotas"+
+ " se encontraren de plazo vencido."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="372" width="506" height="29" uuid="b52475a3-13d4-405f-8578-169b3bd38475"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["El pago de la totalidad de lo adeudado podrá hacerse anticipadamente. Sin embargo, la ACREEDORA  no está obligada a aceptar pagos anteriores"+
+" al vencimiento de uno cualquiera de los plazos establecidos en el cronograma."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="401" width="506" height="40" uuid="db514d49-f7a5-41b8-9ca8-731f2b581b3b"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["La sola afirmación de QBE en la demanda, en el sentido de que el(la) ASEGURADO(A) ha incurrido en incumplimiento de su compromiso de pago,"+
+" será suficiente prueba para los efectos determinados en este instrumento."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="441" width="506" height="40" uuid="7806cd15-0a7f-4d0f-a8bd-e6613b0cbd35"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Los recursos con los que ha pagado la cuota inicial y con los que pagará las cuotas mensuales de la Prima, son lícitos y consecuentemente no "+
+" provienen de ninguna actividad ilegal o ilícita, ni serán destinados a acciones realcionadas y tipificadas en la Ley de Sustancias Estupefacientes"+
+" y Psicotrópicas."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="483" width="506" height="31" uuid="3a64d89d-cdfd-4a81-aa33-6b80de2dfbce"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["En caso de controversia o diferencia derivada de este compromiso, se sujetará al procedimiento de arbitraje para su solución."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="206" width="15" height="48" uuid="3ad5f64c-153e-4c8f-9212-a32ca6573f33"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA["1."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="328" width="15" height="34" uuid="5b8931de-22cd-4de4-8ba9-777288f2ebae"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA["2."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="374" width="15" height="27" uuid="a1f60126-6842-47ac-8e60-b12cd2d3b51e"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA["3."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="403" width="15" height="27" uuid="8b9b3cea-0aa9-487e-9260-369b7a497fb3"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA["4."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="443" width="15" height="27" uuid="fe7be371-4e11-4843-b133-f0a69e14899d"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA["5."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="485" width="15" height="27" uuid="3002ad18-9987-4051-9e48-7abe395d0a76"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA["6."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="517" width="15" height="27" uuid="c0a40cb7-415d-476e-a82f-a750140d9635"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA["7."]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="549" width="100" height="20" uuid="e243ae76-0f09-41dc-a1c5-f03033f7c443"/>
+				<text><![CDATA[EL ASEGURADO(A)]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="39" y="515" width="506" height="29" uuid="5d49cff8-1c2a-479f-9a9b-68ea1e487e31"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Ratifica en el contenido de este compromiso y da al presente instrumento el valor de título ejecutivo, por lo que se"+
+ " compromete al reconocimiento de su firma y rúbrica."]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="10" y="610" width="142" height="20" uuid="16681e12-4c01-415b-b6e1-12405a0d0586"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[C.C. No.]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+</jasperReport>

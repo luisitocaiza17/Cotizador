@@ -1,0 +1,573 @@
+diff --git a/.settings/org.eclipse.core.resources.prefs b/.settings/org.eclipse.core.resources.prefs
+--- a/.settings/org.eclipse.core.resources.prefs
++++ b/.settings/org.eclipse.core.resources.prefs
+@@ -1,5 +1,10 @@
+ eclipse.preferences.version=1
+ encoding//WebContent/static/js/vehiculos/metodos.js=UTF-8
++encoding//src/_174/_13/_39/_181/ensurance/services/WSActualizarCrearEntidadesONBASE/WSActualizarCrearEntidadesONBASE.java=UTF-8
++encoding//src/_174/_13/_39/_181/ensurance/services/WSActualizarCrearEntidadesONBASE/WSActualizarCrearEntidadesONBASEService.java=UTF-8
++encoding//src/_174/_13/_39/_181/ensurance/services/WSActualizarCrearEntidadesONBASE/WSActualizarCrearEntidadesONBASEServiceLocator.java=UTF-8
++encoding//src/_174/_13/_39/_181/ensurance/services/WSActualizarCrearEntidadesONBASE/WSActualizarCrearEntidadesONBASESoapBindingStub.java=UTF-8
++encoding//src/com/tandi/entidad/dto/EntidadWSONBASE.java=UTF-8
+ encoding//src/com/tandi/servicios/agricola/WSEmisionAgricolaPortBindingStub.java=UTF-8
+ encoding//src/com/tandi/servicios/agricola/WSEmisionAgricola_PortType.java=UTF-8
+ encoding//src/com/tandi/servicios/agricola/WSEmisionAgricola_Service.java=UTF-8
+diff --git a/WebContent/WEB-INF/SolicitudAgricolaService/com/qbe/cotizador/servicios/QBE/agricolaSucre/deploy.wsdd b/WebContent/WEB-INF/SolicitudAgricolaService/com/qbe/cotizador/servicios/QBE/agricolaSucre/deploy.wsdd
+--- a/WebContent/WEB-INF/SolicitudAgricolaService/com/qbe/cotizador/servicios/QBE/agricolaSucre/deploy.wsdd
++++ b/WebContent/WEB-INF/SolicitudAgricolaService/com/qbe/cotizador/servicios/QBE/agricolaSucre/deploy.wsdd
+@@ -10,6 +10,22 @@
+       <parameter name="className" value="com.qbe.cotizador.servicios.QBE.agricolaSucre.SolicitudAgricola"/>
+       <parameter name="wsdlPortType" value="SolicitudAgricola"/>
+       <parameter name="typeMappingVersion" value="1.2"/>
++      <operation xmlns:operNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:retNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:rtns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" name="registrarSolicitud" qname="operNS:registrarSolicitud" returnQName="retNS:registrarSolicitudReturn" returnType="rtns:RespuestaUN01DTO" soapAction="">
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" qname="pns:in0" type="tns:SolicitudUN01DTO"/>
++      </operation>
++      <operation xmlns:operNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:retNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:rtns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" name="solicitudCambioFecha" qname="operNS:solicitudCambioFecha" returnQName="retNS:solicitudCambioFechaReturn" returnType="rtns:RespuestaCambio" soapAction="">
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:tramite" type="tns:string"/>
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:fechaSiembra" type="tns:string"/>
++      </operation>
++      <operation xmlns:operNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:retNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:rtns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" name="solicitudCambiolugarSiembra" qname="operNS:solicitudCambiolugarSiembra" returnQName="retNS:solicitudCambiolugarSiembraReturn" returnType="rtns:RespuestaCambio" soapAction="">
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:tramite" type="tns:string"/>
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:codProvincia" type="tns:string"/>
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:codCanton" type="tns:string"/>
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:codParroquia" type="tns:string"/>
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:direccionSiembra" type="tns:string"/>
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:latitud" type="tns:string"/>
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:longitud" type="tns:string"/>
++      </operation>
+       <operation xmlns:operNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:retNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:rtns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" name="registrarEmision" qname="operNS:registrarEmision" returnQName="retNS:registrarEmisionReturn" returnType="rtns:RespuestaEMIDTO" soapAction="">
+         <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" qname="pns:in0" type="tns:SolicitudEMIDTO"/>
+       </operation>
+@@ -13,10 +29,7 @@
+       <operation xmlns:operNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:retNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:rtns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" name="registrarEmision" qname="operNS:registrarEmision" returnQName="retNS:registrarEmisionReturn" returnType="rtns:RespuestaEMIDTO" soapAction="">
+         <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" qname="pns:in0" type="tns:SolicitudEMIDTO"/>
+       </operation>
+-      <operation xmlns:operNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:retNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:rtns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" name="registrarSolicitud" qname="operNS:registrarSolicitud" returnQName="retNS:registrarSolicitudReturn" returnType="rtns:RespuestaUN01DTO" soapAction="">
+-        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" qname="pns:in0" type="tns:SolicitudUN01DTO"/>
+-      </operation>
+-      <parameter name="allowedMethods" value="registrarSolicitud registrarEmision"/>
++      <parameter name="allowedMethods" value="registrarSolicitud registrarEmision solicitudCambiolugarSiembra solicitudCambioFecha"/>
+ 
+       <typeMapping xmlns:ns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" qname="ns:SolicitudEMIDTO" type="java:com.qbe.cotizador.servicios.QBE.agricolaSucre.SolicitudEMIDTO" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+       <typeMapping xmlns:ns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" qname="ns:RespuestaEMIDTO" type="java:com.qbe.cotizador.servicios.QBE.agricolaSucre.RespuestaEMIDTO" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+@@ -20,6 +33,7 @@
+ 
+       <typeMapping xmlns:ns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" qname="ns:SolicitudEMIDTO" type="java:com.qbe.cotizador.servicios.QBE.agricolaSucre.SolicitudEMIDTO" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+       <typeMapping xmlns:ns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" qname="ns:RespuestaEMIDTO" type="java:com.qbe.cotizador.servicios.QBE.agricolaSucre.RespuestaEMIDTO" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
++      <typeMapping xmlns:ns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" qname="ns:RespuestaCambio" type="java:com.qbe.cotizador.servicios.QBE.agricolaSucre.RespuestaCambio" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+       <typeMapping xmlns:ns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" qname="ns:SolicitudUN01DTO" type="java:com.qbe.cotizador.servicios.QBE.agricolaSucre.SolicitudUN01DTO" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+       <typeMapping xmlns:ns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" qname="ns:RespuestaUN01DTO" type="java:com.qbe.cotizador.servicios.QBE.agricolaSucre.RespuestaUN01DTO" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+   </service>
+diff --git a/WebContent/WEB-INF/SolicitudAgricolaService/com/qbe/cotizador/servicios/QBE/agricolaSucre/deploy.wsdd.bak b/WebContent/WEB-INF/SolicitudAgricolaService/com/qbe/cotizador/servicios/QBE/agricolaSucre/deploy.wsdd.bak
+--- a/WebContent/WEB-INF/SolicitudAgricolaService/com/qbe/cotizador/servicios/QBE/agricolaSucre/deploy.wsdd.bak
++++ b/WebContent/WEB-INF/SolicitudAgricolaService/com/qbe/cotizador/servicios/QBE/agricolaSucre/deploy.wsdd.bak
+@@ -23,6 +23,19 @@
+       <operation name="registrarSolicitud" qname="operNS:registrarSolicitud" xmlns:operNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" returnQName="retNS:registrarSolicitudReturn" xmlns:retNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" returnType="rtns:RespuestaUN01DTO" xmlns:rtns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" soapAction="" >
+         <parameter qname="pns:in0" xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" type="tns:SolicitudUN01DTO" xmlns:tns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com"/>
+       </operation>
++      <operation name="solicitudCambioFecha" qname="operNS:solicitudCambioFecha" xmlns:operNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" returnQName="retNS:solicitudCambioFechaReturn" xmlns:retNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" returnType="rtns:RespuestaCambio" xmlns:rtns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" soapAction="" >
++        <parameter qname="pns:tramite" xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
++        <parameter qname="pns:fechaSiembra" xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
++      </operation>
++      <operation name="solicitudCambiolugarSiembra" qname="operNS:solicitudCambiolugarSiembra" xmlns:operNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" returnQName="retNS:solicitudCambiolugarSiembraReturn" xmlns:retNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" returnType="rtns:RespuestaCambio" xmlns:rtns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" soapAction="" >
++        <parameter qname="pns:tramite" xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
++        <parameter qname="pns:codProvincia" xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
++        <parameter qname="pns:codCanton" xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
++        <parameter qname="pns:codParroquia" xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
++        <parameter qname="pns:direccionSiembra" xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
++        <parameter qname="pns:latitud" xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
++        <parameter qname="pns:longitud" xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
++      </operation>
+       <operation name="registrarEmision" qname="operNS:registrarEmision" xmlns:operNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" returnQName="retNS:registrarEmisionReturn" xmlns:retNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" returnType="rtns:RespuestaEMIDTO" xmlns:rtns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" soapAction="" >
+         <parameter qname="pns:in0" xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" type="tns:SolicitudEMIDTO" xmlns:tns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com"/>
+       </operation>
+@@ -26,7 +39,7 @@
+       <operation name="registrarEmision" qname="operNS:registrarEmision" xmlns:operNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" returnQName="retNS:registrarEmisionReturn" xmlns:retNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" returnType="rtns:RespuestaEMIDTO" xmlns:rtns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" soapAction="" >
+         <parameter qname="pns:in0" xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" type="tns:SolicitudEMIDTO" xmlns:tns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com"/>
+       </operation>
+-      <parameter name="allowedMethods" value="registrarSolicitud registrarEmision"/>
++      <parameter name="allowedMethods" value="registrarSolicitud registrarEmision solicitudCambiolugarSiembra solicitudCambioFecha"/>
+ 
+       <typeMapping
+         xmlns:ns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com"
+@@ -30,6 +43,14 @@
+ 
+       <typeMapping
+         xmlns:ns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com"
++        qname="ns:SolicitudEMIDTO"
++        type="java:com.qbe.cotizador.servicios.QBE.agricolaSucre.SolicitudEMIDTO"
++        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
++        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
++        encodingStyle=""
++      />
++      <typeMapping
++        xmlns:ns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com"
+         qname="ns:RespuestaEMIDTO"
+         type="java:com.qbe.cotizador.servicios.QBE.agricolaSucre.RespuestaEMIDTO"
+         serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+@@ -38,6 +59,14 @@
+       />
+       <typeMapping
+         xmlns:ns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com"
++        qname="ns:RespuestaCambio"
++        type="java:com.qbe.cotizador.servicios.QBE.agricolaSucre.RespuestaCambio"
++        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
++        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
++        encodingStyle=""
++      />
++      <typeMapping
++        xmlns:ns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com"
+         qname="ns:SolicitudUN01DTO"
+         type="java:com.qbe.cotizador.servicios.QBE.agricolaSucre.SolicitudUN01DTO"
+         serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+@@ -52,13 +81,5 @@
+         deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+         encodingStyle=""
+       />
+-      <typeMapping
+-        xmlns:ns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com"
+-        qname="ns:SolicitudEMIDTO"
+-        type="java:com.qbe.cotizador.servicios.QBE.agricolaSucre.SolicitudEMIDTO"
+-        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+-        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+-        encodingStyle=""
+-      />
+   </service>
+ </deployment>
+diff --git a/WebContent/WEB-INF/server-config.wsdd b/WebContent/WEB-INF/server-config.wsdd
+--- a/WebContent/WEB-INF/server-config.wsdd
++++ b/WebContent/WEB-INF/server-config.wsdd
+@@ -109,11 +109,7 @@
+   <ns1:operation name="solicitudCambioFecha" qname="ns34:solicitudCambioFecha" returnQName="ns34:solicitudCambioFechaReturn" returnType="ns34:RespuestaCambio" soapAction="" xmlns:ns34="http://agricolaSucre.QBE.servicios.cotizador.qbe.com">
+    <ns1:parameter qname="ns34:tramite" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+    <ns1:parameter qname="ns34:fechaSiembra" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+-  </ns1:operation>
+-  <ns1:operation name="notificacionRevocado" qname="ns35:notificacionRevocado" returnQName="ns35:notificacionRevocadoReturn" returnType="ns35:RespuestaCambio" soapAction="" xmlns:ns35="http://agricolaSucre.QBE.servicios.cotizador.qbe.com">
+-   <ns1:parameter qname="ns35:tramite" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+-   <ns1:parameter qname="ns35:Causa" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+-  </ns1:operation>
++  </ns1:operation> 
+   <ns1:parameter name="allowedMethods" value="registrarSolicitud notificacionRevocado registrarEmision solicitudCambiolugarSiembra solicitudCambioFecha"/>
+   <ns1:parameter name="typeMappingVersion" value="1.2"/>
+   <ns1:parameter name="wsdlPortType" value="SolicitudAgricola"/>
+diff --git a/WebContent/WEB-INF/web.xml b/WebContent/WEB-INF/web.xml
+--- a/WebContent/WEB-INF/web.xml
++++ b/WebContent/WEB-INF/web.xml
+@@ -398,8 +398,8 @@
+   <servlet-mapping>
+     <servlet-name>com.qbe.cotizador.servlets.cotizacion.ContenedorController</servlet-name>
+     <url-pattern>/ContenedorController</url-pattern>
+-  </servlet-mapping>  
+-   <servlet>
++  </servlet-mapping>
++  <servlet>
+     <servlet-name>com.qbe.cotizador.servlets.cotizacion.vehiculos_dinamicos.tarificador.TarificadorController</servlet-name>
+     <servlet-class>com.qbe.cotizador.servlets.cotizacion.vehiculos_dinamicos.tarificador.TarificadorController</servlet-class>
+   </servlet>
+@@ -423,4 +423,4 @@
+     <persistence-context-ref-name>CotizadorWebPC</persistence-context-ref-name>
+     <persistence-unit-name>CotizadorWebPU</persistence-unit-name>
+   </persistence-context-ref>
+-</web-app>
++</web-app>
+\ No newline at end of file
+diff --git a/WebContent/dashboard/ResumenCotizaciones.jsp b/WebContent/dashboard/ResumenCotizaciones.jsp
+--- a/WebContent/dashboard/ResumenCotizaciones.jsp
++++ b/WebContent/dashboard/ResumenCotizaciones.jsp
+@@ -351,4 +351,5 @@
+ 				{ field: "ObservacionQBE", title: "ObservacionQBE", width: "160px"},
+ 				{ field: "Confirmacion", title: "Confirmación Canal", width: "160px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 				{ field: "EstadoCotizacion", title: "Estado", width: "100px"},
++				{ field: "Confirmacion", title: "Confirmación Canal", width: "120px", attributes:{style:"color: red;"}},				
+ 				{ field: "polizaNumero", title: "Poliza Numero", width: "100px"},
+@@ -354,5 +355,5 @@
+ 				{ field: "polizaNumero", title: "Poliza Numero", width: "100px"},
+-				{ field: "polizaFechaVencimiento", title: "Poliza Fecha", width: "100px"},
++				{ field: "polizaFechaVencimiento", title: "Poliza Fecha", width: "100px", hidden: true, exportar: true},
+ 				{ field: "usuarioCotizador", title: "Usuario Offline", width: "80px", hidden: true, exportar: true},
+                       { command: { text: "Ver Detalle", click: fnEventoClick }, title: " ", width: "100px"}],
+                 height: 500,
+diff --git a/WebContent/wsdl/SolicitudAgricola.wsdl b/WebContent/wsdl/SolicitudAgricola.wsdl
+--- a/WebContent/wsdl/SolicitudAgricola.wsdl
++++ b/WebContent/wsdl/SolicitudAgricola.wsdl
+@@ -4,57 +4,6 @@
+ Built on Apr 22, 2006 (06:55:48 PDT)-->
+  <wsdl:types>
+   <schema elementFormDefault="qualified" targetNamespace="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns="http://www.w3.org/2001/XMLSchema">
+-   <element name="registrarEmision">
+-    <complexType>
+-     <sequence>
+-      <element name="in0" type="impl:SolicitudEMIDTO"/>
+-     </sequence>
+-    </complexType>
+-   </element>
+-   <complexType name="SolicitudEMIDTO">
+-    <sequence>
+-     <element name="anexo" nillable="true" type="xsd:string"/>
+-     <element name="apellido1" nillable="true" type="xsd:string"/>
+-     <element name="apellido2" nillable="true" type="xsd:string"/>
+-     <element name="canton" nillable="true" type="xsd:string"/>
+-     <element name="cedula" nillable="true" type="xsd:string"/>
+-     <element name="codigoFacilitador" nillable="true" type="xsd:string"/>
+-     <element name="fechaEmision" nillable="true" type="xsd:string"/>
+-     <element name="fechaPago" nillable="true" type="xsd:string"/>
+-     <element name="fechaSiembra" nillable="true" type="xsd:string"/>
+-     <element name="inversion" nillable="true" type="xsd:string"/>
+-     <element name="lote" nillable="true" type="xsd:string"/>
+-     <element name="montoAsegurado" nillable="true" type="xsd:string"/>
+-     <element name="montoPago" nillable="true" type="xsd:float"/>
+-     <element name="nombres" nillable="true" type="xsd:string"/>
+-     <element name="numHectAseguradas" type="xsd:int"/>
+-     <element name="numHectFnanciadas" type="xsd:int"/>
+-     <element name="numeroFactura" nillable="true" type="xsd:string"/>
+-     <element name="numeroResolucion" nillable="true" type="xsd:string"/>
+-     <element name="ordenPago" nillable="true" type="xsd:string"/>
+-     <element name="parroquia" nillable="true" type="xsd:string"/>
+-     <element name="poliza" nillable="true" type="xsd:string"/>
+-     <element name="primaCalculada" nillable="true" type="xsd:float"/>
+-     <element name="provincia" nillable="true" type="xsd:string"/>
+-     <element name="recinto" nillable="true" type="xsd:string"/>
+-     <element name="referencia" nillable="true" type="xsd:string"/>
+-     <element name="terrenoTecnificado" nillable="true" type="xsd:string"/>
+-     <element name="variedad" nillable="true" type="xsd:string"/>
+-    </sequence>
+-   </complexType>
+-   <element name="registrarEmisionResponse">
+-    <complexType>
+-     <sequence>
+-      <element name="registrarEmisionReturn" type="impl:RespuestaEMIDTO"/>
+-     </sequence>
+-    </complexType>
+-   </element>
+-   <complexType name="RespuestaEMIDTO">
+-    <sequence>
+-     <element name="estado" nillable="true" type="xsd:string"/>
+-     <element name="observacion" nillable="true" type="xsd:string"/>
+-    </sequence>
+-   </complexType>
+    <element name="registrarSolicitud">
+     <complexType>
+      <sequence>
+@@ -72,6 +21,7 @@
+      <element name="celreferencia" nillable="true" type="xsd:string"/>
+      <element name="codigoAgenciaOSucursal" nillable="true" type="xsd:string"/>
+      <element name="codigoFacilitador" nillable="true" type="xsd:string"/>
++     <element name="codigoSubCanal" nillable="true" type="xsd:string"/>
+      <element name="codigoVariedadCultivo" nillable="true" type="xsd:string"/>
+      <element name="condicionPredio" nillable="true" type="xsd:string"/>
+      <element name="condicionPredioOtra" nillable="true" type="xsd:string"/>
+@@ -138,6 +88,102 @@
+      <element name="prima" type="xsd:float"/>
+     </sequence>
+    </complexType>
++   <element name="solicitudCambioFecha">
++    <complexType>
++     <sequence>
++      <element name="tramite" type="xsd:string"/>
++      <element name="fechaSiembra" type="xsd:string"/>
++     </sequence>
++    </complexType>
++   </element>
++   <element name="solicitudCambioFechaResponse">
++    <complexType>
++     <sequence>
++      <element name="solicitudCambioFechaReturn" type="impl:RespuestaCambio"/>
++     </sequence>
++    </complexType>
++   </element>
++   <complexType name="RespuestaCambio">
++    <sequence>
++     <element name="estado" nillable="true" type="xsd:string"/>
++     <element name="fechaCambio" nillable="true" type="xsd:string"/>
++     <element name="observacion" nillable="true" type="xsd:string"/>
++     <element name="tramite" nillable="true" type="xsd:string"/>
++    </sequence>
++   </complexType>
++   <element name="solicitudCambiolugarSiembra">
++    <complexType>
++     <sequence>
++      <element name="tramite" type="xsd:string"/>
++      <element name="codProvincia" type="xsd:string"/>
++      <element name="codCanton" type="xsd:string"/>
++      <element name="codParroquia" type="xsd:string"/>
++      <element name="direccionSiembra" type="xsd:string"/>
++      <element name="latitud" type="xsd:string"/>
++      <element name="longitud" type="xsd:string"/>
++     </sequence>
++    </complexType>
++   </element>
++   <element name="solicitudCambiolugarSiembraResponse">
++    <complexType>
++     <sequence>
++      <element name="solicitudCambiolugarSiembraReturn" type="impl:RespuestaCambio"/>
++     </sequence>
++    </complexType>
++   </element>
++   <element name="registrarEmision">
++    <complexType>
++     <sequence>
++      <element name="in0" type="impl:SolicitudEMIDTO"/>
++     </sequence>
++    </complexType>
++   </element>
++   <complexType name="SolicitudEMIDTO">
++    <sequence>
++     <element name="anexo" nillable="true" type="xsd:string"/>
++     <element name="apellido1" nillable="true" type="xsd:string"/>
++     <element name="apellido2" nillable="true" type="xsd:string"/>
++     <element name="canton" nillable="true" type="xsd:string"/>
++     <element name="causa" nillable="true" type="xsd:string"/>
++     <element name="cedula" nillable="true" type="xsd:string"/>
++     <element name="codigoFacilitador" nillable="true" type="xsd:string"/>
++     <element name="fechaEmision" nillable="true" type="xsd:string"/>
++     <element name="fechaPago" nillable="true" type="xsd:string"/>
++     <element name="fechaSiembra" nillable="true" type="xsd:string"/>
++     <element name="inversion" nillable="true" type="xsd:string"/>
++     <element name="lote" nillable="true" type="xsd:string"/>
++     <element name="montoAsegurado" nillable="true" type="xsd:string"/>
++     <element name="montoPago" nillable="true" type="xsd:float"/>
++     <element name="nombres" nillable="true" type="xsd:string"/>
++     <element name="numHectAseguradas" type="xsd:double"/>
++     <element name="numHectFnanciadas" type="xsd:double"/>
++     <element name="numeroFactura" nillable="true" type="xsd:string"/>
++     <element name="numeroResolucion" nillable="true" type="xsd:string"/>
++     <element name="ordenPago" nillable="true" type="xsd:string"/>
++     <element name="parroquia" nillable="true" type="xsd:string"/>
++     <element name="poliza" nillable="true" type="xsd:string"/>
++     <element name="primaCalculada" nillable="true" type="xsd:float"/>
++     <element name="provincia" nillable="true" type="xsd:string"/>
++     <element name="recinto" nillable="true" type="xsd:string"/>
++     <element name="referencia" nillable="true" type="xsd:string"/>
++     <element name="terrenoTecnificado" nillable="true" type="xsd:string"/>
++     <element name="tipoEndoso" nillable="true" type="xsd:string"/>
++     <element name="variedad" nillable="true" type="xsd:string"/>
++    </sequence>
++   </complexType>
++   <element name="registrarEmisionResponse">
++    <complexType>
++     <sequence>
++      <element name="registrarEmisionReturn" type="impl:RespuestaEMIDTO"/>
++     </sequence>
++    </complexType>
++   </element>
++   <complexType name="RespuestaEMIDTO">
++    <sequence>
++     <element name="estado" nillable="true" type="xsd:string"/>
++     <element name="observacion" nillable="true" type="xsd:string"/>
++    </sequence>
++   </complexType>
+   </schema>
+  </wsdl:types>
+ 
+@@ -141,6 +187,14 @@
+   </schema>
+  </wsdl:types>
+ 
++   <wsdl:message name="registrarSolicitudResponse">
++
++      <wsdl:part element="impl:registrarSolicitudResponse" name="parameters">
++
++      </wsdl:part>
++
++   </wsdl:message>
++
+    <wsdl:message name="registrarEmisionRequest">
+ 
+       <wsdl:part element="impl:registrarEmision" name="parameters">
+@@ -157,5 +211,5 @@
+ 
+    </wsdl:message>
+ 
+-   <wsdl:message name="registrarSolicitudResponse">
++   <wsdl:message name="solicitudCambioFechaRequest">
+ 
+@@ -161,5 +215,5 @@
+ 
+-      <wsdl:part element="impl:registrarSolicitudResponse" name="parameters">
++      <wsdl:part element="impl:solicitudCambioFecha" name="parameters">
+ 
+       </wsdl:part>
+ 
+@@ -173,5 +227,29 @@
+ 
+    </wsdl:message>
+ 
++   <wsdl:message name="solicitudCambiolugarSiembraRequest">
++
++      <wsdl:part element="impl:solicitudCambiolugarSiembra" name="parameters">
++
++      </wsdl:part>
++
++   </wsdl:message>
++
++   <wsdl:message name="solicitudCambioFechaResponse">
++
++      <wsdl:part element="impl:solicitudCambioFechaResponse" name="parameters">
++
++      </wsdl:part>
++
++   </wsdl:message>
++
++   <wsdl:message name="solicitudCambiolugarSiembraResponse">
++
++      <wsdl:part element="impl:solicitudCambiolugarSiembraResponse" name="parameters">
++
++      </wsdl:part>
++
++   </wsdl:message>
++
+    <wsdl:portType name="SolicitudAgricola">
+ 
+@@ -176,5 +254,41 @@
+    <wsdl:portType name="SolicitudAgricola">
+ 
++      <wsdl:operation name="registrarSolicitud">
++
++         <wsdl:input message="impl:registrarSolicitudRequest" name="registrarSolicitudRequest">
++
++       </wsdl:input>
++
++         <wsdl:output message="impl:registrarSolicitudResponse" name="registrarSolicitudResponse">
++
++       </wsdl:output>
++
++      </wsdl:operation>
++
++      <wsdl:operation name="solicitudCambioFecha">
++
++         <wsdl:input message="impl:solicitudCambioFechaRequest" name="solicitudCambioFechaRequest">
++
++       </wsdl:input>
++
++         <wsdl:output message="impl:solicitudCambioFechaResponse" name="solicitudCambioFechaResponse">
++
++       </wsdl:output>
++
++      </wsdl:operation>
++
++      <wsdl:operation name="solicitudCambiolugarSiembra">
++
++         <wsdl:input message="impl:solicitudCambiolugarSiembraRequest" name="solicitudCambiolugarSiembraRequest">
++
++       </wsdl:input>
++
++         <wsdl:output message="impl:solicitudCambiolugarSiembraResponse" name="solicitudCambiolugarSiembraResponse">
++
++       </wsdl:output>
++
++      </wsdl:operation>
++
+       <wsdl:operation name="registrarEmision">
+ 
+          <wsdl:input message="impl:registrarEmisionRequest" name="registrarEmisionRequest">
+@@ -187,21 +301,9 @@
+ 
+       </wsdl:operation>
+ 
+-      <wsdl:operation name="registrarSolicitud">
+-
+-         <wsdl:input message="impl:registrarSolicitudRequest" name="registrarSolicitudRequest">
+-
+-       </wsdl:input>
+-
+-         <wsdl:output message="impl:registrarSolicitudResponse" name="registrarSolicitudResponse">
+-
+-       </wsdl:output>
+-
+-      </wsdl:operation>
+-
+    </wsdl:portType>
+ 
+    <wsdl:binding name="SolicitudAgricolaSoapBinding" type="impl:SolicitudAgricola">
+ 
+       <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+ 
+@@ -202,9 +304,63 @@
+    </wsdl:portType>
+ 
+    <wsdl:binding name="SolicitudAgricolaSoapBinding" type="impl:SolicitudAgricola">
+ 
+       <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+ 
++      <wsdl:operation name="registrarSolicitud">
++
++         <wsdlsoap:operation soapAction=""/>
++
++         <wsdl:input name="registrarSolicitudRequest">
++
++            <wsdlsoap:body use="literal"/>
++
++         </wsdl:input>
++
++         <wsdl:output name="registrarSolicitudResponse">
++
++            <wsdlsoap:body use="literal"/>
++
++         </wsdl:output>
++
++      </wsdl:operation>
++
++      <wsdl:operation name="solicitudCambioFecha">
++
++         <wsdlsoap:operation soapAction=""/>
++
++         <wsdl:input name="solicitudCambioFechaRequest">
++
++            <wsdlsoap:body use="literal"/>
++
++         </wsdl:input>
++
++         <wsdl:output name="solicitudCambioFechaResponse">
++
++            <wsdlsoap:body use="literal"/>
++
++         </wsdl:output>
++
++      </wsdl:operation>
++
++      <wsdl:operation name="solicitudCambiolugarSiembra">
++
++         <wsdlsoap:operation soapAction=""/>
++
++         <wsdl:input name="solicitudCambiolugarSiembraRequest">
++
++            <wsdlsoap:body use="literal"/>
++
++         </wsdl:input>
++
++         <wsdl:output name="solicitudCambiolugarSiembraResponse">
++
++            <wsdlsoap:body use="literal"/>
++
++         </wsdl:output>
++
++      </wsdl:operation>
++
+       <wsdl:operation name="registrarEmision">
+ 
+          <wsdlsoap:operation soapAction=""/>
+@@ -223,24 +379,6 @@
+ 
+       </wsdl:operation>
+ 
+-      <wsdl:operation name="registrarSolicitud">
+-
+-         <wsdlsoap:operation soapAction=""/>
+-
+-         <wsdl:input name="registrarSolicitudRequest">
+-
+-            <wsdlsoap:body use="literal"/>
+-
+-         </wsdl:input>
+-
+-         <wsdl:output name="registrarSolicitudResponse">
+-
+-            <wsdlsoap:body use="literal"/>
+-
+-         </wsdl:output>
+-
+-      </wsdl:operation>
+-
+    </wsdl:binding>
+ 
+    <wsdl:service name="SolicitudAgricolaService">

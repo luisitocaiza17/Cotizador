@@ -1,0 +1,62 @@
+diff --git a/WebContent/dashboard/CotizacionAprobacionAgricola.jsp b/WebContent/dashboard/CotizacionAprobacionAgricola.jsp
+--- a/WebContent/dashboard/CotizacionAprobacionAgricola.jsp
++++ b/WebContent/dashboard/CotizacionAprobacionAgricola.jsp
+@@ -72,7 +72,7 @@
+ 	var PuntosVentaList = "";
+ 	var ProcesoMasivo="";
+ 	$(document).ready(function() {
+-			activarMenu("CotizacionAprobacionAgricola");
++			activarMenu(this);
+ 			//Cargar combo 
+ 			//$("#punto_venta").children().remove();
+ 			//$("#punto_venta").append("<option value=''>Seleccione punto venta</option>");
+@@ -76,6 +76,7 @@
+ 			//Cargar combo 
+ 			//$("#punto_venta").children().remove();
+ 			//$("#punto_venta").append("<option value=''>Seleccione punto venta</option>");
++			$("#cambios").hide();
+ 			CargarComboAgente();
+ 			obtenerCanal();
+ 			CargarCombo();
+@@ -439,7 +440,9 @@
+                       { field: "DisponeAsistencia", title: "Dispone Asistencia", width: "50px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+                       { field: "AgricultorTecnificado", title: "Agricultor es Tecnificado", width: "50px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+                       { field: "ObservacionRegla", title: "Observación", width: "160px"},
+-                      { field: "EstadoCotizacion", title: "Estado", width: "100px", hidden: true, exportar: true}, 
++                      { field: "tieneModificacion", title: "Modificaciones", width: "100px",headerAttributes: { style: "white-space: normal"}},
++      				  { field: "detalleModificacion", title: "Detalle Modificacion", width: "160px",headerAttributes: { style: "white-space: normal"}},
++      				  { field: "EstadoCotizacion", title: "Estado", width: "100px", hidden: true, exportar: true}, 
+                       { field: "usuarioCotizador", title: "Usuario Offline", width: "80px", hidden: true, exportar: true},
+ 			{ command: { text: "Ver Detalle", click: fnEventoClick }, title: " ", width: "100px"}],
+             height: 500,
+@@ -557,6 +560,15 @@
+ 						$('#DisponeRiego').html(data.DisponeRiego);
+ 						$('#DisponeAsistencia').html(data.DisponeAsistencia);
+ 						$('#AgricultorTecnificado').html(data.AgricultorTecnificado);
++						
++						if(data.tieneCambios=="SI"){
++							$('#cambios').show();
++							$('#detalleCambio').html(data.detalleCambios);
++							
++						}else{
++							$('#cambios').hide();
++						}
++						
+ 						Reglas = data.Regla;
+ 						
+ 						if (data.tasa == 0) {
+@@ -1015,6 +1027,14 @@
+ 													</td>
+ 												</tr>
+ 												
++												<!-- Mostrar en pantalla los cambios de sitio y fecha de siembra -->												
++												<tr id="cambios">
++													<td style="color: blue;">Cambio Fecha/Sitio:</td>
++													<td colspan="3">
++														<div id="detalleCambio"></div>
++													</td>														
++												</tr>
++												
+ 											</table>
+ 										</td>
+ 									</tr>

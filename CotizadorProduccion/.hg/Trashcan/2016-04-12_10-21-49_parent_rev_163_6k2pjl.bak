@@ -1,0 +1,11 @@
+diff --git a/WebContent/static/js/agricola/metodos.agricola.js b/WebContent/static/js/agricola/metodos.agricola.js
+--- a/WebContent/static/js/agricola/metodos.agricola.js
++++ b/WebContent/static/js/agricola/metodos.agricola.js
+@@ -2739,6 +2739,7 @@
+ 			"tipoSeguro" : tipoSeguro,
+ 			"sucursalCanalId" : $("#sucursal_canal").val(),
+ 			"aniosCultivo" : $("#anios_cultivo").val(),
++			"previaId" : $("#previaId").val(),
+ 		},
+ 		type : 'post',
+ 		async : false,

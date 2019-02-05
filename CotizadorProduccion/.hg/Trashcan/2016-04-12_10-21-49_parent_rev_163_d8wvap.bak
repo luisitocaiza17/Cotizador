@@ -1,0 +1,17 @@
+diff --git a/src/com/qbe/cotizador/util/Utilitarios.java b/src/com/qbe/cotizador/util/Utilitarios.java
+--- a/src/com/qbe/cotizador/util/Utilitarios.java
++++ b/src/com/qbe/cotizador/util/Utilitarios.java
+@@ -1037,5 +1037,12 @@
+ 			throw new RuntimeException(e);
+ 		}		
+ 	}
++	
++	public static java.sql.Date actualDate() {
++        Calendar calendario = Calendar.getInstance();
++        java.sql.Date fechaSql = new java.sql.Date(calendario.getTime().getTime());
++        return fechaSql;
++    }
++
+   
+ }
+\ No newline at end of file

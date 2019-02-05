@@ -1,0 +1,254 @@
+diff --git a/WebContent/WEB-INF/web.xml b/WebContent/WEB-INF/web.xml
+--- a/WebContent/WEB-INF/web.xml
++++ b/WebContent/WEB-INF/web.xml
+@@ -398,8 +398,8 @@
+   <servlet-mapping>
+     <servlet-name>com.qbe.cotizador.servlets.cotizacion.ContenedorController</servlet-name>
+     <url-pattern>/ContenedorController</url-pattern>
+-  </servlet-mapping>  
+-   <servlet>
++  </servlet-mapping>
++  <servlet>
+     <servlet-name>com.qbe.cotizador.servlets.cotizacion.vehiculos_dinamicos.tarificador.TarificadorController</servlet-name>
+     <servlet-class>com.qbe.cotizador.servlets.cotizacion.vehiculos_dinamicos.tarificador.TarificadorController</servlet-class>
+   </servlet>
+@@ -423,4 +423,4 @@
+     <persistence-context-ref-name>CotizadorWebPC</persistence-context-ref-name>
+     <persistence-unit-name>CotizadorWebPU</persistence-unit-name>
+   </persistence-context-ref>
+-</web-app>
++</web-app>
+\ No newline at end of file
+diff --git a/WebContent/dashboard/AgriParametroPorCanal.jsp b/WebContent/dashboard/AgriParametroPorCanal.jsp
+--- a/WebContent/dashboard/AgriParametroPorCanal.jsp
++++ b/WebContent/dashboard/AgriParametroPorCanal.jsp
+@@ -24,6 +24,12 @@
+ <script src="../static/js/Kendo/kendo.web.min.js"></script>
+ 
+ <style type="text/css">
++.modal .modal-dialog {
++	width: 80%;
++}
++.modal-body {
++    height:80%; 
++}
+ .tab_strip {
+ 	height: 200px;
+ }
+@@ -184,6 +190,8 @@
+ 							var allLiElementsToBeRemoved = up.wrapper.find('.k-file');
+ 							up._removeFileEntry(allLiElementsToBeRemoved );	
+ 							$("#soloActulizar").hide();
++							$("#cajaTexto").hide();
++							$("#mensajeTexto").hide();
+ 							limpiar();
+ 						});
+ 
+@@ -320,7 +328,8 @@
+ 
+ 	function actualizar(parametroId) {
+ 		$("#soloActulizar").show();
+-		
++		$("#cajaTexto").show();
++		$("#mensajeTexto").show();
+ 		var up = $('#files').data().kendoUpload;
+ 		var allLiElementsToBeRemoved = up.wrapper.find('.k-file');
+ 		up._removeFileEntry(allLiElementsToBeRemoved );	
+@@ -407,6 +416,8 @@
+ 	
+ 	function actualizarPorCanalCultivo(parametroCanalId,parametroCultivoId) {
+ 		$("#soloActulizar").show();
++		$("#cajaTexto").show();
++		$("#mensajeTexto").show();
+ 		limpiar();
+ 		if ((parametroCanalId === '' || typeof parametroCanalId === 'undefined') || (parametroCultivoId === '' || typeof parametroCultivoId === 'undefined'))
+ 			return false;
+@@ -503,7 +514,7 @@
+ 								<input type="hidden" class="form-control" id="id">
+ 								<table style="width: 100%">
+ 									<tr>
+-										<td>
++										<td width="45%">
+ 											<label style="width: 100%">Punto de Venta:</label>
+ 											<select id="canal" name="canal" data-placeholder="Seleccione una opción..." validationMessage="Campo requerido!!!" required="required" required>
+ 										</select></td>
+@@ -507,14 +518,10 @@
+ 											<label style="width: 100%">Punto de Venta:</label>
+ 											<select id="canal" name="canal" data-placeholder="Seleccione una opción..." validationMessage="Campo requerido!!!" required="required" required>
+ 										</select></td>
+-									</tr>
+-									<tr>
+-										<td><br /></td>
+-									</tr>
+-									<tr>
+-										<td>
++										<td width="10%"></td>
++										<td width="45%">
+ 											<label style="width: 100%">Tipo Cultivo:</label>
+ 											<select id="tipoCultivo" name="tipoCultivo" data-placeholder="Seleccione una opción..." validationMessage="Campo requerido!!!" required="required" required>
+ 											</select>
+ 										</td>
+ 									</tr>
+@@ -516,6 +523,7 @@
+ 											<label style="width: 100%">Tipo Cultivo:</label>
+ 											<select id="tipoCultivo" name="tipoCultivo" data-placeholder="Seleccione una opción..." validationMessage="Campo requerido!!!" required="required" required>
+ 											</select>
+ 										</td>
+ 									</tr>
++									
+ 									<tr>
+@@ -521,8 +529,5 @@
+ 									<tr>
+-										<td><br /></td>
+-									</tr>
+-									<tr>
+-										<td>
++										<td width="45%">
+ 											<label style="width: 100%">Nombre Plantilla:</label>
+ 											<input type="text" id="plantillaNombre" name="plantillaNombre" class="form-control" >
+ 										</td>
+@@ -526,7 +531,12 @@
+ 											<label style="width: 100%">Nombre Plantilla:</label>
+ 											<input type="text" id="plantillaNombre" name="plantillaNombre" class="form-control" >
+ 										</td>
++										<td width="10%"></td>
++										<td width="45%">
++											<label style="width: 100%">Plantilla ENSURANCE ID:</label>
++											<input type="number" id="plantillaId" name="plantillaId" class="form-control" >
++										</td>
+ 									</tr>
+ 									<tr>
+ 										<td><br /></td>
+ 									</tr>
+@@ -529,5 +539,6 @@
+ 									</tr>
+ 									<tr>
+ 										<td><br /></td>
+ 									</tr>
++									
+ 									<tr>
+@@ -533,5 +544,5 @@
+ 									<tr>
+-										<td>
+-											<label style="width: 100%">Plantilla ENSURANCE ID:</label>
+-											<input type="number" id="plantillaId" name="plantillaId" class="form-control" >
++										<td width="45%">
++											<label style="width: 100%">Numero Contenedor:</label>
++											<input type="text" id="sucursalEmisionId" name="sucursalEmisionId" class="form-control" >
+ 										</td>
+@@ -537,8 +548,7 @@
+ 										</td>
+-									</tr>
+-									<tr>
+-										<td>
++										<td width="10%"> </td>
++										<td width="45%">
+ 											<label style="width: 100%">Contenedor ENSURANCE ID:</label>
+ 											<input type="number" id="contenedorId" name="contenedorId" class="form-control" >
+ 										</td>
+ 									</tr>
+@@ -541,5 +551,6 @@
+ 											<label style="width: 100%">Contenedor ENSURANCE ID:</label>
+ 											<input type="number" id="contenedorId" name="contenedorId" class="form-control" >
+ 										</td>
+ 									</tr>
++									
+ 									<tr>
+@@ -545,11 +556,5 @@
+ 									<tr>
+-										<td>
+-											<label style="width: 100%">Numero Contenedor:</label>
+-											<input type="text" id="sucursalEmisionId" name="sucursalEmisionId" class="form-control" >
+-										</td>
+-									</tr>
+-									<tr id="soloActulizar">
+-										<td>
++										<td id="soloActulizar">
+ 											<label style="width: 100%">PLANTILLA ACTUAL:</label>
+ 											<button type="button" class="btn btn-default" id="plantillaActual" onclick="descargarPlantilla();" name="plantillaActual" >descargar</button>
+ 										</td>
+@@ -553,9 +558,8 @@
+ 											<label style="width: 100%">PLANTILLA ACTUAL:</label>
+ 											<button type="button" class="btn btn-default" id="plantillaActual" onclick="descargarPlantilla();" name="plantillaActual" >descargar</button>
+ 										</td>
+-									</tr>
+-									<tr>
+-										<td>
++										<td ></td>
++										<td >
+ 											<div class="row" style="display: inline;" id="content-Upload">
+ 											<div class="col-lg-12">
+ 												<div class="table-responsive">
+@@ -579,7 +583,8 @@
+ 										</div>
+ 										</td>
+ 									</tr>
+-									<tr>
+-										<td colspan="4">Texto:
++									
++									<tr id="mensajeTexto">
++										<td colspan="4"><h3>Texto:</h3>
+ 										</td>
+ 									</tr>
+@@ -584,10 +589,9 @@
+ 										</td>
+ 									</tr>
+-									<tr>
+-										<td colspan="4"><textarea id="texto" rows="10" cols="30"
+-									style="height: 100%; width: 100%; max-width: 400px;"
+-									class="form-control required"></textarea>
+-										</td>
++									<tr id="cajaTexto">
++										<td colspan="4"><textarea id="texto" rows="30" cols="30"
++												style="height: 500px; width: 100%; max-width: 600px;"
++												class="form-control"></textarea></td>
+ 									</tr>
+ 									
+ 									<tr>
+diff --git a/WebContent/dashboard/AgriUsuariosOffline.jsp b/WebContent/dashboard/AgriUsuariosOffline.jsp
+--- a/WebContent/dashboard/AgriUsuariosOffline.jsp
++++ b/WebContent/dashboard/AgriUsuariosOffline.jsp
+@@ -169,6 +169,10 @@
+ 	            type: "json",
+ 	            serverPaging: true,
+ 	            serverSorting: true,
++	            serverFiltering: true,
++	            filterable: {
++                    mode: "row"
++                },
+ 	            pageSize: 20,
+ 	            transport:{
+ 	            	read: {
+@@ -357,6 +361,7 @@
+ 		<!-- Button trigger modal -->
+ 		<button class="btn btn-primary" data-toggle="modal" data-target="#add" id="addButton">
+ 			<span class="glyphicon glyphicon-plus"></span> &nbsp; Nuevo
++			
+ 		</button>
+ 
+ 		<!-- Modal -->
+diff --git a/build/classes/com/qbe/cotizador/model/Cliente.class b/build/classes/com/qbe/cotizador/model/Cliente.class
+index a726db7131b3793cd13a36e1be2832277eb944a6..c866b59b23883a6c1d05180f27e0a6d4a62941cc
+GIT binary patch
+literal 2569
+zc$|e*ZFAE`5Z()ZA*pGIaY6|tnAbWXL=b2ThNPs90uD|>Y?BV*Lq?Ww%rUkOBsp#R
+zoBE-hDbtyL=nv?R>hw8DR$BR-c*Z{M-m}j>y4^kh{m-9&5zzyBoux5GS8drdKDM}F
+zOJDqKwWVwHWSe)5N>^~l=UGZII{)4}w2ZFhbc~(Wdv5z#$}lPfULlPJcZJnObgRn&
+z_5yQ{yPlBF>*_iqw#n#RMLM2uIsTs2?ejE+AI4}*v>D}V$0-`VE1b>~MwjY+#}_@m
+zCp-b_HOG;@<%85?G!q2;WPDI*JfAx@H>zy}UDs?p=MHx*pSOeD0G;)GWp|EF#3NJl
+z=tF?7uAAG<YV!@FjAi@cP~xTb8D()qqHW;?uGK~zq!~iMaz&GB%W{sIa>r3w@&UC1
+zo3?ahPuLct#gW8oLuhc!X>x2z;Z$U|-*W&+IaUu<nu&8A@Im;2s>BpZBszVLou~yE
+z&1y(v!u)Z-fjx-GJQa@cR~elt&F>*;1&Sx=4Bg7nHM-7dvL+n9-S4%y+YH+#Uz0Yv
+z#zODFj+`m~o$yXN+(;s1q&wWNLVuw&Kio^>#OQ90a&!(rF9c4PhH*;kIEdDw8bkfQ
+zihYoy0!?GjJKjr`_7!{raC6WFH<0|aK2Us*b2LL25$ydZ_-5(USe0;kpfAxVODE*k
+zw2G4PU5+l%EGRuar7>EOhEa(tC~?UKQmNK+G^b9#;AsFjh=%ODHs27c>bc0hr0S#Z
+zK6N1e5z1cFY;L2&+q->SL)=rHaj2$VKN>Mqaa|bXZS_6da$iYT^-21p+GcdSVb;t_
+zvuGDL>N{J-2n+MacihFgB-$%wH9@mOG*S5!+wy5F(T!4EDVF2QB_XUS+Y(c8aRe3W
+z`G0)av50s$D)|pD%({u>;oVkTDdWgw6o-MuAmE#(49!xO&f<9-clQ`g;ES1p{W<I@
+zSd&=K!=B=lrwedkYyv3SJ%VMhei8W4dy#JvmhxSO{iR1&V9v$7pJBZkZWIFpHwb=j
+z1pi{Vhq0y?{-B$`1*Es}t8@{~Q;HVoD?H^w5S8G=e-6BNA_5~O_?;GijR`V=^R6~{
+zDF{-*t3aznnT0!_Xfc`oK4O*whM5o*F{r2T&=}nVYFNnfF9{)EYlS?7KPlw$Ct6Ml
+zd5oCy2qCIGD)Be;twzYB<cX|kg_P-u?nE9Xg{&dw`w>FI{$TVJIfjL-CWV+<A<vLP
+zBV;uxq>7l$5kkVIWDu(BkxEj?mR5+V?~zJU$Sz{)BZPzlFh(0e%=2IrUgGIR@B)lB
+f-%{#X;K5+jXv?GR*xXU(tJvICW<53=%544%7qTs#
+

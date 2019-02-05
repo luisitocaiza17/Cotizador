@@ -1,0 +1,173 @@
+diff --git a/WebContent/dashboard/CotizacionAprobacionAgricola.jsp b/WebContent/dashboard/CotizacionAprobacionAgricola.jsp
+--- a/WebContent/dashboard/CotizacionAprobacionAgricola.jsp
++++ b/WebContent/dashboard/CotizacionAprobacionAgricola.jsp
+@@ -72,7 +72,7 @@
+ 	var PuntosVentaList = "";
+ 	var ProcesoMasivo="";
+ 	$(document).ready(function() {
+-			activarMenu("CotizacionAprobacionAgricola");
++			activarMenu(this);
+ 			//Cargar combo 
+ 			//$("#punto_venta").children().remove();
+ 			//$("#punto_venta").append("<option value=''>Seleccione punto venta</option>");
+@@ -76,6 +76,7 @@
+ 			//Cargar combo 
+ 			//$("#punto_venta").children().remove();
+ 			//$("#punto_venta").append("<option value=''>Seleccione punto venta</option>");
++			$("#cambios").hide();
+ 			CargarComboAgente();
+ 			obtenerCanal();
+ 			CargarCombo();
+@@ -439,7 +440,9 @@
+                       { field: "DisponeAsistencia", title: "Dispone Asistencia", width: "50px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+                       { field: "AgricultorTecnificado", title: "Agricultor es Tecnificado", width: "50px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+                       { field: "ObservacionRegla", title: "Observación", width: "160px"},
+-                      { field: "EstadoCotizacion", title: "Estado", width: "100px", hidden: true, exportar: true}, 
++                      { field: "tieneModificacion", title: "Modificaciones", width: "100px",headerAttributes: { style: "white-space: normal"}},
++      				  { field: "detalleModificacion", title: "Detalle Modificacion", width: "160px",headerAttributes: { style: "white-space: normal"}},
++      				  { field: "EstadoCotizacion", title: "Estado", width: "100px", hidden: true, exportar: true}, 
+                       { field: "usuarioCotizador", title: "Usuario Offline", width: "80px", hidden: true, exportar: true},
+ 			{ command: { text: "Ver Detalle", click: fnEventoClick }, title: " ", width: "100px"}],
+             height: 500,
+@@ -557,6 +560,15 @@
+ 						$('#DisponeRiego').html(data.DisponeRiego);
+ 						$('#DisponeAsistencia').html(data.DisponeAsistencia);
+ 						$('#AgricultorTecnificado').html(data.AgricultorTecnificado);
++						
++						if(data.tieneCambios=="SI"){
++							$('#cambios').show();
++							$('#detalleCambio').html(data.detalleCambios);
++							
++						}else{
++							$('#cambios').hide();
++						}
++						
+ 						Reglas = data.Regla;
+ 						
+ 						if (data.tasa == 0) {
+@@ -1015,6 +1027,14 @@
+ 													</td>
+ 												</tr>
+ 												
++												<!-- Mostrar en pantalla los cambios de sitio y fecha de siembra -->												
++												<tr id="cambios">
++													<td style="color: blue;">Cambio Fecha/Sitio:</td>
++													<td colspan="3">
++														<div id="detalleCambio"></div>
++													</td>														
++												</tr>
++												
+ 											</table>
+ 										</td>
+ 									</tr>
+diff --git a/WebContent/dashboard/ResumenCotizaciones.jsp b/WebContent/dashboard/ResumenCotizaciones.jsp
+--- a/WebContent/dashboard/ResumenCotizaciones.jsp
++++ b/WebContent/dashboard/ResumenCotizaciones.jsp
+@@ -72,6 +72,7 @@
+ 			activarMenu(this);
+ 			
+ 			$("#loading").hide();
++			$("#cambios").hide();
+ 			
+ 			$("#estado").kendoMultiSelect({
+  				dataTextField : "nombre",
+@@ -461,6 +462,8 @@
+ 				{ field: "AgricultorTecnificado", title: "Agricultor es Tecnificado", width: "50px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 				{ field: "ObservacionRegla", title: "Observación", width: "160px",headerAttributes: { style: "white-space: normal"}},
+ 				{ field: "ObservacionQBE", title: "ObservacionQBE", width: "160px",headerAttributes: { style: "white-space: normal"}},
++				{ field: "tieneModificacion", title: "Modificaciones", width: "100px",headerAttributes: { style: "white-space: normal"}},
++				{ field: "detalleModificacion", title: "Detalle Modificacion", width: "160px",headerAttributes: { style: "white-space: normal"}},
+ 				{ field: "Confirmacion", title: "Confirmación Canal", width: "160px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 				{ field: "EstadoCotizacion", title: "Estado", width: "100px",headerAttributes: { style: "white-space: normal"}},
+ 				{ field: "Confirmacion", title: "Confirmación de Emisión del Canal", width: "120px", attributes:{style:"color: red;"},headerAttributes: { style: "white-space: normal"}},
+@@ -559,6 +562,7 @@
+ 	// actualizar valores 
+ 	function actualizar(Cotizacion) {
+ 		$("#CotizacionId").val("");
++		$('#detalleCambio').html("");
+ 		($("#SumaAsegurada").data("kendoNumericTextBox")).value(0);
+ 		($("#PrimaNetaTotal").data("kendoNumericTextBox")).value(0);
+ 		($("#Tasa").data("kendoNumericTextBox")).value(0);
+@@ -617,6 +621,14 @@
+ 						$('#DisponeRiego').html(data.DisponeRiego);
+ 						$('#DisponeAsistencia').html(data.DisponeAsistencia);
+ 						$('#AgricultorTecnificado').html(data.AgricultorTecnificado);
++						if(data.tieneCambios=="SI"){
++							$('#cambios').show();
++							$('#detalleCambio').html(data.detalleCambios);
++							
++						}else{
++							$('#cambios').hide();
++						}
++						
+ 						//Reglas = data.Regla;
+ 						
+ 						/*if (data.tasa == 0) {
+@@ -895,6 +907,13 @@
+ 													</td>
+ 												</tr>
+ 												
++												<!-- Mostrar en pantalla los cambios de sitio y fecha de siembra -->												
++												<tr id="cambios">
++													<td style="color: blue;">Cambio Fecha/Sitio:</td>
++													<td colspan="3">
++														<div id="detalleCambio"></div>
++													</td>														
++												</tr>												
+ 											</table>
+ 										</td>
+ 									</tr>
+diff --git a/src/com/qbe/cotizador/dao/producto/agricola/AgriCotizacionEndosoDAO.java b/src/com/qbe/cotizador/dao/producto/agricola/AgriCotizacionEndosoDAO.java
+--- a/src/com/qbe/cotizador/dao/producto/agricola/AgriCotizacionEndosoDAO.java
++++ b/src/com/qbe/cotizador/dao/producto/agricola/AgriCotizacionEndosoDAO.java
+@@ -172,7 +172,7 @@
+ 	
+ 	public List <AgriCotizacionEndoso> buscarPorCotizacionIdAnexo(BigInteger cotizacionId,String anexo){
+ 		AgriCotizacionEndoso agriCotizacionEndoso = new AgriCotizacionEndoso();
+-		List <AgriCotizacionEndoso>results = getEntityManager().createNamedQuery("AgriCotizacionEndoso.Anexo", AgriCotizacionEndoso.class).setParameter("cotizacionId", cotizacionId).setParameter("anexo", anexo).getResultList();
++		List <AgriCotizacionEndoso>results = getEntityManager().createNamedQuery("AgriCotizacionEndoso.buscarCotizacionIdAnexo", AgriCotizacionEndoso.class).setParameter("cotizacionId", cotizacionId).setParameter("anexo", anexo).getResultList();
+ 		return results;
+ 	}
+ 	public int buscarNumAnexoPorCotizacionId(BigInteger cotizacionId){
+diff --git a/src/com/qbe/cotizador/model/AgriCotizacionAprobacion.java b/src/com/qbe/cotizador/model/AgriCotizacionAprobacion.java
+--- a/src/com/qbe/cotizador/model/AgriCotizacionAprobacion.java
++++ b/src/com/qbe/cotizador/model/AgriCotizacionAprobacion.java
+@@ -234,7 +234,12 @@
+ 	@Column(name = "TIENE_INDEMNIZACION")
+ 	private String tieneIndemnizacion;
+ 	
++	@Column(name = "TIENE_MODIFICACION")
++	private String tieneModificacion;
++	
++	@Column(name = "DETALLES_MODIFICACION")
++	private String detalleModificacion;
+ 	
+ 	private double sumaAseguradaPorCiento;
+ 	
+ 	private double primaNetaPorCiento;
+@@ -237,7 +242,25 @@
+ 	
+ 	private double sumaAseguradaPorCiento;
+ 	
+ 	private double primaNetaPorCiento;
++	
++	
++
++	public String getTieneModificacion() {
++		return tieneModificacion;
++	}
++
++	public void setTieneModificacion(String tieneModificacion) {
++		this.tieneModificacion = tieneModificacion;
++	}
++
++	public String getDetalleModificacion() {
++		return detalleModificacion;
++	}
++
++	public void setDetalleModificacion(String detalleModificacion) {
++		this.detalleModificacion = detalleModificacion;
++	}
+ 
+ 	public double getSumaAseguradaPorCiento() {
+ 		return sumaAseguradaPorCiento;

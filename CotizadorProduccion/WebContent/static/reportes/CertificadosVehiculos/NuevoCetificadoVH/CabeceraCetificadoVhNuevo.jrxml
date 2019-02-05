@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 5.6.2.final using JasperReports Library version 5.6.1  -->
+<!-- 2014-11-21T12:33:09 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CabeceraCetificadoVhNuevo" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" uuid="e8df87be-656e-4263-8d68-bb8c1471c7cc">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="cotizador"/>
+	<property name="com.jaspersoft.studio.unit." value="cm"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="cm"/>
+	<parameter name="COTIZACION_ID" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[select 
+    COT.id NUMERO_ENDOSO,
+    RA.nombre RAMO,
+    SUC.nombre SUCURSAL,
+    COT.fecha_emision FECHA,
+    COT.vigencia_desde VIGENCIA_DESDE,
+    DATE_ADD(COT.vigencia_desde, INTERVAL VP.valor YEAR) VIGENCIA_HASTA,
+    ENT.nombre_completo CLIENTE,
+    ENT.identificacion RUC,
+    TRUNCATE(COT.prima_neta_total, 2) PRIMA_NETA,
+    COT.imp_super_bancos IMP_SBS,
+    COT.imp_seguro_campesino IMP_SC,
+    COT.imp_derecho_emision IMP_DE,
+    TRUNCATE((COT.prima_neta_total + COT.imp_super_bancos + COT.imp_seguro_campesino + COT.imp_derecho_emision),
+        2) SUBTOTAL,
+    COT.imp_iva IMP_IVA,
+    COT.totalFactura TOTAL,
+    COT.suma_asegurada_total VALOR_ASEGURADO
+from
+    COTIZACION COT,
+    ENTIDAD ENT,
+    CLIENTE CLI,
+    RAMO RA,
+    PRODUCTO PRO,
+    SUCURSAL SUC,
+    VIGENCIA_POLIZA VP,
+    PUNTO_VENTA PV
+where
+    COT.cliente_id = CLI.id
+        and CLI.entidad_id = ENT.id
+        and COT.producto_id = PRO.id
+        and PRO.ramo_id = RA.id
+        AND SUC.id = PV.sucursal_id
+        AND COT.punto_venta_id = PV.id
+        AND VP.id = COT.vigencia_poliza_id
+       and COT.id= $P{COTIZACION_ID}]]>
+	</queryString>
+	<field name="NUMERO_ENDOSO" class="java.lang.Long"/>
+	<field name="RAMO" class="java.lang.String"/>
+	<field name="SUCURSAL" class="java.lang.String"/>
+	<field name="FECHA" class="java.sql.Timestamp"/>
+	<field name="VIGENCIA_DESDE" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="VIGENCIA_HASTA" class="java.sql.Date"/>
+	<field name="CLIENTE" class="java.lang.String"/>
+	<field name="RUC" class="java.lang.String"/>
+	<field name="PRIMA_NETA" class="java.lang.Double"/>
+	<field name="IMP_SBS" class="java.lang.Double"/>
+	<field name="IMP_SC" class="java.lang.Double"/>
+	<field name="IMP_DE" class="java.lang.Double"/>
+	<field name="SUBTOTAL" class="java.lang.Double"/>
+	<field name="IMP_IVA" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TOTAL" class="java.lang.Double"/>
+	<field name="VALOR_ASEGURADO" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="220" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="35" width="100" height="20" uuid="b20eb60b-3658-41a7-9563-072ac3cd80e1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Señor (a)."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="55" width="100" height="20" uuid="a86c7077-da22-4b51-8c80-d8ab45ff050d"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CLIENTE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="75" width="100" height="20" uuid="50ec7422-9c6f-4e96-91dc-e0b0858b9730"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Presenta.-"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="110" width="100" height="20" uuid="f64be8a5-d9b8-4116-8b6a-ce845c470003"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Estimado Señor."]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="-1" y="140" width="540" height="40" uuid="5db07c9a-2490-4563-9702-4cd408ab658f"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Por medio de la presente, queremos poner a su consideración la presente cotización del seguro para su vehiculo]]></text>
+			</staticText>
+			<subreport>
+				<reportElement x="-26" y="190" width="593" height="30" uuid="cc80595c-d485-428a-8b6d-cffc0fa32b29"/>
+				<subreportParameter name="COTIZACION_ID">
+					<subreportParameterExpression><![CDATA[$P{COTIZACION_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["CertificadosVehiculos/NuevoCetificadoVH/vehiculosNuevoCertificado.jasper"]]></subreportExpression>
+			</subreport>
+			<textField>
+				<reportElement x="261" y="30" width="120" height="20" uuid="a91a2ea8-62b7-45c1-8e29-9ad3d4ad44d2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SUCURSAL}+", "]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd">
+				<reportElement x="381" y="30" width="23" height="20" uuid="eadf3418-e3e2-418d-9324-c1d5cd2d3988"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="404" y="30" width="17" height="20" uuid="7005d707-43e2-4b8a-9c3d-d4ef7add540e"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["de"]]></textFieldExpression>
+			</textField>
+			<textField pattern="MMMMM">
+				<reportElement x="421" y="30" width="70" height="20" uuid="d8cd823c-63a5-4501-b6df-eda283da06cb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="491" y="30" width="17" height="20" uuid="36d90fe7-cbad-4800-975d-d215715d3032"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["de"]]></textFieldExpression>
+			</textField>
+			<textField pattern="yyyy">
+				<reportElement x="508" y="30" width="31" height="20" uuid="5ee5d2e4-594b-4c24-970d-8bbaf52a2006"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

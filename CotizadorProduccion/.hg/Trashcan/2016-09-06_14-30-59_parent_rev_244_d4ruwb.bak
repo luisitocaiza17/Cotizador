@@ -1,0 +1,64 @@
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriProcesarCotizacionOffline.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriProcesarCotizacionOffline.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriProcesarCotizacionOffline.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriProcesarCotizacionOffline.java
+@@ -61,8 +61,14 @@
+ 		AgriSucreAuditoria auditoria = new AgriSucreAuditoria();
+ 		AgriSucreAuditoriaTransaction procesoAuditoria = new AgriSucreAuditoriaTransaction();
+ 		auditoria.setTramite("" + nuevaCotizacion.getNumeroIdentificacion());
+-		String DatosRecibidos = " AUDITORIA CANALES OFFLINE: Correos Provenientes: "+correo+"|"+CCCorreos+"  Apellidos : "+nuevaCotizacion.getApellidos()+" Celular : "+nuevaCotizacion.getCelular()
+-				+" DireccionSiembra : "+nuevaCotizacion.getDireccionSiembra()+ " Email : "+nuevaCotizacion.getEmail()+ " Nombres : "+nuevaCotizacion.getNombres()
++		String DatosRecibidos = " AUDITORIA CANALES OFFLINE: Correos Provenientes: "+correo+"|"+CCCorreos+"  Apellidos : "+nuevaCotizacion.getApellidos()+" ApellidosENCRIP"+nuevaCotizacion.getApellidos().replace("|A", "Á").replace("|E","É").replace("|I","Í").replace("|O","Ó").replace("|U", "Ú")
++                .replace("|a", "á").replace("|e", "é").replace("|i","í").replace("|o","ó").replace("|u","ú")
++                .replace("-", "Ñ").replace("_", "ñ")+ " Celular : "+nuevaCotizacion.getCelular()
++				+" DireccionSiembra : "+nuevaCotizacion.getDireccionSiembra()+" DireccionSiembraEncrip : "+nuevaCotizacion.getDireccionSiembra().replace("|A", "Á").replace("|E","É").replace("|I","Í").replace("|O","Ó").replace("|U", "Ú")
++                .replace("|a", "á").replace("|e", "é").replace("|i","í").replace("|o","ó").replace("|u","ú")
++                .replace("-", "Ñ").replace("_", "ñ")+ " Email : "+nuevaCotizacion.getEmail()+ " Nombres : "+nuevaCotizacion.getNombres()+" apellidosENCRIP"+nuevaCotizacion.getNombres().replace("|A", "Á").replace("|E","É").replace("|I","Í").replace("|O","Ó").replace("|U", "Ú")
++                .replace("|a", "á").replace("|e", "é").replace("|i","í").replace("|o","ó").replace("|u","ú")
++                .replace("-", "Ñ").replace("_", "ñ")
+ 				+ " NumeroIdentificacion : "+nuevaCotizacion.getNumeroIdentificacion()+" ObjetoCotizacionId : "+nuevaCotizacion.getObjetoCotizacionId()
+ 				+ " Observaciones : "+nuevaCotizacion.getObservaciones()+ " PuntoVentaId : "+nuevaCotizacion.getPuntoVentaId()+ " Telefono : "+nuevaCotizacion.getTelefono()
+ 				+ " UsuarioApellido : "+nuevaCotizacion.getUsuarioApellido()+ " UsuarioNombre : "+nuevaCotizacion.getUsuarioNombre()+" AnalisisMontoAsegurado : "+nuevaCotizacion.getAnalisisMontoAsegurado()
+@@ -113,6 +119,9 @@
+ 			ClienteTransaction clienteTransaction = new ClienteTransaction();
+ 			AgriObjetoCotizacionTransaction agriObjetoCotizacionTransaction = new AgriObjetoCotizacionTransaction();
+ 	
++			if(nuevaCotizacion.getDireccionSiembra()==null||nuevaCotizacion.getDireccionSiembra().equals(""))
++				throw new Exception("No tiene lugar de siembra");
++			
+ 			//Busco si la entidad existe
+ 			entidad = entidadDAO.buscarEntidadPorIdentificacion(nuevaCotizacion.getNumeroIdentificacion());
+ 	
+@@ -120,6 +129,8 @@
+ 				entidad.setIdentificacion(nuevaCotizacion.getNumeroIdentificacion());
+ 			
+ 			if(!nuevaCotizacion.getNombres().equals(""))
+-				entidad.setNombres(""+nuevaCotizacion.getNombres().trim());
++				entidad.setNombres(""+nuevaCotizacion.getNombres().replace("|A", "Á").replace("|E","É").replace("|I","Í").replace("|O","Ó").replace("|U", "Ú")
++                        .replace("|a", "á").replace("|e", "é").replace("|i","í").replace("|o","ó").replace("|u","ú")
++                        .replace("-", "Ñ").replace("_", "ñ").trim());
+ 			
+ 			if(!nuevaCotizacion.getApellidos().equals(""))
+@@ -124,6 +135,8 @@
+ 			
+ 			if(!nuevaCotizacion.getApellidos().equals(""))
+-				entidad.setApellidos(""+nuevaCotizacion.getApellidos().trim());
++				entidad.setApellidos(""+nuevaCotizacion.getApellidos().trim().replace("|A", "Á").replace("|E","É").replace("|I","Í").replace("|O","Ó").replace("|U", "Ú")
++                        .replace("|a", "á").replace("|e", "é").replace("|i","í").replace("|o","ó").replace("|u","ú")
++                        .replace("-", "Ñ").replace("_", "ñ"));
+ 				
+ 			entidad.setNombreCompleto(""+nuevaCotizacion.getApellidos()+ " " + nuevaCotizacion.getNombres());
+ 	
+@@ -259,10 +272,9 @@
+ 			agriObjetoCotizacion.setDisponeAsistencia(nuevaCotizacion.getDisponeAsistencia());
+ 			agriObjetoCotizacion.setAgricultorTecnificado(nuevaCotizacion.getAgricultorTecnificado());
+ 			
+-			agriObjetoCotizacion.setDireccionSiembra(nuevaCotizacion.getDireccionSiembra());
+-			if(nuevaCotizacion.getDireccionSiembra()==null||nuevaCotizacion.getDireccionSiembra().equals(""))
+-				throw new Exception("No tiene lugar de siembra");
+-						
++			agriObjetoCotizacion.setDireccionSiembra(nuevaCotizacion.getDireccionSiembra().replace("|A", "Á").replace("|E","É").replace("|I","Í").replace("|O","Ó").replace("|U", "Ú")
++                    .replace("|a", "á").replace("|e", "é").replace("|i","í").replace("|o","ó").replace("|u","ú")
++                    .replace("-", "Ñ").replace("_", "ñ"));
+ 			agriObjetoCotizacion.setTipoSeguro(nuevaCotizacion.getTipoSeguro());
+ 			agriObjetoCotizacion.setAniosCultivo(nuevaCotizacion.getEdadCultivo());
+ 			agriObjetoCotizacion.setHectareasLote(new Float(nuevaCotizacion.getHectareasLote()));

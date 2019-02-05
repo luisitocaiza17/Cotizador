@@ -1,0 +1,32 @@
+diff --git a/WebContent/dashboard/AgriParametrosPuntoVenta.jsp b/WebContent/dashboard/AgriParametrosPuntoVenta.jsp
+--- a/WebContent/dashboard/AgriParametrosPuntoVenta.jsp
++++ b/WebContent/dashboard/AgriParametrosPuntoVenta.jsp
+@@ -425,6 +425,7 @@
+ 								configuración se grabo con exito.</div>
+ 							<div class="form-group">
+ 								<input type="hidden" class="form-control" id="parametroPPVId">
++								<input type="hidden" id="idCotizacion">
+ 								<table style="width: 100%">
+ 									<tr>
+ 										<td colspan="2"><label style="width: 100%">Sponsor:</label></td>
+diff --git a/src/com/qbe/cotizador/dao/producto/agricola/AgriParroquiaDAO.java b/src/com/qbe/cotizador/dao/producto/agricola/AgriParroquiaDAO.java
+--- a/src/com/qbe/cotizador/dao/producto/agricola/AgriParroquiaDAO.java
++++ b/src/com/qbe/cotizador/dao/producto/agricola/AgriParroquiaDAO.java
+@@ -15,6 +15,7 @@
+ import com.qbe.cotizador.model.AgriParroquia;
+ import com.qbe.cotizador.model.AgriRegla;
+ import com.qbe.cotizador.model.AgriTipoCalculo;
++import com.qbe.cotizador.model.Parroquia;
+ 
+ public class AgriParroquiaDAO extends EntityManagerFactoryDAO<AgriParroquia> {
+ 	@PersistenceContext(name="CotizadorWebPC", unitName = "CotizadorWebPU" )	
+@@ -46,4 +47,8 @@
+ 		return agriParroquia;
+ 	}
+ 	
++	public List<AgriParroquia> buscarTodos(){
++		return getEntityManager().createNamedQuery("AgriParroquia.buscarTodos").getResultList();
++	}
++	
+ }
+\ No newline at end of file

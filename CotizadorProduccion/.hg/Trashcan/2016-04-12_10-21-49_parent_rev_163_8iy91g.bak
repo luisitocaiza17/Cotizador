@@ -1,0 +1,77 @@
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java
+@@ -345,7 +345,7 @@
+ 		//Numero de contenedor
+ 		
+ 		//Armado Final de parametros a mostrar en la poliza
+-		parametersHeader.put("NumeroPoliza", agriParametroXCanal.getContenedorEnsuranceId()+"-"+detalleCotizacion.getId().toString());
++		parametersHeader.put("NumeroPoliza", agriParametroXCanal.getContenedorNumero()+"-"+detalleCotizacion.getId().toString());
+ 		//buscamos el cliente
+ 		Cliente cliente = new Cliente();
+ 		ClienteDAO clienteDAO = new ClienteDAO();
+diff --git a/WebContent/dashboard/AgriParametroPorCanal.jsp b/WebContent/dashboard/AgriParametroPorCanal.jsp
+--- a/WebContent/dashboard/AgriParametroPorCanal.jsp
++++ b/WebContent/dashboard/AgriParametroPorCanal.jsp
+@@ -180,6 +180,9 @@
+ 						/*Fin controloes grabar*/
+ 						
+ 						$("#addButton").click(function(){
++							var up = $('#files').data().kendoUpload;
++							var allLiElementsToBeRemoved = up.wrapper.find('.k-file');
++							up._removeFileEntry(allLiElementsToBeRemoved );	
+ 							$("#soloActulizar").hide();
+ 							limpiar();
+ 						});
+@@ -317,7 +320,11 @@
+ 
+ 	function actualizar(parametroId) {
+ 		$("#soloActulizar").show();
+-
++		
++		var up = $('#files').data().kendoUpload;
++		var allLiElementsToBeRemoved = up.wrapper.find('.k-file');
++		up._removeFileEntry(allLiElementsToBeRemoved );	
++ 			
+ 		limpiar();
+ 		
+ 		if (typeof parametroId === 'undefined')
+diff --git a/WebContent/dashboard/ConsultaCanal.jsp b/WebContent/dashboard/ConsultaCanal.jsp
+--- a/WebContent/dashboard/ConsultaCanal.jsp
++++ b/WebContent/dashboard/ConsultaCanal.jsp
+@@ -44,7 +44,7 @@
+ 	 -->
+ 
+ <script>
+-function NEetQueryStringByParameter(name) {
++function GetQueryStringByParameter(name) {
+     name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+     results = regex.exec(location.search);
+diff --git a/build/classes/com/qbe/cotizador/transaction/seguridad/VariableSistemaTransaction.class b/build/classes/com/qbe/cotizador/transaction/seguridad/VariableSistemaTransaction.class
+index cdffd4e60e6c2549f0be8fbd4373c70160edf44a..b8a5ea1335a3dc771060f29e2b7f21cd21b1b3d3
+GIT binary patch
+literal 2674
+zc$}q{T~``c6o%h}Ac~X5;72t{{YVUoij$~K6HRFR4hGbUQj<2Z15E8C17n9F%k&TR
+zwz)BBU8^fsz35NsMbr1d2o|y8DlE=EoY`ley`R1Jfj|HL?RNlE_|6ZHz<kEasXwN5
+zHDfu(Pg>TpRmaxy1uf$kR$eXWdqvyGYFRa<*@l)j^`ud7^qjU;Rr13t(Ed_;t*NG#
+z-&5DqFZGNg(EPy28%|W9X(XHy@Ge+cJ%A>(D)6CM;Bwr^>ubeaTDP~PWr1Ma%4p{C
+zN$#T8`N1d%EXM!8r?UdSjIC?7z}83|dpUY&*6yDTH>~N$6@hD##DSXEat2|<h``Xy
+z1uO692TlO(Xl+5KK(ExAq2YaXyFdU{C#6oef=|&ygr;S^D((w}M&eb#NynyX`c=!E
+z4qO!&EIV)#PR$W*=*4vfpUEuv()ymk9QF%Lo{lrCS!a`7oLdi|53O>zq2LqTtZ~%!
+zs;;BA1cn>rD%~AcFe2S;=ANA4$fZ#QV{)m*woEgvWnKjkf$GPEKu7h!rGt#VFN0Qa
+zyHs`igy$q3>XS%D_hV9^zp5WIO?^)@so?09y?#u)iFGreXNbgkb3);6UGT{_GJ=X4
+zkFSYMpz-n&@D$lsH{<6fn5x0k$r6~ZbJlq&rY*rX?26Z6DqYg=2wW=hOlbRV&o=8>
+z!_n*jhOnSu5lgJIJ>7|AOP4`R7R-u*$A}3i>0%+H*&CJ}%Q6$=BeBMTNIOpy%*n#*
+zu6Z~w&1T8BMK=w$qHOx{3p9O7I?vMn3Q0dU|8>EY`%l3ZwgvpJHM6L%e@{Zv^;2Cc
+zef(O%4xS3MorqQ7Vcnj-NbKJzNZ?y}a-F72oyEiw2qdkdoza&KnXLY^FU$#P7K32g
+zAYWe2cz1L3mwrQ78kD}#cW8Obi3b6W0ZO2a$_httEGbc5q7=L*E|(365H)>Vi;2V$
+z+Mm8dFxYX3t`F!<jQ@&j0!QfM>cCoL>=1(=Fcjx<NZ@DmtZ^2Wv%rkE*L#TZ2tQ-L
+z@K6s_O!6j}!hJlz9am1d@^eNaot&gQpd%h!L6GkrbYK9T2&0SpyQ$qn{a!?I6$`kI
+z72=k`L>WCDc7u_#FL00Hc&Kq7Gn50gI?I!qXrmJkxuc06AHL-1#Ut)f;r&Pln*0!c
+z4EcEqW#l7T;jJujp|slk7q<(R_%X8;m)TAu%;pcVEcyI_QTcVXVT4hh7{NSS^a&A`
+z<&-Or5za7^zzu2-5#TKX3o-a%jPj;d3GyCiQH*of1ox>d)!W!)+$l_#P(Cgd(M|>B
+zP6cJEg0jy=IZBjqKK0VtG1SCqsB;&Bn!uV1b<>5qdmhvy3{kGncuREOW8)C1GT@M0
+zdG_CM-<H@evuGk%#RigOTb5I<JZ2kZzQK4s<Pao-9#R-!++jYs%cy4=^CO14%;H?d
+z68A1+n<e;+wqGzuRld6wzPlB^&ntXGF5fW!3_LIKU9IrlKFv3FA-*q4SHkW;$yI3q
+

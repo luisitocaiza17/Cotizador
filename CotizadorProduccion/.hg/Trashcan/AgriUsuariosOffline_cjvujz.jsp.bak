@@ -1,0 +1,453 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<link href="../static/css/sb-admin/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+	<link href="../static/css/loading.css" rel="stylesheet">
+
+	<script src="../static/js/sb-admin/plugins/dataTables/jquery.dataTables.js"></script>
+	<script src="../static/js/sb-admin/plugins/dataTables/dataTables.bootstrap.js"></script>
+	<script src="../static/js/util.js"></script>
+	
+	<!-- KENDO -->
+	<link rel="stylesheet" href="../static/css/Kendo/kendo.common.min.css" />
+	<link rel="stylesheet" href="../static/css/Kendo/kendo.blueopal.min.css" />
+    <script src="../static/js/Kendo/kendo.all.min.js"></script>
+    <script src="../static/js/Kendo/kendo.web.min.js"></script>
+    <script src="../static/js/Kendo/jszip.min.js"></script>
+    <style type="text/css">
+    	.tab_strip
+		{
+		    height: 200px;
+		}
+    </style>
+<title>Usuarios Offline Agricola</title>
+<script>
+
+var agenciasList = "";
+var puntosVentaList = "";
+var unidadNegocioList="";
+$(function(){
+	  $(".wrapper1").scroll(function(){
+	    $(".wrapper2").scrollLeft($(".wrapper1").scrollLeft());
+	  });
+	  $(".wrapper2").scroll(function(){
+	    $(".wrapper1").scrollLeft($(".wrapper2").scrollLeft());
+	  });
+	});	
+	
+var identificadorCot = "";
+var Nombre = "";
+
+$(document).ready(function(){
+	activarMenu("AgriUsuariosOffline");	
+	
+	$("#agencia").kendoMultiSelect({
+		dataTextField : "nombre",
+		dataValueField : "codigo",
+		animation : false,
+		maxSelectedItems : 1
+	});
+	
+	
+	
+	$("#PuntoVenta").kendoMultiSelect({
+		dataTextField : "nombre",
+		dataValueField : "codigo",
+		animation : false,
+		maxSelectedItems : 1
+	});
+	
+	$("#UnidadNegocio").kendoMultiSelect({
+		dataTextField : "nombre",
+		dataValueField : "codigo",
+		animation : false,
+		maxSelectedItems : 1
+	});
+	
+	Cargar();
+	CargarCombos();
+	
+	agenciasList = $("#agencia").data(
+	"kendoMultiSelect");
+	puntosVentaList = $("#PuntoVenta").data(
+	"kendoMultiSelect");
+	
+	unidadNegocioList=$("#UnidadNegocio").data(
+	"kendoMultiSelect");
+	
+	$("#save-record").bind({click: function(){
+		Cargar();
+		var validator = $("#formCrud").kendoValidator().data("kendoValidator"); 
+		$(".required").css("border", "1px solid #ccc");
+		 if (validator.validate() === false) {     
+			$(".required").each(function(index) {
+					var cadena = $(this).val();
+					if (cadena.length <= 0) {
+						$(this).css("border", "1px solid red");
+						alert("Por favor ingrese el campo requerido");
+						$(this).focus();
+						return false;
+					}		
+				});
+	      }else{
+	    	  identificadorCot = $("#UsuarioId").val();
+				
+				if(identificadorCot === ""){
+					tipoConsulta = "crear";
+					
+				}
+				else
+					tipoConsulta = "editar";
+				
+				enviarDatos(tipoConsulta);
+	      }
+		}
+	});
+	});
+	
+	$("formCrud").submit(function(event) {
+	    event.preventDefault();
+	    if (validator.validate()) {
+	        status.text("Hooray! Your tickets has been booked!")
+	            .removeClass("invalid")
+	            .addClass("valid");
+	    } else {
+	        status.text("Oops! There is invalid data in the form.")
+	            .removeClass("valid")
+	            .addClass("invalid");
+	    }
+	});
+	
+	
+	function CargarCombos() {
+		$.ajax({
+			url:'../AgriUsuarioOffline',
+			data:{
+				"tipoConsulta" : "cargarCombos"
+			},
+			type : 'POST',
+			datatype : 'json',
+			success : function(data){
+				/*Activo los select*/
+				agenciasList.enable(true);
+
+				/*Cargo el select agencias*/
+				agenciasList.dataSource.filter({});
+				agenciasList.setDataSource(data.agenciasArray);
+				
+				/*Cargo Puntos Venta*/
+				puntosVentaList.dataSource.filter({});
+				puntosVentaList.setDataSource(data.puntoVentaArray);
+				
+				/*Cargo las Unidades de Negocio*/
+				unidadNegocioList.dataSource.filter({});
+				unidadNegocioList.setDataSource(data.unidadNegocioArray);
+				
+			}
+		});
+	}
+	
+	function Cargar() {	
+		$('#dataTable_wrapper').hide();
+	
+		if ($('#grid').data().kendoGrid){
+			$('#grid').data().kendoGrid.destroy();
+			$('#grid').empty();
+		}
+		
+		$("#grid").kendoGrid({
+			toolbar: ["excel"],
+	        excel: {
+	            fileName: "QBE_Cotizaciones.xlsx",
+	            filterable: true,
+	            allPages: true
+	        },
+			dataSource: {
+	            type: "json",
+	            serverPaging: true,
+	            serverSorting: true,
+	            serverFiltering: true,
+	            filterable: {
+                    mode: "row"
+                },
+	            pageSize: 20,
+	            transport:{
+	            	read: {
+	            		url: "../AgriUsuarioOffline",
+	            		data: {
+	            			"tipoConsulta":"buscarTodos"
+						}
+	            	}
+	            },
+	            schema: {
+	            	data: "Data",
+	            	total: "Total",
+	            }
+	        },
+	        columns: [
+	  				{ field: "usuario", title: "Usuario.", width: "100px",headerAttributes: { style: "white-space: normal"}},
+	  				{ field: "agencia", title: "Agencia", width: "100px",headerAttributes: { style: "white-space: normal"},headerAttributes: { style: "white-space: normal"}, exportar: true, hidden: true},
+	  				{ field: "identificacion", title: "Identificacion.", width: "100px",headerAttributes: { style: "white-space: normal"}},
+	  				{ field: "nombres", title: "Nombres.", width: "200px",headerAttributes: { style: "white-space: normal"}},
+	  				{ field: "apellidos", title: "Apellidos", width: "200px",headerAttributes: { style: "white-space: normal"}},
+	  				{ field: "puntoVenta", title: "Punto Venta",format: "{0:MM/dd/yyyy}", width: "60px",headerAttributes: { style: "white-space: normal"}, exportar: true, hidden: true},
+	  				{ field: "correoElectronico", title: "Correo.", width: "230x",headerAttributes: { style: "white-space: normal"}},
+	  				{ field: "unidadNegocio", title: "Unidad Negocio.", width: "60px",headerAttributes: { style: "white-space: normal"}, exportar: true, hidden: true},
+	  				{ command: { text: "Ver Detalle", click: fnEventoClick }, title: " Detalle ", width: "110px"},
+	  				{ command: { text: "Eliminar", click: EliminarEventoClick}, title: " Eliminar ", width: "110px"}
+	  				],
+	  				height: 500,
+	            selectable: true,
+	            resizable: true,
+	            pageable: {
+	                info: true,
+	                numeric: false,
+	                previousNext: false
+	            },
+	            scrollable: {
+	                virtual: true
+	            },
+	        }); 
+		
+		
+		var exportFlag=false;
+		$("#grid").data("kendoGrid").bind("excelExport", function (e) {
+			var columns = e.sender.columns;
+			if (!exportFlag) {
+	            jQuery.each(columns, function (index) {
+	                if (this.exportar) {
+	                	e.sender.showColumn(this.field);
+	                }
+	            });
+	            
+	            //e.sender.showColumn("AgenteId");
+	            e.preventDefault();
+	            exportFlag = true;
+	            setTimeout(function () {
+	                e.sender.saveAsExcel();
+	            }, 1000);
+	        } else {
+	        	jQuery.each(columns, function (index) {
+	                if (this.exportar) {
+	                	e.sender.hideColumn(this.field);
+	                }
+	            });
+	            exportFlag = false;
+	        }
+		});
+	}	
+	
+	function fnEventoClick(e) {
+        e.preventDefault();
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        //alert("Cotización id:"+dataItem.codigo);
+        $('#add').modal('show');
+        actualizar(dataItem.id);
+    }
+	
+	function EliminarEventoClick(e) {
+        e.preventDefault();
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        
+        eliminar(dataItem.id);
+    }
+	
+	function eliminar(id){
+		var r = confirm("Seguro que desea eliminar");
+		if(r == true){			
+			$.ajax({
+				url:'../AgriUsuarioOffline',
+				data:{
+					"idUsuario" : id,
+					"tipoConsulta" : "eliminar"
+				},
+				type : 'POST',
+				datatype : 'json',
+				success : function(data){
+					var exito= data.success;
+					if(exito=="true" || exito ===true){
+						alert("Eliminado");
+					}else{
+						alert("Se produjo un error al guardar el usuario");
+					}
+				}
+			});
+		}
+		Cargar();
+		$("#msgPopup").hide();
+	}
+	
+	
+function actualizar(idUsuario){
+	$.ajax({
+		url:'../AgriUsuarioOffline',
+		data:{
+			"idUsuario" : idUsuario,
+			"tipoConsulta" : "obtenerPorId"
+		},
+		type : 'POST',
+		datatype : 'json',
+		success : function(data){
+			$("#UsuarioId").val(data.Id);
+			$("#Correo").val(data.correoEnvio);
+			$("#Usuario").val(data.usuarioEnvio);
+			$("#Clave").val(data.claveEnvio);
+			$("#agencia").data("kendoMultiSelect").value(data.agenciaEnvio);
+			$("#Identificacion").val(data.identificacionEnvio);
+			$("#Nombres").val(data.nombresEnvio);
+			$("#Apellidos").val(data.apellidosEnvio);
+			$("#Correo").val(data.correoEnvio);
+			$("#UnidadNegocio").data("kendoMultiSelect").value(data.unidadEnvio);
+			$("#PuntoVenta").data("kendoMultiSelect").value(data.puntoVentaEnvio);
+		}
+	});
+}
+	
+function enviarDatos(tipoConsulta){
+	 var agenciaEnvio=$("#agencia option:selected").val();
+	 var puntoVentaEnvio=$("#PuntoVenta option:selected").val();
+	 var unidadEnvio=$("#UnidadNegocio option:selected").val();
+	 var usuarioEnvio=$("#Usuario").val();
+	 var claveEnvio=$("#Clave").val();
+	 var identificacionEnvio=$("#Identificacion").val();
+	 var nombresEnvio=$("#Nombres").val();
+	 var apellidosEnvio=$("#Apellidos").val();
+	 var correoEnvio=$("#Correo").val();
+	 var UsuarioId=$("#UsuarioId").val();
+	 
+	$.ajax({
+		url:'../AgriUsuarioOffline',
+		data : {
+			
+			"agenciaEnvio" : agenciaEnvio,
+			"puntoVentaEnvio" : puntoVentaEnvio,
+			"unidadEnvio" : unidadEnvio,
+			"usuarioEnvio" : usuarioEnvio,
+			"claveEnvio" : claveEnvio,
+			"identificacionEnvio" : identificacionEnvio,
+			"nombresEnvio" : nombresEnvio,
+			"apellidosEnvio" : apellidosEnvio,
+			"correoEnvio" : correoEnvio,
+			"tipoConsulta" : tipoConsulta,
+			"UsuarioId" : UsuarioId
+		},
+		type : 'POST',
+		async : false,
+		datatype : 'json',
+		success : function(data){
+			var exito= data.success;
+			if(exito=="true" || exito ===true){
+				$("#msgPopup").show();
+			}else{
+				alert("Se produjo un error al guardar el usuario");
+			}
+		}
+	});
+}
+
+</script>
+</head>
+<body>
+<%
+			// Permitimos el acceso si la session existe		
+				if(session.getAttribute("login") == null){
+				    response.sendRedirect("/CotizadorWeb");
+				}
+	%>
+<div class="row crud-nav-bar">
+		<!-- Button trigger modal -->
+		<button class="btn btn-primary" data-toggle="modal" data-target="#add" id="addButton">
+			<span class="glyphicon glyphicon-plus"></span> &nbsp; Nuevo
+			
+		</button>
+
+		<!-- Modal -->
+		<div class="modal fade" id="add" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<form id="formCrud">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">
+								<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+							</button>
+							<h4 class="modal-title" id="myModalLabel">Usuarios Offline Agr&iacute;cola</h4>
+						</div>
+						<div class="modal-body">
+							<div class="alert alert-success" id="msgPopup">El usuario agr&iacute;cola se grabo con exito.</div>
+							<div class="status"> </div>	
+							<div class="form-group">
+								<input type="hidden"class="form-control" id="UsuarioId">										
+								<label>Usuario</label>
+									<input type="text" class="form-control required" id="Usuario" validationMessage="Campo requerido!!!" required>
+								
+								<label>Clave</label>
+									<input type="text" class="form-control required" id="Clave" validationMessage="Campo requerido!!!" required>
+								
+								<label>Agencia</label>
+								
+								<select id="agencia" name="agencia"
+									data-placeholder="Seleccione una opción..." validationMessage="Campo requerido!!!" required>											
+								</select>
+								<br>
+								<label>Identifica&oacute;n</label>
+									<input type="text" class="form-control required" id="Identificacion" validationMessage="Campo requerido!!!" required>
+								
+								<label>Nombres</label>
+									<input type="text" class="form-control required" id="Nombres" validationMessage="Campo requerido!!!" required>
+								
+								<label>Apellidos</label>
+									<input type="text" class="form-control required" id="Apellidos" validationMessage="Campo requerido!!!" required>
+								
+								<label>Punto Venta</label>
+								<select id="PuntoVenta" name="PuntoVenta"
+									data-placeholder="Seleccione una opción..." validationMessage="Campo requerido!!!" required>											
+								</select>
+								<br>
+								
+								<label>Correo Electr&oacute;nico</label>
+									<input type="email" class="form-control required" id="Correo" validationMessage="Campo requerido!!!" required data-email-msg="Correo Electronico invalido!!">
+								
+								<label>Unidad Negocio</label>
+								<select id="UnidadNegocio" name="UnidadNegocio"
+									data-placeholder="Seleccione una opción..." validationMessage="Campo requerido!!!" required>											
+								</select>
+								<br />	 
+								<br />																						
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" id="close-popup"
+								data-dismiss="modal">Cerrar</button>
+							<button type="button" class="btn btn-primary" id="save-record">Guardar Cambios</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal -->
+	
+	<!-- Datatable -->
+	<div id="grid"></div>
+	</div>
+	<!-- Datatable -->
+	
+	<style>	
+	 .confirm {
+                    padding-top: 1em;
+                }
+
+                .valid {
+                    color: green;
+                }
+
+                .invalid {
+                    color: red;
+                }
+	</style>
+</body>
+</html>

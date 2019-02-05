@@ -1,0 +1,12 @@
+diff --git a/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java b/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java
+--- a/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java
++++ b/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java
+@@ -1347,7 +1347,7 @@
+ 						agriObjetoCotizacionTransaction.editar(agriObjetoCotizacion);
+ 						
+ 						EstadoDAO estadoDAO= new EstadoDAO();
+-						Estado estado =estadoDAO.buscarPorNombre("Emitido Sucre", "Cotizacion");
++						Estado estado =estadoDAO.buscarPorNombre("Pendiente de Emitir", "Cotizacion");
+ 						ExisteCotizacion.setEstado(estado);
+ 						CotizacionTransaction cotizacionTransaction = new CotizacionTransaction();
+ 						cotizacionTransaction.editar(ExisteCotizacion);

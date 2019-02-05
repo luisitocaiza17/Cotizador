@@ -1,0 +1,1482 @@
+diff --git a/WebContent/dashboard/ConsultaCanal.jsp b/WebContent/dashboard/ConsultaCanal.jsp
+--- a/WebContent/dashboard/ConsultaCanal.jsp
++++ b/WebContent/dashboard/ConsultaCanal.jsp
+@@ -44,7 +44,7 @@
+ 	 -->
+ 
+ <script>
+-function GetQueryStringByParameter(name) {
++function NEetQueryStringByParameter(name) {
+     name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+     results = regex.exec(location.search);
+diff --git a/WebContent/dashboard/CotizacionAprobacionAgricola.jsp b/WebContent/dashboard/CotizacionAprobacionAgricola.jsp
+--- a/WebContent/dashboard/CotizacionAprobacionAgricola.jsp
++++ b/WebContent/dashboard/CotizacionAprobacionAgricola.jsp
+@@ -801,7 +801,13 @@
+ 			}
+  			$('#grid').hide();
+  			$('#btnImportar').prop('disabled', true);
+-			/* $('#dataTable').hide();
++ 			var tableLimpiar = $('#dataTableMasiva').DataTable();
++ 			 
++ 			tableLimpiar
++ 			    .clear()
++ 			    .draw();
++ 			
++ 			/* $('#dataTable').hide();
+ 			$('#dataTableContent').html('');
+ 			$('#dataTable_wrapper').hide(); */
+ 			//$("#datos_temporal").val("");
+diff --git a/build/classes/com/qbe/cotizador/model/Entidad.class b/build/classes/com/qbe/cotizador/model/Entidad.class
+index 42d023e5650a3e5e678e09c442cf903213126643..2e1a0d26cf4c5e944d2d0dc6463f18d0bc0c925d
+GIT binary patch
+literal 8970
+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
+
+diff --git a/build/classes/com/qbe/cotizador/servicios/QBE/emisionGanaderoWS/WS_EMISIONServiceLocator.class b/build/classes/com/qbe/cotizador/servicios/QBE/emisionGanaderoWS/WS_EMISIONServiceLocator.class
+index c50564401813103660e28cf4eb8144dcc025aed7..c842967a43ff48c9181cfebcd15f22c40f300d50
+GIT binary patch
+literal 5320
+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
+P(i`!;N%*_B`XB!VkD~X(
+
+diff --git a/build/classes/com/qbe/cotizador/servlets/producto/pymes/ObjetoPymesController.class b/build/classes/com/qbe/cotizador/servlets/producto/pymes/ObjetoPymesController.class
+deleted file mode 100644
+index cccbd34c31309b142ccfd5c109670d7c19576e9f..e69de29bb2d1d6434b8b29ae775ad8c2e48c5391
+GIT binary patch
+literal 0
+Hc$@<O00001
+
+diff --git a/build/classes/com/qbe/cotizador/transaction/seguridad/VariableSistemaTransaction.class b/build/classes/com/qbe/cotizador/transaction/seguridad/VariableSistemaTransaction.class
+index cdffd4e60e6c2549f0be8fbd4373c70160edf44a..b8a5ea1335a3dc771060f29e2b7f21cd21b1b3d3
+GIT binary patch
+literal 2674
+zc$}q{T~``c6o%h}Ac~X5;72t{{YVUoij$~K6HRFR4hGbUQj<2Z15E8C17n9F%k&TR
+zwz)BBU8^fsz35NsMbr1d2o|y8DlE=EoY`ley`R1Jfj|HL?RNlE_|6ZHz<kEasXwN5
+zHDfu(Pg>TpRmaxy1uf$kR$eXWdqvyGYFRa<*@l)j^`ud7^qjU;Rr13t(Ed_;t*NG#
+z-&5DqFZGNg(EPy28%|W9X(XHy@Ge+cJ%A>(D)6CM;Bwr^>ubeaTDP~PWr1Ma%4p{C
+zN$#T8`N1d%EXM!8r?UdSjIC?7z}83|dpUY&*6yDTH>~N$6@hD##DSXEat2|<h``Xy
+z1uO692TlO(Xl+5KK(ExAq2YaXyFdU{C#6oef=|&ygr;S^D((w}M&eb#NynyX`c=!E
+z4qO!&EIV)#PR$W*=*4vfpUEuv()ymk9QF%Lo{lrCS!a`7oLdi|53O>zq2LqTtZ~%!
+zs;;BA1cn>rD%~AcFe2S;=ANA4$fZ#QV{)m*woEgvWnKjkf$GPEKu7h!rGt#VFN0Qa
+zyHs`igy$q3>XS%D_hV9^zp5WIO?^)@so?09y?#u)iFGreXNbgkb3);6UGT{_GJ=X4
+zkFSYMpz-n&@D$lsH{<6fn5x0k$r6~ZbJlq&rY*rX?26Z6DqYg=2wW=hOlbRV&o=8>
+z!_n*jhOnSu5lgJIJ>7|AOP4`R7R-u*$A}3i>0%+H*&CJ}%Q6$=BeBMTNIOpy%*n#*
+zu6Z~w&1T8BMK=w$qHOx{3p9O7I?vMn3Q0dU|8>EY`%l3ZwgvpJHM6L%e@{Zv^;2Cc
+zef(O%4xS3MorqQ7Vcnj-NbKJzNZ?y}a-F72oyEiw2qdkdoza&KnXLY^FU$#P7K32g
+zAYWe2cz1L3mwrQ78kD}#cW8Obi3b6W0ZO2a$_httEGbc5q7=L*E|(365H)>Vi;2V$
+z+Mm8dFxYX3t`F!<jQ@&j0!QfM>cCoL>=1(=Fcjx<NZ@DmtZ^2Wv%rkE*L#TZ2tQ-L
+z@K6s_O!6j}!hJlz9am1d@^eNaot&gQpd%h!L6GkrbYK9T2&0SpyQ$qn{a!?I6$`kI
+z72=k`L>WCDc7u_#FL00Hc&Kq7Gn50gI?I!qXrmJkxuc06AHL-1#Ut)f;r&Pln*0!c
+z4EcEqW#l7T;jJujp|slk7q<(R_%X8;m)TAu%;pcVEcyI_QTcVXVT4hh7{NSS^a&A`
+z<&-Or5za7^zzu2-5#TKX3o-a%jPj;d3GyCiQH*of1ox>d)!W!)+$l_#P(Cgd(M|>B
+zP6cJEg0jy=IZBjqKK0VtG1SCqsB;&Bn!uV1b<>5qdmhvy3{kGncuREOW8)C1GT@M0
+zdG_CM-<H@evuGk%#RigOTb5I<JZ2kZzQK4s<Pao-9#R-!++jYs%cy4=^CO14%;H?d
+z68A1+n<e;+wqGzuRld6wzPlB^&ntXGF5fW!3_LIKU9IrlKFv3FA-*q4SHkW;$yI3q
+
+diff --git a/src/com/qbe/cotizador/dao/producto/agricola/AgriParroquiaDAO.java b/src/com/qbe/cotizador/dao/producto/agricola/AgriParroquiaDAO.java
+--- a/src/com/qbe/cotizador/dao/producto/agricola/AgriParroquiaDAO.java
++++ b/src/com/qbe/cotizador/dao/producto/agricola/AgriParroquiaDAO.java
+@@ -59,6 +59,21 @@
+ 		return agriParroquia;
+ 	}
+ 	
++	public AgriParroquia BuscarPorId (int id){
++		AgriParroquia agriParroquia = new AgriParroquia();
++		List<AgriParroquia> result = getEntityManager().createNamedQuery("AgriParroquia.obtenerPorId").setParameter("id", id).getResultList();
++		if (result.size()>0)
++			agriParroquia = result.get(0);
++		return agriParroquia;
++	}
++	
++	public List<AgriParroquia> BuscarPorCanton (String cantonId){
++		AgriParroquia agriParroquia = new AgriParroquia();
++		List<AgriParroquia> result = getEntityManager().createNamedQuery("AgriParroquia.obtenerPorCanton").setParameter("canton", cantonId).getResultList();
++		
++		return result;
++	}
++	
+ 	public AgriParroquia BuscarPorNombreYCanton (String nombre, String cantonId){
+ 		AgriParroquia agriParroquia = new AgriParroquia();
+ 		List<AgriParroquia> result = getEntityManager().createNamedQuery("AgriParroquia.obtenerPorNombreYCanton").setParameter("nombre", "%" +nombre+ "%").setParameter("canton", cantonId).getResultList();
+diff --git a/src/com/qbe/cotizador/dao/producto/agricola/CotizacionAprobacionDAO.java b/src/com/qbe/cotizador/dao/producto/agricola/CotizacionAprobacionDAO.java
+--- a/src/com/qbe/cotizador/dao/producto/agricola/CotizacionAprobacionDAO.java
++++ b/src/com/qbe/cotizador/dao/producto/agricola/CotizacionAprobacionDAO.java
+@@ -769,4 +769,37 @@
+ 		long results = (long)query.getSingleResult();
+ 		return results;
+ 	}	
++	
++	public List<AgriCotizacionAprobacion> consultarCotizacionIdsIN(List ids,int Skip, int Take){ 
++		
++		TypedQuery<AgriCotizacionAprobacion> query = null;
++		
++		String stringQuery= "SELECT c FROM AgriCotizacionAprobacion c where c.id IN :ids";					
++		
++		query = getEntityManager().createQuery(stringQuery, AgriCotizacionAprobacion.class);
++		
++		query.setParameter("ids", ids);
++		
++		return query.setMaxResults(Take).setFirstResult(Skip).getResultList();
++	}
++	
++	public long consultarCotizacionIdsINumero(List ids,int Skip, int Take){ 
++						
++		
++		
++		Query query = null;	
++				
++		String stringQuery= "SELECT count(c.id) FROM AgriCotizacionAprobacion c where c.id IN :ids ";					
++		String valoresWhereQuery = "";
++		
++		query = getEntityManager().createQuery(stringQuery, AgriCotizacionAprobacion.class);
++				
++		query.setParameter("ids", ids);
++			
++		
++		long total = (long) query.getSingleResult();
++		return total;
++	}
++	
++	
+ }
+diff --git a/src/com/qbe/cotizador/dao/seguridad/VariableSistemaDAO.java b/src/com/qbe/cotizador/dao/seguridad/VariableSistemaDAO.java
+--- a/src/com/qbe/cotizador/dao/seguridad/VariableSistemaDAO.java
++++ b/src/com/qbe/cotizador/dao/seguridad/VariableSistemaDAO.java
+@@ -1,5 +1,8 @@
+ package com.qbe.cotizador.dao.seguridad;
+ 
++import java.math.BigInteger;
++import java.text.ParseException;
++import java.text.SimpleDateFormat;
+ import java.util.ArrayList;
+ import java.util.List;
+ 
+@@ -11,5 +14,6 @@
+ import javax.persistence.PersistenceContext;
+ import javax.persistence.Query;
+ import javax.persistence.StoredProcedureQuery;
++import javax.persistence.TypedQuery;
+ 
+ import com.qbe.cotizador.entitymanagerfactory.EntityManagerFactoryDAO;
+@@ -14,5 +18,6 @@
+ 
+ import com.qbe.cotizador.entitymanagerfactory.EntityManagerFactoryDAO;
++import com.qbe.cotizador.model.AgriSucreAuditoria;
+ import com.qbe.cotizador.model.TipoVariable;
+ import com.qbe.cotizador.model.VariableSistema;
+ 
+@@ -52,6 +57,14 @@
+ 		return variable;
+ 	}
+ 	
++	public VariableSistema buscarPorId2(int id){
++		VariableSistema variable = new VariableSistema();
++		List<VariableSistema> query = getEntityManager().createNamedQuery("VariableSistema.buscarPorId").setParameter("id", id).getResultList();
++		if(!query.isEmpty())
++			variable =  query.get(0);
++		return variable;
++	}
++	
+ 	public VariableSistema buscarPorNombre(String nombre){
+ 		VariableSistema variable = new VariableSistema();
+ 		List<VariableSistema> query = getEntityManager().createNamedQuery("VariableSistema.buscarPorNombre").setParameter("nombre", nombre).getResultList();
+@@ -113,4 +126,55 @@
+         Double valorIva = (Double)storedProcedure.getOutputParameterValue("valor_iva_retorno");        		
+ 		return valorIva;						
+ 	}
++	
++	public List<VariableSistema> buscarVariableK( String nombre, int Skip, int Take){ 
++				
++		BigInteger cotiID;
++				
++		List<VariableSistema> results = new ArrayList<VariableSistema>();
++		TypedQuery<VariableSistema> query = null;
++		
++		String stringQuery= "SELECT c FROM VariableSistema c ";					
++		
++		String valoresWhereQuery="";
++		
++		if(nombre.length()>0)
++			valoresWhereQuery = " where c.nombre = :nombre";
++		
++		stringQuery = stringQuery+valoresWhereQuery;
++		
++		query = getEntityManager().createQuery(stringQuery, VariableSistema.class);
++		
++		if(nombre.length()>0)
++			query.setParameter("nombre", nombre);
++		
++		results = query.setMaxResults(Take).setFirstResult(Skip).getResultList();
++		return results;
++	}
++	
++	public long buscarVarNum(String nombre, int Skip, int Take){ 
++
++				
++		Query query = null;
++		
++				
++		String stringQuery= "SELECT count(c.id) FROM VariableSistema c ";					
++		
++		String valoresWhereQuery="";
++		
++		if(nombre.length()>0)
++			valoresWhereQuery = " where c.nombre = :nombre";
++		
++		stringQuery = stringQuery+valoresWhereQuery;
++		
++		query = getEntityManager().createQuery(stringQuery);
++		
++
++		if(nombre.length()>0)
++			query.setParameter("nombre", nombre);
++	
++		long results = (long)query.getSingleResult();
++		return results;
++	}
++	
+ }
+diff --git a/src/com/qbe/cotizador/model/AgriCotizacionAprobacion.java b/src/com/qbe/cotizador/model/AgriCotizacionAprobacion.java
+--- a/src/com/qbe/cotizador/model/AgriCotizacionAprobacion.java
++++ b/src/com/qbe/cotizador/model/AgriCotizacionAprobacion.java
+@@ -203,4 +203,7 @@
+ 	
+ 	@Column(name = "USUARIO_COTIZADOR")
+ 	private String usuarioCotizador;
++		
++	@Column(name = "ciclo_id")
++	private String cicloId;
+ 	
+@@ -206,4 +209,23 @@
+ 	
++	@Column(name = "cliente_id")
++	private String clienteId;
++		
++	public String getClienteId() {
++		return clienteId;
++	}
++
++	public void setClienteId(String clienteId) {
++		this.clienteId = clienteId;
++	}
++
++	public String getCicloId() {
++		return cicloId;
++	}
++
++	public void setCicloId(String cicloId) {
++		this.cicloId = cicloId;
++	}
++
+ 	public String getUsuarioCotizador() {
+ 		return usuarioCotizador;
+ 	}
+diff --git a/src/com/qbe/cotizador/model/AgriParroquia.java b/src/com/qbe/cotizador/model/AgriParroquia.java
+--- a/src/com/qbe/cotizador/model/AgriParroquia.java
++++ b/src/com/qbe/cotizador/model/AgriParroquia.java
+@@ -15,7 +15,9 @@
+ 	@NamedQuery(name="AgriParroquia.buscarTodos", query="SELECT a FROM AgriParroquia a"),
+ 	@NamedQuery(name="AgriParroquia.obtenerPorSBS", query="SELECT a FROM AgriParroquia a where a.parroquiaSbs=:CodigoSBS"),
+ 	@NamedQuery(name="AgriParroquia.obtenerPorNombre", query="SELECT a FROM AgriParroquia a where a.parroquiaNombre=:nombre"),
+-	@NamedQuery(name="AgriParroquia.obtenerPorNombreYCanton", query="SELECT a FROM AgriParroquia a where a.parroquiaNombre LIKE :nombre AND a.cantonId=:canton")
++	@NamedQuery(name="AgriParroquia.obtenerPorNombreYCanton", query="SELECT a FROM AgriParroquia a where a.parroquiaNombre LIKE :nombre AND a.cantonId=:canton"),
++	@NamedQuery(name="AgriParroquia.obtenerPorId", query="SELECT a FROM AgriParroquia a where a.id=:id"),
++	@NamedQuery(name="AgriParroquia.obtenerPorCanton", query="SELECT a FROM AgriParroquia a where a.cantonId=:canton")
+ })
+ 
+ public class AgriParroquia implements Serializable {
+diff --git a/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java b/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java
+--- a/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java
++++ b/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java
+@@ -6,6 +6,7 @@
+ import java.text.ParseException;
+ import java.text.SimpleDateFormat;
+ import java.util.ArrayList;
++import java.util.Calendar;
+ import java.util.Date;
+ import java.util.List;
+ 
+@@ -52,6 +53,7 @@
+ import com.qbe.cotizador.model.AgriCotizacionAprobacion;
+ import com.qbe.cotizador.model.AgriCotizacionMax;
+ import com.qbe.cotizador.model.AgriObjetoCotizacion;
++import com.qbe.cotizador.model.AgriObjetoDetalle;
+ import com.qbe.cotizador.model.AgriParametroXPuntoVenta;
+ import com.qbe.cotizador.model.AgriParroquia;
+ import com.qbe.cotizador.model.AgriRegla;
+@@ -78,6 +80,7 @@
+ import com.qbe.cotizador.model.Upla;
+ import com.qbe.cotizador.model.VariableSistema;
+ import com.qbe.cotizador.servlets.producto.agricola.AgriCotizacionAprobacionController;
++import com.qbe.cotizador.servlets.producto.agricola.AgriCotizacionDetalleProcesos;
+ import com.qbe.cotizador.servlets.producto.agricola.AgriSucreNotificacionErrores;
+ import com.qbe.cotizador.transaction.cotizacion.CotizacionDetalleTransaction;
+ import com.qbe.cotizador.transaction.cotizacion.CotizacionTransaction;
+@@ -87,6 +90,7 @@
+ import com.qbe.cotizador.transaction.entidad.EntidadTransaction;
+ import com.qbe.cotizador.transaction.producto.agricola.AgriAuditoriaCotizacionTransaction;
+ import com.qbe.cotizador.transaction.producto.agricola.AgriObjetoCotizacionTransaction;
++import com.qbe.cotizador.transaction.producto.agricola.AgriObjetoDetalleTransaction;
+ import com.qbe.cotizador.transaction.producto.agricola.AgriSucreAuditoriaTransaction;
+ import com.qbe.cotizador.transaction.producto.agricola.AgriSucreDetalleTransaction;
+ import com.qbe.cotizador.util.Utilitarios;
+@@ -451,8 +455,7 @@
+ 				entidad.setMail("" + in0.getEmailContacto().trim());
+ 				entidad.setCelular("" + in0.getCelreferencia().trim());
+ 				try{
+-					entidad.setTelefono("" + in0.getTelfreferencia().trim());
+-					
++					entidad.setTelefono("" + in0.getTelfreferencia().trim());					
+ 				}
+ 				catch (Exception e) {
+ 					//numero vacio
+@@ -1156,8 +1159,8 @@
+ 				auditoria.setObjeto(variableControl);
+ 				/*Almacenamiento en auditoria*/
+ 				String EstadoAuditoria = "" + cotizacion.getEstado().getNombre();
+-				if (EstadoAuditoria.equals("Pendiente de Emitir")){
+-					AgriAuditoriaCotizacion agriAuditoriaCotizacion = new AgriAuditoriaCotizacion();
++				AgriAuditoriaCotizacion agriAuditoriaCotizacion = new AgriAuditoriaCotizacion();
++				if (EstadoAuditoria.equals("Pendiente de Emitir")){					
+ 					AgriAuditoriaCotizacionTransaction agriAuditoriaCotizacionTransaction = new AgriAuditoriaCotizacionTransaction();
+ 					agriAuditoriaCotizacion.setCotizacionId(new BigInteger(cotizacion.getId()));
+ 					agriAuditoriaCotizacion.setFecha(sq);
+@@ -1172,6 +1175,12 @@
+ 				}catch(Exception e){
+ 					e.printStackTrace();
+ 				}
++				
++				/**PROCESO DE CREACION DEL DETALLE DE LA COTIZACION ENDOSO***/
++				AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
++				agriCotizacionDetalleProcesos.creardetalleCotizacion(cotizacion,"Registro Solicitud");
++				/**FIN DE REGISTRO DE ENDOSO**/
++				
+ 			} else {
+ 				String IdCotizacion = ExisteCotizacion.getId();
+ 				Cotizacion ExisteCotizacion2 = new Cotizacion();
+@@ -1366,6 +1375,230 @@
+ 						
+ 						auditoria.setEstado(ExisteCotizacion.getEstado().getNombre());
+ 						procesoAuditoria.editar(auditoria);
++						
++						Double valorCancelar=ExisteCotizacion.getPrimaOrigen();
++						
++						BigDecimal a = new BigDecimal(""+in0.getMontoPago());
++						BigDecimal roundOff = a.setScale(2, BigDecimal.ROUND_HALF_UP);
++						Double ValorPagado=Double.parseDouble(""+roundOff);
++						
++						int comparacion=valorCancelar.compareTo(ValorPagado);
++						String ObservacionSucre="";
++						String Proceso="confirmacion Emision";
++						/**PROCESO DE RECALCULO EN CASO DE QUE LOS VALORES SEAN DISTINTOS***/
++						/**CONSIDERACIONES
++						 * no se actualizara el tipo de cultivo ya que implica un cambio total de la cotizacion
++						 * no se considera un cambio de lugar de siembra ya que cambia los valores de cotizacion
++						 * no se considera un cambio de fecha de siembra ya que existe un metodo para hacerlo
++						 * 
++						 * **/
++						if(comparacion!=0){
++							
++							if(comparacion<0)
++								Proceso="Aumento Confirmacion Emision";
++							else 
++								Proceso="Rebaja confirmacion Emision";
++							
++							Observacion=Observacion+"montos distintos monto sucre:"+ValorPagado+" valor esperado QBE: "+valorCancelar;
++							//PROCESO DE RECALCULO DE LA INFORMACION DE LA COTIZACION
++							try{
++								//validacionesGenerales para la actualizacion de la cotizacion
++								//verificamos el cliente de la cotizacion:
++								String cedula= in0.getCedula().trim();
++								String clienteID=""+ExisteCotizacion.getClienteId();
++								
++								ClienteDAO clienteDAO= new ClienteDAO();
++								Cliente cliente=clienteDAO.buscarPorId(clienteID);
++								
++								String CedulaClienteCotizador=cliente.getEntidad().getIdentificacion();
++								
++								if(!cedula.equals(CedulaClienteCotizador))
++									throw new Exception("Los clientes de la Cotizacion son distintos");
++								
++								//verificamos fechas de siembras
++								String fechaSiembraSucre=in0.getFechaSiembra();
++								String fechaSiembreQBE="";
++								
++								SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
++								fechaSiembreQBE=formato.format(agriObjetoCotizacion.getFechaSiembra());
++								
++								if(!fechaSiembraSucre.equals(fechaSiembreQBE))
++									throw new Exception("fechas de siembra distintas");
++								
++								//verificamos los lugares de la siembra:
++								
++								ProvinciaDAO laProvincia = new ProvinciaDAO();
++								Provincia provincia = new Provincia();
++								CantonDAO elCanton = new CantonDAO();
++								Canton canton = new Canton();
++								TipoDireccionDAO tipoDireccionDAO = new TipoDireccionDAO();
++								ZonaDAO zonaDAO = new ZonaDAO();
++								AgriParroquiaDAO laParroquia = new AgriParroquiaDAO();
++								AgriParroquia parroquia = new AgriParroquia();
++								
++								//hallamos la provincia en base al codigo que llega
++								String CodigoSBSProvincia = in0.getProvincia().trim();
++								
++								if (CodigoSBSProvincia.length() == 1)
++									CodigoSBSProvincia = "0" + CodigoSBSProvincia;
++								
++								provincia = laProvincia.buscarPorCodigoSBS(CodigoSBSProvincia);
++								
++								if (provincia.getId() == null)
++									throw new Exception("Error Codigo de Provincia "
++											+ CodigoSBSProvincia + "  no encontrado");
++								
++								if(!(""+agriObjetoCotizacion.getProvinciaId()).equals(provincia.getId().toString()))
++									throw new Exception("Provincia Distinta ");
++								
++								//hallamos el canton en base al codigo que llega
++								String CodigoSBSCanton = in0.getCanton().trim();
++								
++								if (CodigoSBSCanton.length() == 1 || CodigoSBSCanton.length() == 3)
++									CodigoSBSCanton = "0" + CodigoSBSCanton;
++								
++								if (CodigoSBSCanton.length() >= 3)
++									CodigoSBSCanton = CodigoSBSCanton.substring(2, 4);
++								
++								
++								canton = elCanton.buscarPorCodigoSBS(CodigoSBSCanton, provincia);
++								
++								if (canton.getId() == null)
++									throw new Exception("Error Codigo de Canton "
++											+ CodigoSBSCanton + " no encontrado en provincia "
++											+ CodigoSBSProvincia);
++								
++								if(!(""+agriObjetoCotizacion.getCantonId()).equals(canton.getId().toString()))
++									throw new Exception("Canton Distinto ");
++								
++								//Proceso de busqueda de parroquias
++								String CodigoSBSParroquia=in0.getParroquia().trim();
++								if(CodigoSBSParroquia.length()<6)
++									CodigoSBSParroquia="0"+CodigoSBSParroquia;
++								if(CodigoSBSParroquia.length()>6)
++									CodigoSBSParroquia=CodigoSBSParroquia.substring(0, 6);
++								
++								
++								//hallamos la parroquien en base al SBS
++								parroquia= laParroquia.BuscarPorSBS(CodigoSBSParroquia);
++												
++								if (parroquia.getParroquiaNombre() == null)
++									throw new Exception("Error Codigo de Parroquia "
++											+ CodigoSBSParroquia + " no encontrado ");
++								
++								if(!(""+agriObjetoCotizacion.getAgriParroquiaId()).equals(""+parroquia.getId()))
++									throw new Exception("Parroquia Distinta ");
++								
++								
++								
++								//variable de Observacion
++								String VariableGeneral="";
++																
++								//recalculamos los valores de la cotizacion:
++								double montoAseguradoSucre=Double.parseDouble(in0.getMontoAsegurado());
++								double numeroHectareasSucre=in0.getNumHectAseguradas();
++								double costoProduccionSucre=montoAseguradoSucre/numeroHectareasSucre;
++								double costoProduccionQBE=Double.parseDouble(""+agriObjetoCotizacion.getCostoProduccionQBE());
++								
++								int variableComparacionGeneral=valorCancelar.compareTo(ValorPagado);
++								if(variableComparacionGeneral!=0)
++									VariableGeneral="||Costos de produccion distintos: QBE "+costoProduccionQBE+ " Sucre "+costoProduccionSucre;
++								
++								a = new BigDecimal(""+costoProduccionSucre);
++								roundOff = a.setScale(2, BigDecimal.ROUND_HALF_UP);
++								//GUARDAMOS EL COSTO DE PRODUCCION								
++								agriObjetoCotizacion.setCostoProduccion(Float.parseFloat(""+a));
++								
++								//RECALCULAMOS TODOS LOS VALORES DE LA COTIZACION;
++								//PRIMA = SUMA ASEGURADO* TASA
++								double tasa = cotizacionDetalle.getTasa();
++								double prima=(montoAseguradoSucre*tasa)/100;
++								
++								a = new BigDecimal(""+prima);
++								roundOff = a.setScale(2, BigDecimal.ROUND_HALF_UP);
++								
++								ExisteCotizacion.setPrimaNetaTotal(""+roundOff);
++								
++								Double primaNueva=Double.parseDouble(""+roundOff);
++								Double primaSucre=Double.parseDouble(""+in0.getPrimaCalculada());
++								comparacion= primaNueva.compareTo(primaSucre);
++										
++								if(comparacion!=0)
++									throw new Exception("Primas distintas prima calculada QBE :"+primaNueva+ " prima sucre : "+primaSucre);
++								
++								
++								ExisteCotizacion.setPrimaOrigen(Double.parseDouble(""+roundOff));
++								ExisteCotizacion.setSumaAseguradaTotal(montoAseguradoSucre);
++								//calculamos los impuestos:
++								/* PROCESO DE CALCULO DE COMPONENTES */
++								
++								double valorPrimaCalculada=(Double.parseDouble(""+roundOff));
++								TipoVariableDAO tipoVariableDao = new TipoVariableDAO();
++								TipoVariable tipoVariable = tipoVariableDao.buscarPorId("3");
++								VariableSistemaDAO variableDAO = new VariableSistemaDAO();
++								List<VariableSistema> variablesistema = variableDAO.buscarTipoVariable(tipoVariable);
++									double valorBase = 0;
++									double valorDerechosEmision = 0;
++									double valorSeguroCampesino = 0;
++									double valorSuperBancos = 0;
++									double valorIva = 0;
++									double valorSubTotal = 0;
++									double valorTotal = 0;
++									if (variablesistema.size() > 0) {
++										for (VariableSistema variable : variablesistema) {
++											if (variable.getNombre().equals("DERECHOS_EMISION_AGRICOLA")) {
++												valorBase = valorDerechosEmision+valorBase;
++														
++												// valorDerechosEmision =
++												// Double.parseDouble(variable.getValor());
++												ExisteCotizacion.setImpDerechoEmision(valorDerechosEmision);
++											} else if (variable.getNombre().equals(
++													"SEGURO_CAMPESINO")) {
++												valorSeguroCampesino = Math.rint(Double
++														.parseDouble(variable.getValor())
++														* valorPrimaCalculada / 100 * 100) / 100;
++												valorBase = valorBase + valorSeguroCampesino;
++												ExisteCotizacion.setImpSeguroCampesino(valorSeguroCampesino);
++											} else if (variable.getNombre().equals(
++													"SUPER_DE_BANCOS")) {
++												valorSuperBancos = Math.rint(Double
++														.parseDouble(variable.getValor())
++														* valorPrimaCalculada / 100 * 100) / 100;
++												ExisteCotizacion.setImpSuperBancos(valorSuperBancos);
++												valorBase = valorBase + valorSuperBancos;
++											}
++											
++										}
++														
++										VariableSistema variableIva= variableDAO.buscarPorNombre("IVA");					
++										valorSubTotal=valorBase+valorPrimaCalculada;
++										//calculamos el Iva
++										String PorcentajeIva=variableIva.getValor();
++										valorIva = Math.rint(Double.parseDouble(PorcentajeIva) * valorSubTotal / 100 * 100) / 100;
++										a = new BigDecimal(""+valorIva);
++										roundOff = a.setScale(2, BigDecimal.ROUND_HALF_UP);
++										ExisteCotizacion.setImpIva(Double.parseDouble(""+roundOff));
++										//calculamos el valor total
++										double valorFactura=valorSubTotal+valorIva;
++										a = new BigDecimal(""+valorFactura);
++										roundOff = a.setScale(2, BigDecimal.ROUND_HALF_UP);
++										ExisteCotizacion.setTotalFactura(Double.parseDouble(""+roundOff));
++																			
++								}
++								
++								/**GUARDAMOS LOS NUEVOS VALORES**/
++								CotizacionTransaction cotizacionTransaction = new CotizacionTransaction();
++								cotizacionTransaction.editar(ExisteCotizacion);
++								agriObjetoCotizacion.setObservacion(VariableGeneral);
++								agriObjetoCotizacion.setHectareasAsegurables(Float.parseFloat(""+in0.getNumHectAseguradas()));
++							}catch(Exception e){
++								throw new Exception(e);
++							}
++							
++						}
++						
++						
++						/*CONTINUAMOS CON EL PROCESO DE REGISTRO DE LA NOTIFICACION*/
+ 						agriObjetoCotizacion.setNumeroOperacion(in0.getOrdenPago());
+ 						agriObjetoCotizacion.setConfirEmiCanal(true);
+ 						//verificamos el formato de la fecha
+@@ -1378,16 +1611,6 @@
+ 						}
+ 						agriObjetoCotizacion.setValorDesembolso(in0.getMontoPago());
+ 						agriObjetoCotizacion.setAnexo(in0.getNumeroFactura());
+-						Observacion=agriObjetoCotizacion.getObservacionCotizacion();
+-						Observacion=Observacion+" || Poliza : "+ExisteCotizacion.getId()+" Esta confirmada";
+-						//verificamos que los montos son iguales o distintos 
+-						Double valorCancelar=ExisteCotizacion.getPrimaOrigen();
+-						Double ValorPagado=(double)in0.getMontoPago();
+-						if(valorCancelar!=ValorPagado){
+-							throw new
+-							  Exception ("montos distintos monto sucre:"+ValorPagado+" valor esperado QBE: "+valorCancelar);
+-						}
+-						agriObjetoCotizacion.setObservacionCotizacion(Observacion);
+ 						AgriObjetoCotizacionTransaction agriObjetoCotizacionTransaction = new AgriObjetoCotizacionTransaction();
+ 						agriObjetoCotizacionTransaction.editar(agriObjetoCotizacion);
+ 						
+@@ -1396,4 +1619,8 @@
+ 						ExisteCotizacion.setEstado(estado);
+ 						CotizacionTransaction cotizacionTransaction = new CotizacionTransaction();
+ 						cotizacionTransaction.editar(ExisteCotizacion);
++						/**PROCESO DE CREACION DEL DETALLE DE LA COTIZACION ENDOSO***/
++						AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
++						agriCotizacionDetalleProcesos.creardetalleCotizacion(ExisteCotizacion, Proceso);
++						/**FIN DE REGISTRO DE ENDOSO**/
+ 						respuesta.setEstado("OK");
+@@ -1399,5 +1626,5 @@
+ 						respuesta.setEstado("OK");
+-						respuesta.setObservacion(Observacion);
++						respuesta.setObservacion(ObservacionSucre);
+ 						
+ 					}catch(Exception e){
+ 						auditoria.setEstado("Error");
+@@ -1548,6 +1775,15 @@
+ 			String fechaCambio= formatoDelTexto.format(date2);
+ 			respuesta.setFechaCambio(""+fechaCambio);
+ 			
++			/**PROCESO DE CREACION DEL DETALLE DE LA COTIZACION ENDOSO***/
++			AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
++			agriCotizacionDetalleProcesos.creardetalleCotizacion(cotizacion,"Cambio de fecha");
++			
++			
++			/**FIN DE REGISTRO DE ENDOSO**/
++			
++			
++			
+ 			auditoria.setObjeto(fechaAnterior);
+ 			auditoria.setEstado("ok");
+ 			try{
+@@ -1736,6 +1972,13 @@
+ 			
+ 			auditoria.setObjeto(temporal);
+ 			auditoria.setEstado("ok");
++			
++			/**PROCESO DE CREACION DEL DETALLE DE LA COTIZACION ENDOSO***/
++			AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
++			agriCotizacionDetalleProcesos.creardetalleCotizacion(cotizacion, "cambio de lugar");
++			/**FIN DE REGISTRO DE ENDOSO**/
++			
++			
+ 			try{
+ 				auditoria=procesoAuditoria.editar(auditoria);
+ 			}catch(Exception e){
+@@ -1853,6 +2096,12 @@
+ 			CotizacionTransaction cotizacionTransaction= new CotizacionTransaction();
+ 			cotizacionTransaction.editar(cotizacion);
+ 			
++			/**PROCESO DE CREACION DEL DETALLE DE LA COTIZACION ENDOSO***/
++			AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
++			agriCotizacionDetalleProcesos.creardetalleCotizacion(cotizacion, "Revocado");
++			/**FIN DE REGISTRO DE ENDOSO**/
++			
++			
+ 			respuesta.setEstado("OK");
+ 			respuesta.setObservacion("PROCESO CORRECTO");
+ 			respuesta.setTramite(tramite);
+diff --git a/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudEMIDTO.java b/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudEMIDTO.java
+--- a/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudEMIDTO.java
++++ b/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudEMIDTO.java
+@@ -12,8 +12,8 @@
+ 	String ordenPago;
+ 	String fechaSiembra;
+ 	String codigoFacilitador;
+-	int numHectFnanciadas;
+-	int numHectAseguradas;
++	double numHectFnanciadas;
++	double numHectAseguradas;
+ 	String provincia;
+ 	String canton;
+ 	String parroquia;
+@@ -89,6 +89,6 @@
+ 	public void setCodigoFacilitador(String codigoFacilitador) {
+ 		this.codigoFacilitador = codigoFacilitador;
+ 	}
+-	public int getNumHectFnanciadas() {
++	public double getNumHectFnanciadas() {
+ 		return numHectFnanciadas;
+ 	}
+@@ -93,5 +93,5 @@
+ 		return numHectFnanciadas;
+ 	}
+-	public void setNumHectFnanciadas(int numHectFnanciadas) {
++	public void setNumHectFnanciadas(double numHectFnanciadas) {
+ 		this.numHectFnanciadas = numHectFnanciadas;
+ 	}
+@@ -96,5 +96,5 @@
+ 		this.numHectFnanciadas = numHectFnanciadas;
+ 	}
+-	public int getNumHectAseguradas() {
++	public double getNumHectAseguradas() {
+ 		return numHectAseguradas;
+ 	}
+@@ -99,6 +99,6 @@
+ 		return numHectAseguradas;
+ 	}
+-	public void setNumHectAseguradas(int numHectAseguradas) {
++	public void setNumHectAseguradas(double numHectAseguradas) {
+ 		this.numHectAseguradas = numHectAseguradas;
+ 	}
+ 	public String getProvincia() {
+diff --git a/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java b/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java
+--- a/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java
++++ b/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java
+@@ -73,6 +73,7 @@
+ import com.qbe.cotizador.model.TipoIdentificacion;
+ import com.qbe.cotizador.model.TipoVariable;
+ import com.qbe.cotizador.model.VariableSistema;
++import com.qbe.cotizador.servlets.producto.agricola.AgriCotizacionDetalleProcesos;
+ import com.qbe.cotizador.servlets.producto.agricola.AgriSucreNotificacionErrores;
+ import com.qbe.cotizador.transaction.cotizacion.CotizacionDetalleTransaction;
+ import com.qbe.cotizador.transaction.cotizacion.CotizacionTransaction;
+@@ -782,6 +783,11 @@
+ 					agriAuditoriaCotizacionTransaction.crear(agriAuditoriaCotizacion);
+ 				}
+ 				
++				/**PROCESO DE CREACION DEL DETALLE DE LA COTIZACION ENDOSO***/
++				AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
++				agriCotizacionDetalleProcesos.creardetalleCotizacion(cotizacion, "Registro Solicitud");
++				/**FIN DE REGISTRO DE ENDOSO**/
++				
+ 				try{
+ 					auditoria.setObjeto(variableControl);
+ 					auditoria.setEstado(EstadoAuditoria);
+@@ -1062,6 +1068,13 @@
+ 					}
+ 					variableControl=variableControl+" || ValorMonetario "+valorMonetario+" || fechaDesembolso "+fechaDesembolso+" || setNumeroOperacion "+in0.getNumeroOperacion();
+ 					AgriProcesos.editar(agriObjetoCotizacion);
++					
++					/**PROCESO DE CREACION DEL DETALLE DE LA COTIZACION ENDOSO***/
++					AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
++					agriCotizacionDetalleProcesos.creardetalleCotizacion(existeCotizacion, "confirmacion Emision");
++					/**FIN DE REGISTRO DE ENDOSO**/
++					
++					
+ 					mensaje="0";
+ 					try{
+ 						auditoria.setTramite(in0.getNumeroResolucion());
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java
+@@ -453,6 +453,11 @@
+ 										cotizacionC = cotizacionTransaction.editar(cotizacionC);
+ 										// /TODO: Auditoria de aprobaciones y rechazos
+ 										RegistrarAuditoriaCotizacion(new BigInteger(cotizacionC.getId()),new BigInteger(usuario.getId()),"APROBADO REVISION");
++										
++										//registro el detalle de la cotizacion
++										AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
++										agriCotizacionDetalleProcesos.creardetalleCotizacion(cotizacionC,"Aprobacion");
++										
+ 										mensajeEstado = "La Cotización ha sido aprobada correctamente";
+ 										
+ 										result.put("mensajeEstado",mensajeEstado);
+@@ -492,6 +497,9 @@
+ 						//TODO: se cargar la vigencia con la fecha actual
+ 						cotizacionC.setVigenciaDesde(VigenciaDesde);
+ 						cotizacionC = cotizacionTransaction.editar(cotizacionC);
++						//registro el detalle de la cotizacion
++						AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
++						agriCotizacionDetalleProcesos.creardetalleCotizacion(cotizacionC,"Aprobacion");
+ 						// /TODO: Auditoria de aprobaciones y rechazos
+ 						RegistrarAuditoriaCotizacion(new BigInteger(cotizacionC.getId()),new BigInteger(usuario.getId()),"APROBADO REVISION");
+ 						mensajeEstado = "La Cotización ha sido aprobada correctamente";
+@@ -495,8 +503,10 @@
+ 						// /TODO: Auditoria de aprobaciones y rechazos
+ 						RegistrarAuditoriaCotizacion(new BigInteger(cotizacionC.getId()),new BigInteger(usuario.getId()),"APROBADO REVISION");
+ 						mensajeEstado = "La Cotización ha sido aprobada correctamente";
++						
++						
+ 						result.put("mensajeEstado", mensajeEstado);
+ 					}
+ 					// /TODO: Email pre-poliza si es offline
+ 						if (cotAct.getTipoOrigen()!=null && cotAct.getTipoOrigen().equals("COTIZADOR_OFFLINE")) {
+ 							if(cotizacionC.getPuntoVenta().getNombre().trim().equals("CREDIFE")){
+@@ -498,8 +508,11 @@
+ 						result.put("mensajeEstado", mensajeEstado);
+ 					}
+ 					// /TODO: Email pre-poliza si es offline
+ 						if (cotAct.getTipoOrigen()!=null && cotAct.getTipoOrigen().equals("COTIZADOR_OFFLINE")) {
+ 							if(cotizacionC.getPuntoVenta().getNombre().trim().equals("CREDIFE")){
++								//registro el detalle de la cotizacion
++								AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
++								agriCotizacionDetalleProcesos.creardetalleCotizacion(cotizacionC,"Aprobacion");
+ 								EnviarMailCambioEstadoBlob(cotizacionC, cotAct, AprobacionStatus);
+ 							}
+ 							else{
+@@ -503,6 +516,9 @@
+ 								EnviarMailCambioEstadoBlob(cotizacionC, cotAct, AprobacionStatus);
+ 							}
+ 							else{
++								//registro el detalle de la cotizacion
++								AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
++								agriCotizacionDetalleProcesos.creardetalleCotizacion(cotizacionC,"Aprobacion");
+ 								AgriCorreoCoprogreso agriCorreoCoprogreso = new AgriCorreoCoprogreso();
+ 								agriCorreoCoprogreso.envioEmail(cotAct.getUsuarioOffline(),cotizacionC, cotAct);
+ 							}
+@@ -543,6 +559,11 @@
+ 											cotizacionC = cotizacionTransaction.editar(cotizacionC);
+ 											// /TODO: Auditoria de aprobaciones y rechazos
+ 											RegistrarAuditoriaCotizacion(new BigInteger(cotizacionC.getId()),new BigInteger(usuario.getId()),"RECHAZADO REVISION");
++											
++											//registro el detalle de la cotizacion
++											AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
++											agriCotizacionDetalleProcesos.creardetalleCotizacion(cotizacionC,"Rechazo");
++											
+ 											mensajeEstado = "La Cotización ha sido rechazada correctamente";
+ 											result.put("mensajeEstado",mensajeEstado);
+ 										} else {
+@@ -582,6 +603,10 @@
+ 							//EnviarMailCambioEstadoBlob(cotizacionC, null,AprobacionStatus);
+ 							if (cotAct.getTipoOrigen()!=null && cotAct.getTipoOrigen().equals("COTIZADOR_OFFLINE")) {
+ 								if(cotizacionC.getPuntoVenta().getNombre().trim().equals("CREDIFE")){
++									//registro el detalle de la cotizacion
++									AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
++									agriCotizacionDetalleProcesos.creardetalleCotizacion(cotizacionC,"Rechazo");
++									
+ 									EnviarMailCambioEstadoBlob(cotizacionC, cotAct, AprobacionStatus);
+ 								}
+ 								else{
+@@ -585,6 +610,10 @@
+ 									EnviarMailCambioEstadoBlob(cotizacionC, cotAct, AprobacionStatus);
+ 								}
+ 								else{
++									//registro el detalle de la cotizacion
++									AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
++									agriCotizacionDetalleProcesos.creardetalleCotizacion(cotizacionC,"Rechazo");
++									
+ 									AgriCorreoCoprogreso agriCorreoCoprogreso = new AgriCorreoCoprogreso();
+ 									agriCorreoCoprogreso.envioEmail(cotAct.getUsuarioOffline(),cotizacionC, cotAct);
+ 								}
+@@ -1153,18 +1182,18 @@
+ 					if (nuevaCotizacion.getId() != null && !nuevaCotizacion.getId().equals(""))
+ 						cotizacionC = cotizacionCDAO.buscarPorId(nuevaCotizacion.getId());
+ 					
+-					//Auditoria Inicia el proceso de cotizacion:
+-					//para saber a que hora se hizo la notificacion
+-					Date fechaActual= new Date();
+-					AgriSucreAuditoria agriSucreAuditoria2 = new AgriSucreAuditoria();
+-					AgriSucreAuditoriaTransaction agriSucreAuditoriaTransaction2 = new AgriSucreAuditoriaTransaction();
+-					agriSucreAuditoria2.setCanal(cotizacionC.getPuntoVenta().getNombre());
+-					agriSucreAuditoria2.setEstado("INI_NOTIF");
+-					agriSucreAuditoria2.setFecha(fechaActual);
+-					agriSucreAuditoria2.setObjeto("Ingresa al proceso cambio de estado");
+-					agriSucreAuditoria2.setTramite(cotizacionC.getNumeroTramite());
+-					agriSucreAuditoriaTransaction2.crear(agriSucreAuditoria2);
+-					//fin de auditoria
++						//Auditoria Inicia el proceso de cotizacion:
++						//para saber a que hora se hizo la notificacion
++						Date fechaActual= new Date();
++						AgriSucreAuditoria agriSucreAuditoria2 = new AgriSucreAuditoria();
++						AgriSucreAuditoriaTransaction agriSucreAuditoriaTransaction2 = new AgriSucreAuditoriaTransaction();
++						agriSucreAuditoria2.setCanal(cotizacionC.getPuntoVenta().getNombre());
++						agriSucreAuditoria2.setEstado("INI_NOTIF");
++						agriSucreAuditoria2.setFecha(fechaActual);
++						agriSucreAuditoria2.setObjeto("Ingresa al proceso cambio de estado");
++						agriSucreAuditoria2.setTramite(cotizacionC.getNumeroTramite());
++						agriSucreAuditoriaTransaction2.crear(agriSucreAuditoria2);
++						//fin de auditoria
+ 					
+ 					
+ 					if (cotizacionC.getId() != null) {
+@@ -1253,6 +1282,11 @@
+ 										// /TODO: Auditoria de aprobaciones y
+ 										// rechazos
+ 										RegistrarAuditoriaCotizacion(new BigInteger(cotizacionC.getId()),new BigInteger(usuario.getId()),"APROBADO REVISION");
++										
++										//registro el detalle de la cotizacion
++										AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
++										agriCotizacionDetalleProcesos.creardetalleCotizacion(cotizacionC,"Aprobacion");
++										
+ 										mensaje = "La Cotización ha sido aprobada correctamente";
+ 									} else {
+ 										String mensajeEstado = resultado.getRespuesta().getObservaciones();
+@@ -1296,6 +1330,10 @@
+ 								// /TODO: Auditoria de aprobaciones y rechazos
+ 								RegistrarAuditoriaCotizacion(new BigInteger(cotizacionC.getId()), new BigInteger(usuario.getId()), "APROBADO REVISION");
+ 								// /TODO: Mensajes del estado de la cotizacion
++								//registro el detalle de la cotizacion
++								AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
++								agriCotizacionDetalleProcesos.creardetalleCotizacion(cotizacionC,"Aprobacion");
++								
+ 								mensaje = "La cotización ha sido aprobada correctamente.";
+ 							}
+ 						}
+@@ -1307,24 +1345,5 @@
+ 
+ 						// Enviar mail aprobacion pre- poliza si viene del offline
+ 						if (cotAct.getTipoOrigen()!=null && cotAct.getTipoOrigen().equals("COTIZADOR_OFFLINE")) {
+-							//TODO: se elimina el envio de coberturas para el reporte
+-//							AgriTipoCultivoXTipoCalculoDAO coberturasDAO = new AgriTipoCultivoXTipoCalculoDAO();
+-//							List<AgriTipoCultivoXTipoCalculo> Coberturas = new ArrayList<AgriTipoCultivoXTipoCalculo>();
+-//							List<AgriTipoCultivoXTipoCalculo> lstCoberturasParaReporte = new ArrayList<AgriTipoCultivoXTipoCalculo>();
+-//							Coberturas = coberturasDAO.BuscarTodos();
+-//							if (Coberturas.size() > 0) {
+-//								// AgriTipoCultivoXTipoCalculo coberturaCultivo
+-//								// =
+-//								// new AgriTipoCultivoXTipoCalculo();
+-//								for (AgriTipoCultivoXTipoCalculo cobertura : Coberturas) {
+-//									if (cobertura
+-//											.getTipoCultivoId()
+-//											.toString()
+-//											.equals(cotAct.getTipoCultivoId()
+-//													.toString())) {
+-//										lstCoberturasParaReporte.add(cobertura);
+-//									}
+-//
+-//								}
+-//							}
++							
+ 							EnviarMailCambioEstadoBlob(cotizacionC, cotAct,"AP");
+@@ -1330,5 +1349,7 @@
+ 							EnviarMailCambioEstadoBlob(cotizacionC, cotAct,"AP");
+-							//EnviarMailCambioEstado(cotizacionC, cotAct, "AP");
++							//registro el detalle de la cotizacion
++							AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
++							agriCotizacionDetalleProcesos.creardetalleCotizacion(cotizacionC,"Aprobacion");
+ 						}
+ 					} else {
+ 						mensaje = ("No se pudo aprobar la cotización, la cotización no se encuentra registrada.");
+@@ -1418,6 +1439,12 @@
+ 								// /TODO Generar cadena para el archivo
+ 								String row = cotizacionC.getNumeroFactura()+ "," + cotizacionC.getTotalFactura()+ "\r\n";
+ 								cadenaArchivo = cadenaArchivo + row;
++								
++								//registro el detalle de la cotizacion
++								AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
++								agriCotizacionDetalleProcesos.creardetalleCotizacion(cotizacionC,"Aprobacion");
++								
++								
+ 								mensaje = "La cotización ha sido emitida correctamente. ";
+ 								estado="OK";
+ 							} else {
+@@ -1461,21 +1488,6 @@
+ 				fileCotizacion = fileCotizacionTransaction.crear(fileCotizacion);
+ 				if (fileCotizacion.getId()!=null)
+ 					IdFileIds = fileCotizacion.getId().toString();
+-				// Guardar Archivo
+-//				File fileSave = new File(rutaFile + nombreArchivo);
+-//				Path StructurePath = FileSystems.getDefault().getPath(
+-//						fileSave.getPath());
+-//				if (folder.exists()) {
+-//					if (folder.isDirectory()) {
+-//						if (fileSave.exists())
+-//							Files.write(StructurePath, cadenaArchivo.getBytes(StandardCharsets.UTF_8),StandardOpenOption.WRITE);
+-//						else
+-//							Files.write(StructurePath, cadenaArchivo.getBytes(StandardCharsets.UTF_8),StandardOpenOption.CREATE_NEW);
+-//					}
+-//				} else {
+-//					folder.mkdirs();
+-//					Files.write(StructurePath,cadenaArchivo.getBytes(StandardCharsets.UTF_8),StandardOpenOption.WRITE);
+-//				}
+ 			}
+ 			
+ 		} catch (Exception e) {
+@@ -1510,7 +1522,10 @@
+ 						cotizacionC = cotizacionTransaction.editar(cotizacionC);
+ 						// /TODO: Auditoria de aprobaciones y rechazos
+ 						RegistrarAuditoriaCotizacion(new BigInteger(cotizacionC.getId()),new BigInteger(usuario.getId()),"REVOCADO REVISION");
+-								
++						
++						//registro el detalle de la cotizacion
++						AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
++						agriCotizacionDetalleProcesos.creardetalleCotizacion(cotizacionC,"Aprobacion");		
+ 						mensaje = "La cotización ha sido revocada. ";
+ 						estado="OK";
+ 						
+@@ -1647,13 +1662,6 @@
+ 		else
+ 			Utilitarios.envioMailPDFVariosAdjunto(correos, asunto, cuerpoMail,
+ 					null);
+-		// for (int i = 0; i < correosArr.length; i++) {
+-		//
+-		// cuerpoMail = GenerarContenido(html, parametersHeader);
+-		// Utilitarios.envioMailPDFVariosAdjunto(correosArr,asunto, cuerpoMail,
+-		// adjunto.getDataAdjunto());
+-		//
+-		// }
+ 	}
+ 
+ 	public AgriAuditoriaCotizacion RegistrarAuditoriaCotizacion(
+@@ -1751,72 +1759,4 @@
+ 		datos.setPrima(Double.parseDouble(Prima));
+ 		return datos;
+ 	}
+-	/*private JSONArray consultarCotizacion(String fInicio,
+-			String fFinal, String cotizacionId,
+-			String puntoVentaId, String agenteId, String identificacion,
+-			String usuarioId, String tieneImpresion,
+-			String nroTramite, String apellidos, String canalId, String estadoCotizacion,String tieneObservaciones, int Skip, int Take ) {
+-
+-		CotizacionAprobacionDAO cDAO = new CotizacionAprobacionDAO();
+-		List<AgriCotizacionAprobacion> cotizacionList = cDAO.consultarCotizacion(fInicio, fFinal, cotizacionId, puntoVentaId, agenteId, identificacion, usuarioId, tieneImpresion, nroTramite, apellidos,canalId, estadoCotizacion, tieneObservaciones,Skip,Take);
+-		JSONObject cotizacionJSONObject = new JSONObject();
+-		JSONArray cotizacionJSONArray = new JSONArray();
+-		Estado estadoAprobar = new Estado();
+-		for(AgriCotizacionAprobacion result : cotizacionList){
+-			SimpleDateFormat sm = new SimpleDateFormat("dd/MM/yyyy");
+-			cotizacionJSONObject.put("codigo", result.getId());
+-//			cotizacionJSONObject.put("objeto_cotizacion_id", result.getObjetoCotizacionId());
+-//			cotizacionJSONObject.put("canal_id", result.getCanalId());
+-			cotizacionJSONObject.put("canal_nombre", result.getCanalNombre());
+-//			cotizacionJSONObject.put("puntoVenta_id", result.getPuntoVentaId());
+-			cotizacionJSONObject.put("punto_venta", result.getPuntoVenta());
+-//			cotizacionJSONObject.put("tipo_cultivo_id", result.getTipoCultivoId());
+-			cotizacionJSONObject.put("tipo_cultivo_nombre",(result.getTipoCultivoNombre()==null?"":result.getTipoCultivoNombre()));
+-			cotizacionJSONObject.put("variedad", (result.getVariedad() == null ? "" : result.getVariedad()));
+-			cotizacionJSONObject.put("provincia_nombre", result.getProvinciaNombre());
+-			cotizacionJSONObject.put("canton_nombre", result.getCantonNombre());
+-			cotizacionJSONObject.put("hectareas_lote", result.getHectareasLote());
+-			cotizacionJSONObject.put("hectareas_asegurables", result.getHectareasAsegurables());
+-			cotizacionJSONObject.put("fecha_siembra", sm.format(result.getFechaSiembra()));
+-			cotizacionJSONObject.put("suma_asegurada_total", result.getSumaAseguradaTotal());
+-			cotizacionJSONObject.put("prima_neta_total", result.getPrimaNetaTotal());
+-			cotizacionJSONObject.put("monto_credito", result.getMontoCredito());
+-			cotizacionJSONObject.put("costo_produccion", result.getCostoProduccion());
+-			cotizacionJSONObject.put("seguro_bancos", result
+-					.getSeguroBancos());
+-			cotizacionJSONObject.put("seguro_campesino", result
+-					.getSeguroCampesino());
+-			cotizacionJSONObject.put("derecho_emision", result
+-					.getDerechoEmision());
+-			cotizacionJSONObject.put("iva", result.getIva());
+-			cotizacionJSONObject.put("totalFactura", result.getTotalFactura());
+-			///TODO:Cambios nuevos campos 
+-			cotizacionJSONObject.put("identificacion_cliente", result.getIdentificacionCliente());
+-			cotizacionJSONObject.put("nombres_cliente", result.getnombresCliente() + " " + 
+-			(result.getApellidosCliente()==null?"":result.getApellidosCliente()));
+-			cotizacionJSONObject.put("parroquia_nombre", (result.getParroquiaNombre()== null ? "":result.getParroquiaNombre()));
+-			cotizacionJSONObject.put("sitio", result.getDireccionSiembra());
+-			cotizacionJSONObject.put("numero_tramite", (result.getNumeroTramite()== null ?"": result.getNumeroTramite()));
+-			cotizacionJSONObject.put("identificacionAgente", (result.getIdentificacionAgente()== null ?"": result.getIdentificacionAgente()));
+-			cotizacionJSONObject.put("nombresAgente", (result.getNombresAgente()== null ?"": result.getNombresAgente())+
+-					(result.getApellidosAgente()== null ?"": result.getApellidosAgente()));
+-			cotizacionJSONObject.put("identificacionUsuario", (result.getIdentificacionUsuario()== null ?"": result.getIdentificacionUsuario()));
+-			cotizacionJSONObject.put("nombresUsuario", (result.getNombresUsuario()== null ?"": result.getNombresUsuario())+
+-					(result.getApellidosUsuario()== null ?"": result.getApellidosUsuario()));
+-			EstadoDAO estadoDAO = new EstadoDAO();
+-			
+-			if(result.getEstadoId() != null)
+-				estadoAprobar = estadoDAO.buscarPorId(result.getEstadoId().toString());
+-			cotizacionJSONObject.put("estado", (estadoAprobar.getNombre()== null ?"": estadoAprobar.getNombre()));
+-			
+-			if (result.getReglaId()== null || result.getReglaId().equals("")){
+-				cotizacionJSONObject.put("ObservacionRegla", "* No se ha encontrado una regla para la cotización.");
+-				cotizacionJSONObject.put("color", "red");
+-			}
+-			else {
+-				cotizacionJSONObject.put("ObservacionRegla", result.getObservacionRegla());
+-				cotizacionJSONObject.put("color", "black");
+-			}
+-			cotizacionJSONArray.add(cotizacionJSONObject);
+-		}		
+ 		
+@@ -1822,80 +1762,4 @@
+ 		
+-		
+-		return cotizacionJSONArray;
+-	}*/
+-	
+-	/*private JSONArray consultarPorEstado(String fInicio,
+-			String fFinal,  String cotizacionId,
+-			String puntoVentaId, String agenteId, String identificacion,
+-			String usuarioId, String tieneImpresion,
+-			String nroTramite, String apellidos, String canalId, Estado estadoCotizacion,int Skip, int Take) {
+-
+-		CotizacionAprobacionDAO cDAO = new CotizacionAprobacionDAO();
+-		List<AgriCotizacionAprobacion> cotizacionList = cDAO.consultarPorEstado(fInicio, fFinal, cotizacionId, puntoVentaId, agenteId, identificacion, usuarioId, tieneImpresion, nroTramite, apellidos,canalId,estadoCotizacion,Skip,Take);
+-		JSONObject cotizacionJSONObject = new JSONObject();
+-		JSONArray cotizacionJSONArray = new JSONArray();
+-		Estado estadoAprobar = new Estado();
+-		for(AgriCotizacionAprobacion result : cotizacionList){
+-			SimpleDateFormat sm = new SimpleDateFormat("dd/MM/yyyy");
+-			cotizacionJSONObject.put("codigo", result.getId());
+-//			cotizacionJSONObject.put("objeto_cotizacion_id", result.getObjetoCotizacionId());
+-//			cotizacionJSONObject.put("canal_id", result.getCanalId());
+-			cotizacionJSONObject.put("canal_nombre", result.getCanalNombre());
+-//			cotizacionJSONObject.put("puntoVenta_id", result.getPuntoVentaId());
+-			cotizacionJSONObject.put("punto_venta", result.getPuntoVenta());
+-//			cotizacionJSONObject.put("tipo_cultivo_id", result.getTipoCultivoId());
+-			cotizacionJSONObject.put("tipo_cultivo_nombre",(result.getTipoCultivoNombre()==null?"":result.getTipoCultivoNombre()));
+-			cotizacionJSONObject.put("variedad", (result.getVariedad() == null ? "" : result.getVariedad()));
+-			cotizacionJSONObject.put("provincia_nombre", result.getProvinciaNombre());
+-			cotizacionJSONObject.put("canton_nombre", result.getCantonNombre());
+-			cotizacionJSONObject.put("hectareas_lote", result.getHectareasLote());
+-			cotizacionJSONObject.put("hectareas_asegurables", result.getHectareasAsegurables());
+-			cotizacionJSONObject.put("fecha_siembra", sm.format(result.getFechaSiembra()));
+-			cotizacionJSONObject.put("suma_asegurada_total", result.getSumaAseguradaTotal());
+-			cotizacionJSONObject.put("prima_neta_total", result.getPrimaNetaTotal());
+-			cotizacionJSONObject.put("monto_credito", result.getMontoCredito());
+-			cotizacionJSONObject.put("costo_produccion", result.getCostoProduccion());
+-			cotizacionJSONObject.put("seguro_bancos", result
+-					.getSeguroBancos());
+-			cotizacionJSONObject.put("seguro_campesino", result
+-					.getSeguroCampesino());
+-			cotizacionJSONObject.put("derecho_emision", result
+-					.getDerechoEmision());
+-			cotizacionJSONObject.put("iva", result.getIva());
+-			cotizacionJSONObject.put("totalFactura", result.getTotalFactura());
+-			///TODO:Cambios nuevos campos 
+-			cotizacionJSONObject.put("identificacion_cliente", result.getIdentificacionCliente());
+-			cotizacionJSONObject.put("nombres_cliente", result.getnombresCliente() + " " + 
+-			(result.getApellidosCliente()==null?"":result.getApellidosCliente()));
+-			cotizacionJSONObject.put("parroquia_nombre", (result.getParroquiaNombre()== null ? "":result.getParroquiaNombre()));
+-			cotizacionJSONObject.put("sitio", result.getDireccionSiembra());
+-			cotizacionJSONObject.put("numero_tramite", (result.getNumeroTramite()== null ?"": result.getNumeroTramite()));
+-			cotizacionJSONObject.put("identificacionAgente", (result.getIdentificacionAgente()== null ?"": result.getIdentificacionAgente()));
+-			cotizacionJSONObject.put("nombresAgente", (result.getNombresAgente()== null ?"": result.getNombresAgente())+
+-					(result.getApellidosAgente()== null ?"": result.getApellidosAgente()));
+-			cotizacionJSONObject.put("identificacionUsuario", (result.getIdentificacionUsuario()== null ?"": result.getIdentificacionUsuario()));
+-			cotizacionJSONObject.put("nombresUsuario", (result.getNombresUsuario()== null ?"": result.getNombresUsuario())+
+-					(result.getApellidosUsuario()== null ?"": result.getApellidosUsuario()));
+-			EstadoDAO estadoDAO = new EstadoDAO();
+-			
+-			if(result.getEstadoId() != null)
+-				estadoAprobar = estadoDAO.buscarPorId(result.getEstadoId().toString());
+-			cotizacionJSONObject.put("estado", (estadoAprobar.getNombre()== null ?"": estadoAprobar.getNombre()));
+-			
+-			if (result.getReglaId()== null || result.getReglaId().equals("")){
+-				cotizacionJSONObject.put("ObservacionRegla", "* No se ha encontrado una regla para la cotización.");
+-				cotizacionJSONObject.put("color", "red");
+-			}
+-			else {
+-				cotizacionJSONObject.put("ObservacionRegla", result.getObservacionRegla());
+-				cotizacionJSONObject.put("color", "black");
+-			}
+-			cotizacionJSONArray.add(cotizacionJSONObject);	
+-		}
+-		
+-		return cotizacionJSONArray;
+-	}*/
+-	
+ 	private void EnviarMailCambioEstadoBlob(Cotizacion cotizacion,
+ 			AgriCotizacionAprobacion detalleCotizacion, String status) {
+ 		
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java
+@@ -345,7 +345,7 @@
+ 		//Numero de contenedor
+ 		
+ 		//Armado Final de parametros a mostrar en la poliza
+-		parametersHeader.put("NumeroPoliza", agriParametroXCanal.getContenedorEnsuranceId()+"-"+detalleCotizacion.getId().toString());
++		parametersHeader.put("NumeroPoliza", agriParametroXCanal.getContenedorNumero()+"-"+detalleCotizacion.getId().toString());
+ 		//buscamos el cliente
+ 		Cliente cliente = new Cliente();
+ 		ClienteDAO clienteDAO = new ClienteDAO();
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriEmisionPoliza.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriEmisionPoliza.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriEmisionPoliza.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriEmisionPoliza.java
+@@ -17,6 +17,7 @@
+ import com.qbe.cotizador.dao.entidad.CantonDAO;
+ import com.qbe.cotizador.dao.entidad.CiudadDAO;
+ import com.qbe.cotizador.dao.entidad.ClienteDAO;
++import com.qbe.cotizador.dao.entidad.DireccionDAO;
+ import com.qbe.cotizador.dao.entidad.EntidadDAO;
+ import com.qbe.cotizador.dao.entidad.ProvinciaDAO;
+ import com.qbe.cotizador.dao.entidad.PuntoVentaDAO;
+@@ -81,7 +82,9 @@
+ 		ClienteDAO clienteDAO = new ClienteDAO();
+ 		Cliente cliente = clienteDAO.buscarPorId(cotizacion.getClienteId().toString());
+ 
+-		if (cotizacion.getAsegurado().getDireccions().size()==0 ) {
++		int Contadordirecciones=cotizacion.getAsegurado().getDireccions().size() ;
++		
++		if (Contadordirecciones==0 ) {
+ 			AgriObjetoCotizacionDAO objCotDAO = new AgriObjetoCotizacionDAO();
+ 			AgriObjetoCotizacion objetoCot = new AgriObjetoCotizacion();
+ 			// if (!cotizacionId.equals(""))
+@@ -115,7 +118,7 @@
+ 			nuevaDireccion = direcTransaccion.crear(nuevaDireccion);
+ 			// }
+ 		}
+-		else if (cliente.getEntidad().getDireccions().size() == 0 ){
++		else{
+ 			AgriObjetoCotizacionDAO objCotDAO = new AgriObjetoCotizacionDAO();
+ 			AgriObjetoCotizacion objetoCot = new AgriObjetoCotizacion();
+ 			// if (!cotizacionId.equals(""))
+@@ -146,7 +149,7 @@
+ 			nuevaDireccion.setNumero("S/N");
+ 			nuevaDireccion.setEsCobro(true);
+ 			nuevaDireccion.setCalleSecundaria(objetoCot.getDireccionSiembra());
+-			nuevaDireccion = direcTransaccion.crear(nuevaDireccion);
++			nuevaDireccion = direcTransaccion.editar(nuevaDireccion);
+ 		}
+ 		
+ 		//Creo la entidad en ensurance y actualizo el id en la entidad del cotizador
+@@ -199,6 +202,12 @@
+ 										cotizacion.setEstado(estado);
+ 										///TODO:tualiza estado tabla cotizacion
+ 										cotizacion = cotizacionTransaction.editar(cotizacion);
++										
++										/**PROCESO DE CREACION DEL DETALLE DE LA COTIZACION ENDOSO***/
++										AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
++										agriCotizacionDetalleProcesos.creardetalleCotizacion(cotizacion, "Emision");
++										/**FIN DE REGISTRO DE ENDOSO**/
++										
+ 										cotizacionRes.setCotizacionId(new BigInteger(cotizacion.getId()));
+ 										cotizacionRes.setPolizaId(cotizacion.getNumeroFactura());
+ 										cotizacionRes.setFacturaNumero(cotizacion.getNumeroFactura());
+@@ -224,6 +233,16 @@
+ 									CotizacionRespuesta cotizacionRes = new CotizacionRespuesta();
+ 									CotizacionRespuestaTransaction cotiResTransaction = new CotizacionRespuestaTransaction();
+ 									EstadoDAO estadoDAO = new EstadoDAO();
++									
++									//si ensurance me devuelve el caracter ya esta emitida
++									//formato correcto
++									//11009488060525|001-003-003698285::2016-07-21 09:43:02.0
++									//formato de ya emitida
++									//1 |001-003-003698285::2016-07-21 09:43:02.0
++
++									if(factura[0].trim().equals("EXISTE"))
++										throw new Exception("EXISTE Poliza  emitida Anteriormente");
++									
+ 									Estado estado = estadoDAO.buscarPorNombre("Emitido", "Cotizacion");
+ 									if (!cotizacion.getEstado().getNombre().equals(estado.getId())){
+ 										cotizacion.setNumeroFactura(factura[1].trim());
+@@ -232,6 +251,12 @@
+ 										cotizacion.setNumeroFactura(factura[0].trim());
+ 										///TODO:tualiza estado tabla cotizacion
+ 										cotizacion = cotizacionTransaction.editar(cotizacion);
++										
++										/**PROCESO DE CREACION DEL DETALLE DE LA COTIZACION ENDOSO***/
++										AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
++										agriCotizacionDetalleProcesos.creardetalleCotizacion(cotizacion, "Emision");
++										/**FIN DE REGISTRO DE ENDOSO**/
++										
+ 										//TODO: Se graba en cotizacion respuesta 
+ 										cotizacionRes.setCotizacionId(new BigInteger(cotizacion.getId()));
+ 										cotizacionRes.setPolizaId(cotizacion.getNumeroFactura());
+@@ -250,9 +275,16 @@
+ 							}
+ 						}
+ 						else {
+-							nuevoResultado.setEmitidoCorrectamente(false);
+-							nuevoResultado.setMensaje("Error en el proceso de emisión de Ensurance. "+resultado);
+-							return nuevoResultado;
++							if (!resultado.contains("EXISTE")){
++								nuevoResultado.setEmitidoCorrectamente(false);
++								nuevoResultado.setMensaje("Cotizacion Emitida Anteriormente");
++								return nuevoResultado;
++							}
++							else{
++								nuevoResultado.setEmitidoCorrectamente(false);
++								nuevoResultado.setMensaje("Error en el proceso de emisión de Ensurance. "+resultado);
++								return nuevoResultado;
++							}
+ 						}
+ 					}
+ 					else{
+@@ -256,7 +288,24 @@
+ 						}
+ 					}
+ 					else{
++						
++							nuevoResultado.setEmitidoCorrectamente(false);
++							nuevoResultado.setMensaje("Error en el proceso de emisión de Ensurance");
++							return nuevoResultado;
++						
++					}
++						
++				}
++				catch(Exception ex){
++					
++					if(ex.getMessage().contains("EXISTE")){
++						nuevoResultado.setEmitidoCorrectamente(false);
++						nuevoResultado.setMensaje("Cotizacion Emitida Anteriormente");
++						ex.printStackTrace();
++						return nuevoResultado;
++					}else{
++						ex.printStackTrace();
+ 						nuevoResultado.setEmitidoCorrectamente(false);
+ 						nuevoResultado.setMensaje("Error en el proceso de emisión de Ensurance");
+ 						return nuevoResultado;
+ 					}
+@@ -259,14 +308,7 @@
+ 						nuevoResultado.setEmitidoCorrectamente(false);
+ 						nuevoResultado.setMensaje("Error en el proceso de emisión de Ensurance");
+ 						return nuevoResultado;
+ 					}
+-						
+-				}
+-				catch(Exception ex){
+-					ex.printStackTrace();
+-					nuevoResultado.setEmitidoCorrectamente(false);
+-					nuevoResultado.setMensaje("Error en el proceso de emisión de Ensurance");
+-					return nuevoResultado;
+ 				}
+ 			}
+ 			else
+@@ -301,5 +343,6 @@
+ 			if (entidad.getDireccions().get(0).getCiudad()!=null){
+ 				ciudad=entidad.getDireccions().get(0).getCiudad().getId();
+ 				provincia=entidad.getDireccions().get(0).getCiudad().getProvincia().getId();
++				direccion= entidad.getDireccions().get(0).getCiudad().getProvincia().getNombre()+"/"+ entidad.getDireccions().get(0).getCiudad().getNombre();
+ 			}
+ 		}
+@@ -304,7 +347,11 @@
+ 			}
+ 		}
+-		if(entidad.getDireccions().size()!=0)
+-			direccion=entidad.getDireccions().get(0).getCallePrincipal();
++		
++		if(direccion.trim().equals("")){
++			direccion="Pichincha/Quito";
++			provincia="17";
++			ciudad="1201001";
++		}
+ 
+ 		Date fecha=new Date();
+ 		com.qbe.ensurance.services.WSActualizarCrearEntidadesONBASE.WSActualizarCrearEntidadesONBASEProxy wsEntidadEnsurance=new WSActualizarCrearEntidadesONBASEProxy();
+@@ -389,6 +436,10 @@
+ 		entidadEnsurance.setPassword(vs.getValor());
+ 		variableControl=variableControl+" setPassword: "+vs.getValor();
+ 		
++		auditoria.setEstado("OK");
++		variableControl=variableControl+" ||||| OBJETO ";
++		auditoria.setObjeto(variableControl);
++		procesoAuditoria.crear(auditoria);
+ 		
+ 		}catch(Exception ex){
+ 			ex.printStackTrace();
+@@ -535,6 +586,9 @@
+ 				endosoBeneficiario=endosoBeneficiarioTransaction.crear(endosoBeneficiario);
+ 			}
+ 		
++			
++		//CREACION DE LA DIRECCION
++			
+ 		//Proceso de Auditoria	
+ 		
+ 			
+@@ -737,6 +791,7 @@
+ 		.append("</esEmpresa>")
+ 		.append("<DireccionDTO><direccion>")
+ 		.append("<paisId>6815744</paisId>")
++		
+ 		.append("<provinciaId>").append(cliente.getEntidad().getDireccions().get(0).getCiudad().getProvincia().getCodigoSbs()).append("</provinciaId>")
+ 		.append("<ciudadId>").append(cliente.getEntidad().getDireccions().get(0).getCiudad().getId()).append("</ciudadId>");
+ 		if(cliente.getEntidad().getDireccions().get(0).getParroquia()!=null){
+@@ -748,6 +803,7 @@
+ 			.append("<parroquiaId>").append("120153").append("</parroquiaId>");
+ 		}
+ 		xml.append("<direccion>")
++		
+ 		.append(cliente.getEntidad().getDireccions().get(0).getCallePrincipal())
+ 		.append(" ")
+ 		.append(cliente.getEntidad().getDireccions().get(0).getNumero())
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriProcesarCotizacionOffline.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriProcesarCotizacionOffline.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriProcesarCotizacionOffline.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriProcesarCotizacionOffline.java
+@@ -359,14 +359,8 @@
+ 			cotizacion.setNumeroTramite(cotizacion.getId());
+ 			cotizacion = cotizacionTransaction.editar(cotizacion);	
+ 	
+-			//Proceso de creacion del Beneficiario
+-			//Buscamos el beneficiario
+-			/*BeneficiarioDAO beneficiarioDAO = new BeneficiarioDAO();
+-			Beneficiario beneficiario= new Beneficiario();
+-					
+-			if(puntoVenta.getId().equals("4273")){//credife
+-				beneficiario=beneficiarioDAO.buscarPorId("254");
+-			}else{
+-				beneficiario=beneficiarioDAO.buscarPorId("209");
+-			}
++			/**PROCESO DE CREACION DEL DETALLE DE LA COTIZACION ENDOSO***/
++			AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
++			agriCotizacionDetalleProcesos.creardetalleCotizacion(cotizacion, "Registro Solicitud");
++			/**FIN DE REGISTRO DE ENDOSO**/
+ 			
+@@ -372,11 +366,4 @@
+ 			
+-			EndosoBeneficiario endosoBeneficiario = new EndosoBeneficiario();
+-			endosoBeneficiario.setCotizacion(cotizacion);
+-			endosoBeneficiario.setMonto(nuevaCotizacion.getMontoCredito());
+-			endosoBeneficiario.setBeneficiario(beneficiario);
+-			EndosoBeneficiarioTransaction endosoBeneficiarioTransaction = new EndosoBeneficiarioTransaction();
+-			endosoBeneficiarioTransaction.crear(endosoBeneficiario);
+-			*/
+ 			if(cotizacion.getEstado().getNombre().equals("Pendiente de Emitir")){
+ 				AgriAuditoriaCotizacion agriAuditoriaCotizacion = new AgriAuditoriaCotizacion();
+ 				AgriAuditoriaCotizacionTransaction agriAuditoriaCotizacionTransaction = new AgriAuditoriaCotizacionTransaction();

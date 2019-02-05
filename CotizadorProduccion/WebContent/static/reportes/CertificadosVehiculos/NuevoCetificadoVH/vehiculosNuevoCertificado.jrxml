@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 5.6.2.final using JasperReports Library version 5.6.1  -->
+<!-- 2014-11-21T12:32:56 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="vehiculosNuevoCertificado" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="30c29631-bf20-42ab-8d36-56644381999a">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="cotizador"/>
+	<property name="com.jaspersoft.studio.unit." value="cm"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="cm"/>
+	<parameter name="COTIZACION_ID" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[select 
+CD.id COTIZACION_DETALLE_ID,
+   MAR.nombre MARCA,
+MO.nombre MODELO,
+OV.motor MOTOR,
+OV.chasis CHASIS,
+CO.nombre COLOR,
+OV.placa PLACA,
+OV.suma_asegurada VALOR_CASCO,
+CD.valor_extras EXTRAS,
+CD.suma_asegurada_item TOTAL,
+CD.prima_neta_item PRIMA_NETA,
+OV.id VEHICULO_ID,
+OV.anio_fabricacion ANIO
+from
+    COTIZACION COT,
+    COTIZACION_DETALLE CD,
+    OBJETO_VEHICULO OV,
+    MARCA MAR,
+    MODELO MO,
+	COLOR CO	
+where
+    COT.id = CD.cotizacion_id
+        AND CD.objeto_id = OV.ID
+        AND OV.modelo_id = MO.ID
+        AND MO.marca_id = MAR.ID
+       AND OV.color_id=CO.id
+       AND COT.id= $P{COTIZACION_ID}]]>
+	</queryString>
+	<field name="COTIZACION_DETALLE_ID" class="java.lang.Long"/>
+	<field name="MARCA" class="java.lang.String"/>
+	<field name="MODELO" class="java.lang.String"/>
+	<field name="MOTOR" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CHASIS" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="COLOR" class="java.lang.String"/>
+	<field name="PLACA" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="VALOR_CASCO" class="java.lang.Double"/>
+	<field name="EXTRAS" class="java.lang.Double"/>
+	<field name="TOTAL" class="java.lang.Double"/>
+	<field name="PRIMA_NETA" class="java.lang.Double"/>
+	<field name="VEHICULO_ID" class="java.lang.Long"/>
+	<field name="ANIO" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="83" splitType="Stretch">
+			<subreport>
+				<reportElement stretchType="RelativeToTallestObject" x="398" y="42" width="145" height="30" isPrintWhenDetailOverflows="true" uuid="813986f2-d48a-4c98-87f4-aedcf78e3112">
+					<property name="local_mesure_unitwidth" value="cm"/>
+					<property name="com.jaspersoft.studio.unit.width" value="cm"/>
+				</reportElement>
+				<subreportParameter name="VEHICULO">
+					<subreportParameterExpression><![CDATA[$F{VEHICULO_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["CertificadosVehiculos/NuevoCetificadoVH/extrasVehiculo.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement x="20" y="2" width="100" height="20" uuid="f52888f2-4567-42f4-ba88-57cff106743c"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Marca:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="22" width="100" height="20" uuid="3fbb9ac8-d7fb-4e20-94c8-cb15ad0679c1"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Modelo:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="42" width="100" height="20" uuid="4b1b95d9-3a6f-4c1c-aee7-5ae9bd8c4568"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Placa:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="130" y="2" width="100" height="20" uuid="a8644eba-0a4c-4552-a6af-6efe22bf910e"/>
+				<textFieldExpression><![CDATA[$F{MARCA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="130" y="22" width="100" height="20" uuid="815cc5ba-544e-469a-ace0-1836587cf877"/>
+				<textFieldExpression><![CDATA[$F{MODELO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="130" y="42" width="100" height="20" uuid="a0db1161-b8a4-4367-8509-a81d8f256e6b"/>
+				<textFieldExpression><![CDATA[$F{PLACA}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="288" y="22" width="100" height="20" uuid="7cc794f0-af03-4093-8552-7d34a0e9bb5f"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor asegurado:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="398" y="22" width="100" height="20" uuid="f09efe07-5432-475a-b489-403b6380c785"/>
+				<textFieldExpression><![CDATA[$F{TOTAL}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="288" y="42" width="100" height="30" uuid="90a34aff-f286-47e3-a748-d38fa760f5c4"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Detalle de accesorios:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="398" y="2" width="100" height="20" uuid="96331a01-2fab-468c-b986-2e60c68612b1"/>
+				<textFieldExpression><![CDATA[$F{ANIO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="288" y="2" width="100" height="20" uuid="6576ed86-c343-4d9b-bd05-cfaaefd34aad"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Año:]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

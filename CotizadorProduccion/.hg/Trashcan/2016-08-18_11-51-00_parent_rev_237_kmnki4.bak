@@ -1,0 +1,21 @@
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriParametroXCanalController.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriParametroXCanalController.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriParametroXCanalController.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriParametroXCanalController.java
+@@ -105,7 +105,7 @@
+ 				parametroXCanal.setPlantillaNombre(plantillaNombre);
+ 			if(!FileName.equals("")){
+ 				
+-				String rutaPlantilla = this.getServletContext().getRealPath("")+ "/static/plantillas/Agricola/PlantillasCultivos/" + FileName;
++				String rutaPlantilla = this.getServletContext().getRealPath("")+File.separator +"static"+File.separator +"plantillas"+File.separator +"Agricola"+File.separator +"PlantillasCultivos"+File.separator + FileName;
+ 				System.out.println("Entra el html "+rutaPlantilla); 
+ 				File f1=new File(rutaPlantilla);
+ 				 FileInputStream f_in=new FileInputStream(f1);
+@@ -135,7 +135,7 @@
+ 							String rutaPlantilla = AgriSucreNotificacionErrores.class.getProtectionDomain().getCodeSource()
+ 									.getLocation().getPath();
+ 							rutaPlantilla=rutaPlantilla.replace("AgriSucreNotificacionErrores.class", "");
+-							String rutaRelativaReporte="../../../../../../../../static/plantillas/Agricola/PlantillasCultivos/";
++							String rutaRelativaReporte=".."+File.separator +".."+File.separator +".."+File.separator +".."+File.separator +".."+File.separator +".."+File.separator +".."+File.separator +".."+File.separator +"static"+File.separator +"plantillas"+File.separator +"Agricola"+File.separator +"PlantillasCultivos"+File.separator;
+ 							rutaPlantilla=rutaPlantilla+rutaRelativaReporte;
+ 							System.out.println("Ruta!:"+rutaPlantilla);
+ 							String fileName = item.getName();

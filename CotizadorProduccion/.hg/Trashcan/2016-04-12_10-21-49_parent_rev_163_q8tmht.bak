@@ -1,0 +1,45 @@
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java
+@@ -1238,6 +1238,10 @@
+ 							////////////////////////////////////////////////////////////////
+ 							else {
+ 								// / Actualiza estado tabla cotizacion
++								Estado nuevoAprodo = new Estado();
++								EstadoDAO estadoDAo = new EstadoDAO();
++								nuevoAprodo=estadoDAo.buscarPorNombre("Pendiente de Emitir","Cotizacion");
++								cotizacionC.setEstado(nuevoAprodo);
+ 								cotizacionC.setVigenciaDesde(VigenciaDesde);
+ 								cotizacionC = cotizacionTransaction.editar(cotizacionC);
+ 
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriEmisionPoliza.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriEmisionPoliza.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriEmisionPoliza.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriEmisionPoliza.java
+@@ -327,7 +327,7 @@
+ 	private static AgriResultadoEmision generarXML(Cotizacion cotizacion){
+ 		AgriResultadoEmision resultado=new AgriResultadoEmision();
+ 		AgriSucreAuditoria agriSucreAuditoria = new AgriSucreAuditoria();
+-		
++		try{
+ 		if(cotizacion.getAsegurado()==null)
+ 		{
+ 			resultado.setGeneradoXMLCorrectamente(false);
+@@ -679,5 +679,18 @@
+ 		resultado.setGeneradoXMLCorrectamente(true);
+ 		resultado.setXmlEmision(xml.toString());
+ 		return resultado;
++		}
++		catch(Exception e){	
++			resultado.setMensaje("Error: "+e.getMessage());
++			agriSucreAuditoria.setCanal("EMISION");
++			agriSucreAuditoria.setTramite(cotizacion.getNumeroTramite());
++			agriSucreAuditoria.setObjeto("ERROR:"+e.getMessage());
++			Date fechaActual = new Date();
++			agriSucreAuditoria.setFecha(fechaActual);
++			agriSucreAuditoria.setEstado("Correcto");
++			AgriSucreAuditoriaTransaction agriSucreAuditoriaTransaction= new AgriSucreAuditoriaTransaction();
++			agriSucreAuditoriaTransaction.crear(agriSucreAuditoria);
++			return resultado;
++		}
+ 	}
+ }

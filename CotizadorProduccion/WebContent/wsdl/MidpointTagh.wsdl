@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://tagh.QBE.servicios.cotizador.qbe.com" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://tagh.QBE.servicios.cotizador.qbe.com" xmlns:intf="http://tagh.QBE.servicios.cotizador.qbe.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="http://tagh.QBE.servicios.cotizador.qbe.com" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="consultarPolizas">
+    <complexType>
+     <sequence>
+      <element name="token" type="xsd:string"/>
+      <element name="identificacion" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="consultarPolizasResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="consultarPolizasReturn" type="impl:DatosTagh"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="DatosTagh">
+    <sequence>
+     <element name="apellidos" nillable="true" type="xsd:string"/>
+     <element name="canal" nillable="true" type="xsd:string"/>
+     <element name="cantonCodigo" nillable="true" type="xsd:string"/>
+     <element name="cantonNombre" nillable="true" type="xsd:string"/>
+     <element name="cultivoNombre" nillable="true" type="xsd:string"/>
+     <element name="diasVigencia" nillable="true" type="xsd:string"/>
+     <element name="direccion" nillable="true" type="xsd:string"/>
+     <element name="fechaSiembra" nillable="true" type="xsd:string"/>
+     <element name="hectareasAsegurables" nillable="true" type="xsd:string"/>
+     <element name="nombres" nillable="true" type="xsd:string"/>
+     <element name="observaciones" nillable="true" type="xsd:string"/>
+     <element name="parroquiaCodigo" nillable="true" type="xsd:string"/>
+     <element name="parroquiaNombre" nillable="true" type="xsd:string"/>
+     <element name="polizaId" nillable="true" type="xsd:string"/>
+     <element name="proviniciaCodigo" nillable="true" type="xsd:string"/>
+     <element name="proviniciaNombre" nillable="true" type="xsd:string"/>
+     <element name="sucursal" nillable="true" type="xsd:string"/>
+     <element name="tarifaId" nillable="true" type="xsd:string"/>
+     <element name="tramite" nillable="true" type="xsd:string"/>
+     <element name="vigenciaFin" nillable="true" type="xsd:string"/>
+     <element name="vigenciaInicio" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="consultarPolizasRequest">
+
+      <wsdl:part element="impl:consultarPolizas" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="consultarPolizasResponse">
+
+      <wsdl:part element="impl:consultarPolizasResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:portType name="MidpointTagh">
+
+      <wsdl:operation name="consultarPolizas">
+
+         <wsdl:input message="impl:consultarPolizasRequest" name="consultarPolizasRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:consultarPolizasResponse" name="consultarPolizasResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="MidpointTaghSoapBinding" type="impl:MidpointTagh">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="consultarPolizas">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="consultarPolizasRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="consultarPolizasResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="MidpointTaghService">
+
+      <wsdl:port binding="impl:MidpointTaghSoapBinding" name="MidpointTagh">
+
+         <wsdlsoap:address location="http://localhost:8080/CotizadorWeb/services/MidpointTagh"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

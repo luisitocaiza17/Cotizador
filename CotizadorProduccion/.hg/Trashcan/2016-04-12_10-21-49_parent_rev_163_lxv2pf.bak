@@ -1,0 +1,46 @@
+diff --git a/WebContent/dashboard/CotizacionEmisionAgricola.jsp b/WebContent/dashboard/CotizacionEmisionAgricola.jsp
+--- a/WebContent/dashboard/CotizacionEmisionAgricola.jsp
++++ b/WebContent/dashboard/CotizacionEmisionAgricola.jsp
+@@ -351,7 +351,7 @@
+ 			template: "<input type='checkbox' id='#=id#'  class='checkbox' onclick=\"MarcarCheck('#=id#')\"/>"  },
+ 			{ command: { text: "Ver Detalle", click: fnEventoClick }, title: " ", width: "100px"}],
+             height: 500,
+-            selectable: "multiple",
++            selectable: true,
+             resizable: true,
+             pageable: {
+                 info: true,
+diff --git a/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java b/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java
+--- a/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java
++++ b/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java
+@@ -417,7 +417,29 @@
+ 				String nombre = "";
+ 				String Apellidos = "";
+ 				entidad.setIdentificacion(NumeroCedula);
+-				TipoIdentificacion identificacion = tipoIDentificacion.buscarPorId("3");
++				
++				String identificacionCliente=NumeroCedula;
++				TipoIdentificacion identificacion = new TipoIdentificacion();
++				
++				if(identificacionCliente.length()>13)
++					 identificacion = tipoIDentificacion.buscarPorId("2");
++				else{
++					if(identificacionCliente.length()==13){
++						identificacion = tipoIDentificacion.buscarPorId("3");
++						String caracterNumerico=""+identificacionCliente.charAt(2);
++						if(caracterNumerico.equals("9")){
++							identificacion = tipoIDentificacion.buscarPorId("4");
++						}
++					}
++					else{
++						if(identificacionCliente.length()==10){
++							identificacion = tipoIDentificacion.buscarPorId("1");
++						}else{
++							throw new Exception("Identificacion Invalida");
++						}
++					}
++				}
++				
+ 				entidad.setTipoIdentificacion(identificacion);
+ 				entidad.setTipoEntidad(tipoEntidadDAO.buscarPorId("1"));
+ 				nombre = in0.getNombres().trim();

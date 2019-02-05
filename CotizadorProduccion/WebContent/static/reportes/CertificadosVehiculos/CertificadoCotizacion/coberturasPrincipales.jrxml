@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="todasCoberturas" pageWidth="556" pageHeight="842" columnWidth="556" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="8a8d40e5-24ec-4371-970c-ec9609dc65c7">
+	<property name="com.jaspersoft.studio.unit." value="cm"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="cm"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="cotizador"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="COTIZACION" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+    *
+FROM
+    (
+SELECT distinct -- seleccionadas que se encuentren en el detalle producto
+        convert( DP.texto using utf8) texto_cobertura,
+            C.nemotecnico,
+            C.orden,
+			C.id
+    FROM
+        DETALLE_PRODUCTO DP, CONFIGURACION_PRODUCTO CP, COBERTURAS_CONJUNTO CC, CONJUNTO_COBERTURAS COC, COBERTURA C, COTIZACION_COBERTURA COTCOB, COTIZACION_DETALLE CD, COTIZACION COT, PRODUCTO_X_PUNTO_VENTA PPPV, PRODUCTO P, GRUPO_POR_PRODUCTO GPP
+    WHERE
+        COT.id = CD.cotizacion_id
+            and COTCOB.cobertura_id = C.id
+            and COT.producto_id = P.id
+            AND COT.punto_venta_id = PPPV.punto_venta_id
+            and CD.id = COTCOB.cotizacion_detalle_id
+            and DP.config_producto_id = CP.id
+            AND CP.producto_id = COT.producto_id
+            AND DP.plan_id = PPPV.plan_id
+            AND CC.id = DP.coberturas_conj_id
+            AND COC.id = CC.conjunto_cober_id
+            AND C.id = CC.cobertura_id
+            AND GPP.producto_id = P.id
+            AND COT.producto_x_punto_venta_id = PPPV.id
+            and C.tipo_cobertura_id = 1
+            and COT.id =  $P{COTIZACION} union
+SELECT distinct  -- seleccionadas que no se encuentren en el detalle producto
+        convert( CO.texto using utf8) texto_cobertura,
+            CO.nemotecnico,
+            CO.orden,
+			CO.id
+    FROM
+        COBERTURA CO, COTIZACION_COBERTURA CC, COTIZACION_DETALLE CD
+    WHERE
+        CO.id = CC.cobertura_id
+            AND CC.cotizacion_detalle_id = CD.id
+            AND CO.tipo_cobertura_id = 1
+            and CD.cotizacion_id =  $P{COTIZACION}
+            AND CO.id NOT IN (SELECT
+                C.id
+            FROM
+                DETALLE_PRODUCTO DP, CONFIGURACION_PRODUCTO CP, COBERTURAS_CONJUNTO CC, CONJUNTO_COBERTURAS COC, COBERTURA C, COTIZACION_COBERTURA COTCOB, COTIZACION_DETALLE CD, COTIZACION COT, PRODUCTO_X_PUNTO_VENTA PPPV, PRODUCTO P, GRUPO_POR_PRODUCTO GPP
+            WHERE
+                COT.id = CD.cotizacion_id
+                    and COTCOB.cobertura_id = C.id
+                    and COT.producto_id = P.id
+                    AND COT.punto_venta_id = PPPV.punto_venta_id
+                    and CD.id = COTCOB.cotizacion_detalle_id
+                    and DP.config_producto_id = CP.id
+                    AND CP.producto_id = COT.producto_id
+                    AND DP.plan_id = PPPV.plan_id
+                    AND CC.id = DP.coberturas_conj_id
+                    AND COC.id = CC.conjunto_cober_id
+                    AND C.id = CC.cobertura_id
+                    AND GPP.producto_id = P.id
+                    AND COT.producto_x_punto_venta_id = PPPV.id
+                    and COT.id =  $P{COTIZACION}
+                    and C.tipo_cobertura_id = 1)
+                    ) AS A
+ORDER BY A.orden;]]>
+	</queryString>
+	<field name="texto_cobertura" class="java.lang.String"/>
+	<field name="nemotecnico" class="java.lang.String"/>
+	<field name="orden" class="java.lang.Integer"/>
+	<field name="id" class="java.lang.Long"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement mode="Opaque" x="0" y="0" width="556" height="20" forecolor="#FFFFFF" backcolor="#00205B" uuid="884d8be8-1f4b-405e-876d-a4dd8f0c8242"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["COBERTURAS"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement x="0" y="0" width="556" height="22" uuid="233ee8aa-2be7-4f48-a6b8-b36b8d66b1f9">
+					<property name="local_mesure_unitheight" value="cm"/>
+					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{texto_cobertura}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band/>
+		<band>
+			<printWhenExpression><![CDATA[$F{id}==30075||$F{id}==40010; // SOLO PARA TODO RIESGO]]></printWhenExpression>
+		</band>
+		<band>
+			<printWhenExpression><![CDATA[$F{id}.toString()=="4540881508289"||$F{id}.toString()=="40037"]]></printWhenExpression>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

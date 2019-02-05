@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CondicionesParticulares12" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="a5f5e8f3-39b9-4624-832e-97d3db890991">
+	<parameter name="cot_Id" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT DISTINCT COT.ID AS COTIZACIONID, ENT.ID, COT.AGENTE_ID, ENT.NOMBRE_COMPLETO,
+VIGP.NOMBRE, COT.TASA_PRODUCTO_VALOR, COT.SUMA_ASEGURADA_TOTAL, VIGP.ID AS VIGENCIA
+FROM ENTIDAD ENT INNER JOIN CLIENTE CLI
+ON ENT.ID = CLI.entidad_id INNER JOIN COTIZACION COT
+ON CLI.ID = COT.CLIENTE_ID INNER JOIN AGENTE AGE
+ON COT.AGENTE_ID = AGE.ID INNER JOIN VIGENCIA_POLIZA VIGP
+ON COT.VIGENCIA_POLIZA_ID = VIGP.ID
+AND COT.ID = $P{cot_Id}]]>
+	</queryString>
+	<field name="COTIZACIONID" class="java.lang.Long"/>
+	<field name="ID" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="AGENTE_ID" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="NOMBRE_COMPLETO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="NOMBRE" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TASA_PRODUCTO_VALOR" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="SUMA_ASEGURADA_TOTAL" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="VIGENCIA" class="java.lang.Long"/>
+	<detail>
+		<band height="751" splitType="Stretch">
+			<staticText>
+				<reportElement x="30" y="231" width="460" height="18" uuid="409b9d58-1818-43ab-bf8a-25297cab1932"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- La Compañía en caso de ocurrir un siniestro deberá:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="190" width="448" height="20" uuid="b4bf63e2-a2f2-46e3-a172-7f3a7408ba5e"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ARTÍCULO N° 13: OBLIGACIONES DE LA COMPAÑÍA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="540" width="460" height="19" uuid="2703de27-bbf0-43c8-b069-325bbbaf9dcf"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[a) Cuando el asegurado no presente su reclamo en los plazos señalados.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="500" width="448" height="20" uuid="1221c4f7-2303-4e3f-8c3e-5a7095e2526d"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ARTÍCULO N° 14: PERDIDA DE DERECHO A LA INDEMNIZACIÓN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="255" width="460" height="39" uuid="af557250-432f-4ace-b01f-e28b15c43563"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- Recibir y confirmar la recepción de los avisos dentro de los plazos y forma advertidos en la presente póliza.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="299" width="460" height="30" uuid="11a5b253-6f7f-4e7d-ad48-ed012b4301af"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- Indicar al asegurado el proceso a seguir y los documentos que debe entregar para el reclamo.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="335" width="460" height="19" uuid="3fe26693-a330-4a3e-9dca-28ff287d6ab9"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- Realizar las inspecciones que se requiera siempre en presencia del asegurado.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="360" width="460" height="49" uuid="c56c9771-f702-4f76-8834-d2d6d2247e01"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- Si la compañía recibiere un aviso sobre circunstancias que agraven fundamentalmente el riesgo, dictará las medidas de prevención que juzgue conveniente para levantar el informe respectivo.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="415" width="460" height="35" uuid="cb64a2ff-b802-499f-b74c-5b6b7dbf4490"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- Facilitar al Asegurado o Solicitante la información que requiera en lenguaje sencillo, nada de tecnicismos.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="450" width="460" height="32" uuid="c88e4520-374c-47d1-a0fb-13356a7655b7"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- Garantizar al Asegurado y Ente regulador (en caso de seguro con subsidio) un servicio eficaz y oportuno.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="566" width="460" height="34" uuid="6cc85141-a735-4122-8dda-76d2f1b94677"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[b) Cuando el ganado se siniestre fuera de los límites del predio, por motivos ajenos a transporte interno debidamente autorizado por la compañía aseguradora.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="720" width="460" height="19" uuid="9910da7d-93cc-43ba-9879-6330a8f0ea7d"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[f) Cuando el ganado muere sin la identificación registrada en la póliza.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="610" width="460" height="30" uuid="31a22a98-ca8a-4082-84a9-4f32fa8d5589"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[c) Cuando el asegurado no ofrezca las facilidades requeridas por la compañía para el cumplimiento de sus labores. ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="650" width="460" height="30" uuid="e8e39e10-a055-44d8-950f-b51c846bdc73"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[d) Cuando la muerte del ganado sea causada voluntariamente por el asegurado o con su complicidad.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="690" width="460" height="17" uuid="595c9d01-9321-4913-9069-ea1f5d6758a5"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[e) Se excluye muerte por envenenamiento causada por acción intencional del propietario o terceras personas. 
+f)	Cuando el ganado muere sin la identificación registrada en la póliza]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="96" width="458" height="34" uuid="6b314381-a8fa-47f5-b2fe-6c2dbcf610b5"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- Adjuntar copia de registros de manejo sanitarios, copia de la certificación de vacunas anuales requeridas.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="31" width="458" height="59" uuid="f9ec8331-42d0-4ad2-a454-3a42cf7b9f7f"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- En caso de no existir un diagnostico que defina la causa de la muerte, siempre y cuando sea muerte súbita o a causa de enfermedad, el veterinario deberá realizar una necropsia en busca de evidencias que sustente un diagnóstico, y si fuese necesario deberá tomar muestra de sangre o tejidos para realizar un examen de laboratorio.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="133" width="459" height="47" uuid="da37919f-6a57-458f-a5a9-06c853ac60db"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- Si el animal siniestrado no es apto para la venta, el asegurado deberá disponer de los restos del animal conforme lo establece AgroCalidad.
+]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<summary>
+		<band height="56">
+			<subreport>
+				<reportElement x="0" y="0" width="550" height="50" uuid="fb4b4146-7d28-43ac-8d72-e44144f2bdb6"/>
+				<subreportParameter name="cot_Id">
+					<subreportParameterExpression><![CDATA[$P{cot_Id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["Ganadero/CondicionesParticulares13.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

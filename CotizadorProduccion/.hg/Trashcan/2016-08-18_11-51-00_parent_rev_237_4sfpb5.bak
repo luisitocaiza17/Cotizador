@@ -1,0 +1,601 @@
+diff --git a/WebContent/dashboard/AgriParametroPorCanal.jsp b/WebContent/dashboard/AgriParametroPorCanal.jsp
+--- a/WebContent/dashboard/AgriParametroPorCanal.jsp
++++ b/WebContent/dashboard/AgriParametroPorCanal.jsp
+@@ -24,6 +24,12 @@
+ <script src="../static/js/Kendo/kendo.web.min.js"></script>
+ 
+ <style type="text/css">
++.modal .modal-dialog {
++	width: 80%;
++}
++.modal-body {
++    height:80%; 
++}
+ .tab_strip {
+ 	height: 200px;
+ }
+@@ -184,6 +190,8 @@
+ 							var allLiElementsToBeRemoved = up.wrapper.find('.k-file');
+ 							up._removeFileEntry(allLiElementsToBeRemoved );	
+ 							$("#soloActulizar").hide();
++							$("#cajaTexto").hide();
++							$("#mensajeTexto").hide();
+ 							limpiar();
+ 						});
+ 
+@@ -320,7 +328,8 @@
+ 
+ 	function actualizar(parametroId) {
+ 		$("#soloActulizar").show();
+-		
++		$("#cajaTexto").show();
++		$("#mensajeTexto").show();
+ 		var up = $('#files').data().kendoUpload;
+ 		var allLiElementsToBeRemoved = up.wrapper.find('.k-file');
+ 		up._removeFileEntry(allLiElementsToBeRemoved );	
+@@ -407,6 +416,8 @@
+ 	
+ 	function actualizarPorCanalCultivo(parametroCanalId,parametroCultivoId) {
+ 		$("#soloActulizar").show();
++		$("#cajaTexto").show();
++		$("#mensajeTexto").show();
+ 		limpiar();
+ 		if ((parametroCanalId === '' || typeof parametroCanalId === 'undefined') || (parametroCultivoId === '' || typeof parametroCultivoId === 'undefined'))
+ 			return false;
+@@ -503,7 +514,7 @@
+ 								<input type="hidden" class="form-control" id="id">
+ 								<table style="width: 100%">
+ 									<tr>
+-										<td>
++										<td width="45%">
+ 											<label style="width: 100%">Punto de Venta:</label>
+ 											<select id="canal" name="canal" data-placeholder="Seleccione una opción..." validationMessage="Campo requerido!!!" required="required" required>
+ 										</select></td>
+@@ -507,14 +518,10 @@
+ 											<label style="width: 100%">Punto de Venta:</label>
+ 											<select id="canal" name="canal" data-placeholder="Seleccione una opción..." validationMessage="Campo requerido!!!" required="required" required>
+ 										</select></td>
+-									</tr>
+-									<tr>
+-										<td><br /></td>
+-									</tr>
+-									<tr>
+-										<td>
++										<td width="10%"></td>
++										<td width="45%">
+ 											<label style="width: 100%">Tipo Cultivo:</label>
+ 											<select id="tipoCultivo" name="tipoCultivo" data-placeholder="Seleccione una opción..." validationMessage="Campo requerido!!!" required="required" required>
+ 											</select>
+ 										</td>
+ 									</tr>
+@@ -516,6 +523,7 @@
+ 											<label style="width: 100%">Tipo Cultivo:</label>
+ 											<select id="tipoCultivo" name="tipoCultivo" data-placeholder="Seleccione una opción..." validationMessage="Campo requerido!!!" required="required" required>
+ 											</select>
+ 										</td>
+ 									</tr>
++									
+ 									<tr>
+@@ -521,8 +529,5 @@
+ 									<tr>
+-										<td><br /></td>
+-									</tr>
+-									<tr>
+-										<td>
++										<td width="45%">
+ 											<label style="width: 100%">Nombre Plantilla:</label>
+ 											<input type="text" id="plantillaNombre" name="plantillaNombre" class="form-control" >
+ 										</td>
+@@ -526,7 +531,12 @@
+ 											<label style="width: 100%">Nombre Plantilla:</label>
+ 											<input type="text" id="plantillaNombre" name="plantillaNombre" class="form-control" >
+ 										</td>
++										<td width="10%"></td>
++										<td width="45%">
++											<label style="width: 100%">Plantilla ENSURANCE ID:</label>
++											<input type="number" id="plantillaId" name="plantillaId" class="form-control" >
++										</td>
+ 									</tr>
+ 									<tr>
+ 										<td><br /></td>
+ 									</tr>
+@@ -529,5 +539,6 @@
+ 									</tr>
+ 									<tr>
+ 										<td><br /></td>
+ 									</tr>
++									
+ 									<tr>
+@@ -533,5 +544,5 @@
+ 									<tr>
+-										<td>
+-											<label style="width: 100%">Plantilla ENSURANCE ID:</label>
+-											<input type="number" id="plantillaId" name="plantillaId" class="form-control" >
++										<td width="45%">
++											<label style="width: 100%">Numero Contenedor:</label>
++											<input type="text" id="sucursalEmisionId" name="sucursalEmisionId" class="form-control" >
+ 										</td>
+@@ -537,8 +548,7 @@
+ 										</td>
+-									</tr>
+-									<tr>
+-										<td>
++										<td width="10%"> </td>
++										<td width="45%">
+ 											<label style="width: 100%">Contenedor ENSURANCE ID:</label>
+ 											<input type="number" id="contenedorId" name="contenedorId" class="form-control" >
+ 										</td>
+ 									</tr>
+@@ -541,5 +551,6 @@
+ 											<label style="width: 100%">Contenedor ENSURANCE ID:</label>
+ 											<input type="number" id="contenedorId" name="contenedorId" class="form-control" >
+ 										</td>
+ 									</tr>
++									
+ 									<tr>
+@@ -545,11 +556,5 @@
+ 									<tr>
+-										<td>
+-											<label style="width: 100%">Numero Contenedor:</label>
+-											<input type="text" id="sucursalEmisionId" name="sucursalEmisionId" class="form-control" >
+-										</td>
+-									</tr>
+-									<tr id="soloActulizar">
+-										<td>
++										<td id="soloActulizar">
+ 											<label style="width: 100%">PLANTILLA ACTUAL:</label>
+ 											<button type="button" class="btn btn-default" id="plantillaActual" onclick="descargarPlantilla();" name="plantillaActual" >descargar</button>
+ 										</td>
+@@ -553,9 +558,8 @@
+ 											<label style="width: 100%">PLANTILLA ACTUAL:</label>
+ 											<button type="button" class="btn btn-default" id="plantillaActual" onclick="descargarPlantilla();" name="plantillaActual" >descargar</button>
+ 										</td>
+-									</tr>
+-									<tr>
+-										<td>
++										<td ></td>
++										<td >
+ 											<div class="row" style="display: inline;" id="content-Upload">
+ 											<div class="col-lg-12">
+ 												<div class="table-responsive">
+@@ -579,7 +583,8 @@
+ 										</div>
+ 										</td>
+ 									</tr>
+-									<tr>
+-										<td colspan="4">Texto:
++									
++									<tr id="mensajeTexto">
++										<td colspan="4"><h3>Texto:</h3>
+ 										</td>
+ 									</tr>
+@@ -584,10 +589,9 @@
+ 										</td>
+ 									</tr>
+-									<tr>
+-										<td colspan="4"><textarea id="texto" rows="10" cols="30"
+-									style="height: 100%; width: 100%; max-width: 400px;"
+-									class="form-control required"></textarea>
+-										</td>
++									<tr id="cajaTexto">
++										<td colspan="4"><textarea id="texto" rows="30" cols="30"
++												style="height: 500px; width: 100%; max-width: 600px;"
++												class="form-control"></textarea></td>
+ 									</tr>
+ 									
+ 									<tr>
+diff --git a/WebContent/dashboard/AgriUsuariosOffline.jsp b/WebContent/dashboard/AgriUsuariosOffline.jsp
+--- a/WebContent/dashboard/AgriUsuariosOffline.jsp
++++ b/WebContent/dashboard/AgriUsuariosOffline.jsp
+@@ -169,6 +169,10 @@
+ 	            type: "json",
+ 	            serverPaging: true,
+ 	            serverSorting: true,
++	            serverFiltering: true,
++	            filterable: {
++                    mode: "row"
++                },
+ 	            pageSize: 20,
+ 	            transport:{
+ 	            	read: {
+@@ -357,6 +361,7 @@
+ 		<!-- Button trigger modal -->
+ 		<button class="btn btn-primary" data-toggle="modal" data-target="#add" id="addButton">
+ 			<span class="glyphicon glyphicon-plus"></span> &nbsp; Nuevo
++			
+ 		</button>
+ 
+ 		<!-- Modal -->
+diff --git a/build/classes/com/qbe/cotizador/model/Modelo.class b/build/classes/com/qbe/cotizador/model/Modelo.class
+index 3596722a05c78460ae95ba0b219ac16905714cea..22f3c731ea6dc7f3367b415d6b9aa62480596dce
+GIT binary patch
+literal 7501
+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
+XkHPX!y!>;pe4m#e1k1nh@~{5~*5=$B
+
+diff --git a/build/classes/com/qbe/cotizador/servlets/producto/pymes/ObjetoPymesController.class b/build/classes/com/qbe/cotizador/servlets/producto/pymes/ObjetoPymesController.class
+index cccbd34c31309b142ccfd5c109670d7c19576e9f..a2ec8aa141b8ed5e7648848244afa33c40eb7a0c
+GIT binary patch
+literal 13733
+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
+J4vLD!{|lm3?Qj49
+
+diff --git a/build/classes/com/qbe/cotizador/util/MotorTarifador.class b/build/classes/com/qbe/cotizador/util/MotorTarifador.class
+index 1de5384e9e5ae6c902912f940c53d2068c63345e..8f13d0811b6868d536c0f20edf443c55cfbbf6c0
+GIT binary patch
+literal 11648
+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
+Z(&b9=eD(D%#R_vR^A$qS_}odH@qhhvWF!Cp
+
+diff --git a/src/com/qbe/cotizador/model/AgriParametroXCanal.java b/src/com/qbe/cotizador/model/AgriParametroXCanal.java
+--- a/src/com/qbe/cotizador/model/AgriParametroXCanal.java
++++ b/src/com/qbe/cotizador/model/AgriParametroXCanal.java
+@@ -17,6 +17,7 @@
+ @NamedQueries({
+ 	@NamedQuery(name="AgriParametroXCanal.findAll", query="SELECT a FROM AgriParametroXCanal a ORDER BY a.puntoVentaId, a.tipoCultivoId"),
+ 	@NamedQuery(name="AgriParametroXCanal.buscarPorId", query="SELECT a FROM AgriParametroXCanal a where a.parametroCanalId=:parametroCanalId"),
++	@NamedQuery(name="AgriParametroXCanal.buscarPorPuntoVenta", query="SELECT a FROM AgriParametroXCanal a where a.puntoVentaId=:puntoVentaId"),
+ 	@NamedQuery(name="AgriParametroXCanal.obtenerPorCanalTipoCultivo", query="SELECT a FROM AgriParametroXCanal a where a.puntoVentaId=:canalId and a.tipoCultivoId=:tipoCultivoId")
+ })
+ public class AgriParametroXCanal implements Serializable {
+diff --git a/src/com/qbe/cotizador/servicios/QBE/archivoPlano/GeneradorReporte.java b/src/com/qbe/cotizador/servicios/QBE/archivoPlano/GeneradorReporte.java
+--- a/src/com/qbe/cotizador/servicios/QBE/archivoPlano/GeneradorReporte.java
++++ b/src/com/qbe/cotizador/servicios/QBE/archivoPlano/GeneradorReporte.java
+@@ -319,9 +319,12 @@
+ 			if(cotizacion.getPuntoVenta().getNombre().equals("AGRIPAC")){
+ 				parametersHeader.put("Endoso", "AGRIPAC S.A");
+ 			}else{
+-				parametersHeader.put("Endoso", "BANCO PICHINCHA C.A");
+-			}
+-			
++				if(cotizacion.getPuntoVenta().getNombre().equals("ECUAQUIMICA")){
++					parametersHeader.put("Endoso", "ECUAQUIMICA ECUATORIANA DE PRODUCTOS QUIMICOS C.A.");
++				}else{
++					parametersHeader.put("Endoso", "BANCO PICHINCHA C.A");
++				}								
++			}			
+ 		}
+ 		parametersHeader.put("FechaEmision", Fecha.format(fechaActual.getTime()));
+ 		
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java
+@@ -1376,6 +1376,5 @@
+ 	}
+ 
+ 	public JSONArray procesarEmision(List<Cotizacion> listado,Usuario usuario) {
+-		//List<JSONArray> list = new ArrayList<JSONArray>();
+ 		JSONObject detalleProceso = new JSONObject();
+ 		JSONArray detalleProcesoList = new JSONArray();
+@@ -1380,6 +1379,4 @@
+ 		JSONObject detalleProceso = new JSONObject();
+ 		JSONArray detalleProcesoList = new JSONArray();
+-		//JSONArray detalleProcesoFile = new JSONArray();
+-		String mensaje = "";
+-		String estado="";
++		String mensaje = "";	String estado="";
+ 		String cadenaArchivo = "";
+@@ -1385,3 +1382,2 @@
+ 		String cadenaArchivo = "";
+-		//Ruta para grabar archivo 
+ 		Date fecha = new Date();
+@@ -1387,6 +1383,4 @@
+ 		Date fecha = new Date();
+-		//String rutaFile = this.getServletContext().getRealPath("")+ "/static/CotizacionesAprobarMasivo/";
+-		//File folder = new File(rutaFile);
+ 		SimpleDateFormat sm = new SimpleDateFormat("dd/MM/yyyy");
+ 		DateFormat fHora = new SimpleDateFormat("HH:mm:ss");
+ 		String nombreArchivo="ArchivoIDsFacturas_"+sm.format(fecha).replace("/", "")+
+@@ -1394,7 +1388,6 @@
+ 		
+ 		try {
+ 			for (Cotizacion nuevaCotizacion : listado) {
+-				//CotizacionTransaction cotizacionTransaction = new CotizacionTransaction();
+ 				Cotizacion cotizacionC = new Cotizacion();
+ 				CotizacionDAO cotizacionCDAO = new CotizacionDAO();
+ 				mensaje = "";
+@@ -1406,8 +1399,6 @@
+ 						Estado estadoPendiente = estadoDAO.buscarPorNombre("Emitido", "Cotizacion");
+ 						CotizacionAprobacionDAO cDAO = new CotizacionAprobacionDAO();
+ 						AgriCotizacionAprobacion cotAct = cDAO.buscarPorId(cotizacionC.getId());
+-						//AgriObjetoCotizacionDAO ojtCotiDAO = new AgriObjetoCotizacionDAO();
+-						//AgriObjetoCotizacion objCoti = ojtCotiDAO.buscarPorId(cotAct.getObjetoCotizacionId());
+ 						if (cotAct.getEstadoId().equals(estadoPendiente.getId()))
+ 							mensaje = mensaje + " la cotización ya fue emitida anteriormente,";
+ 						estadoPendiente = estadoDAO.buscarPorNombre("Pendiente de Emitir", "Cotizacion");
+@@ -1427,11 +1418,9 @@
+ 						if ((enty.getTelefono()==null || enty.getTelefono().equals("")))
+ 							if (enty.getCelular()==null || enty.getCelular().equals(""))
+ 								mensaje = mensaje + " la cotizacion no tiene  teléfono o celular,";					
+-						//AgriCotizacionAprobacion cotAct = cDAO.buscarPorId(cotizacionC.getId());
+-						
+ 						if (mensaje.equals("")) {
+ 							// TODO:LLamar al metodo para emision
+ 							AgriResultadoEmision resultado = AgriEmisionPoliza.emitirPoliza(cotizacionC.getId());
+ 
+ 							if (resultado.isEmitidoCorrectamente()) {
+ 								cotizacionC = cotizacionCDAO.buscarPorId(cotizacionC.getId());
+@@ -1432,16 +1421,8 @@
+ 						if (mensaje.equals("")) {
+ 							// TODO:LLamar al metodo para emision
+ 							AgriResultadoEmision resultado = AgriEmisionPoliza.emitirPoliza(cotizacionC.getId());
+ 
+ 							if (resultado.isEmitidoCorrectamente()) {
+ 								cotizacionC = cotizacionCDAO.buscarPorId(cotizacionC.getId());
+-								// Cambiar estados
+-								// EstadoDAO estadoDAO = new EstadoDAO();
+-								// cotizacionC.setEstado(estadoDAO.buscarPorNombre("Emitido","Cotizacion"));
+-								// cotizacionC.setNumeroFactura(resultado);
+-								// Actualiza estado tabla cotizacion
+-								// cotizacionC =
+-								// cotizacionTransaction.editar(cotizacionC);
+-								// /TODO Generar cadena para el archivo
+ 								String row = cotizacionC.getNumeroFactura()+ " , " + cotizacionC.getTotalFactura()+ "\r\n";
+ 								cadenaArchivo = cadenaArchivo + row;
+@@ -1446,6 +1427,5 @@
+ 								String row = cotizacionC.getNumeroFactura()+ " , " + cotizacionC.getTotalFactura()+ "\r\n";
+ 								cadenaArchivo = cadenaArchivo + row;
+-								
+ 								//registro el detalle de la cotizacion
+ 								AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
+ 								agriCotizacionDetalleProcesos.creardetalleCotizacion(cotizacionC,"Aprobacion");
+@@ -1449,8 +1429,6 @@
+ 								//registro el detalle de la cotizacion
+ 								AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
+ 								agriCotizacionDetalleProcesos.creardetalleCotizacion(cotizacionC,"Aprobacion");
+-								
+-								
+ 								mensaje = "La cotización ha sido emitida correctamente. ";
+ 								estado="OK";
+ 							} else {

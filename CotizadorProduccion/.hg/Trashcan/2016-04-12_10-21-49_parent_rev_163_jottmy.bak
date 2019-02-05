@@ -1,0 +1,12 @@
+diff --git a/src/com/qbe/cotizador/servicios/QBE/archivoPlano/GeneradorReporte.java b/src/com/qbe/cotizador/servicios/QBE/archivoPlano/GeneradorReporte.java
+--- a/src/com/qbe/cotizador/servicios/QBE/archivoPlano/GeneradorReporte.java
++++ b/src/com/qbe/cotizador/servicios/QBE/archivoPlano/GeneradorReporte.java
+@@ -275,7 +275,7 @@
+ 		ClienteDAO clienteDAO = new ClienteDAO();
+ 		cliente= clienteDAO.buscarPorId(""+cotizacion.getClienteId());
+ 		parametersHeader.put("AseguradoNombre", cliente.getEntidad().getNombreCompleto());
+-		parametersHeader.put("VigenciaDesde","DESDE"+ Fecha.format(detalleCotizacion.getFechaSiembra())+" HASTA "+Fecha.format(fechaHasta));
++		parametersHeader.put("VigenciaDesde","DESDE "+ Fecha.format(detalleCotizacion.getFechaSiembra())+" HASTA "+Fecha.format(fechaHasta));
+ 		parametersHeader.put("Anexo", detalleCotizacion.getId().toString());
+ 		//buscamos el asegurado
+ 		parametersHeader.put("Cliente", cotizacion.getAsegurado().getNombreCompleto());

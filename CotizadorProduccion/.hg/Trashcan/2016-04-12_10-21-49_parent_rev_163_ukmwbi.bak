@@ -1,0 +1,92 @@
+diff --git a/WebContent/dashboard/AgriParametrosPuntoVenta.jsp b/WebContent/dashboard/AgriParametrosPuntoVenta.jsp
+--- a/WebContent/dashboard/AgriParametrosPuntoVenta.jsp
++++ b/WebContent/dashboard/AgriParametrosPuntoVenta.jsp
+@@ -425,6 +425,7 @@
+ 								configuración se grabo con exito.</div>
+ 							<div class="form-group">
+ 								<input type="hidden" class="form-control" id="parametroPPVId">
++								<input type="hidden" id="idCotizacion">
+ 								<table style="width: 100%">
+ 									<tr>
+ 										<td colspan="2"><label style="width: 100%">Sponsor:</label></td>
+diff --git a/src/com/qbe/cotizador/dao/producto/agricola/AgriParroquiaDAO.java b/src/com/qbe/cotizador/dao/producto/agricola/AgriParroquiaDAO.java
+--- a/src/com/qbe/cotizador/dao/producto/agricola/AgriParroquiaDAO.java
++++ b/src/com/qbe/cotizador/dao/producto/agricola/AgriParroquiaDAO.java
+@@ -15,6 +15,7 @@
+ import com.qbe.cotizador.model.AgriParroquia;
+ import com.qbe.cotizador.model.AgriRegla;
+ import com.qbe.cotizador.model.AgriTipoCalculo;
++import com.qbe.cotizador.model.Parroquia;
+ 
+ public class AgriParroquiaDAO extends EntityManagerFactoryDAO<AgriParroquia> {
+ 	@PersistenceContext(name="CotizadorWebPC", unitName = "CotizadorWebPU" )	
+@@ -46,4 +47,8 @@
+ 		return agriParroquia;
+ 	}
+ 	
++	public List<AgriParroquia> buscarTodos(){
++		return getEntityManager().createNamedQuery("AgriParroquia.buscarTodos").getResultList();
++	}
++	
+ }
+\ No newline at end of file
+diff --git a/src/com/qbe/cotizador/dao/producto/agricola/UsuariosOfflineDAO.java b/src/com/qbe/cotizador/dao/producto/agricola/UsuariosOfflineDAO.java
+--- a/src/com/qbe/cotizador/dao/producto/agricola/UsuariosOfflineDAO.java
++++ b/src/com/qbe/cotizador/dao/producto/agricola/UsuariosOfflineDAO.java
+@@ -1,4 +1,5 @@
+ package com.qbe.cotizador.dao.producto.agricola;
+ 
+ import com.qbe.cotizador.entitymanagerfactory.EntityManagerFactoryDAO;
++import com.qbe.cotizador.model.AgriCargaPreviaArchivoPlano;
+ import com.qbe.cotizador.model.UsuariosOffline;
+@@ -4,2 +5,3 @@
+ import com.qbe.cotizador.model.UsuariosOffline;
++
+ import java.math.BigInteger;
+@@ -5,2 +7,5 @@
+ import java.math.BigInteger;
++import java.text.ParseException;
++import java.text.SimpleDateFormat;
++import java.util.ArrayList;
+ import java.util.List;
+@@ -6,4 +11,5 @@
+ import java.util.List;
++
+ import javax.naming.InitialContext;
+ import javax.naming.NamingException;
+ import javax.persistence.EntityManager;
+@@ -65,4 +71,33 @@
+         }
+         return usuarioOffline;
+     }
++    
++    public List<UsuariosOffline> cargarTodosKendo(int Skip, int Take){
++				
++		Query query = null;
++		
++		String stringQuery= "SELECT c FROM UsuariosOffline c";	
++				
++		query = getEntityManager().createQuery(stringQuery);
++		
++		List<UsuariosOffline> results = new ArrayList<UsuariosOffline>();
++		results = query.setMaxResults(Take).setFirstResult(Skip).getResultList();
++		
++		return results;
++	}
++    
++    public long cargarTodosKendoPorNumero(){
++		
++		Query query = null;
++		
++		String stringQuery= "SELECT count(c.id) FROM UsuariosOffline c ";	
++		
++		query = getEntityManager().createQuery(stringQuery);
++		
++		long results = (long)query.getSingleResult();
++		
++		return results;
++	}
++    
++    
+ }
+\ No newline at end of file

@@ -1,0 +1,184 @@
+diff --git a/WebContent/dashboard/CotizacionesPreviasAgricola.jsp b/WebContent/dashboard/CotizacionesPreviasAgricola.jsp
+--- a/WebContent/dashboard/CotizacionesPreviasAgricola.jsp
++++ b/WebContent/dashboard/CotizacionesPreviasAgricola.jsp
+@@ -205,8 +205,8 @@
+ 		$('#celular').prop('disabled', true);
+ 		//$('#email').prop('disabled', true);
+ 		$('#ubicacion_provincia').prop('disabled', true);
+-		$("#ubicacion_Canton").prop('disabled', true);
+-		$("#ubicacion_Parroquia").prop('disabled', true);
++		//$("#ubicacion_Canton").prop('disabled', true);
++		//$("#ubicacion_Parroquia").prop('disabled', true);
+ 		$("#agricultor_tecnificado_si").prop('disabled', true);
+ 		$("#agricultor_tecnificado_no").prop('disabled', true);
+ 		$("#tiene_riego_si").prop('disabled', true);
+@@ -398,5 +398,5 @@
+ 								<td><label><b>Provincia:*</b></label></td>
+ 								<td style="width: 35%"><select id="ubicacion_provincia"  required="required" class="datosGanadero" readonly></select></td>
+ 								<td><label><b>Cantón:*</b></label></td>
+-								<td style="width: 35%"><select id="ubicacion_Canton" required="required" class="datosGanadero" readonly></select></td>
++								<td style="width: 35%"><select id="ubicacion_Canton" required="required" class="datosGanadero"></select></td>
+ 								<td><label><b>Parroquia:*</b></label></td>
+@@ -402,5 +402,5 @@
+ 								<td><label><b>Parroquia:*</b></label></td>
+-								<td style="width: 30%"><select id="ubicacion_Parroquia" class="datosGanadero" readonly></select></td>
++								<td style="width: 30%"><select id="ubicacion_Parroquia" class="datosGanadero"></select></td>
+ 							</tr>
+ 							<tr>
+ 								<td>
+@@ -409,7 +409,8 @@
+ 							</tr>
+ 							<tr>
+ 								<td><label><b>Sitio/Referencia:*</b></label></td>
+-								<td colspan="5"><input type="text" id="ubicacion_direccion" class="datosGanadero" required="required" readonly></td>
++								<td colspan="5"><input type="text" id="ubicacion_direccion" class="datosGanadero" required="required"></td>
++								<input type="hidden" id="previaId" class="datosGanadero">
+ 							</tr>
+ 							<tr>
+ 								<td>
+@@ -627,8 +628,12 @@
+ 								</select>
+ 								</td> -->
+ 								<td colspan="2"> 
+-								
+-								<button type="button" class="btn btn-success btn-xs descargaCertificado" id="descargar_FichaCotizacion" onclick="generarReporteCotizacion();"> <span class="glyphicon glyphicon glyphicon-download"></span>Descargar </button>
++								<br>
++								<b> <font color="red">DEBE DESCARGAR LA PREPOLIZA PARA PODER TERMINAR LA COTIZACION
++								</font></b>
++								<br>
++								<br>
++								<button type="button" class="btn btn-success btn-xs descargaCertificado" id="descargar_FichaCotizacion" onclick="generarReporteCotizacion();"> <span class="glyphicon glyphicon glyphicon-download"></span> Descargar </button>
+ 								<button type="button" class="btn btn-success btn-xs descargaCertificado" id="descargar_certificadoCotizacion" onclick="abrirCertificadoCotizacion();" hidden="hidden"> <span class="glyphicon glyphicon glyphicon-download"></span>Descargar </button>
+ 								<button type="button" class="btn btn-success btn-xs descargaCertificado" id="descargar_certificadoNormasParticulares" onclick="abrirCertificadoNormaParticulares();"  hidden="hidden"> <span class="glyphicon glyphicon glyphicon-download"></span>Descargar </button>
+ 								<!-- <button hidden="hidden" type='button' class='btn btn-success btn-xs descargaCertificado' id='descargar_certificadoDebito' onclick="abrirCertificadoDebito();"> <span class='glyphicon glyphicon glyphicon-download'></span>Descargar </button>
+diff --git a/WebContent/static/js/agricola/carga.inicial.cotizador.agricolaArchivoPlano.js b/WebContent/static/js/agricola/carga.inicial.cotizador.agricolaArchivoPlano.js
+--- a/WebContent/static/js/agricola/carga.inicial.cotizador.agricolaArchivoPlano.js
++++ b/WebContent/static/js/agricola/carga.inicial.cotizador.agricolaArchivoPlano.js
+@@ -8,7 +8,7 @@
+ 	//Se calcula la fecha de pago inicial
+ 
+ 	var today = new Date();
+-
++	
+ 	$('#datosAdicionalesJuridica').hide();
+ 	$('#datosAdicionalesNatural').hide();
+ 	$('#fechaNacimientoPN').datepicker();
+@@ -80,6 +80,7 @@
+ 		onFinished: function (event, currentIndex) {
+ 			//emitirPolizaAgricola();
+ 			//cambiarEstadoAgricola(estado);
++			
+ 			var id1=$("#cotizacion_id").text();
+ 			eliminarCotizacionProcesada($("#cargaPreviaId").val(), $("#hectareas_asegurables").val(),id1);
+ 			window.location= "CotizacionesPrecargadasAgricola.jsp";
+@@ -130,9 +131,10 @@
+ 						if(resultado){						
+ 							cargarValoresCotizacion();
+ 							//eliminarCotizacionProcesada($("#cargaPreviaId").val(), $("#hectareas_asegurables").val());
+-						}						
++						}
++						$("#wizard .actions a[href='#finish']").hide();
+ 						return resultado;
+ 					}else{
+ 						cargarValoresCotizacion();
+ 					}
+ 				}
+@@ -134,8 +136,9 @@
+ 						return resultado;
+ 					}else{
+ 						cargarValoresCotizacion();
+ 					}
+ 				}
++				
+ 			}			
+ 			//return $("#wizard").valid();
+ 			return validator;
+@@ -179,7 +182,6 @@
+ 			var idPrevio=QueryString.previaId;
+ 			cargarCotizacion(idPrevio);
+ 		}
+-		cargaInicialAgricola();
+ 	}
+ 	else{
+ 		cargaInicialAgricola();
+diff --git a/WebContent/static/js/agricola/metodos.agricola.js b/WebContent/static/js/agricola/metodos.agricola.js
+--- a/WebContent/static/js/agricola/metodos.agricola.js
++++ b/WebContent/static/js/agricola/metodos.agricola.js
+@@ -2739,6 +2739,7 @@
+ 			"tipoSeguro" : tipoSeguro,
+ 			"sucursalCanalId" : $("#sucursal_canal").val(),
+ 			"aniosCultivo" : $("#anios_cultivo").val(),
++			"previaId" : $("#previaId").val(),
+ 		},
+ 		type : 'post',
+ 		async : false,
+diff --git a/WebContent/static/js/agricola/metodos.agricolaArchivoPlano.js b/WebContent/static/js/agricola/metodos.agricolaArchivoPlano.js
+--- a/WebContent/static/js/agricola/metodos.agricolaArchivoPlano.js
++++ b/WebContent/static/js/agricola/metodos.agricolaArchivoPlano.js
+@@ -854,4 +854,6 @@
+ }
+ 
+ function generarReporteCotizacion() {
++	$("#descargar_FichaCotizacion").show();
++	$("#wizard .actions a[href='#finish']").hide();
+ 	window.open('../AgriCotizacionReporte?tipoConsulta=generarReporte&codigoCotizacion=' + $("#cotizacion_id").text());
+@@ -857,4 +859,5 @@
+ 	window.open('../AgriCotizacionReporte?tipoConsulta=generarReporte&codigoCotizacion=' + $("#cotizacion_id").text());
++	
+ }
+ function cargarDireccionFactura(formulario, datos) {
+ 	if (datos != null) {
+@@ -2718,6 +2721,7 @@
+ 	$("#msgPopupFichaAgricolaError").fadeOut("slow");
+ 	var resVal;
+ 	var tipoSeguro=0;
++	var IdPrevio=$("#previaId").val();
+ 	if($("#cultivoPerenne").css("visibility") == "visible")
+ 		tipoSeguro = $("#tipo_poliza").val();
+ 	
+@@ -2751,6 +2755,7 @@
+ 			"tipoSeguro" : tipoSeguro,
+ 			"sucursalCanalId" : $("#sucursal_canal").val(),
+ 			"aniosCultivo" : $("#anios_cultivo").val(),
++			"previaId" : IdPrevio,
+ 		},
+ 		type : 'post',
+ 		async : false,
+@@ -3514,7 +3519,8 @@
+ 			
+ 		}
+ 	});*/
+-
++	$("#wizard .actions a[href='#finish']").show();
++	$("#descargar_FichaCotizacion").hide();
+ 	window.open('../AgriCotizacionReporte?tipoConsulta=generarReporte&codigoCotizacion=' + $("#cotizacion_id").text()+'&IsCotizacion_=true');
+ }
+ 
+@@ -4078,7 +4084,7 @@
+ 	}
+ 	
+ 	function cargarCotizacion(arg){		
+-		
++			
+ 			$.ajax({
+ 				url : '../AgriCargaPreviaArchivoPlanoController',
+ 				data : {
+@@ -4113,6 +4119,7 @@
+ 					$("#hectareas_asegurables").val(data.hasAseguradas);
+ 					$("#agricultor_tecnificado_si").prop( "checked", data.esTecnificado);
+ 					$("#ubicacion_provincia").val(data.provinciaId);
++					$("#previaId").val(data.previaId);
+ 					obtenerCantonPorProvincia(data.cantonId);	
+ 					obtenerParroquiaPorCanton(data.parroquiaId);					
+ 					($("#tipo_cultivo").data("kendoComboBox")).value(data.tipoCultivoId);					
+diff --git a/src/com/qbe/cotizador/dao/producto/agricola/AgriAuditoriaCotizacionDAO.java b/src/com/qbe/cotizador/dao/producto/agricola/AgriAuditoriaCotizacionDAO.java
+--- a/src/com/qbe/cotizador/dao/producto/agricola/AgriAuditoriaCotizacionDAO.java
++++ b/src/com/qbe/cotizador/dao/producto/agricola/AgriAuditoriaCotizacionDAO.java
+@@ -1,6 +1,7 @@
+ package com.qbe.cotizador.dao.producto.agricola;
+ 
+ import java.math.BigInteger;
++
+ import java.util.List;
+ 
+ import javax.naming.Context;

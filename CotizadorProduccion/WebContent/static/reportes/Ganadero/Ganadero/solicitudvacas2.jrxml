@@ -1,0 +1,839 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="solicitudvacas2" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="a4523285-ca79-42a9-a540-4b12d489ef47">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="COTIZADOR"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<parameter name="cot_Id" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT DISTINCT ENT.ID, ENT.NOMBRES, ENT.APELLIDOS, 
+PRO.NOMBRE AS PROVINCIA, CAN.NOMBRE AS CANTON, PAR.NOMBRE AS PARROQUIA, OBJ.UBICACION, OBJ.REGION, OBJ.TIPO_PRODUCCION,
+OBJ.FINCA_ALTITUD, OBJ.FINCA_TOPOGRAFIA1, OBJ.FINCA_TOPOGRAFIA2, OBJ.FINCA_TOPOGRAFIA3,
+OBJ.PASTO_TIPOID, OBJ.PASTO_HECTAREAS, OBJ.PASTO_VOLUMNEANIO, OBJ.PASTO_OBSERVACIONES,
+OBJ.ANIMALES_VACUNOS, OBJ.MORTALIDAD_VACAS, OBJ.MORTALIDAD_VACAS_CAUSA, OBJ.MORTALIDAD_VACONASV, OBJ.MORTALIDAD_VACONASV_CAUSA, OBJ.MORTALIDAD_VACONASF, OBJ.MORTALIDAD_VACONASF_CAUSA,
+OBJ.MORTALIDAD_VACONASM, OBJ.MORTALIDAD_VACONASM_CAUSA, OBJ.MORTALIDAD_TOROS, OBJ.MORTALIDAD_TOROS_CAUSA, OBJ.MORTALIDAD_TORETES, OBJ.MORTALIDAD_TORETES_CAUSA,
+OBJ.MORTALIDAD_TERNEROS, OBJ.MORTALIDAD_TERNEROS_CAUSA, OBJ.MORTALIDAD_TERNERAS, OBJ.MORTALIDAD_TERNERAS_CAUSA,
+OBJ.ALIMENTACION_PASTOREO, OBJ.ALIMENTACION_CORTE, OBJ.ALIMENTACION_SOGUEO, OBJ.ACCESO_AL_AGUA,
+OBJ.VACUNACIONES_AFTOSA, OBJ.VACUNACIONES_BRUCELOSIS, OBJ.VACUNACIONES_TRIPLE, OBJ.VACUNACIONES_LEPTOSPIROSIS, OBJ.VACUNACIONES_IBRBVD, OBJ.VACUNACIONES_OTRAS,
+OBJ.ENFERMEDAD_MASTISIS, OBJ.ENFERMEDAD_PANADIZO, OBJ.ENFERMEDAD_FIEBRELECHE, OBJ.ENFERMEDAD_LESIONUBRES, OBJ.ENFERMEDAD_NEUMONIAS, OBJ.ENFERMEDAD_OTRAS, OBJ.ENFERMEDAD_CUAL,
+OBJ.PARASITOS_INTERNOS, OBJ.PARASITOS_INTERNOS_TRATA, OBJ.PARASITOS_INTERNOS_FRECU, OBJ.PARASITOS_EXTERNOS, OBJ.PARASITOS_EXTERNOS_TRATA, OBJ.PARASITOS_EXTERNOS_FRECU,
+OBJ.ASISTENCIA_VETERINARIA, OBJ.ASISTENCIA_VETERINARIA_FREC, OBJ.ASISTENCIA_VETERINARIA_PROF, OBJ.ASISTENCIA_VETERINARIA_TELE,
+OBJ.EXPERIENCIA_GANADERO_ANIOS AS EXPERIENCIA, OBJ.ESPRINCIPAL_INGRESO AS INGRESO
+FROM ENTIDAD ENT INNER JOIN CLIENTE CLI
+ON ENT.ID = CLI.ENTIDAD_ID INNER JOIN COTIZACION COT
+ON CLI.ID = COT.CLIENTE_ID INNER JOIN COTIZACION_DETALLE COTD
+ON COT.ID = COTD.COTIZACION_ID INNER JOIN OBJETO_GANADERO OBJ
+ON COTD.OBJETO_ID = OBJ.ID INNER JOIN OBJETO_GANADERO_DETALLE OBJD
+ON OBJ.ID = OBJD.OBJETO_GANADERO_ID INNER JOIN PARROQUIA PAR 
+ON OBJ.PARROQUIAID = PAR.ID INNER JOIN CANTON CAN 
+ON PAR.CANTON_ID = CAN.ID INNER JOIN PROVINCIA PRO 
+ON CAN.PROVINCIA_ID = PRO.ID
+AND COT.ID =   $P{cot_Id}]]>
+	</queryString>
+	<field name="ID" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="NOMBRES" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="APELLIDOS" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PROVINCIA" class="java.lang.String"/>
+	<field name="CANTON" class="java.lang.String"/>
+	<field name="PARROQUIA" class="java.lang.String"/>
+	<field name="UBICACION" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="REGION" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TIPO_PRODUCCION" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="FINCA_ALTITUD" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="FINCA_TOPOGRAFIA1" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="FINCA_TOPOGRAFIA2" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="FINCA_TOPOGRAFIA3" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PASTO_TIPOID" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PASTO_HECTAREAS" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PASTO_VOLUMNEANIO" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PASTO_OBSERVACIONES" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ANIMALES_VACUNOS" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="MORTALIDAD_VACAS" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="MORTALIDAD_VACAS_CAUSA" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="MORTALIDAD_VACONASV" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="MORTALIDAD_VACONASV_CAUSA" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="MORTALIDAD_VACONASF" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="MORTALIDAD_VACONASF_CAUSA" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="MORTALIDAD_VACONASM" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="MORTALIDAD_VACONASM_CAUSA" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="MORTALIDAD_TOROS" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="MORTALIDAD_TOROS_CAUSA" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="MORTALIDAD_TORETES" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="MORTALIDAD_TORETES_CAUSA" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="MORTALIDAD_TERNEROS" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="MORTALIDAD_TERNEROS_CAUSA" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="MORTALIDAD_TERNERAS" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="MORTALIDAD_TERNERAS_CAUSA" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ALIMENTACION_PASTOREO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ALIMENTACION_CORTE" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ALIMENTACION_SOGUEO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ACCESO_AL_AGUA" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="VACUNACIONES_AFTOSA" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="VACUNACIONES_BRUCELOSIS" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="VACUNACIONES_TRIPLE" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="VACUNACIONES_LEPTOSPIROSIS" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="VACUNACIONES_IBRBVD" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="VACUNACIONES_OTRAS" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ENFERMEDAD_MASTISIS" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ENFERMEDAD_PANADIZO" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ENFERMEDAD_FIEBRELECHE" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ENFERMEDAD_LESIONUBRES" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ENFERMEDAD_NEUMONIAS" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ENFERMEDAD_OTRAS" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ENFERMEDAD_CUAL" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PARASITOS_INTERNOS" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PARASITOS_INTERNOS_TRATA" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PARASITOS_INTERNOS_FRECU" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PARASITOS_EXTERNOS" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PARASITOS_EXTERNOS_TRATA" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PARASITOS_EXTERNOS_FRECU" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ASISTENCIA_VETERINARIA" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ASISTENCIA_VETERINARIA_FREC" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ASISTENCIA_VETERINARIA_PROF" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ASISTENCIA_VETERINARIA_TELE" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="EXPERIENCIA" class="java.lang.Integer"/>
+	<field name="INGRESO" class="java.lang.String"/>
+	<title>
+		<band height="75">
+			<staticText>
+				<reportElement x="168" y="30" width="280" height="45" uuid="2feeac45-2d35-4b34-89d7-54150cdd8b98"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<text><![CDATA[• Quito: Av. Eloy Alfaro N.40-270 y Jose Quero Telf. (593 2) 398 9700 / 398 9800  Fa. Ext 2213 /2220     
+• Guayaquil: Av. Miguel H. Alcivar Edif. Torres del Norte Torre B  Of. 301 – 308   pisos  # 3. Teléfs: 688 313/15/16/20/25/26. Fax: 688314
+• Cuenca: Av. Federico Malo 170 y Av. 12 de Abril. Teléfonos: 841 285, 840 758, 842 876. Fax: 838 732
+• Riobamba: Calle Vargas Torre s/n entre Primera Constituyente y Veloz  Telfs: 940 863. Fax: 940 864 
+• Ambato: Ficoa Av. De los Guaytambos No. 04-102, Teléfono: 824 496/823495/820571]]></text>
+			</staticText>
+			<image>
+				<reportElement x="0" y="30" width="160" height="30" uuid="8d85c181-78ba-430c-9c35-0e0b1442d31e"/>
+				<imageExpression><![CDATA["imagenes/logo_qbe.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<detail>
+		<band height="698" splitType="Stretch">
+			<textField>
+				<reportElement x="150" y="367" width="32" height="20" uuid="f6700cc9-8e3c-4aec-8002-5efe3ac44a7e"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MORTALIDAD_TERNERAS}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="343" width="72" height="23" uuid="abcd142f-8d10-411d-8f2d-2b4acfce81ea"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Terneros:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="150" y="279" width="33" height="20" uuid="4cfde675-92b8-48fa-bfff-55ffb2faf482"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MORTALIDAD_VACONASM}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="150" y="257" width="33" height="20" uuid="ad4fd3c2-9726-4a24-843a-a9db3999e66f"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MORTALIDAD_VACONASF}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="203" y="587" width="80" height="21" uuid="7b5cda89-8eb5-4920-833b-1d2cfb40ae49"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Lesión de Ubres:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="290" y="411" width="150" height="21" uuid="2d156faa-aaf6-4885-abb6-7325f91cd915"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Acceso de los Animales al Agua:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="223" y="345" width="272" height="20" uuid="136af7ae-850c-4d52-b6d4-ee90cab66e2e"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MORTALIDAD_TERNEROS_CAUSA}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="203" y="608" width="80" height="21" uuid="e2fb53b1-6068-4172-b82f-b90b3e2974ea"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Neumonias:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="223" y="323" width="272" height="20" uuid="f0967792-9537-42a0-b381-59452c70cff5"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MORTALIDAD_TORETES_CAUSA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="150" y="345" width="32" height="20" uuid="3c582f81-01a1-440c-9f7a-5c2ca2a3d2b9"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MORTALIDAD_TERNEROS}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="545" width="70" height="21" uuid="b8b97a49-b364-48bc-ae23-f1644b37acd6"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Enfermedades:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="223" y="235" width="272" height="20" uuid="ba715208-741e-4ec7-96d3-61a3a0c3df85"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MORTALIDAD_VACONASV_CAUSA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="223" y="301" width="272" height="20" uuid="4d6b408b-6a11-4749-9ac6-36fb42f67221"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MORTALIDAD_TOROS_CAUSA}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="100" y="456" width="70" height="21" uuid="fcc86710-e69b-4893-ac85-0c73b3bf481b"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[F. Aftosa]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="150" y="301" width="32" height="20" uuid="adbefce4-bb11-41b8-8b21-e39bfab8a868"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MORTALIDAD_TOROS}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="223" y="257" width="272" height="20" uuid="3827826c-206a-4c3e-aa7a-59f600337899"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MORTALIDAD_VACONASF_CAUSA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="150" y="323" width="32" height="20" uuid="3a2712e3-8cf7-4cf9-b9b7-954ccf044b0a"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MORTALIDAD_TORETES}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="70" y="629" width="79" height="21" uuid="f578c803-f916-449a-bdcc-b024a738d824"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Fiebre de Leche:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="185" y="213" width="38" height="21" uuid="bf0995a5-348b-48c6-9438-80201dbe32e7"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Causa:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="255" width="143" height="21" uuid="1d727f48-81dc-48e5-9530-50baf06c0ae9"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Vaconas Fierro (12- 18 meses):]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="185" y="367" width="38" height="21" uuid="11dc6fd6-fe5d-4f20-b3c2-30ba8751f19e"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Causa:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="413" width="46" height="21" uuid="6a6c3585-b1c9-4718-bc05-e230e5034ac8"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Pastoreo:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="223" y="213" width="272" height="20" uuid="f26cd958-630b-409c-be89-896448707d98"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MORTALIDAD_VACAS_CAUSA}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="233" y="498" width="70" height="21" uuid="d329e529-dfd8-40da-ac73-af93d7fff838"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Otras]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="587" width="79" height="21" uuid="256c3c9b-d8c9-4e18-ba53-4ea1feb62b65"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Mastitis:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="342" y="629" width="135" height="20" uuid="941687c3-0eb2-48f4-b4e4-d341ee3feed1"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ENFERMEDAD_CUAL}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="192" width="100" height="21" uuid="49ca867a-8af4-4209-aa9c-78f29d8ab109"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Mortalidad Anual:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="150" y="235" width="33" height="20" uuid="102cdc2f-b591-4dea-b492-06d87f5fe448"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MORTALIDAD_VACONASV}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="185" y="345" width="38" height="21" uuid="9c76e069-e2e9-45b6-98f1-671895636777"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Causa:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="185" y="301" width="38" height="21" uuid="28837a60-46fd-49cd-80b7-623c286486aa"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Causa:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="366" width="72" height="23" uuid="66b2e694-e896-4953-8f3b-ac096a8df2ad"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Terneras:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="276" width="143" height="21" uuid="f9815d31-f24f-42b3-96ec-59eca75bcfee"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Vaconas Media (6- 12 meses):]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="233" y="456" width="70" height="21" uuid="3c44eb8d-385c-43fc-a4ac-942e7029d8f9"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Leptospirosis]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="185" y="257" width="38" height="21" uuid="905c5f26-77ba-47e6-b1cb-a9afce68ee9c"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Causa:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="524" width="477" height="21" uuid="f1dbccf7-1e8a-4fac-8b5e-d72e05b3c560"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[NOTA: En caso de sinisetro deverá presentar los certificados declarados.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="478" width="70" height="21" uuid="59274379-6d88-444a-a5e2-9d12b7595863"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Brucelosis]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="113" y="412" width="30" height="21" uuid="b87a1aeb-9ef6-4763-8a85-2f8fdc013dea"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Corte:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="297" width="72" height="23" uuid="35c6dfc4-7240-4389-9c83-ccc60dade757"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Toros Adultos:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="223" y="367" width="272" height="20" uuid="0be80ab7-2381-445b-bd21-f3f4f12f60c9"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MORTALIDAD_TERNERAS_CAUSA}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="435" width="70" height="21" uuid="bcbbefac-e9eb-4b93-acf2-b3db6aaa34e1"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[5.- SANIDAD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="456" width="70" height="21" uuid="2f97629f-95ee-4590-9a9c-5f1a4e10994a"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Vacunaciones:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="234" width="72" height="21" uuid="08b9ac63-def2-4364-9e46-f28c61878e35"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Vaconas Vientre:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="608" width="79" height="21" uuid="28970292-3737-490f-a2d9-9ff10505849e"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Panadizo:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="311" y="629" width="31" height="21" uuid="4d10dde1-7d09-4fb4-8071-7565d1481634"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Cuál:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="185" y="323" width="38" height="21" uuid="b95a4a5d-ee88-42a6-b385-56ec2e52015e"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Causa:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="566" width="477" height="21" uuid="fb1f4b1c-96d1-4d56-96ae-7ea2fbe094e2"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[	Llenar de 1 al 6, siendo 1 el más importante y el seis el menos importante.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="223" y="279" width="272" height="20" uuid="0e368d54-3c33-4e0c-9301-8cae224af6f1"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MORTALIDAD_VACONASM_CAUSA}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="203" y="629" width="80" height="21" uuid="7dbba03b-6639-403d-bb8f-d1db1be802ba"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Otras:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="185" y="235" width="38" height="21" uuid="14a87722-906f-47f2-8d33-ba497d0e62c2"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Causa:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="392" width="110" height="21" uuid="fdb7a670-0f54-48ae-8335-27027d43732f"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Metodo de alimentación:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="185" y="279" width="38" height="21" uuid="5a8004ab-8cb1-44ee-8e3f-0a08f3ceb191"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Causa:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="213" width="40" height="21" uuid="536a80ac-462f-4e86-b95a-ad3a6c8ee09f"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Vacas:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="320" width="72" height="23" uuid="dade402d-2277-47e4-ab0d-cfe5b39c5d66"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Toretes:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="150" y="213" width="33" height="20" uuid="cd94ea33-c77d-48e1-a507-5fbfd7359728"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MORTALIDAD_VACAS}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="442" y="411" width="33" height="20" uuid="e3e53a10-7c13-4ad7-8e92-34c5b2e8961a">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{ACCESO_AL_AGUA}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="210" y="411" width="38" height="21" uuid="04022e06-703c-46b5-b814-9a88cd7abc2b"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Sogueo:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="499" width="70" height="21" uuid="5e984de7-596b-47f7-ade4-e8d99023fe47"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Triple]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="233" y="477" width="70" height="21" uuid="eeb96367-ee77-43cb-9675-9dc57a0b67bc"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[IBR - BVD]]></text>
+			</staticText>
+			<image>
+				<reportElement x="48" y="413" width="10" height="10" uuid="54c45fd6-f8d7-4f00-aa58-78f39db66b90">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[($F{ALIMENTACION_PASTOREO}.equals("1") ? "//imagenes/check.png" : "//imagenes/unchecked.png")]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="143" y="412" width="10" height="10" uuid="4bbcca0b-e9c0-4097-90ab-7356476c6fbe">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[($F{ALIMENTACION_CORTE}.equals("1") ? "//imagenes/check.png" : "//imagenes/unchecked.png")]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="248" y="411" width="10" height="10" uuid="2caaeee5-af9b-4d34-90af-780ca9f3d45d">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[($F{ALIMENTACION_SOGUEO}.equals("1") ? "//imagenes/check.png" : "//imagenes/unchecked.png")]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="86" y="458" width="10" height="10" uuid="a37c343b-2f51-4216-85f1-390c4d905843">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[($F{VACUNACIONES_AFTOSA}.equals("1") ? "//imagenes/check.png" : "//imagenes/unchecked.png")]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="86" y="480" width="10" height="10" uuid="de62a130-6fac-4531-8693-505857daa67d">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[($F{VACUNACIONES_BRUCELOSIS}.equals("1") ? "//imagenes/check.png" : "//imagenes/unchecked.png")]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="86" y="501" width="10" height="10" uuid="b33cbe70-be1c-4845-8286-1b0ce3777521">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[($F{VACUNACIONES_TRIPLE}.equals("1") ? "//imagenes/check.png" : "//imagenes/unchecked.png")]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="219" y="458" width="10" height="10" uuid="3ca84dca-bbbd-4a33-a362-fd43b03100e2">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[($F{VACUNACIONES_LEPTOSPIROSIS}.equals("1") ? "//imagenes/check.png" : "//imagenes/unchecked.png")]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="219" y="479" width="10" height="10" uuid="84952fa7-a564-4d8b-8fa3-56e080dc1739">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[($F{VACUNACIONES_IBRBVD}.equals("1") ? "//imagenes/check.png" : "//imagenes/unchecked.png")]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="219" y="500" width="10" height="10" uuid="c566282d-4f84-4cf6-9598-cd819a4ab93f">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[($F{VACUNACIONES_OTRAS}.equals("1") ? "//imagenes/check.png" : "//imagenes/unchecked.png")]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="149" y="590" width="10" height="10" uuid="7d20eef3-1a72-4731-9b41-41c8ffea8d7f">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[($F{ENFERMEDAD_MASTISIS}.equals("1") ? "//imagenes/check.png" : "//imagenes/unchecked.png")]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="149" y="611" width="10" height="10" uuid="922efccb-a7b0-48f3-9f67-8fa9ae82d015">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[($F{ENFERMEDAD_PANADIZO}.equals("1") ? "//imagenes/check.png" : "//imagenes/unchecked.png")]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="149" y="632" width="10" height="10" uuid="8be3938f-a78d-425f-a0a0-dec63189d775">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[($F{ENFERMEDAD_FIEBRELECHE}.equals("1") ? "//imagenes/check.png" : "//imagenes/unchecked.png")]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="287" y="590" width="10" height="10" uuid="3bf906f3-0bb9-4b0a-a687-08a78c5ef0c1">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[($F{ENFERMEDAD_LESIONUBRES}.equals("1") ? "//imagenes/check.png" : "//imagenes/unchecked.png")]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="287" y="611" width="10" height="10" uuid="2edb9525-9030-4bb1-9d64-372740fca5d5">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[($F{ENFERMEDAD_NEUMONIAS}.equals("1") ? "//imagenes/check.png" : "//imagenes/unchecked.png")]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="287" y="632" width="10" height="10" uuid="0a487855-84a2-4991-8fdd-6007c4903b17">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[($F{ENFERMEDAD_OTRAS}.equals("1") ? "//imagenes/check.png" : "//imagenes/unchecked.png")]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="0" y="40" width="310" height="21" uuid="177b5128-1534-4d24-b0b0-0c91d72bbd4c"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[3.- CARACTERÍSTICAS ESPECIFICAS DE LOS PASTIZALES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="145" width="310" height="21" uuid="b72b8177-6771-4147-8f44-3d5969cc8ff3"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[4.- GENERALIDADES DE LA GANADERÍA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="82" width="72" height="21" uuid="3391bf7c-cdbf-4b88-aefa-e480accf6e7f"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[HA de Pasto:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="103" width="182" height="21" uuid="da556e70-9ee5-43f4-9dbc-b2099422b891"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Volumen de produccion de pasto al año:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="61" width="130" height="21" uuid="256b4074-3777-4b57-8104-2e573d83ce79"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Tipo de Pasto Predominante:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="169" width="243" height="21" uuid="a0890dae-ac71-4cc0-84c1-cbc2f3ad6345"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Cuántos animales vacunos mantiene en la propiedad:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="124" width="72" height="21" uuid="b9eb5188-fb96-4965-8162-0cc32f56e290"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Observaciones:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="184" y="103" width="294" height="20" uuid="f7a8288a-3919-4ae5-b86d-d839f6fffa66"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PASTO_VOLUMNEANIO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="249" y="169" width="140" height="20" uuid="62b96778-0a54-4a5a-8060-7127699c3de6"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ANIMALES_VACUNOS}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="74" y="82" width="148" height="20" uuid="ea93a7b0-b41c-4363-8f1f-91c926e37472"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PASTO_HECTAREAS}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="75" y="124" width="403" height="20" uuid="d9583d5f-195b-45d0-968f-328356a25a84"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PASTO_OBSERVACIONES}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="138" y="61" width="340" height="20" uuid="e7c9760f-ada5-4bbd-8455-133205009049"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PASTO_TIPOID}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="33" splitType="Stretch">
+			<subreport>
+				<reportElement x="-1" y="0" width="596" height="20" uuid="5b3d24e6-2d10-40b9-ad2f-491cc1ca4543"/>
+				<subreportParameter name="cot_Id">
+					<subreportParameterExpression><![CDATA[$P{cot_Id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["Ganadero/solicitudvacas3.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,775 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://ganadero.QBE.servicios.cotizador.qbe.com" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://ganadero.QBE.servicios.cotizador.qbe.com" xmlns:intf="http://ganadero.QBE.servicios.cotizador.qbe.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="http://ganadero.QBE.servicios.cotizador.qbe.com" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="obtenerRazas">
+    <complexType/>
+   </element>
+   <element name="obtenerRazasResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="obtenerRazasReturn" type="impl:Razas"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="Razas">
+    <sequence>
+     <element name="id" nillable="true" type="xsd:string"/>
+     <element name="nombre" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="obtenerTiposGanadoVacuno">
+    <complexType/>
+   </element>
+   <element name="obtenerTiposGanadoVacunoResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="obtenerTiposGanadoVacunoReturn" type="impl:TipoGanadoVacuno"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="TipoGanadoVacuno">
+    <sequence>
+     <element name="id" nillable="true" type="xsd:string"/>
+     <element name="nombre" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="obtenerProvincias">
+    <complexType/>
+   </element>
+   <element name="obtenerProvinciasResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="obtenerProvinciasReturn" type="impl:Provincias"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="Provincias">
+    <sequence>
+     <element name="id" nillable="true" type="xsd:string"/>
+     <element name="nombre" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="obtenerCiudadesPorProvincia">
+    <complexType>
+     <sequence>
+      <element name="provinciaId" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="obtenerCiudadesPorProvinciaResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="obtenerCiudadesPorProvinciaReturn" type="impl:Ciudades"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="Ciudades">
+    <sequence>
+     <element name="id" nillable="true" type="xsd:string"/>
+     <element name="nombre" nillable="true" type="xsd:string"/>
+     <element name="provinciaId" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="ConsultarEstadoCotizacion2">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="NumeroCotizacion" type="xsd:int"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="ConsultarEstadoCotizacion2Response">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="ConsultarEstadoCotizacion2Return" type="impl:ConsultaOBJ"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="ConsultaOBJ">
+    <sequence>
+     <element name="estadoActual" nillable="true" type="xsd:string"/>
+     <element name="numeroCotizacion" type="xsd:int"/>
+     <element name="numeroFactura" nillable="true" type="xsd:string"/>
+     <element name="observaciones" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="ConsultarEstadoCotizacion">
+    <complexType>
+     <sequence>
+      <element name="NumeroCotizacion" type="xsd:int"/>
+      <element name="numeroCotizacionOrigen" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="ConsultarEstadoCotizacionResponse">
+    <complexType>
+     <sequence>
+      <element name="ConsultarEstadoCotizacionReturn" type="impl:ConsultaOBJ"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="GenerarVariasCotizacion">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="nuevasCotizaciones" type="impl:CotizacionOBJ"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="AseguradoOBJ">
+    <sequence>
+     <element name="apellidoMaterno" nillable="true" type="xsd:string"/>
+     <element name="apellidoPaterno" nillable="true" type="xsd:string"/>
+     <element name="callePrincipal" nillable="true" type="xsd:string"/>
+     <element name="calleSecundaria" nillable="true" type="xsd:string"/>
+     <element name="celular" nillable="true" type="xsd:string"/>
+     <element name="ciudad" nillable="true" type="xsd:string"/>
+     <element name="email" nillable="true" type="xsd:string"/>
+     <element name="fechaNacimiento" nillable="true" type="xsd:dateTime"/>
+     <element name="identificacion" nillable="true" type="xsd:string"/>
+     <element name="numeroCasa" nillable="true" type="xsd:string"/>
+     <element name="otrosIngresos" nillable="true" type="xsd:decimal"/>
+     <element name="pais" nillable="true" type="xsd:string"/>
+     <element name="parroquia" nillable="true" type="xsd:string"/>
+     <element name="personaExpuestaPoliticamente" nillable="true" type="xsd:boolean"/>
+     <element name="provincia" nillable="true" type="xsd:string"/>
+     <element name="salarioMensual" nillable="true" type="xsd:decimal"/>
+     <element name="telefono" nillable="true" type="xsd:string"/>
+     <element name="tipoIdentificacion" type="xsd:int"/>
+     <element name="totalActivos" nillable="true" type="xsd:decimal"/>
+     <element name="totalEgresos" nillable="true" type="xsd:decimal"/>
+     <element name="totalPasivos" nillable="true" type="xsd:decimal"/>
+    </sequence>
+   </complexType>
+   <complexType name="BeneficiarioOBJ">
+    <sequence>
+     <element name="apellidoMaterno" nillable="true" type="xsd:string"/>
+     <element name="apellidoPaterno" nillable="true" type="xsd:string"/>
+     <element name="callePrincipal" nillable="true" type="xsd:string"/>
+     <element name="calleSecundaria" nillable="true" type="xsd:string"/>
+     <element name="celular" nillable="true" type="xsd:string"/>
+     <element name="ciudad" nillable="true" type="xsd:string"/>
+     <element name="email" nillable="true" type="xsd:string"/>
+     <element name="fechaNacimiento" nillable="true" type="xsd:dateTime"/>
+     <element name="identificacion" nillable="true" type="xsd:string"/>
+     <element name="numeroCasa" nillable="true" type="xsd:string"/>
+     <element name="pais" nillable="true" type="xsd:string"/>
+     <element name="parroquia" nillable="true" type="xsd:string"/>
+     <element name="provincia" nillable="true" type="xsd:string"/>
+     <element name="telefono" nillable="true" type="xsd:string"/>
+     <element name="tipoIdentificacion" type="xsd:int"/>
+    </sequence>
+   </complexType>
+   <complexType name="GanadoVacunoOBJ">
+    <sequence>
+     <element name="color" nillable="true" type="xsd:string"/>
+     <element name="edadMeses" type="xsd:int"/>
+     <element name="numeroArete" nillable="true" type="xsd:string"/>
+     <element name="numeroChip" nillable="true" type="xsd:string"/>
+     <element name="origen" type="xsd:int"/>
+     <element name="procedencia" nillable="true" type="xsd:string"/>
+     <element name="razaId" nillable="true" type="xsd:string"/>
+     <element name="tipoId" nillable="true" type="xsd:string"/>
+     <element name="valorAsegurar" nillable="true" type="xsd:decimal"/>
+    </sequence>
+   </complexType>
+   <complexType name="ArrayOfGanadoVacunoOBJ">
+    <sequence>
+     <element maxOccurs="unbounded" minOccurs="0" name="item" type="impl:GanadoVacunoOBJ"/>
+    </sequence>
+   </complexType>
+   <complexType name="FichaGanaderoOBJ">
+    <sequence>
+     <element name="accesoAlAgua" nillable="true" type="xsd:string"/>
+     <element name="alimentacionCorte" type="xsd:boolean"/>
+     <element name="alimentacionPastoreo" type="xsd:boolean"/>
+     <element name="alimentacionSogueo" type="xsd:boolean"/>
+     <element name="asistenciaVeterinaria" type="xsd:boolean"/>
+     <element name="asistenciaVeterinariaFrecuencia" type="xsd:int"/>
+     <element name="direccionCompletaFinca" nillable="true" type="xsd:string"/>
+     <element name="experienciaGanaderoAnios" type="xsd:int"/>
+     <element name="fincaAltitudMSNM" type="xsd:int"/>
+     <element name="ganaderiEsPrincipalIngresoEconomico" type="xsd:boolean"/>
+     <element name="listaGanadoVacuno" nillable="true" type="impl:ArrayOfGanadoVacunoOBJ"/>
+     <element name="muerteTernerasCuasa" nillable="true" type="xsd:string"/>
+     <element name="muerteTernerasPorAnio" type="xsd:int"/>
+     <element name="muerteTernerosCuasa" nillable="true" type="xsd:string"/>
+     <element name="muerteTernerosPorAnio" type="xsd:int"/>
+     <element name="muerteToretesCuasa" nillable="true" type="xsd:string"/>
+     <element name="muerteToretesPorAnio" type="xsd:int"/>
+     <element name="muerteTorosCuasa" nillable="true" type="xsd:string"/>
+     <element name="muerteTorosPorAnio" type="xsd:int"/>
+     <element name="muerteVacasCuasa" nillable="true" type="xsd:string"/>
+     <element name="muerteVacasPorAnio" type="xsd:int"/>
+     <element name="muerteVaconasFierroCuasa" nillable="true" type="xsd:string"/>
+     <element name="muerteVaconasFierroPorAnio" type="xsd:int"/>
+     <element name="muerteVaconasMediaCuasa" nillable="true" type="xsd:string"/>
+     <element name="muerteVaconasMediaPorAnio" type="xsd:int"/>
+     <element name="muerteVaconasVientreCuasa" nillable="true" type="xsd:string"/>
+     <element name="muerteVaconasVientrePorAnio" type="xsd:int"/>
+     <element name="nivelImportanciaEnfermedadFiebreleche" type="xsd:int"/>
+     <element name="nivelImportanciaEnfermedadLesionubres" type="xsd:int"/>
+     <element name="nivelImportanciaEnfermedadMastisis" type="xsd:int"/>
+     <element name="nivelImportanciaEnfermedadNeumonias" type="xsd:int"/>
+     <element name="nivelImportanciaEnfermedadOtras" type="xsd:int"/>
+     <element name="nivelImportanciaEnfermedadPanadizo" type="xsd:int"/>
+     <element name="numerAnimalesVacunosEnFinca" type="xsd:int"/>
+     <element name="otrasEnfermedades" nillable="true" type="xsd:string"/>
+     <element name="parasitosExternos" type="xsd:boolean"/>
+     <element name="parasitosExternosTratamiento" nillable="true" type="xsd:string"/>
+     <element name="parasitosExternosTratamientoFrecuencia" type="xsd:int"/>
+     <element name="parasitosInternos" type="xsd:boolean"/>
+     <element name="parasitosInternosTratamiento" nillable="true" type="xsd:string"/>
+     <element name="parasitosInternosTratamientoFrecucia" type="xsd:int"/>
+     <element name="pastoHectareas" type="xsd:float"/>
+     <element name="pastoObservaciones" nillable="true" type="xsd:string"/>
+     <element name="pastoTipo" nillable="true" type="xsd:string"/>
+     <element name="pastoVolumenToneladaAnio" type="xsd:float"/>
+     <element name="region" nillable="true" type="xsd:string"/>
+     <element name="tipoProduccion" nillable="true" type="xsd:string"/>
+     <element name="topografiaHectareasPendiente1025" type="xsd:float"/>
+     <element name="topografiaHectareasPendienteMas25" type="xsd:float"/>
+     <element name="topografiaHectareasPlana" type="xsd:float"/>
+     <element name="ubicacionFincaCantonId" nillable="true" type="xsd:string"/>
+     <element name="ubicacionFincaParroquiaId" nillable="true" type="xsd:string"/>
+     <element name="ubicacionFincaProvinciaId" type="xsd:int"/>
+     <element name="vacunacionesAftosa" type="xsd:boolean"/>
+     <element name="vacunacionesBrucelosis" type="xsd:boolean"/>
+     <element name="vacunacionesIbrbvd" type="xsd:boolean"/>
+     <element name="vacunacionesLeptospirosis" type="xsd:boolean"/>
+     <element name="vacunacionesOtras" nillable="true" type="xsd:string"/>
+     <element name="vacunacionesTriple" type="xsd:boolean"/>
+     <element name="veterinariaTelefono" nillable="true" type="xsd:string"/>
+     <element name="veterinarioNombre" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="SolicitanteOBJ">
+    <sequence>
+     <element name="apellidoMaterno" nillable="true" type="xsd:string"/>
+     <element name="apellidoPaterno" nillable="true" type="xsd:string"/>
+     <element name="callePrincipal" nillable="true" type="xsd:string"/>
+     <element name="calleSecundaria" nillable="true" type="xsd:string"/>
+     <element name="celular" nillable="true" type="xsd:string"/>
+     <element name="ciudad" nillable="true" type="xsd:string"/>
+     <element name="email" nillable="true" type="xsd:string"/>
+     <element name="fechaNacimiento" nillable="true" type="xsd:dateTime"/>
+     <element name="identificacion" nillable="true" type="xsd:string"/>
+     <element name="numeroCasa" nillable="true" type="xsd:string"/>
+     <element name="pais" nillable="true" type="xsd:string"/>
+     <element name="parroquia" nillable="true" type="xsd:string"/>
+     <element name="provincia" nillable="true" type="xsd:string"/>
+     <element name="telefono" nillable="true" type="xsd:string"/>
+     <element name="tipoIdentificacion" type="xsd:int"/>
+    </sequence>
+   </complexType>
+   <complexType name="CotizacionOBJ">
+    <sequence>
+     <element name="agenteId" nillable="true" type="xsd:string"/>
+     <element name="aseguradoOBJ" nillable="true" type="impl:AseguradoOBJ"/>
+     <element name="beneficiarioOBJ" nillable="true" type="impl:BeneficiarioOBJ"/>
+     <element name="fechaElaboracion" nillable="true" type="xsd:dateTime"/>
+     <element name="fichaGanaderoOBJ" nillable="true" type="impl:FichaGanaderoOBJ"/>
+     <element name="numeroCotizacionOrigen" nillable="true" type="xsd:string"/>
+     <element name="solicitanteOBJ" nillable="true" type="impl:SolicitanteOBJ"/>
+     <element name="sumaAsegurada" nillable="true" type="xsd:decimal"/>
+     <element name="usuarioCreacion" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="GenerarVariasCotizacionResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="GenerarVariasCotizacionReturn" type="impl:ResultadoOBJ"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="ResultadoOBJ">
+    <sequence>
+     <element name="comentarios" nillable="true" type="xsd:string"/>
+     <element name="numeroCotizacion" type="xsd:int"/>
+     <element name="numeroCotizacionOrigen" nillable="true" type="xsd:string"/>
+     <element name="totalSumaAsegurada" nillable="true" type="xsd:decimal"/>
+     <element name="valorDerechoEmision" nillable="true" type="xsd:decimal"/>
+     <element name="valorDescuento" nillable="true" type="xsd:decimal"/>
+     <element name="valorImpuestoIVA" nillable="true" type="xsd:decimal"/>
+     <element name="valorImpuestoSeguroCampesino" nillable="true" type="xsd:decimal"/>
+     <element name="valorImpuestoSuperBancos" nillable="true" type="xsd:decimal"/>
+     <element name="valorPrimaSinImpuestos" nillable="true" type="xsd:decimal"/>
+     <element name="valorRecargoSeguroCampesino" nillable="true" type="xsd:decimal"/>
+     <element name="valorTotal" nillable="true" type="xsd:decimal"/>
+    </sequence>
+   </complexType>
+   <element name="GenerarCotizacion">
+    <complexType>
+     <sequence>
+      <element name="nuevaCotizacion" type="impl:CotizacionOBJ"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="GenerarCotizacionResponse">
+    <complexType>
+     <sequence>
+      <element name="GenerarCotizacionReturn" type="impl:ResultadoOBJ"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="obtenerParroquiasPorCiudad">
+    <complexType>
+     <sequence>
+      <element name="ciudadId" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="obtenerParroquiasPorCiudadResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="obtenerParroquiasPorCiudadReturn" type="impl:Parroquias"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="Parroquias">
+    <sequence>
+     <element name="cantonId" nillable="true" type="xsd:string"/>
+     <element name="id" nillable="true" type="xsd:string"/>
+     <element name="nombre" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="ConsultarEstadoCotizacion2Request">
+
+      <wsdl:part element="impl:ConsultarEstadoCotizacion2" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="ConsultarEstadoCotizacion2Response">
+
+      <wsdl:part element="impl:ConsultarEstadoCotizacion2Response" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="obtenerParroquiasPorCiudadResponse">
+
+      <wsdl:part element="impl:obtenerParroquiasPorCiudadResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="GenerarCotizacionRequest">
+
+      <wsdl:part element="impl:GenerarCotizacion" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="ConsultarEstadoCotizacionResponse">
+
+      <wsdl:part element="impl:ConsultarEstadoCotizacionResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="GenerarVariasCotizacionRequest">
+
+      <wsdl:part element="impl:GenerarVariasCotizacion" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="obtenerProvinciasResponse">
+
+      <wsdl:part element="impl:obtenerProvinciasResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="GenerarCotizacionResponse">
+
+      <wsdl:part element="impl:GenerarCotizacionResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="GenerarVariasCotizacionResponse">
+
+      <wsdl:part element="impl:GenerarVariasCotizacionResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="obtenerProvinciasRequest">
+
+      <wsdl:part element="impl:obtenerProvincias" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="obtenerRazasRequest">
+
+      <wsdl:part element="impl:obtenerRazas" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="obtenerRazasResponse">
+
+      <wsdl:part element="impl:obtenerRazasResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="obtenerParroquiasPorCiudadRequest">
+
+      <wsdl:part element="impl:obtenerParroquiasPorCiudad" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="obtenerCiudadesPorProvinciaResponse">
+
+      <wsdl:part element="impl:obtenerCiudadesPorProvinciaResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="ConsultarEstadoCotizacionRequest">
+
+      <wsdl:part element="impl:ConsultarEstadoCotizacion" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="obtenerTiposGanadoVacunoRequest">
+
+      <wsdl:part element="impl:obtenerTiposGanadoVacuno" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="obtenerTiposGanadoVacunoResponse">
+
+      <wsdl:part element="impl:obtenerTiposGanadoVacunoResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="obtenerCiudadesPorProvinciaRequest">
+
+      <wsdl:part element="impl:obtenerCiudadesPorProvincia" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:portType name="CotizacionGanderoQBE">
+
+      <wsdl:operation name="obtenerRazas">
+
+         <wsdl:input message="impl:obtenerRazasRequest" name="obtenerRazasRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:obtenerRazasResponse" name="obtenerRazasResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="obtenerTiposGanadoVacuno">
+
+         <wsdl:input message="impl:obtenerTiposGanadoVacunoRequest" name="obtenerTiposGanadoVacunoRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:obtenerTiposGanadoVacunoResponse" name="obtenerTiposGanadoVacunoResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="obtenerProvincias">
+
+         <wsdl:input message="impl:obtenerProvinciasRequest" name="obtenerProvinciasRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:obtenerProvinciasResponse" name="obtenerProvinciasResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="obtenerCiudadesPorProvincia">
+
+         <wsdl:input message="impl:obtenerCiudadesPorProvinciaRequest" name="obtenerCiudadesPorProvinciaRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:obtenerCiudadesPorProvinciaResponse" name="obtenerCiudadesPorProvinciaResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="ConsultarEstadoCotizacion2">
+
+         <wsdl:input message="impl:ConsultarEstadoCotizacion2Request" name="ConsultarEstadoCotizacion2Request">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:ConsultarEstadoCotizacion2Response" name="ConsultarEstadoCotizacion2Response">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="ConsultarEstadoCotizacion">
+
+         <wsdl:input message="impl:ConsultarEstadoCotizacionRequest" name="ConsultarEstadoCotizacionRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:ConsultarEstadoCotizacionResponse" name="ConsultarEstadoCotizacionResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="GenerarVariasCotizacion">
+
+         <wsdl:input message="impl:GenerarVariasCotizacionRequest" name="GenerarVariasCotizacionRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:GenerarVariasCotizacionResponse" name="GenerarVariasCotizacionResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="GenerarCotizacion">
+
+         <wsdl:input message="impl:GenerarCotizacionRequest" name="GenerarCotizacionRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:GenerarCotizacionResponse" name="GenerarCotizacionResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="obtenerParroquiasPorCiudad">
+
+         <wsdl:input message="impl:obtenerParroquiasPorCiudadRequest" name="obtenerParroquiasPorCiudadRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:obtenerParroquiasPorCiudadResponse" name="obtenerParroquiasPorCiudadResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="CotizacionGanderoQBESoapBinding" type="impl:CotizacionGanderoQBE">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="obtenerRazas">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="obtenerRazasRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="obtenerRazasResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="obtenerTiposGanadoVacuno">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="obtenerTiposGanadoVacunoRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="obtenerTiposGanadoVacunoResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="obtenerProvincias">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="obtenerProvinciasRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="obtenerProvinciasResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="obtenerCiudadesPorProvincia">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="obtenerCiudadesPorProvinciaRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="obtenerCiudadesPorProvinciaResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="ConsultarEstadoCotizacion2">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="ConsultarEstadoCotizacion2Request">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="ConsultarEstadoCotizacion2Response">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="ConsultarEstadoCotizacion">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="ConsultarEstadoCotizacionRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="ConsultarEstadoCotizacionResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="GenerarVariasCotizacion">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="GenerarVariasCotizacionRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="GenerarVariasCotizacionResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="GenerarCotizacion">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="GenerarCotizacionRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="GenerarCotizacionResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="obtenerParroquiasPorCiudad">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="obtenerParroquiasPorCiudadRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="obtenerParroquiasPorCiudadResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="CotizacionGanderoQBEService">
+
+      <wsdl:port binding="impl:CotizacionGanderoQBESoapBinding" name="CotizacionGanderoQBE">
+<!--
+         <wsdlsoap:address location="http://localhost:9094/CotizadorWeb/services/CotizacionGanderoQBE"/>
+ -->        
+<wsdlsoap:address location="http://www.miqbe.com.ec/Cotizador/services/CotizacionGanderoQBE"/>
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

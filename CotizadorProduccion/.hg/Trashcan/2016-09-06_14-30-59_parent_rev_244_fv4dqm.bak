@@ -1,0 +1,469 @@
+diff --git a/WebContent/dashboard/CotizacionAprobacionAgricola.jsp b/WebContent/dashboard/CotizacionAprobacionAgricola.jsp
+--- a/WebContent/dashboard/CotizacionAprobacionAgricola.jsp
++++ b/WebContent/dashboard/CotizacionAprobacionAgricola.jsp
+@@ -72,7 +72,7 @@
+ 	var PuntosVentaList = "";
+ 	var ProcesoMasivo="";
+ 	$(document).ready(function() {
+-			activarMenu("CotizacionAprobacionAgricola");
++			activarMenu(this);
+ 			//Cargar combo 
+ 			//$("#punto_venta").children().remove();
+ 			//$("#punto_venta").append("<option value=''>Seleccione punto venta</option>");
+@@ -76,6 +76,7 @@
+ 			//Cargar combo 
+ 			//$("#punto_venta").children().remove();
+ 			//$("#punto_venta").append("<option value=''>Seleccione punto venta</option>");
++			$("#cambios").hide();
+ 			CargarComboAgente();
+ 			obtenerCanal();
+ 			CargarCombo();
+@@ -439,7 +440,9 @@
+                       { field: "DisponeAsistencia", title: "Dispone Asistencia", width: "50px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+                       { field: "AgricultorTecnificado", title: "Agricultor es Tecnificado", width: "50px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+                       { field: "ObservacionRegla", title: "Observación", width: "160px"},
+-                      { field: "EstadoCotizacion", title: "Estado", width: "100px", hidden: true, exportar: true}, 
++                      { field: "tieneModificacion", title: "Modificaciones", width: "100px",headerAttributes: { style: "white-space: normal"}},
++      				  { field: "detalleModificacion", title: "Detalle Modificacion", width: "160px",headerAttributes: { style: "white-space: normal"}},
++      				  { field: "EstadoCotizacion", title: "Estado", width: "100px", hidden: true, exportar: true}, 
+                       { field: "usuarioCotizador", title: "Usuario Offline", width: "80px", hidden: true, exportar: true},
+ 			{ command: { text: "Ver Detalle", click: fnEventoClick }, title: " ", width: "100px"}],
+             height: 500,
+@@ -557,6 +560,15 @@
+ 						$('#DisponeRiego').html(data.DisponeRiego);
+ 						$('#DisponeAsistencia').html(data.DisponeAsistencia);
+ 						$('#AgricultorTecnificado').html(data.AgricultorTecnificado);
++						
++						if(data.tieneCambios=="SI"){
++							$('#cambios').show();
++							$('#detalleCambio').html(data.detalleCambios);
++							
++						}else{
++							$('#cambios').hide();
++						}
++						
+ 						Reglas = data.Regla;
+ 						
+ 						if (data.tasa == 0) {
+@@ -1015,6 +1027,14 @@
+ 													</td>
+ 												</tr>
+ 												
++												<!-- Mostrar en pantalla los cambios de sitio y fecha de siembra -->												
++												<tr id="cambios">
++													<td style="color: blue;">Cambio Fecha/Sitio:</td>
++													<td colspan="3">
++														<div id="detalleCambio"></div>
++													</td>														
++												</tr>
++												
+ 											</table>
+ 										</td>
+ 									</tr>
+diff --git a/WebContent/dashboard/ResumenCotizaciones.jsp b/WebContent/dashboard/ResumenCotizaciones.jsp
+--- a/WebContent/dashboard/ResumenCotizaciones.jsp
++++ b/WebContent/dashboard/ResumenCotizaciones.jsp
+@@ -72,6 +72,7 @@
+ 			activarMenu(this);
+ 			
+ 			$("#loading").hide();
++			$("#cambios").hide();
+ 			
+ 			$("#estado").kendoMultiSelect({
+  				dataTextField : "nombre",
+@@ -461,6 +462,8 @@
+ 				{ field: "AgricultorTecnificado", title: "Agricultor es Tecnificado", width: "50px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 				{ field: "ObservacionRegla", title: "Observación", width: "160px",headerAttributes: { style: "white-space: normal"}},
+ 				{ field: "ObservacionQBE", title: "ObservacionQBE", width: "160px",headerAttributes: { style: "white-space: normal"}},
++				{ field: "tieneModificacion", title: "Modificaciones", width: "100px",headerAttributes: { style: "white-space: normal"}},
++				{ field: "detalleModificacion", title: "Detalle Modificacion", width: "160px",headerAttributes: { style: "white-space: normal"}},
+ 				{ field: "Confirmacion", title: "Confirmación Canal", width: "160px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 				{ field: "EstadoCotizacion", title: "Estado", width: "100px",headerAttributes: { style: "white-space: normal"}},
+ 				{ field: "Confirmacion", title: "Confirmación de Emisión del Canal", width: "120px", attributes:{style:"color: red;"},headerAttributes: { style: "white-space: normal"}},
+@@ -559,6 +562,7 @@
+ 	// actualizar valores 
+ 	function actualizar(Cotizacion) {
+ 		$("#CotizacionId").val("");
++		$('#detalleCambio').html("");
+ 		($("#SumaAsegurada").data("kendoNumericTextBox")).value(0);
+ 		($("#PrimaNetaTotal").data("kendoNumericTextBox")).value(0);
+ 		($("#Tasa").data("kendoNumericTextBox")).value(0);
+@@ -617,6 +621,14 @@
+ 						$('#DisponeRiego').html(data.DisponeRiego);
+ 						$('#DisponeAsistencia').html(data.DisponeAsistencia);
+ 						$('#AgricultorTecnificado').html(data.AgricultorTecnificado);
++						if(data.tieneCambios=="SI"){
++							$('#cambios').show();
++							$('#detalleCambio').html(data.detalleCambios);
++							
++						}else{
++							$('#cambios').hide();
++						}
++						
+ 						//Reglas = data.Regla;
+ 						
+ 						/*if (data.tasa == 0) {
+@@ -895,6 +907,13 @@
+ 													</td>
+ 												</tr>
+ 												
++												<!-- Mostrar en pantalla los cambios de sitio y fecha de siembra -->												
++												<tr id="cambios">
++													<td style="color: blue;">Cambio Fecha/Sitio:</td>
++													<td colspan="3">
++														<div id="detalleCambio"></div>
++													</td>														
++												</tr>												
+ 											</table>
+ 										</td>
+ 									</tr>
+diff --git a/src/com/qbe/cotizador/dao/producto/agricola/AgriCotizacionEndosoDAO.java b/src/com/qbe/cotizador/dao/producto/agricola/AgriCotizacionEndosoDAO.java
+--- a/src/com/qbe/cotizador/dao/producto/agricola/AgriCotizacionEndosoDAO.java
++++ b/src/com/qbe/cotizador/dao/producto/agricola/AgriCotizacionEndosoDAO.java
+@@ -172,7 +172,7 @@
+ 	
+ 	public List <AgriCotizacionEndoso> buscarPorCotizacionIdAnexo(BigInteger cotizacionId,String anexo){
+ 		AgriCotizacionEndoso agriCotizacionEndoso = new AgriCotizacionEndoso();
+-		List <AgriCotizacionEndoso>results = getEntityManager().createNamedQuery("AgriCotizacionEndoso.Anexo", AgriCotizacionEndoso.class).setParameter("cotizacionId", cotizacionId).setParameter("anexo", anexo).getResultList();
++		List <AgriCotizacionEndoso>results = getEntityManager().createNamedQuery("AgriCotizacionEndoso.buscarCotizacionIdAnexo", AgriCotizacionEndoso.class).setParameter("cotizacionId", cotizacionId).setParameter("anexo", anexo).getResultList();
+ 		return results;
+ 	}
+ 	public int buscarNumAnexoPorCotizacionId(BigInteger cotizacionId){
+diff --git a/src/com/qbe/cotizador/model/AgriCotizacionAprobacion.java b/src/com/qbe/cotizador/model/AgriCotizacionAprobacion.java
+--- a/src/com/qbe/cotizador/model/AgriCotizacionAprobacion.java
++++ b/src/com/qbe/cotizador/model/AgriCotizacionAprobacion.java
+@@ -234,7 +234,12 @@
+ 	@Column(name = "TIENE_INDEMNIZACION")
+ 	private String tieneIndemnizacion;
+ 	
++	@Column(name = "TIENE_MODIFICACION")
++	private String tieneModificacion;
++	
++	@Column(name = "DETALLES_MODIFICACION")
++	private String detalleModificacion;
+ 	
+ 	private double sumaAseguradaPorCiento;
+ 	
+ 	private double primaNetaPorCiento;
+@@ -237,7 +242,25 @@
+ 	
+ 	private double sumaAseguradaPorCiento;
+ 	
+ 	private double primaNetaPorCiento;
++	
++	
++
++	public String getTieneModificacion() {
++		return tieneModificacion;
++	}
++
++	public void setTieneModificacion(String tieneModificacion) {
++		this.tieneModificacion = tieneModificacion;
++	}
++
++	public String getDetalleModificacion() {
++		return detalleModificacion;
++	}
++
++	public void setDetalleModificacion(String detalleModificacion) {
++		this.detalleModificacion = detalleModificacion;
++	}
+ 
+ 	public double getSumaAseguradaPorCiento() {
+ 		return sumaAseguradaPorCiento;
+diff --git a/src/com/qbe/cotizador/model/AgriObjetoCotizacion.java b/src/com/qbe/cotizador/model/AgriObjetoCotizacion.java
+--- a/src/com/qbe/cotizador/model/AgriObjetoCotizacion.java
++++ b/src/com/qbe/cotizador/model/AgriObjetoCotizacion.java
+@@ -116,8 +116,28 @@
+ 	@Column(name="TIENE_INDEMNIZACION")
+ 	private boolean tieneIndemnizacion;
+ 	
+-	
+-	
++	@Column(name="DETALLES_MODIFICACION")
++	private String detallesModificacion;
++		
++	@Column(name="TIENE_MODIFICACION")
++	private boolean tieneModificacion;
++		
++	public String getDetallesModificacion() {
++		return detallesModificacion;
++	}
++
++	public void setDetallesModificacion(String detallesModificacion) {
++		this.detallesModificacion = detallesModificacion;
++	}
++
++	public boolean isTieneModificacion() {
++		return tieneModificacion;
++	}
++
++	public void setTieneModificacion(boolean tieneModificacion) {
++		this.tieneModificacion = tieneModificacion;
++	}
++
+ 	public boolean isTieneIndemnizacion() {
+ 		return tieneIndemnizacion;
+ 	}
+diff --git a/src/com/qbe/cotizador/model/Canton.java b/src/com/qbe/cotizador/model/Canton.java
+--- a/src/com/qbe/cotizador/model/Canton.java
++++ b/src/com/qbe/cotizador/model/Canton.java
+@@ -16,7 +16,7 @@
+ @Entity
+ @NamedQueries({
+ 	@NamedQuery(name="Canton.buscarPorId", query="SELECT c FROM Canton c where c.id = :id"),
+-	@NamedQuery(name="Canton.buscarTodos", query="SELECT c FROM Canton c"),
++	@NamedQuery(name="Canton.buscarTodos", query="SELECT c FROM Canton c where c.activo='1' "),
+ 	@NamedQuery(name="Canton.buscarPorProvincia", query="SELECT c FROM Canton c where c.provincia = :provincia"),
+ 	@NamedQuery(name="Canton.buscarPorNombre", query="SELECT c FROM Canton c where c.nombre = :nombre"),
+ 	@NamedQuery(name="Canton.buscarCodigoSBS", query="SELECT c FROM Canton c where c.codigoSbs = :id"),
+@@ -34,6 +34,8 @@
+ 	private String codigoSbs;
+ 
+ 	private String nombre;
++	
++	private String activo;
+ 
+ 	//bi-directional many-to-one association to Provincia
+ 	@ManyToOne
+@@ -43,6 +45,16 @@
+ 	@OneToMany(mappedBy="canton")
+ 	private List<Parroquia> parroquias;
+ 
++	
++	
++	public String getActivo() {
++		return activo;
++	}
++
++	public void setActivo(String activo) {
++		this.activo = activo;
++	}
++
+ 	public Canton() {
+ 	}
+ 
+diff --git a/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java b/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java
+--- a/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java
++++ b/src/com/qbe/cotizador/servicios/QBE/agricolaSucre/SolicitudAgricola.java
+@@ -2262,8 +2262,7 @@
+ 						
+ 			if(comprobacionAnio !=4)
+ 				throw new Exception("Fecha de siembra no valida "+fechaSiembra+" no valida, debe estar en el formato dd/MM/yyyy");
+-			
+-			
++						
+ 			/*Proceso de validacion de campos*/
+ 			if(tramite.equals("")||tramite==null){
+ 				throw new Exception("Error el numero de tramite no puede ser null o vacio");
+@@ -2267,8 +2266,7 @@
+ 			/*Proceso de validacion de campos*/
+ 			if(tramite.equals("")||tramite==null){
+ 				throw new Exception("Error el numero de tramite no puede ser null o vacio");
+-			}
+-			
++			}			
+ 			
+ 			if(fechaSiembra.equals("")||fechaSiembra==null){
+ 				throw new Exception("Error el numero de tramite no puede ser null o vacio");
+@@ -2286,9 +2284,7 @@
+ 			if(cotizacion.getId()==null){
+ 				throw new Exception("El numero de tramite : "+tramite+" no existe.");
+ 			}
+-			
+-			
+-			
++					
+ 			CotizacionDetalleDAO cotizacionDetalleDAO= new CotizacionDetalleDAO();
+ 			CotizacionDetalle cotizacionDetalle = cotizacionDetalleDAO.buscarCotizacionDetallePorCotizacion(cotizacion).get(0);
+ 			AgriObjetoCotizacionDAO agriObjetoCotizacionDAO= new AgriObjetoCotizacionDAO();
+@@ -2292,5 +2288,12 @@
+ 			CotizacionDetalleDAO cotizacionDetalleDAO= new CotizacionDetalleDAO();
+ 			CotizacionDetalle cotizacionDetalle = cotizacionDetalleDAO.buscarCotizacionDetallePorCotizacion(cotizacion).get(0);
+ 			AgriObjetoCotizacionDAO agriObjetoCotizacionDAO= new AgriObjetoCotizacionDAO();
+-			AgriObjetoCotizacion agriObjetoCotizacion= agriObjetoCotizacionDAO.buscarPorId(new BigInteger(cotizacionDetalle.getObjetoId()));
++			AgriObjetoCotizacion agriObjetoCotizacion= agriObjetoCotizacionDAO.buscarPorId(new BigInteger(cotizacionDetalle.getObjetoId()));			
++				
++			/**PROCESO DE ACTUALIZACION EN CASO DE ESTAR PENDIENTE, APROBADO O RECHAZADO**/
++			/**
++			 * 1) EN CASO DE ESTAR PENDIENTE, SE REGISTRA EL CAMBIO DE SITIO O FECHA Y SE LO ACTUALIZA SIN RESTRICCION
++			 * 2) EN CASO DE ESTAR APROBADA, SE DEJA COMO APROBADA, SE ENVIA UN CORREO ELECTRONICO, Y SE REGISTRA EL CAMBIO DE SITIO O FECHA PARA VERLO POR PANTALLA
++			 * 3) EN CASO DE ESTAR RECHAZADA, SE LA PONE COMO PENDIETE, SE ENVIA UN CORREO Y SE REGISTRA EL CAMVIO DE SITIO O FECHA PARA VERLO POR PANTALLA
++			 */
+ 			
+@@ -2296,8 +2299,4 @@
+ 			
+-				
+-			if(cotizacion.getEstado().getNombre().equals("Pendiente de Emitir")||agriObjetoCotizacion.getConfirEmiCanal()){
+-				throw new Exception("El numero de tramite : "+tramite+" no puede modificar la fecha, y� esta aprobado.");
+-			}
+ 			
+ 			/*Proceso de auditoria de estados anteriores*/
+ 			String fechaAnterior=""+auditoria.getObjeto();
+@@ -2308,6 +2307,17 @@
+ 				fechaAnteriorSiembra="Sin fecha";
+ 			}
+ 			fechaAnterior =fechaAnterior+" fecha anterior: "+fechaAnteriorSiembra;
++			
++			//Verificamos en que estado esta
++			if(cotizacion.getEstado().getId().equals("30")){//si esta CANCELADA se la pone en aprobacion nuevamente para que sea revisada
++				EstadoDAO estadoDAO= new EstadoDAO();
++				Estado estado=estadoDAO.buscarPorId("21");
++				cotizacion.setEstado(estado);
++			}
++			String detalleCambio=(agriObjetoCotizacion.getDetallesModificacion()==null)?" Fecha Anterior de Siembra: "+formatoDelTexto.format(agriObjetoCotizacion.getFechaSiembra())+ " Fecha actual de Siembra: "+fechaSiembra+" |": 
++				agriObjetoCotizacion.getDetallesModificacion()+" Fecha Anterior de Siembra: "+formatoDelTexto.format(agriObjetoCotizacion.getFechaSiembra())+ " Fecha actual de Siembra: "+fechaSiembra+" |";
++			agriObjetoCotizacion.setTieneModificacion(true);	
++			agriObjetoCotizacion.setDetallesModificacion(detalleCambio);
+ 			agriObjetoCotizacion.setFechaSiembra(FechaNuevaSiembra);
+ 			AgriObjetoCotizacionTransaction agriObjetoCotizacionTransaction = new AgriObjetoCotizacionTransaction();
+ 			agriObjetoCotizacionTransaction.editar(agriObjetoCotizacion);
+@@ -2320,14 +2330,7 @@
+ 			respuesta.setTramite(tramite);
+ 			String fechaCambio= formatoDelTexto.format(date2);
+ 			respuesta.setFechaCambio(""+fechaCambio);
+-			try{
+-				/**PROCESO DE CREACION DEL DETALLE DE LA COTIZACION ENDOSO***/
+-				AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
+-				agriCotizacionDetalleProcesos.creardetalleCotizacion(cotizacion,"Cambio de fecha");
+-				/**FIN DE REGISTRO DE ENDOSO**/
+-			}catch(Exception e){
+-				e.printStackTrace();
+-			}
++						
+ 			auditoria.setObjeto(fechaAnterior);
+ 			auditoria.setEstado("ok");
+ 			try{
+@@ -2335,27 +2338,8 @@
+ 			}catch(Exception e){
+ 				e.printStackTrace();
+ 			}
+-			
+-			try{
+-				procesoAuditoria.editar(auditoria);
+-			}catch(Exception e){
+-				e.printStackTrace();
+-			}
+-			
+-			/**NOTIFICAMOS A QBE POR CORREOS ELECTRONICOS**/
+-			List<String> usuario = new ArrayList<>();
+-			usuario.add("luis.caiza@smartwork.com.ec");
+-			usuario.add("Leonardo.Regalado@qbe.com.ec");
+-			String asunto="CAMBIO DE LUGAR DE SIEMBRA";
+-			AgriSucreNotificacionErrores notificacionErrores= new AgriSucreNotificacionErrores();
+-			String Html=notificacionErrores.GeneradorHtml(tramite
+-					, "EL TRAMITE: "+tramite+" tuvo un cambio de fecha de siembra a "+fechaSiembra+" la fecha enterior fue "+fechaAnteriorSiembra, "");
+-			
+-			for(String receptor:usuario){
+-				//Utilitarios.envioMail(receptor, asunto, cuerpo);
+-				Utilitarios.envioMail(receptor, asunto, Html);
+-			}
+-			
++					
++					
+ 			
+ 		}catch(Exception e){
+ 			//SI EXISTE ERROR ENVIAR UN MENSAJE DE ERROR
+@@ -2495,7 +2479,10 @@
+ 				throw new Exception("El numero de tramite : "+tramite+" no existe.");
+ 			}
+ 			
+-			if(cotizacion.getEstado().getNombre().equals("Pendiente de Emitir")||agriObjetoCotizacion.getConfirEmiCanal()){
+-				throw new Exception("El numero de tramite : "+tramite+" no puede modificar la fecha, y� esta aprobado.");
+-			}
++			/**PROCESO DE ACTUALIZACION EN CASO DE ESTAR PENDIENTE, APROBADO O RECHAZADO**/
++			/**
++			 * 1) EN CASO DE ESTAR PENDIENTE, SE REGISTRA EL CAMBIO DE SITIO O FECHA Y SE LO ACTUALIZA SIN RESTRICCION
++			 * 2) EN CASO DE ESTAR APROBADA, SE DEJA COMO APROBADA, SE ENVIA UN CORREO ELECTRONICO, Y SE REGISTRA EL CAMBIO DE SITIO O FECHA PARA VERLO POR PANTALLA
++			 * 3) EN CASO DE ESTAR RECHAZADA, SE LA PONE COMO PENDIETE, SE ENVIA UN CORREO Y SE REGISTRA EL CAMVIO DE SITIO O FECHA PARA VERLO POR PANTALLA
++			 */					
+ 			
+@@ -2501,4 +2488,4 @@
+ 			
+-			String temporal=auditoria.getObjeto()+ "|||| ProvinciaAnterior : "+agriObjetoCotizacion.getProvinciaId()+ " CantonIdAnterior : "+agriObjetoCotizacion.getCantonId()+" ParroquiaIdAnterior : "+agriObjetoCotizacion.getParroquiaId()
++			String temporal= auditoria.getObjeto()+ "|||| ProvinciaAnterior : "+agriObjetoCotizacion.getProvinciaId()+ " CantonIdAnterior : "+agriObjetoCotizacion.getCantonId()+" ParroquiaIdAnterior : "+agriObjetoCotizacion.getParroquiaId()
+ 					+" DireccionSiembraAnterior : "+agriObjetoCotizacion.getDireccionSiembra()+" latitudAnterior : "+agriObjetoCotizacion.getLatitud()+" longitudAnterior : "+agriObjetoCotizacion.getLongitud();
+ 			
+@@ -2503,5 +2490,15 @@
+ 					+" DireccionSiembraAnterior : "+agriObjetoCotizacion.getDireccionSiembra()+" latitudAnterior : "+agriObjetoCotizacion.getLatitud()+" longitudAnterior : "+agriObjetoCotizacion.getLongitud();
+ 			
++			//sitio de siembra actual
++			Provincia provinciaActual= laProvincia.buscarPorId(agriObjetoCotizacion.getProvinciaId().toString());
++			Canton cantonActual=elCanton.buscarPorId(agriObjetoCotizacion.getCantonId().toString());
++			AgriParroquia parroquiaActual=laParroquia.BuscarPorId(Integer.parseInt(agriObjetoCotizacion.getAgriParroquiaId()));
++			
++			String mensajePantalla= agriObjetoCotizacion.getDetallesModificacion()==null? " Sitio Anterior: "+ provinciaActual.getNombre()+"/"+cantonActual.getNombre()+"/"+parroquiaActual.getParroquiaNombre()+"/"+agriObjetoCotizacion.getDireccionSiembra()
++					+" Sitio Actual: "+ provincia.getNombre()+"/"+canton.getNombre()+"/"+parroquia.getParroquiaNombre()+"/"+direccionSiembra +" | ":
++						agriObjetoCotizacion.getDetallesModificacion()+ " Sitio Anterior: "+provinciaActual.getNombre()+"/"+cantonActual.getNombre()+"/"+parroquiaActual.getParroquiaNombre()+"/"+agriObjetoCotizacion.getDireccionSiembra()
++						+" Sitio Actual: "+ provincia.getNombre()+"/"+canton.getNombre()+"/"+parroquia.getParroquiaNombre()+"/"+direccionSiembra +" | ";
++			
+ 			/*Proceso de auditoria de estados anteriores*/
+ 			agriObjetoCotizacion.setProvinciaId(new BigInteger(provincia.getId()));
+ 			agriObjetoCotizacion.setCantonId(new BigInteger(canton.getId()));
+@@ -2515,6 +2512,16 @@
+ 					throw new Exception("la Longitud "+latitud+" debe ser un numero");
+ 				}				
+ 			}
++							
++			//Verificamos en que estado esta
++			if(cotizacion.getEstado().getId().equals("30")){//si esta CANCELADA se la pone en aprobacion nuevamente para que sea revisada
++				EstadoDAO estadoDAO= new EstadoDAO();
++				Estado estado=estadoDAO.buscarPorId("21");
++				cotizacion.setEstado(estado);
++			}
++			
++			agriObjetoCotizacion.setTieneModificacion(true);	
++			agriObjetoCotizacion.setDetallesModificacion(mensajePantalla);
+ 			
+ 			AgriObjetoCotizacionTransaction agriObjetoCotizacionTransaction = new AgriObjetoCotizacionTransaction();
+ 			agriObjetoCotizacionTransaction.editar(agriObjetoCotizacion);
+@@ -2522,6 +2529,7 @@
+ 			CotizacionTransaction cotizacionTransaction= new CotizacionTransaction();
+ 			cotizacionTransaction.editar(cotizacion);
+ 			
++			
+ 			respuesta.setEstado("OK");
+ 			respuesta.setObservacion("PROCESO CORRECTO");
+ 			respuesta.setTramite(tramite);
+@@ -2530,15 +2538,8 @@
+ 			
+ 			auditoria.setObjeto(temporal);
+ 			auditoria.setEstado("ok");
+-			try{
+-				/**PROCESO DE CREACION DEL DETALLE DE LA COTIZACION ENDOSO***/
+-				AgriCotizacionDetalleProcesos agriCotizacionDetalleProcesos = new AgriCotizacionDetalleProcesos();
+-				agriCotizacionDetalleProcesos.creardetalleCotizacion(cotizacion, "cambio de lugar");
+-				/**FIN DE REGISTRO DE ENDOSO**/
+-			}catch(Exception e){
+-				e.printStackTrace();
+-			}
++			
+ 			try{
+ 				procesoAuditoria.editar(auditoria);
+ 			}catch(Exception e){
+ 				e.printStackTrace();
+@@ -2541,23 +2542,8 @@
+ 			try{
+ 				procesoAuditoria.editar(auditoria);
+ 			}catch(Exception e){
+ 				e.printStackTrace();
+-			}
+-			
+-			/**NOTIFICAMOS A QBE POR CORREOS ELECTRONICOS**/
+-			List<String> usuario = new ArrayList<>();
+-			usuario.add("luis.caiza@smartwork.com.ec");
+-			usuario.add("Leonardo.Regalado@qbe.com.ec");
+-			String asunto="CAMBIO DE LUGAR DE SIEMBRA";
+-			AgriSucreNotificacionErrores notificacionErrores= new AgriSucreNotificacionErrores();
+-			String Html=notificacionErrores.GeneradorHtml(tramite
+-					, "EL TRAMITE: "+tramite+" tuvo un cambio de lugar de siembra, por favor revisar el detalle en el aplicativo", "");
+-			
+-			for(String receptor:usuario){
+-				//Utilitarios.envioMail(receptor, asunto, cuerpo);
+-				Utilitarios.envioMail(receptor, asunto, Html);
+-			}
+-			
++			}	
+ 		}catch(Exception e){
+ 			//SI EXISTE ERROR ENVIAR UN MENSAJE DE ERROR
+ 			List<String> usuario = new ArrayList<>();

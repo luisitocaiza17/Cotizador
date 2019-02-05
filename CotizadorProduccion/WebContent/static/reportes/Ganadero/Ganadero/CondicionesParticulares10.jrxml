@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CondicionesParticulares10" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="c60e6578-bce5-423a-a5b3-c80020a3bdaf">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="COTIZADOR"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="cot_Id" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT DISTINCT COT.ID AS COTIZACIONID, ENT.ID, COT.AGENTE_ID, ENT.NOMBRE_COMPLETO,
+VIGP.NOMBRE, COT.TASA_PRODUCTO_VALOR, COT.SUMA_ASEGURADA_TOTAL, VIGP.ID AS VIGENCIA
+FROM ENTIDAD ENT INNER JOIN CLIENTE CLI
+ON ENT.ID = CLI.entidad_id INNER JOIN COTIZACION COT
+ON CLI.ID = COT.CLIENTE_ID INNER JOIN AGENTE AGE
+ON COT.AGENTE_ID = AGE.ID INNER JOIN VIGENCIA_POLIZA VIGP
+ON COT.VIGENCIA_POLIZA_ID = VIGP.ID
+AND COT.ID = $P{cot_Id}]]>
+	</queryString>
+	<field name="COTIZACIONID" class="java.lang.Long"/>
+	<field name="ID" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="AGENTE_ID" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="NOMBRE_COMPLETO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="NOMBRE" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TASA_PRODUCTO_VALOR" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="SUMA_ASEGURADA_TOTAL" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="VIGENCIA" class="java.lang.Long"/>
+	<detail>
+		<band height="748" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="70" width="490" height="70" uuid="ebd2dbe9-cfbd-49ef-a2c8-172af3a5b475"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Existe una amplia gama de precios del ganado, diferenciado por su origen, por la calidad individual del animal (características fenotípicas),  genética, capacidad productiva, etc. Por lo que trabajaremos con tablas de rangos de precios elaborados conjuntamente entre MAGAP y Seguros Sucre S.A; sujetos a revisión, recomendación y aceptación individual por parte de Seguros Sucre S.A.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="40" width="230" height="20" uuid="270644b0-7415-4315-97e1-065858e16d8d"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[7.2: Precios de los animales a asegurar]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="151" width="120" height="20" uuid="211588b6-a6f2-46c3-89b1-0fe67920dda8"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[7.3: Formade pago]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="181" width="490" height="70" uuid="5c9b9875-3bdf-4933-a968-6c02e0b67241"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[La forma de pago será 40% más impuestos en efectivo mediante depósito en cuentas que indique la aseguradora y el valor correspondiente al 60% del subsidio del Estado será cancelado conforme a lo establecido en el “Instructivo de Gestión de AgroSeguro para el copago de subsidio a pólizas de seguros agrícolas y pesqueros.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="310" width="490" height="50" uuid="77acdeaa-6db5-4da5-bdbc-f6ebf02096d7"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[El deducible es variable dependiendo de la categoría en la que se encuentre asegurado el animal y del número de siniestros presentados.   Se considera  como siniestro el evento que cause la muerte o sacrificio forzoso del animal asegurado individualmente.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="270" width="160" height="20" uuid="c90164d9-befa-4a92-8d51-9d2bbce2649e"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ARTÍCULO N° 8: DEDUCIBLE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="370" width="180" height="20" uuid="d87ceeaf-1b6d-4b9c-9b18-c9e0ea2b0c63"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Deducibles Transporte Interno]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="402" width="490" height="20" uuid="1cb54a47-c7e6-4e36-91e1-1e49baec50d4"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Deducible del 20% del valor del siniestro, mínimo 2% del valor del embarque. ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="434" width="195" height="20" uuid="54704b31-e94c-4127-8a31-ff9836ccb204"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Deducible picadura de serpiente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="466" width="490" height="75" uuid="1e0b94f1-b8c2-4203-849c-eab5a61fd794"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Deducible del 30% del valor del siniestro.
+El Asegurado es responsable por el pago del deducible con respecto a todos y cada uno de los siniestros, el mismo que será descontado de la liquidación, luego del recupero.  Los Aseguradores serán responsables sólo por los montos que superen el deducible, máximo hasta la Suma Asegurada.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="552" width="448" height="20" uuid="604bd035-7930-4216-acbe-49ad1d2ca188"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ARTÍCULO N° 9: DECLARACIÓN FALSA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="585" width="490" height="65" uuid="fd179cc8-ba4d-4ea8-88dd-c3a17668f395"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[El asegurado está obligado a declarar de manera veraz los hechos y circunstancias que determinan el estado del riesgo. La reticencia o inexactitud sobre los hechos o circunstancias que, conocidos por la Compañía la hubieren retraído de celebrar el contrato, o inducido a estipular condiciones más gravosas producen la nulidad relativa del seguro.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="650" width="490" height="91" uuid="d2edee6a-cae3-4b4d-9f73-be2e110e3a65"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Tal nulidad de entiende saneada por el conocimiento de la Compañía de dichas circunstancias, antes de perfeccionarse el contrato, o después, si las acepta expresamente.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="690" width="490" height="51" uuid="051655d1-441b-449d-a22b-6e9deaf95486"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Si el contrato se rescinde, la Compañía tiene el derecho de retener la prima por el tiempo transcurrido.]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<summary>
+		<band height="56">
+			<subreport>
+				<reportElement x="0" y="0" width="550" height="50" uuid="fb4b4146-7d28-43ac-8d72-e44144f2bdb6"/>
+				<subreportParameter name="cot_Id">
+					<subreportParameterExpression><![CDATA[$P{cot_Id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["Ganadero/CondicionesParticulares11.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

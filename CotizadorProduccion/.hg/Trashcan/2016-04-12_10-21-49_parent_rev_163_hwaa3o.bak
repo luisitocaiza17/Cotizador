@@ -1,0 +1,28 @@
+diff --git a/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java b/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java
+--- a/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java
++++ b/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java
+@@ -404,7 +404,7 @@
+ 				/*if(in0.getCodigoFacilitador()!=null)
+ 					cotizacion.setAgenteId(new BigInteger(in0.getCodigoFacilitador()));	
+ 				else*/
+-				cotizacion.setAgenteId(new BigInteger("1"));//VERIFICAR 			
++						
+ 				cotizacion.setGrupoProductoId(BigInteger.valueOf(Long.valueOf(grupoPorProducto.getGrupoProducto().getId())));
+ 				cotizacion.setGrupoPorProductoId(BigInteger.valueOf(Long.valueOf(grupoPorProducto.getId())));
+ 				cotizacion.setProducto(grupoPorProducto.getProducto());			
+@@ -628,6 +628,15 @@
+ 		                    valorIva = Math.rint(Double.parseDouble(variable.getValor())*valorSubTotal/100*100)/100;
+ 		                    cotizacion.setImpIva(valorIva);
+ 		                }
++		        		if(variable.getNombre().equals("COMISION_BANCACOMUNAL")){
++		        			 cotizacion.setPorcentajeComision(Double.parseDouble(variable.getValor()));//%COMISION DE AGENTE
++		        		}
++		        		 	
++		        		if(variable.getNombre().equals("AGENTE_BANCACOMUNAL")){
++		        			cotizacion.setAgenteId(new BigInteger(variable.getValor()));//AGENTE AL QUE SE ATA
++		        			
++		        		}
++		        		
+ 		        	}
+ 		        	valorTotal = Math.rint((valorBase+valorIva)*100)/100;
+ 		            cotizacion.setTotalFactura(valorTotal);

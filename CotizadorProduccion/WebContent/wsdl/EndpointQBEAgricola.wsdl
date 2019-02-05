@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://bancaComunal.QBE.servicios.cotizador.qbe.com" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://bancaComunal.QBE.servicios.cotizador.qbe.com" xmlns:intf="http://bancaComunal.QBE.servicios.cotizador.qbe.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="http://bancaComunal.QBE.servicios.cotizador.qbe.com" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="consultarPrepoliza">
+    <complexType>
+     <sequence>
+      <element name="codigoEntidadFinanciera" type="xsd:int"/>
+      <element name="numeroResolucion" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="consultarPrepolizaResponse">
+    <complexType>
+     <sequence>
+      <element name="consultarPrepolizaReturn" type="impl:PrepolizaSeguroAgricolaResponseDTO"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="PrepolizaSeguroAgricolaResponseDTO">
+    <sequence>
+     <element name="codigoEntidadFinanciera" type="xsd:int"/>
+     <element name="derechosEmision" type="xsd:double"/>
+     <element name="estado" type="xsd:int"/>
+     <element name="fechaEvaluacion" nillable="true" type="xsd:string"/>
+     <element name="fechaVencimientoPoliza" nillable="true" type="xsd:string"/>
+     <element name="impuestoSeguroCampesino" type="xsd:double"/>
+     <element name="impuestoSuperintendeciaBancos" type="xsd:double"/>
+     <element name="iva" type="xsd:double"/>
+     <element name="numeroAnexo" nillable="true" type="xsd:string"/>
+     <element name="numeroPoliza" nillable="true" type="xsd:string"/>
+     <element name="numeroResolucion" nillable="true" type="xsd:string"/>
+     <element name="observacion" nillable="true" type="xsd:string"/>
+     <element name="primaFinanciada" type="xsd:double"/>
+     <element name="primaSubsidiada" type="xsd:double"/>
+     <element name="primaTotalConImpuestos" type="xsd:double"/>
+     <element name="recargoSeguroCampesino" type="xsd:double"/>
+     <element name="tasa" type="xsd:double"/>
+    </sequence>
+   </complexType>
+   <element name="generarDesenbolos">
+    <complexType>
+     <sequence>
+      <element name="solicitud" type="impl:DesembolsoDTO"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="DesembolsoDTO">
+    <sequence>
+     <element name="codigoEntidadFinanciera" type="xsd:int"/>
+     <element name="fechaDesembolso" nillable="true" type="xsd:string"/>
+     <element name="numeroOperacion" nillable="true" type="xsd:string"/>
+     <element name="numeroResolucion" nillable="true" type="xsd:string"/>
+     <element name="valorDesembolso" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="generarDesenbolosResponse">
+    <complexType>
+     <sequence>
+      <element name="generarDesenbolosReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="generarPrepoliza">
+    <complexType>
+     <sequence>
+      <element name="in0" type="impl:PrepolizaSeguroAgricolaDTO"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="PrepolizaSeguroAgricolaDTO">
+    <sequence>
+     <element name="cedulaRUCCliente" nillable="true" type="xsd:string"/>
+     <element name="codigoAgenciaOSucursal" type="xsd:int"/>
+     <element name="codigoCanton" type="xsd:int"/>
+     <element name="codigoEntidadFinanciera" type="xsd:int"/>
+     <element name="codigoParroquia" type="xsd:int"/>
+     <element name="codigoProvincia" type="xsd:int"/>
+     <element name="codigoTipoCultivo" type="xsd:int"/>
+     <element name="direccionLoteCultivo" nillable="true" type="xsd:string"/>
+     <element name="esTecnificado" nillable="true" type="xsd:string"/>
+     <element name="fechaAprobacionCredito" nillable="true" type="xsd:string"/>
+     <element name="fechaTentativaSiembra" nillable="true" type="xsd:string"/>
+     <element name="montoCredito" type="xsd:double"/>
+     <element name="montoPrima" type="xsd:double"/>
+     <element name="nombreCliente" nillable="true" type="xsd:string"/>
+     <element name="numeroHectareas" type="xsd:double"/>
+     <element name="numeroHectareasAsegurables" type="xsd:double"/>
+     <element name="numeroResolucion" nillable="true" type="xsd:string"/>
+     <element name="numeroTotalHectareas" type="xsd:double"/>
+     <element name="tasa" type="xsd:double"/>
+     <element name="telefonoReferencia" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="generarPrepolizaResponse">
+    <complexType>
+     <sequence>
+      <element name="generarPrepolizaReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="consultarPrepolizaResponse">
+
+      <wsdl:part element="impl:consultarPrepolizaResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="generarDesenbolosRequest">
+
+      <wsdl:part element="impl:generarDesenbolos" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="generarPrepolizaRequest">
+
+      <wsdl:part element="impl:generarPrepoliza" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="generarDesenbolosResponse">
+
+      <wsdl:part element="impl:generarDesenbolosResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="generarPrepolizaResponse">
+
+      <wsdl:part element="impl:generarPrepolizaResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="consultarPrepolizaRequest">
+
+      <wsdl:part element="impl:consultarPrepoliza" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:portType name="EndpointQBEAgricola">
+
+      <wsdl:operation name="consultarPrepoliza">
+
+         <wsdl:input message="impl:consultarPrepolizaRequest" name="consultarPrepolizaRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:consultarPrepolizaResponse" name="consultarPrepolizaResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="generarDesenbolos">
+
+         <wsdl:input message="impl:generarDesenbolosRequest" name="generarDesenbolosRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:generarDesenbolosResponse" name="generarDesenbolosResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="generarPrepoliza">
+
+         <wsdl:input message="impl:generarPrepolizaRequest" name="generarPrepolizaRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:generarPrepolizaResponse" name="generarPrepolizaResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="EndpointQBEAgricolaSoapBinding" type="impl:EndpointQBEAgricola">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="consultarPrepoliza">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="consultarPrepolizaRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="consultarPrepolizaResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="generarDesenbolos">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="generarDesenbolosRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="generarDesenbolosResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="generarPrepoliza">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="generarPrepolizaRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="generarPrepolizaResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="EndpointQBEAgricolaService">
+
+      <wsdl:port binding="impl:EndpointQBEAgricolaSoapBinding" name="EndpointQBEAgricola">
+
+         <wsdlsoap:address location="http://localhost:8080/CotizadorWeb/services/EndpointQBEAgricola"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

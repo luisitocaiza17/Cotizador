@@ -1,0 +1,942 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2016-12-01T14:57:00 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReporteNovaceredit" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c2101289-8d29-4e23-ae37-849a6f83aff1">
+	<property name="ireport.zoom" value="1.1000000000000068"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="149"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="NEW_DATAADAPTER1.xml"/>
+	<parameter name="COTIZACION_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[6]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Fuentes\\cotizador_pruebas\\WebContent\\static\\reportes\\CertificadosVehiculos\\Novacredit\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+    c.*,tc.*,e.*,ov.*,d.*,c.modelo_texto nombre_modelo,ma.nombre nombre_marca,co.nombre nombre_color
+FROM
+    VH_NOVACREDIT_COTIZACION c,
+    VH_NOVACREDIT_PERIODO p,
+    VH_NOVACREDIT_TIPO_COBERTURA tc,
+    VH_NOVACREDIT_TIPO_TASA tt,
+    VH_NOVACREDIT_TASA t,
+    ENTIDAD e,
+    OBJETO_VEHICULO ov,
+    DIRECCION d, MODELO m, MARCA ma, COLOR co
+WHERE
+    c.vh_novacredit_periodo_id = p.id
+        AND c.vh_novacredit_tipo_cobertura_id = tc.id
+        AND c.vh_novacredit_tipo_tasa_id = tt.id
+        AND tt.id = t.vh_novacredit_tipo_tasa_id
+        AND tc.id = t.vh_novacredit_tipo_cobertura_id
+        AND d.id = c.direccion_id
+        AND c.entidad_id = e.id
+        AND c.objeto_id = ov.id and ov.modelo_id=m.id and ma.id=m.marca_id and ov.color_id=co.id
+        AND c.id = $P{COTIZACION_ID}]]>
+	</queryString>
+	<field name="id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="numero_endoso" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="lugar" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fecha" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="vigencia_desde" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="vigencia_hasta" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="entidad_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="objeto_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="valor_casco" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="valor_extras" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="porcentaje_iva" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="vh_novacredit_tipo_cobertura_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="vh_novacredit_tipo_tasa_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="vh_novacredit_periodo_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fecha_nacimiento_entidad" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="direccion_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="prima_total" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="valor_asegurado_total" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="valor_scvs_total" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="valor_seguro_campesino_total" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="valor_derechos_emision_total" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="valor_iva_total" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="valor_total" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="descripcion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="poliza" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tipo_uso_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tipo_vehiculo_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="vigencia_desde_poliza" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="vigencia_hasta_poliza" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tipo_identificacion_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="identificacion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombres" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="apellidos" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombre_completo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ent_ensurance" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="mail" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fecha_creacion" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="telefono" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="celular" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="telefono_extension" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tipo_entidad_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="modelo_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="color_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="motor" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="chasis" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="placa" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="anio_fabricacion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="suma_asegurada" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="dispositivo_rastreo" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="modelo_ant" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cero_kilometros" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="antiguedad_vh" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="conductor_edad" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="conductor_genero" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="conductor_estado_civil" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="numero_hijos" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="anos_sin _siniestro" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="zona" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="guarda_garage" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="kilometros_recorridos" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="combustible" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sucursal_id" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="porcentaje_comision" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cilindraje" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="pasajeros" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="codigo_ensurance" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tonelaje_vehiculo" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="carga_pasajeros" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tipo_adquisicion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="zona_transito_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="hijos_conduzcan" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="kilometraje_anual" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="conductor_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tipo_direccion_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="zona_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="parroquia_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ciudad_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="calle_principal" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="numero" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="calle_secundaria" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="datos de referencia" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="es_cobro" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombre_modelo" class="java.lang.String"/>
+	<field name="nombre_marca" class="java.lang.String"/>
+	<field name="nombre_color" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="51" splitType="Stretch">
+			<image>
+				<reportElement x="0" y="1" width="148" height="50" uuid="97a0e6ff-e7c5-4023-9a71-f4f0e64e6f2e"/>
+				<imageExpression><![CDATA["QBE_blanco.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="2" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="1" width="555" height="1" uuid="5f15d6c0-33ca-48fb-bfe3-55ac1728a0cf"/>
+			</line>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="405" splitType="Stretch">
+			<textField>
+				<reportElement x="2" y="0" width="473" height="20" uuid="7270fbd8-9068-4021-8795-98b27d83f4a3"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["MODIFICATORIO DE LAS CONDICIONES PARTICULARES DE LA POLIZA No. " + $F{poliza}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="475" y="0" width="79" height="20" forecolor="#FF3300" uuid="f8e12ac9-aaa9-430b-aaba-4b1e133cab87"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["NOVACREDIT"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="20" width="43" height="20" uuid="6a3fa4ba-3b72-4d5b-b044-61ba774dbf32"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["RAMO:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="81" y="20" width="131" height="20" forecolor="#FF0000" uuid="2ccc8005-958d-4b99-93a3-f543cfbd46e8"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["VEHICULOS  "+$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="213" y="20" width="100" height="20" uuid="9523309a-e62d-44b3-995b-84764b9b4fae"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["NUEVOS"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="330" y="20" width="199" height="20" uuid="c6dfd1ad-b113-4c9b-8537-f6cce10496f6"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["No. Certificado:" + $F{numero_endoso}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="40" width="100" height="20" uuid="323aea47-cbf7-4370-b90d-faac86269333"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["LUGAR Y FECHA:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="174" y="40" width="240" height="20" uuid="802ece44-e38c-4d4d-83e9-c380a3852aae"/>
+				<textElement>
+					<font fontName="Arial" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{lugar}+", "+$F{fecha}.getDate()+" de "+ new SimpleDateFormat("MMMMM").format($F{fecha})+" de "+(1900+$F{fecha}.getYear())]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="61" width="144" height="20" uuid="ac236228-eceb-4947-b965-5893ef075822"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["VIGENCIA DE LA POLIZA:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="81" width="144" height="20" uuid="1aeb364d-94ea-40f3-8945-a5376f312482"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["VIGENCIA DEL ANEXO:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="157" y="62" width="50" height="20" uuid="25d2989e-e880-41e9-9547-75fff379bf11"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["DESDE:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="157" y="82" width="50" height="20" uuid="5525b51c-f5a7-4405-89db-f45c51b426d3"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["DESDE:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="207" y="62" width="153" height="20" uuid="1788f390-b8a6-41e2-b04d-fa4d72ad19e8"/>
+				<textElement>
+					<font fontName="Arial" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy").format($F{vigencia_desde_poliza})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="207" y="82" width="153" height="20" uuid="51876f61-c36e-4d70-bb37-39caaf218546"/>
+				<textElement>
+					<font fontName="Arial" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy").format($F{vigencia_desde})+" LAS 16:00 HORAS"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="360" y="62" width="50" height="20" uuid="785bef8f-d2c3-45f8-b183-653432fcdb79"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["HASTA:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="360" y="82" width="50" height="20" uuid="d5cbc0fe-75d6-4bb2-b06a-9104356f001d"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["HASTA:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="410" y="62" width="120" height="20" uuid="ff991021-524b-4239-9b52-d153f0e91646">
+					<printWhenExpression><![CDATA[$F{vigencia_hasta_poliza}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy").format($F{vigencia_hasta_poliza})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="410" y="83" width="144" height="20" uuid="176bf2c7-ea07-4e15-882e-f43cb96c6837"/>
+				<textElement>
+					<font fontName="Arial" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy").format($F{vigencia_hasta})+" LAS 16:00 HORAS"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="409" y="62" width="120" height="20" uuid="d86ad350-6b6e-4c29-ae2c-ab3f3b3d262a">
+					<printWhenExpression><![CDATA[$F{vigencia_hasta_poliza}==null]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Aviso de cancelación"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="107" width="268" height="20" uuid="90af6185-f812-4f49-bfc7-a45451bf5743"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ASEGURADO:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="127" width="267" height="20" uuid="4cb13200-11f2-4d6f-a407-d9ee937e771d"/>
+				<textElement>
+					<font fontName="Arial" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombres}+" "+$F{apellidos}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="270" y="107" width="284" height="20" uuid="bcf4d829-668e-4ba0-8a06-6c4e4e2105c4"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["DIRECCION:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="270" y="127" width="284" height="20" uuid="12ad7aa8-5abb-42ec-9a67-35e336d31147"/>
+				<textElement>
+					<font fontName="Arial" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{calle_principal}+" "+$F{numero}+" "+$F{calle_secundaria}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="148" width="133" height="20" uuid="7bc76f87-7ffc-4b7d-99cc-b3de0483ef34"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["CEDULA DE IDENTIDAD:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="135" y="148" width="92" height="20" uuid="5edd49ff-7579-4094-b50c-b97958389bd4"/>
+				<textElement>
+					<font fontName="Arial" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{identificacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="227" y="148" width="74" height="20" uuid="d3b1584c-7574-4b9d-aad1-15191ef1a13b"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TELEFONO:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="301" y="148" width="92" height="20" uuid="e0556417-5735-4f0e-b342-ddf762fdc037"/>
+				<textElement>
+					<font fontName="Arial" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{telefono}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="393" y="148" width="74" height="20" uuid="47a9c36d-160e-4542-b83b-a5d5ec13d109"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["CELULAR:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="467" y="148" width="87" height="20" uuid="5a14c0a9-ec49-4331-aed4-27e81be4441e"/>
+				<textElement>
+					<font fontName="Arial" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{celular}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="168" width="133" height="20" uuid="630a7c1e-07dd-44fe-a95b-f35544803f49"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["CORREO ELECTRONICO:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="135" y="168" width="178" height="20" uuid="c8c897ab-1789-40c9-a052-e04970865656"/>
+				<textElement>
+					<font fontName="Arial" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mail}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="188" width="182" height="20" uuid="a58c1ab4-fbc2-4e71-a445-b2ccf29c1869"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["VALOR ASEGURADO CASCO:	$"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="208" width="182" height="20" uuid="2dd8f56c-6928-4bd9-9efe-99bd6da7eb29"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["VALOR ASEGURADO EXTRAS:	$"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement x="184" y="188" width="58" height="20" uuid="d46f2894-a54e-4802-83b3-6a340f0d415a"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valor_casco}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement x="184" y="208" width="58" height="20" uuid="7084627a-bb33-4f28-8ab5-5dde340c0a63"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valor_extras}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="316" y="188" width="148" height="20" uuid="6b1551d1-53dd-4357-9cac-99e12ce03edf"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PRIMA NETA ANUAL:	$"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement x="467" y="188" width="87" height="20" uuid="76b65f84-aefb-4568-aa2a-f98332abfaa2"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{prima_total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="316" y="208" width="148" height="20" uuid="23d6f5ad-1ecd-490b-93ad-a86fe959bfb6"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["3.50% S.BANCOS:	$"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="316" y="228" width="148" height="20" uuid="60a153a8-c138-4501-87ce-adc944f1165e"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["SEG. CAMPE. 0.5%:	$"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="316" y="248" width="148" height="20" uuid="a86bdcb5-e380-4ccd-a0cb-210baa954dce"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["DERECHOS EMISION:	$"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="316" y="268" width="148" height="20" uuid="5430d873-a318-4c6d-845a-053885832b02"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["I.V.A.:			$"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="316" y="288" width="148" height="20" uuid="e8411f11-0314-4f32-b14d-a106d7d2b576"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PRIMA TOTAL ANUAL:	$"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement x="467" y="208" width="87" height="20" uuid="131e6fb6-655d-4cab-9b59-6d8df4b48025"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valor_scvs_total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement x="467" y="228" width="87" height="20" uuid="51862d50-e77b-49cc-b7bd-99171894db2d"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valor_seguro_campesino_total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement x="467" y="248" width="87" height="20" uuid="d044dca2-c8fc-4586-b802-91a1c10eddf8"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valor_derechos_emision_total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement x="467" y="268" width="87" height="20" uuid="58adceef-bb5f-4f62-8dd4-3b17e716ab1b"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valor_iva_total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement x="467" y="288" width="87" height="20" uuid="91410217-705f-4b51-8810-fa8f2a9dccbf"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valor_total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="248" width="183" height="20" uuid="c4a3a8de-270e-444a-a71f-5b9b5cca5517"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["VALOR ASEGURADO:		$"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement x="185" y="248" width="58" height="20" uuid="606b4417-2961-459d-a519-e82a0c854a4c"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valor_casco}+$F{valor_extras}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="288" width="183" height="20" uuid="92b70a4f-9b08-406f-b778-ff42d41ab048"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["FECHA NACIMIENTO:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="185" y="288" width="131" height="20" uuid="9d95289c-116e-4a0a-92ac-85d3f3df5c19"/>
+				<textElement>
+					<font fontName="Arial" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy").format($F{fecha_nacimiento_entidad})]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="2" y="318" width="552" height="1" uuid="4133d1aa-37e4-4c6a-95c5-060a82da55f5"/>
+			</line>
+			<line direction="BottomUp">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="1" height="405" isPrintWhenDetailOverflows="true" uuid="0bfb09f7-944f-413b-82e2-be0c3c63208c"/>
+			</line>
+			<line direction="BottomUp">
+				<reportElement stretchType="RelativeToBandHeight" x="555" y="1" width="1" height="404" isPrintWhenDetailOverflows="true" uuid="14485e50-daed-4eac-ae67-75c227bedeec"/>
+			</line>
+			<textField>
+				<reportElement x="2" y="319" width="552" height="20" uuid="2a1f703f-fbad-4cf4-af87-dd9630762064"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["CARACTERISTICAS DEL VEHICULO"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="339" width="79" height="20" uuid="2fb7fbdd-56a1-48dd-a95e-39fcb6720294"/>
+				<textElement>
+					<font fontName="Arial" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Marca:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="359" width="79" height="20" uuid="cd2ddb6e-0dd9-4d10-a289-a80c33197d94"/>
+				<textElement>
+					<font fontName="Arial" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Motor:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="379" width="79" height="20" uuid="2f429923-8512-420e-877b-a8efd3310ab0"/>
+				<textElement>
+					<font fontName="Arial" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Año:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="106" y="339" width="149" height="20" uuid="4b82a6c4-a567-496f-a380-4efde2ee5ed2"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre_marca}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="106" y="359" width="149" height="20" uuid="59498bd3-ad54-4f57-8e82-ceedc69f7f4a"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{motor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="106" y="379" width="149" height="20" uuid="cdc320af-67d1-4dec-83ec-5c0863e1f753"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{anio_fabricacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="314" y="339" width="79" height="20" uuid="07bc3536-3329-406e-b38e-d3915a5fbf17"/>
+				<textElement>
+					<font fontName="Arial" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Modelo:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="314" y="359" width="79" height="20" uuid="aa040a2f-215d-476f-92bb-f538ee183cc0"/>
+				<textElement>
+					<font fontName="Arial" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Chasis:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="314" y="379" width="79" height="20" uuid="06fee389-09e8-46d1-ada8-a6341aafb3f4"/>
+				<textElement>
+					<font fontName="Arial" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Color:"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="405" y="339" width="149" height="20" uuid="fd2598ac-f033-4824-90ab-16db18ac6342"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre_modelo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="405" y="359" width="149" height="20" uuid="2fea7861-912d-4146-a82b-61c8a50eca9e"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{chasis}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="405" y="379" width="149" height="20" uuid="5b68ab99-cd38-46b7-a9f9-e903b6c92f46"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre_color}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="1" y="404" width="554" height="1" uuid="f9161670-99d4-4289-812f-786946affa06"/>
+			</line>
+		</band>
+		<band height="16">
+			<line>
+				<reportElement positionType="Float" x="0" y="15" width="555" height="1" uuid="401a46e7-1251-49e4-86ef-fcb2fa2dda36"/>
+			</line>
+			<subreport>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="2" y="1" width="553" height="13" isPrintWhenDetailOverflows="true" uuid="952ad30f-09d0-4ec8-acfc-b497d64ebe7b"/>
+				<subreportParameter name="COTIZACION_ID">
+					<subreportParameterExpression><![CDATA[$P{COTIZACION_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["ReporteNovacredit_Coberturas.jasper"]]></subreportExpression>
+			</subreport>
+			<line direction="BottomUp">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="1" height="15" isPrintWhenDetailOverflows="true" uuid="76da0f02-8d36-4eac-bd61-c20f33c50e10"/>
+			</line>
+			<line direction="BottomUp">
+				<reportElement stretchType="RelativeToBandHeight" x="555" y="0" width="1" height="16" isPrintWhenDetailOverflows="true" uuid="60437c47-6ce7-450e-b6f6-3077e9601b2f"/>
+			</line>
+		</band>
+		<band height="20">
+			<line direction="BottomUp">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="1" height="20" isPrintWhenDetailOverflows="true" uuid="12410b6d-8cbc-4172-81a5-b3b92219ca8a"/>
+			</line>
+			<subreport>
+				<reportElement positionType="Float" x="1" y="2" width="554" height="17" isPrintWhenDetailOverflows="true" uuid="2c8920ad-eeb9-4f43-b797-a99db218396f"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="COTIZACION_ID">
+					<subreportParameterExpression><![CDATA[$P{COTIZACION_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["ReporteNovacredit_Valores.jasper"]]></subreportExpression>
+			</subreport>
+			<line direction="BottomUp">
+				<reportElement stretchType="RelativeToBandHeight" x="555" y="0" width="1" height="20" isPrintWhenDetailOverflows="true" uuid="6190d7f6-8b50-4633-9fce-1ac04475edd0"/>
+			</line>
+			<line>
+				<reportElement positionType="Float" x="1" y="19" width="554" height="1" uuid="bef13fe9-d0b1-4698-8813-2ed2089bfa46"/>
+			</line>
+		</band>
+		<band height="19">
+			<line direction="BottomUp">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="1" height="19" isPrintWhenDetailOverflows="true" uuid="2b89b907-9844-469d-8bf0-67ba5e506ee4"/>
+			</line>
+			<subreport>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="1" y="3" width="554" height="13" isPrintWhenDetailOverflows="true" uuid="1f47f761-177c-4c59-b35f-5258f3e0a21e"/>
+				<subreportParameter name="COTIZACION_ID">
+					<subreportParameterExpression><![CDATA[$P{COTIZACION_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["ReporteNovacredit_Coberturas2.jasper"]]></subreportExpression>
+			</subreport>
+			<line direction="BottomUp">
+				<reportElement stretchType="RelativeToBandHeight" x="555" y="0" width="1" height="19" isPrintWhenDetailOverflows="true" uuid="63ec8da6-97f9-4bb9-91a5-2e3dea9da5e9"/>
+			</line>
+			<line>
+				<reportElement positionType="Float" x="1" y="18" width="554" height="1" isPrintWhenDetailOverflows="true" uuid="b477cb5c-c3b1-4e31-b16b-fe099e74973f"/>
+			</line>
+		</band>
+		<band height="333">
+			<textField>
+				<reportElement positionType="Float" x="2" y="33" width="553" height="111" isPrintWhenDetailOverflows="true" uuid="681e4281-64ba-4a1a-bf8e-e9af4352ed1b"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Para  adherirse y formar parte de la  pòliza de Vehículo No." + $F{poliza}+
+"\nSe hace constar mediante el presente endoso que en la pòliza arriba citada se designa Beneficiario Acreedor a  NOVACREDIT, hasta por el valor del vehículo asegurado.\nEn caso de siniestro la compañía Aseguradora cancelará al beneficiario acreedor el valor del crédito pendiente, sin necesidad de notificación hasta por la suma arriba establecida , pago que estará sujeto a la regla proporcional señalada en la póliza.\nEl saldo de los beneficios de la pòliza si lo hubiere será pagado al asegurado.\nToda modificación  posterior a las disposiciones establecidas en la pòliza citada por el asegurado y que afecte el interés del beneficiario acreedor, deberá hacerse con el consentimiento expreso de éste.\nLas demàs condiciones que constan en la pòliza se mantienen inalterables."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="2" y="8" width="552" height="20" uuid="1caffebb-b505-4d9d-83dc-8c34e7af284b"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ENDOSO DE BENEFICIARIO"]]></textFieldExpression>
+			</textField>
+			<line direction="BottomUp">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="555" y="0" width="1" height="333" isPrintWhenDetailOverflows="true" uuid="4b2528d2-687c-4dde-be90-f609157334f6"/>
+			</line>
+			<line direction="BottomUp">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="1" height="333" isPrintWhenDetailOverflows="true" uuid="612f30e8-ec1c-44b1-981c-77591b0bc8e9"/>
+			</line>
+			<line>
+				<reportElement positionType="Float" x="1" y="149" width="552" height="1" uuid="894f8175-23e4-4086-9a69-0abd47192f0d"/>
+			</line>
+			<textField>
+				<reportElement positionType="Float" x="2" y="151" width="552" height="20" uuid="bba8a039-addc-4974-99d8-966a10fc45d9"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ORDEN PARA INSTALACION DEL DISPOSITIVO DE SEGURIDAD"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="2" y="171" width="553" height="17" isPrintWhenDetailOverflows="true" uuid="b3f02b7b-5e5f-4da3-a42c-4fc961244e20"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["El presente certificado puede ser usado como orden de instalación del dispositivo de seguridad,   según Garantía de la póliza. "]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="Float" x="1" y="190" width="552" height="1" uuid="500ccbfb-f347-4669-a420-8bdc54a625df"/>
+			</line>
+			<textField>
+				<reportElement positionType="Float" x="2" y="194" width="553" height="17" isPrintWhenDetailOverflows="true" uuid="6b870184-3b94-4fd8-91d2-cdf26dbde71e"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Los demás términos y condiciones particulares continuan vigentes y sin modificación alguna."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="6" y="269" width="142" height="20" uuid="896e28a0-6d5b-4f61-b2ba-25cabba4d102"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["EL ASEGURADO"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="405" y="269" width="142" height="20" uuid="c5f24166-7628-4f3e-a81b-dc9f438c719d"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["LA COMPAÑIA"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="207" y="269" width="142" height="20" uuid="5bee6868-9a14-49da-acb8-890f3f96fc2e"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["NOVACREDIT"]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="423" y="221" width="116" height="45" uuid="c76f1548-9d2f-4304-860e-f7ff142827e0"/>
+				<imageExpression><![CDATA["Firma.png"]]></imageExpression>
+			</image>
+			<line>
+				<reportElement positionType="Float" x="3" y="332" width="552" height="1" uuid="0dac877e-8eb7-4ff0-bc7f-cf02d14ffdf1"/>
+			</line>
+			<textField>
+				<reportElement x="3" y="299" width="550" height="33" uuid="8f121304-48bf-4f7f-a979-99564c2dfd69"/>
+				<textElement>
+					<font fontName="Arial" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["NOTA:  El presente formulario ha sido aprobado por la Superintendencia de Bancoas mediante Resolución No. SBS-INSP-2007-439 \n del 17 de diciembre de 2007"]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

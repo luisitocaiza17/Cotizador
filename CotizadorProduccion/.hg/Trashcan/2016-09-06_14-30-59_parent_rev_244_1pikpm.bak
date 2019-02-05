@@ -1,0 +1,109 @@
+diff --git a/WebContent/WEB-INF/SolicitudAgricolaService/com/qbe/cotizador/servicios/QBE/agricolaSucre/deploy.wsdd b/WebContent/WEB-INF/SolicitudAgricolaService/com/qbe/cotizador/servicios/QBE/agricolaSucre/deploy.wsdd
+--- a/WebContent/WEB-INF/SolicitudAgricolaService/com/qbe/cotizador/servicios/QBE/agricolaSucre/deploy.wsdd
++++ b/WebContent/WEB-INF/SolicitudAgricolaService/com/qbe/cotizador/servicios/QBE/agricolaSucre/deploy.wsdd
+@@ -13,9 +13,8 @@
+       <operation xmlns:operNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:retNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:rtns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" name="registrarSolicitud" qname="operNS:registrarSolicitud" returnQName="retNS:registrarSolicitudReturn" returnType="rtns:RespuestaUN01DTO" soapAction="">
+         <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" qname="pns:in0" type="tns:SolicitudUN01DTO"/>
+       </operation>
+-      <operation xmlns:operNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:retNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:rtns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" name="solicitudCambioFecha" qname="operNS:solicitudCambioFecha" returnQName="retNS:solicitudCambioFechaReturn" returnType="rtns:RespuestaCambio" soapAction="">
+-        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:tramite" type="tns:string"/>
+-        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:fechaSiembra" type="tns:string"/>
++      <operation xmlns:operNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:retNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:rtns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" name="registrarEmision" qname="operNS:registrarEmision" returnQName="retNS:registrarEmisionReturn" returnType="rtns:RespuestaEMIDTO" soapAction="">
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" qname="pns:in0" type="tns:SolicitudEMIDTO"/>
+       </operation>
+       <operation xmlns:operNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:retNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:rtns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" name="solicitudCambiolugarSiembra" qname="operNS:solicitudCambiolugarSiembra" returnQName="retNS:solicitudCambiolugarSiembraReturn" returnType="rtns:RespuestaCambio" soapAction="">
+         <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:tramite" type="tns:string"/>
+@@ -26,6 +25,7 @@
+         <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:latitud" type="tns:string"/>
+         <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:longitud" type="tns:string"/>
+       </operation>
+-      <operation xmlns:operNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:retNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:rtns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" name="registrarEmision" qname="operNS:registrarEmision" returnQName="retNS:registrarEmisionReturn" returnType="rtns:RespuestaEMIDTO" soapAction="">
+-        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" qname="pns:in0" type="tns:SolicitudEMIDTO"/>
++      <operation xmlns:operNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:retNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:rtns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" name="solicitudCambioFecha" qname="operNS:solicitudCambioFecha" returnQName="retNS:solicitudCambioFechaReturn" returnType="rtns:RespuestaCambio" soapAction="">
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:tramite" type="tns:string"/>
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:fechaSiembra" type="tns:string"/>
+       </operation>
+@@ -31,5 +31,18 @@
+       </operation>
+-      <parameter name="allowedMethods" value="registrarSolicitud registrarEmision solicitudCambiolugarSiembra solicitudCambioFecha"/>
++      <operation xmlns:operNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:retNS="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:rtns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" name="registroSiniestros" qname="operNS:registroSiniestros" returnQName="retNS:registroSiniestrosReturn" returnType="rtns:RespuestaCambio" soapAction="">
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:Tramite" type="tns:string"/>
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:identificacion" type="tns:string"/>
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:NombreCliente" type="tns:string"/>
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:ApellidoCliente" type="tns:string"/>
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:valorIndemnizacion" type="tns:double"/>
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:fechaPago" type="tns:string"/>
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:cultivo" type="tns:string"/>
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:hectareas" type="tns:double"/>
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:sumaAseguradaIndemnizacion" type="tns:double"/>
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:fechaNotificacionCliente" type="tns:string"/>
++        <parameter xmlns:pns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:tipoIndemnizacion" type="tns:string"/>
++      </operation>
++      <parameter name="allowedMethods" value="registrarSolicitud registroSiniestros registrarEmision solicitudCambiolugarSiembra solicitudCambioFecha"/>
+ 
+       <typeMapping xmlns:ns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" qname="ns:SolicitudEMIDTO" type="java:com.qbe.cotizador.servicios.QBE.agricolaSucre.SolicitudEMIDTO" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+       <typeMapping xmlns:ns="http://agricolaSucre.QBE.servicios.cotizador.qbe.com" qname="ns:RespuestaEMIDTO" type="java:com.qbe.cotizador.servicios.QBE.agricolaSucre.RespuestaEMIDTO" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriProcesarCotizacionOffline.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriProcesarCotizacionOffline.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriProcesarCotizacionOffline.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriProcesarCotizacionOffline.java
+@@ -61,8 +61,14 @@
+ 		AgriSucreAuditoria auditoria = new AgriSucreAuditoria();
+ 		AgriSucreAuditoriaTransaction procesoAuditoria = new AgriSucreAuditoriaTransaction();
+ 		auditoria.setTramite("" + nuevaCotizacion.getNumeroIdentificacion());
+-		String DatosRecibidos = " AUDITORIA CANALES OFFLINE: Correos Provenientes: "+correo+"|"+CCCorreos+"  Apellidos : "+nuevaCotizacion.getApellidos()+" Celular : "+nuevaCotizacion.getCelular()
+-				+" DireccionSiembra : "+nuevaCotizacion.getDireccionSiembra()+ " Email : "+nuevaCotizacion.getEmail()+ " Nombres : "+nuevaCotizacion.getNombres()
++		String DatosRecibidos = " AUDITORIA CANALES OFFLINE: Correos Provenientes: "+correo+"|"+CCCorreos+"  Apellidos : "+nuevaCotizacion.getApellidos()+" ApellidosENCRIP"+nuevaCotizacion.getApellidos().replace("|A", "Á").replace("|E","É").replace("|I","Í").replace("|O","Ó").replace("|U", "Ú")
++                .replace("|a", "á").replace("|e", "é").replace("|i","í").replace("|o","ó").replace("|u","ú")
++                .replace("-", "Ñ").replace("_", "ñ")+ " Celular : "+nuevaCotizacion.getCelular()
++				+" DireccionSiembra : "+nuevaCotizacion.getDireccionSiembra()+" DireccionSiembraEncrip : "+nuevaCotizacion.getDireccionSiembra().replace("|A", "Á").replace("|E","É").replace("|I","Í").replace("|O","Ó").replace("|U", "Ú")
++                .replace("|a", "á").replace("|e", "é").replace("|i","í").replace("|o","ó").replace("|u","ú")
++                .replace("-", "Ñ").replace("_", "ñ")+ " Email : "+nuevaCotizacion.getEmail()+ " Nombres : "+nuevaCotizacion.getNombres()+" apellidosENCRIP"+nuevaCotizacion.getNombres().replace("|A", "Á").replace("|E","É").replace("|I","Í").replace("|O","Ó").replace("|U", "Ú")
++                .replace("|a", "á").replace("|e", "é").replace("|i","í").replace("|o","ó").replace("|u","ú")
++                .replace("-", "Ñ").replace("_", "ñ")
+ 				+ " NumeroIdentificacion : "+nuevaCotizacion.getNumeroIdentificacion()+" ObjetoCotizacionId : "+nuevaCotizacion.getObjetoCotizacionId()
+ 				+ " Observaciones : "+nuevaCotizacion.getObservaciones()+ " PuntoVentaId : "+nuevaCotizacion.getPuntoVentaId()+ " Telefono : "+nuevaCotizacion.getTelefono()
+ 				+ " UsuarioApellido : "+nuevaCotizacion.getUsuarioApellido()+ " UsuarioNombre : "+nuevaCotizacion.getUsuarioNombre()+" AnalisisMontoAsegurado : "+nuevaCotizacion.getAnalisisMontoAsegurado()
+@@ -113,6 +119,9 @@
+ 			ClienteTransaction clienteTransaction = new ClienteTransaction();
+ 			AgriObjetoCotizacionTransaction agriObjetoCotizacionTransaction = new AgriObjetoCotizacionTransaction();
+ 	
++			if(nuevaCotizacion.getDireccionSiembra()==null||nuevaCotizacion.getDireccionSiembra().equals(""))
++				throw new Exception("No tiene lugar de siembra");
++			
+ 			//Busco si la entidad existe
+ 			entidad = entidadDAO.buscarEntidadPorIdentificacion(nuevaCotizacion.getNumeroIdentificacion());
+ 	
+@@ -120,6 +129,8 @@
+ 				entidad.setIdentificacion(nuevaCotizacion.getNumeroIdentificacion());
+ 			
+ 			if(!nuevaCotizacion.getNombres().equals(""))
+-				entidad.setNombres(""+nuevaCotizacion.getNombres().trim());
++				entidad.setNombres(""+nuevaCotizacion.getNombres().replace("|A", "Á").replace("|E","É").replace("|I","Í").replace("|O","Ó").replace("|U", "Ú")
++                        .replace("|a", "á").replace("|e", "é").replace("|i","í").replace("|o","ó").replace("|u","ú")
++                        .replace("-", "Ñ").replace("_", "ñ").trim());
+ 			
+ 			if(!nuevaCotizacion.getApellidos().equals(""))
+@@ -124,6 +135,8 @@
+ 			
+ 			if(!nuevaCotizacion.getApellidos().equals(""))
+-				entidad.setApellidos(""+nuevaCotizacion.getApellidos().trim());
++				entidad.setApellidos(""+nuevaCotizacion.getApellidos().trim().replace("|A", "Á").replace("|E","É").replace("|I","Í").replace("|O","Ó").replace("|U", "Ú")
++                        .replace("|a", "á").replace("|e", "é").replace("|i","í").replace("|o","ó").replace("|u","ú")
++                        .replace("-", "Ñ").replace("_", "ñ"));
+ 				
+ 			entidad.setNombreCompleto(""+nuevaCotizacion.getApellidos()+ " " + nuevaCotizacion.getNombres());
+ 	
+@@ -259,10 +272,9 @@
+ 			agriObjetoCotizacion.setDisponeAsistencia(nuevaCotizacion.getDisponeAsistencia());
+ 			agriObjetoCotizacion.setAgricultorTecnificado(nuevaCotizacion.getAgricultorTecnificado());
+ 			
+-			agriObjetoCotizacion.setDireccionSiembra(nuevaCotizacion.getDireccionSiembra());
+-			if(nuevaCotizacion.getDireccionSiembra()==null||nuevaCotizacion.getDireccionSiembra().equals(""))
+-				throw new Exception("No tiene lugar de siembra");
+-						
++			agriObjetoCotizacion.setDireccionSiembra(nuevaCotizacion.getDireccionSiembra().replace("|A", "Á").replace("|E","É").replace("|I","Í").replace("|O","Ó").replace("|U", "Ú")
++                    .replace("|a", "á").replace("|e", "é").replace("|i","í").replace("|o","ó").replace("|u","ú")
++                    .replace("-", "Ñ").replace("_", "ñ"));
+ 			agriObjetoCotizacion.setTipoSeguro(nuevaCotizacion.getTipoSeguro());
+ 			agriObjetoCotizacion.setAniosCultivo(nuevaCotizacion.getEdadCultivo());
+ 			agriObjetoCotizacion.setHectareasLote(new Float(nuevaCotizacion.getHectareasLote()));

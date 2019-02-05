@@ -1,0 +1,80 @@
+diff --git a/build/classes/com/qbe/cotizador/servlets/producto/pymes/ObjetoPymesController.class b/build/classes/com/qbe/cotizador/servlets/producto/pymes/ObjetoPymesController.class
+deleted file mode 100644
+index a48a618bff87672a4c57696355c1d38f93e4304e..e69de29bb2d1d6434b8b29ae775ad8c2e48c5391
+GIT binary patch
+literal 0
+Hc$@<O00001
+
+diff --git a/src/com/qbe/cotizador/dao/producto/agricola/UsuariosOfflineDAO.java b/src/com/qbe/cotizador/dao/producto/agricola/UsuariosOfflineDAO.java
+--- a/src/com/qbe/cotizador/dao/producto/agricola/UsuariosOfflineDAO.java
++++ b/src/com/qbe/cotizador/dao/producto/agricola/UsuariosOfflineDAO.java
+@@ -58,4 +58,13 @@
+ 		List<UsuariosOffline> result = getEntityManager().createNamedQuery("UsuariosOffline.buscarTodos").getResultList();
+ 		return result;
+ 	}
++	
++	public  UsuariosOffline BuscarNombre(String nombres)
++	{
++		UsuariosOffline usuarioOffline = new UsuariosOffline();
++		List<UsuariosOffline> result = getEntityManager().createNamedQuery("UsuariosOffline.buscarNombre").setParameter("nombres", nombres).getResultList();
++		if (result.size()>0)
++			usuarioOffline=result.get(0);
++		return usuarioOffline;
++	}
+ }
+diff --git a/src/com/qbe/cotizador/model/AgriCultivoCanal.java b/src/com/qbe/cotizador/model/AgriCultivoCanal.java
+--- a/src/com/qbe/cotizador/model/AgriCultivoCanal.java
++++ b/src/com/qbe/cotizador/model/AgriCultivoCanal.java
+@@ -17,7 +17,7 @@
+ @NamedQueries
+ ({
+ 	@NamedQuery(name="AgriCultivoCanal.findAll", query="SELECT a FROM AgriCultivoCanal a"),
+-	@NamedQuery(name="AgriCultivoCanal.buscarTipoCalculo", query="SELECT a FROM AgriCultivoCanal a WHERE a.tipoCalculoId=:tipoCalculoId ")
++	@NamedQuery(name="AgriCultivoCanal.buscarTipoCalculo", query="SELECT a FROM AgriCultivoCanal a WHERE a.tipoCalculoId=:tipoCalculoId ORDER BY A.nombre")
+ })
+ public class AgriCultivoCanal implements Serializable {
+ 	private static final long serialVersionUID = 1L;
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java
+@@ -471,31 +471,15 @@
+ 						result.put("mensajeEstado", mensajeEstado);
+ 					}
+ 					// /TODO: Email pre-poliza si es offline
+-					if (cotAct.getTipoOrigen()!=null && cotAct.getTipoOrigen().equals("COTIZADOR_OFFLINE")) {
+-						//TODO: se elimina el envio de coberturas para el reporte
+-//						AgriTipoCultivoXTipoCalculoDAO coberturasDAO = new AgriTipoCultivoXTipoCalculoDAO();
+-//						List<AgriTipoCultivoXTipoCalculo> Coberturas = new ArrayList<AgriTipoCultivoXTipoCalculo>();
+-//						// List<AgriCotizacionAprobacion> lstDetalleParaReporte
+-						// = new ArrayList<AgriCotizacionAprobacion>();
+-						
+-//						List<AgriTipoCultivoXTipoCalculo> lstCoberturasParaReporte = new ArrayList<AgriTipoCultivoXTipoCalculo>();
+-//						Coberturas = coberturasDAO.BuscarTodos();
+-//						if (Coberturas.size() > 0) {
+-//							// AgriTipoCultivoXTipoCalculo coberturaCultivo =
+-//							// new AgriTipoCultivoXTipoCalculo();
+-//							for (AgriTipoCultivoXTipoCalculo cobertura : Coberturas) {
+-//								if (cobertura
+-//										.getTipoCultivoId()
+-//										.toString()
+-//										.equals(cotAct.getTipoCultivoId()
+-//												.toString())) {
+-//									lstCoberturasParaReporte.add(cobertura);
+-//								}
+-//
+-//							}
+-//						}
+-						EnviarMailCambioEstadoBlob(cotizacionC, cotAct, AprobacionStatus);
+-					}
++						if (cotAct.getTipoOrigen()!=null && cotAct.getTipoOrigen().equals("COTIZADOR_OFFLINE")) {
++							if(cotizacionC.getPuntoVenta().getNombre().trim().equals("CREDIFE")){
++								EnviarMailCambioEstadoBlob(cotizacionC, cotAct, AprobacionStatus);
++							}
++							else{
++								AgriCorreoCoprogreso agriCorreoCoprogreso = new AgriCorreoCoprogreso();
++								agriCorreoCoprogreso.envioEmail(cotAct.getUsuarioOffline());
++							}
++						}
+ 					}
+ 					else {
+ 						result.put("mensajeEstado", "No se ha podido aprobar. "+mensajeEstado);

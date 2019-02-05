@@ -1,0 +1,14 @@
+diff --git a/WebContent/dashboard/AgriParametroPorCanal.jsp b/WebContent/dashboard/AgriParametroPorCanal.jsp
+--- a/WebContent/dashboard/AgriParametroPorCanal.jsp
++++ b/WebContent/dashboard/AgriParametroPorCanal.jsp
+@@ -487,8 +487,8 @@
+ 									</tr>
+ 									<tr>
+ 										<td>
+-											<label style="width: 100%">Sucursal ENSURANCE ID:</label>
+-											<input type="number" id="sucursalEmisionId" name="sucursalEmisionId" class="form-control" >
++											<label style="width: 100%">Numero Contenedor:</label>
++											<input type="text" id="sucursalEmisionId" name="sucursalEmisionId" class="form-control" >
+ 										</td>
+ 									</tr>
+ 									<tr id="soloActulizar">

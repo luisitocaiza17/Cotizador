@@ -1,0 +1,895 @@
+package com.qbe.cotizador.dao.producto.agricola;
+
+import java.math.BigInteger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+
+import com.qbe.cotizador.dao.cotizacion.EstadoDAO;
+import com.qbe.cotizador.dao.entidad.PuntoVentaDAO;
+import com.qbe.cotizador.entitymanagerfactory.EntityManagerFactoryDAO;
+import com.qbe.cotizador.model.AgriCotizacionAprobacion;
+import com.qbe.cotizador.model.Cotizacion;
+import com.qbe.cotizador.model.Estado;
+import com.qbe.cotizador.model.PuntoVenta;
+import com.qbe.cotizador.model.TipoObjeto;
+
+public class CotizacionAprobacionDAO extends EntityManagerFactoryDAO<AgriCotizacionAprobacion>{
+	@PersistenceContext(name="CotizadorWebPC", unitName = "CotizadorWebPU" )	
+	private EntityManager em;
+	@Override
+	protected EntityManager getEntityManager() {
+		if(em == null){
+			Context initCtx = null;
+			try {
+				initCtx = new InitialContext();
+				em = (javax.persistence.EntityManager) initCtx.lookup("java:comp/env/CotizadorWebPC");
+			} catch (NamingException e) { 
+				e.printStackTrace();
+			}		
+		}
+		return em;
+	}
+	public CotizacionAprobacionDAO() {
+        super(AgriCotizacionAprobacion.class);
+    }
+	
+	public AgriCotizacionAprobacion buscarPorId(String id){		
+		AgriCotizacionAprobacion cotizacion = new AgriCotizacionAprobacion();
+		List<AgriCotizacionAprobacion> query = getEntityManager().createNamedQuery("AgriCotizacionAprobacion.buscarCotizacionId").setParameter("id", new BigInteger(id)).getResultList();
+		if(!query.isEmpty())
+			cotizacion =  query.get(0);
+		return cotizacion;
+	}
+	
+	public List<AgriCotizacionAprobacion> buscarPorNoAprobadasNoEmitidasxFecha(String fecha1, String fecha2,String cotizacionId,String puntoVenta, 
+			String agenteId,String NroTramite,String Identificacion,String ApellidoCliente ,String CanalId, String estadoCotizacion, int Skip, int Take){ 
+		
+		String f1 = fecha1 + " 00:05:00";
+		String f2 = fecha2 + " 23:55:00";
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+		java.sql.Timestamp timestamp1 = null;
+		java.sql.Timestamp timestamp2 = null;
+		
+		BigInteger cotiID;
+		
+		// Validacion para cuando se ingrese la fecha en la búsqueda
+		if(fecha1.length()>0 && fecha1.length()>0){
+			java.util.Date parsedDate = null;
+			try {
+				parsedDate = dateFormat.parse(f1);
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+			}
+		    timestamp1 = new java.sql.Timestamp(parsedDate.getTime());
+	
+			try {
+				parsedDate = dateFormat.parse(f2);
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+			}
+			timestamp2 = new java.sql.Timestamp(parsedDate.getTime());			
+		}
+		Estado estado = new Estado();	
+		EstadoDAO estadoDAO = new EstadoDAO();
+		
+		if(estadoCotizacion.equals("CPA"))
+		{
+			estado = estadoDAO.buscarPorNombreClase("Pendiente Aprobar","Cotizacion");
+		}
+		else if(estadoCotizacion.equals("CPE"))
+		{
+			estado = estadoDAO.buscarPorNombreClase("Pendiente de Emitir","Cotizacion");
+		}
+		
+		String estadoId = estado.getId();
+		List<AgriCotizacionAprobacion> results = new ArrayList<AgriCotizacionAprobacion>();
+		TypedQuery<AgriCotizacionAprobacion> query = null;
+		
+		String stringQuery= "SELECT c FROM AgriCotizacionAprobacion c where (c.estadoId =:estadoId)";					
+		
+		String valoresWhereQuery = "";
+		
+		// Agregamos la parte del where las opciones de busqueda
+		if(cotizacionId.length()>0){
+			cotiID = new BigInteger (cotizacionId.toString());
+			//cotiID = cotizacionId;
+			valoresWhereQuery += " AND c.id=:cotiID";
+			}
+		if(fecha1.length()>0 && fecha2.length()>0)
+			valoresWhereQuery += " AND c.FechaElaboracion BETWEEN :startDate AND :endDate";
+		if(CanalId.length()>0)
+			valoresWhereQuery += " AND c.CanalId =:CanalId";
+		if(puntoVenta.length()>0)
+			valoresWhereQuery += " AND c.puntoVentaId =:puntoVenta";
+		if(agenteId.length()>0)
+			valoresWhereQuery += " AND c.AgenteId =:agenteId";
+		if(NroTramite.length()>0)
+			valoresWhereQuery += " AND c.NumeroTramite =:NroTramite";
+		if(Identificacion.length()>0)
+			valoresWhereQuery += " AND c.IdentificacionCliente =:Identificacion";
+		if(ApellidoCliente.length()>0)
+			valoresWhereQuery += " AND c.ApellidosCliente LIKE :ApellidoCliente";
+		
+		if(estadoCotizacion.equals("CPE")){
+			valoresWhereQuery += " AND c.FormaNotificacion NOT IN (:formaNotificacion)";
+		}
+		stringQuery = stringQuery+valoresWhereQuery;
+		
+		query = getEntityManager().createQuery(stringQuery, AgriCotizacionAprobacion.class);
+		query.setParameter("estadoId",new BigInteger(estadoId));
+		
+		// Agregamos los parametros del buscador
+		if(cotizacionId.length()>0){
+			//cotiID = new BigInteger (cotizacionId);
+			query.setParameter("cotiID", new BigInteger(cotizacionId.toString()));
+			//query.setParameter("cotiID", cotizacionId.toString());
+		}
+		
+		if(fecha1.length()>0 && fecha2.length()>0){
+			query.setParameter("startDate", timestamp1);
+			query.setParameter("endDate", timestamp2);
+		}
+		if(CanalId.length()>0)
+			query.setParameter("CanalId", new BigInteger(CanalId));
+		if(puntoVenta.length()>0){
+			query.setParameter("puntoVenta", new BigInteger(puntoVenta));
+		}
+		
+		if(agenteId.length()>0)
+			query.setParameter("agenteId", new BigInteger(agenteId));
+		if(NroTramite.length()>0)
+			query.setParameter("NroTramite", NroTramite);
+		if(Identificacion.length()>0)
+			query.setParameter("Identificacion", Identificacion);
+		if(ApellidoCliente.length()>0)
+			query.setParameter("ApellidoCliente", "%"+ApellidoCliente+"%");
+		
+		if(estadoCotizacion.equals("CPE")){
+			///Cuan es emsion no se prensenta los de forma de notificacion 
+			/// que sea de sucre
+			int formaNotificacion=2;
+			query.setParameter("formaNotificacion", formaNotificacion);
+		}
+	
+		results = query.setMaxResults(Take).setFirstResult(Skip).getResultList();
+		return results;
+	}
+	
+	public long buscarContadorPorNoAprobadasNoEmitidasxFecha(String fecha1, String fecha2,String cotizacionId,String puntoVenta, 
+			String agenteId,String NroTramite,String Identificacion,String ApellidoCliente ,String CanalId, String estadoCotizacion, int Skip, int Take){ 
+		
+		String f1 = fecha1 + " 00:05:00";
+		String f2 = fecha2 + " 23:55:00";
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+		java.sql.Timestamp timestamp1 = null;
+		java.sql.Timestamp timestamp2 = null;
+		
+		BigInteger cotiID;
+		
+		// Validacion para cuando se ingrese la fecha en la búsqueda
+		if(fecha1.length()>0 && fecha1.length()>0){
+			java.util.Date parsedDate = null;
+			try {
+				parsedDate = dateFormat.parse(f1);
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+			}
+		    timestamp1 = new java.sql.Timestamp(parsedDate.getTime());
+	
+			try {
+				parsedDate = dateFormat.parse(f2);
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+			}
+			timestamp2 = new java.sql.Timestamp(parsedDate.getTime());			
+		}
+		Estado estado = new Estado();	
+		EstadoDAO estadoDAO = new EstadoDAO();
+		
+		if(estadoCotizacion.equals("CPA"))
+		{
+			estado = estadoDAO.buscarPorNombreClase("Pendiente Aprobar","Cotizacion");
+		}
+		else if(estadoCotizacion.equals("CPE"))
+		{
+			estado = estadoDAO.buscarPorNombreClase("Pendiente de Emitir","Cotizacion");
+		}
+		
+		String estadoId = estado.getId();
+		Query query = null;
+		
+		String stringQuery= "SELECT count(c.id) FROM AgriCotizacionAprobacion c where (c.estadoId =:estadoId)";					
+		
+		String valoresWhereQuery = "";
+		
+		// Agregamos la parte del where las opciones de busqueda
+		if(cotizacionId.length()>0){
+			cotiID = new BigInteger (cotizacionId.toString());
+			//cotiID = cotizacionId;
+			valoresWhereQuery += " AND c.id=:cotiID";
+			}
+		if(fecha1.length()>0 && fecha2.length()>0)
+			valoresWhereQuery += " AND c.FechaElaboracion BETWEEN :startDate AND :endDate";
+		if(CanalId.length()>0)
+			valoresWhereQuery += " AND c.CanalId =:CanalId";
+		if(puntoVenta.length()>0)
+			valoresWhereQuery += " AND c.puntoVentaId =:puntoVenta";
+		if(agenteId.length()>0)
+			valoresWhereQuery += " AND c.AgenteId =:agenteId";
+		if(NroTramite.length()>0)
+			valoresWhereQuery += " AND c.NumeroTramite =:NroTramite";
+		if(Identificacion.length()>0)
+			valoresWhereQuery += " AND c.IdentificacionCliente =:Identificacion";
+		if(ApellidoCliente.length()>0)
+			valoresWhereQuery += " AND c.ApellidosCliente LIKE :ApellidoCliente";
+		
+		if(estadoCotizacion.equals("CPE")){
+			valoresWhereQuery += " AND c.FormaNotificacion NOT IN (:formaNotificacion)";
+		}
+		stringQuery = stringQuery+valoresWhereQuery;
+		
+		query = getEntityManager().createQuery(stringQuery);
+		query.setParameter("estadoId",new BigInteger(estadoId));
+		
+		// Agregamos los parametros del buscador
+		if(cotizacionId.length()>0){
+			//cotiID = new BigInteger (cotizacionId);
+			query.setParameter("cotiID", new BigInteger(cotizacionId.toString()));
+			//query.setParameter("cotiID", cotizacionId.toString());
+		}
+		
+		if(fecha1.length()>0 && fecha2.length()>0){
+			query.setParameter("startDate", timestamp1);
+			query.setParameter("endDate", timestamp2);
+		}
+		if(CanalId.length()>0)
+			query.setParameter("CanalId", new BigInteger(CanalId));
+		if(puntoVenta.length()>0){
+			query.setParameter("puntoVenta", new BigInteger(puntoVenta));
+		}
+		
+		if(agenteId.length()>0)
+			query.setParameter("agenteId", new BigInteger(agenteId));
+		if(NroTramite.length()>0)
+			query.setParameter("NroTramite", NroTramite);
+		if(Identificacion.length()>0)
+			query.setParameter("Identificacion", Identificacion);
+		if(ApellidoCliente.length()>0)
+			query.setParameter("ApellidoCliente", "%"+ApellidoCliente+"%");
+		
+		if(estadoCotizacion.equals("CPE")){
+			///Cuan es emsion no se prensenta los de forma de notificacion 
+			/// que sea de sucre
+			int formaNotificacion=2;
+			query.setParameter("formaNotificacion", formaNotificacion);
+		}
+	
+		long results = (long)query.getSingleResult();
+		return results;
+	}
+	
+	public List<AgriCotizacionAprobacion> consultarPorEstado(String fInicio,
+			String fFinal, String cotizacionId,
+			String puntoVentaId, String agenteId, String identificacion,
+			String usuarioId, String tieneImpresion,String nroTramite, String apellidos, String canalId, Estado estadoCotizacion,int Skip
+			, int Take,String facturacionId,boolean confirmadas, boolean movimientos, String fInicioE,	String fFinalE){ 
+		
+		String f1 = fInicio + " 00:05:00";
+		String f2 = fFinal + " 23:55:00";
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+		java.sql.Timestamp timestamp1 = null;
+		java.sql.Timestamp timestamp2 = null;
+				
+		String fe1 = fInicioE + " 00:05:00";
+		String fe2 = fFinalE + " 23:55:00";
+		java.sql.Timestamp timestampe1 = null;
+		java.sql.Timestamp timestampe2 = null;
+		// Validacion para cuando se ingrese la fecha en la búsqueda
+		if(fInicio.length()>0 && fFinal.length()>0){
+			java.util.Date parsedDate = null;
+			try {
+				parsedDate = dateFormat.parse(f1);
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+			}
+		    timestamp1 = new java.sql.Timestamp(parsedDate.getTime());
+	
+			try {
+				parsedDate = dateFormat.parse(f2);
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+			}
+			timestamp2 = new java.sql.Timestamp(parsedDate.getTime());			
+		}
+		
+		// Validacion para cuando se ingrese la fecha en la búsqueda
+		if(fInicioE.length()>0 && fFinalE.length()>0){
+			java.util.Date parsedDate = null;
+			try {
+				parsedDate = dateFormat.parse(fe1);
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+			}
+		    timestampe1 = new java.sql.Timestamp(parsedDate.getTime());
+	
+			try {
+				parsedDate = dateFormat.parse(fe2);
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+			}
+			timestampe2 = new java.sql.Timestamp(parsedDate.getTime());			
+		}
+		
+		Estado estado = new Estado();
+		Estado estado2 = new Estado();
+		
+		if(estadoCotizacion.getId()!=null){
+			estado = estadoCotizacion;
+			estado2 = estadoCotizacion;			
+		}
+		
+		
+		TypedQuery<AgriCotizacionAprobacion> query = null;
+		
+		String stringQuery= "SELECT c FROM AgriCotizacionAprobacion c where (c.id IS NOT NULL) ";					
+		String valoresWhereQuery = "";
+		//verificamos si solo se traen las confirmadas
+		if(confirmadas)
+			valoresWhereQuery += " AND c.Confirmacion=:Confirmado ";
+		
+		if(movimientos){
+			valoresWhereQuery += " AND c.Movimiento=:Movimiento ";
+		}
+		
+		// Agregamos la parte del where las opciones de busqueda
+		if(cotizacionId.length()>0){
+			valoresWhereQuery += " AND c.id=:cotiID ";
+		}
+		
+		//verifico el canal
+		if(canalId.length()>0){
+			valoresWhereQuery += " AND c.CanalId =:CanalId ";
+		}
+		
+		if(fInicio.length()>0 && fFinal.length()>0)
+			valoresWhereQuery += " AND c.FechaElaboracion BETWEEN :startDate AND :endDate ";
+		if(fInicioE.length()>0 && fFinalE.length()>0)
+			valoresWhereQuery += " AND c.FechaConfirmacion BETWEEN :startDateE AND :endDateE ";
+		if(puntoVentaId.length()>0)
+			valoresWhereQuery += " AND c.puntoVentaId =:puntoVenta ";
+		if(agenteId.length()>0)
+			valoresWhereQuery += " AND c.AgenteId =:agenteId ";
+		if(nroTramite.length()>0)
+			valoresWhereQuery += " AND c.NumeroTramite =:NroTramite ";
+		if(identificacion.length()>0)
+			valoresWhereQuery += " AND c.IdentificacionCliente =:Identificacion ";
+		if(apellidos.length()>0)
+			valoresWhereQuery += " AND c.NombresCliente LIKE :ApellidoCliente ";
+		if(usuarioId.length()>0)
+			valoresWhereQuery += " AND c.UsuarioId =:usuarioId ";
+		if(tieneImpresion.equals("0"))
+			valoresWhereQuery += " AND c.NumeroImpresion =:NumeroImpresion ";
+		else if(tieneImpresion.equals("1"))
+			valoresWhereQuery += " AND NOT (c.NumeroImpresion ='0') ";
+		if(estadoCotizacion.getId() != null)
+			valoresWhereQuery += " AND (c.estadoId =:estadoId or c.estadoId =:estadoId2) ";
+		if(facturacionId.length()>0)
+			valoresWhereQuery += " AND (c.idCotizacion2 =:facturaId) ";
+					
+		stringQuery = stringQuery+valoresWhereQuery+" ORDER BY c.id, c.fechaSiembra DESC ";
+		
+		query = getEntityManager().createQuery(stringQuery, AgriCotizacionAprobacion.class);
+		if(estadoCotizacion.getId() != null){
+			query.setParameter("estadoId",new BigInteger(estado.getId()));
+			query.setParameter("estadoId2",new BigInteger(estado2.getId()));
+		}
+		// Agregamos los parametros del buscador
+		if(cotizacionId.length()>0){			
+			query.setParameter("cotiID", new BigInteger(cotizacionId.toString()));			
+		}
+
+		if(fInicio.length()>0 && fFinal.length()>0){
+			query.setParameter("startDate", timestamp1);
+			query.setParameter("endDate", timestamp2);
+		}
+		if(fInicioE.length()>0 && fFinalE.length()>0){
+			query.setParameter("startDateE", timestampe1);
+			query.setParameter("endDateE", timestampe2);
+		}
+		if(confirmadas)
+			query.setParameter("Confirmado", "CONFIRMADO");
+		if(movimientos)
+			query.setParameter("Movimiento", "SI");
+		if(canalId.length()>0)
+			query.setParameter("CanalId", new BigInteger(canalId));
+		if(puntoVentaId.length()>0){
+			query.setParameter("puntoVenta", new BigInteger(puntoVentaId));
+		}		
+		if(agenteId.length()>0)
+			query.setParameter("agenteId", new BigInteger(agenteId));
+		if(nroTramite.length()>0)
+			query.setParameter("NroTramite", nroTramite);
+		if(identificacion.length()>0)
+			query.setParameter("Identificacion", identificacion);
+		if(apellidos.length()>0)
+			query.setParameter("ApellidoCliente", "%"+apellidos+"%");
+		if(usuarioId.length()>0)
+			query.setParameter("usuarioId", new BigInteger(usuarioId));
+		if(tieneImpresion.equals("0"))
+			query.setParameter("NumeroImpresion", Integer.parseInt(tieneImpresion));
+		if(facturacionId.length()>0)
+			query.setParameter("facturaId",new BigInteger(facturacionId));	
+		return query.setMaxResults(Take).setFirstResult(Skip).getResultList();
+	}
+	
+	public long consultarPorEstadoContador(String fInicio,
+			String fFinal, String cotizacionId,
+			String puntoVentaId, String agenteId, String identificacion,
+			String usuarioId, String tieneImpresion,String nroTramite, String apellidos, String canalId, Estado estadoCotizacion,int Skip, int Take,String facturacionId
+			,boolean confirmadas,boolean movimientos,String fInicioE,	String fFinalE){ 
+						
+		String f1 = fInicio + " 00:05:00";
+		String f2 = fFinal + " 23:55:00";
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+		java.sql.Timestamp timestamp1 = null;
+		java.sql.Timestamp timestamp2 = null;
+		
+		String fe1 = fInicioE + " 00:05:00";
+		String fe2 = fFinalE + " 23:55:00";
+		java.sql.Timestamp timestampe1 = null;
+		java.sql.Timestamp timestampe2 = null;
+				
+		// Validacion para cuando se ingrese la fecha en la búsqueda
+		if(fInicio.length()>0 && fFinal.length()>0){
+			java.util.Date parsedDate = null;
+			try {
+				parsedDate = dateFormat.parse(f1);
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+			}
+		    timestamp1 = new java.sql.Timestamp(parsedDate.getTime());
+	
+			try {
+				parsedDate = dateFormat.parse(f2);
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+			}
+			timestamp2 = new java.sql.Timestamp(parsedDate.getTime());			
+		}
+		
+		// Validacion para cuando se ingrese la fecha en la búsqueda
+		if(fInicioE.length()>0 && fFinalE.length()>0){
+			java.util.Date parsedDate = null;
+			try {
+				parsedDate = dateFormat.parse(fe1);
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+			}
+		    timestampe1 = new java.sql.Timestamp(parsedDate.getTime());
+	
+			try {
+				parsedDate = dateFormat.parse(fe2);
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+			}
+			timestampe2 = new java.sql.Timestamp(parsedDate.getTime());			
+		}
+		
+		Estado estado = new Estado();
+		Estado estado2 = new Estado();		
+		
+		if(estadoCotizacion.getId() != null){
+			estado = estadoCotizacion;
+			estado2 = estadoCotizacion;
+		}
+		
+		Query query = null;	
+				
+		String stringQuery= "SELECT count(c.id) FROM AgriCotizacionAprobacion c where (c.id IS NOT NULL) ";					
+		String valoresWhereQuery = "";
+		
+		
+		if(movimientos){
+			valoresWhereQuery += " AND c.Movimiento=:Movimiento ";
+		}
+		//verificamos si solo se traen las confirmadas
+		if(confirmadas)
+			valoresWhereQuery += " AND c.Confirmacion=:Confirmado ";
+		
+		// Agregamos la parte del where las opciones de busqueda
+		if(cotizacionId.length()>0){			
+			valoresWhereQuery += " AND c.id=:cotiID ";
+		}
+		//verifico el canal
+		if(canalId.length()>0){
+			valoresWhereQuery += " AND c.CanalId =:CanalId ";
+		}
+		if(fInicio.length()>0 && fFinal.length()>0)
+			valoresWhereQuery += " AND c.FechaElaboracion BETWEEN :startDate AND :endDate ";
+		if(fInicioE.length()>0 && fFinalE.length()>0)
+			valoresWhereQuery += " AND c.FechaConfirmacion BETWEEN :startDateE AND :endDateE ";
+		if(puntoVentaId.length()>0)
+			valoresWhereQuery += " AND c.puntoVentaId =:puntoVenta ";
+		if(agenteId.length()>0)
+			valoresWhereQuery += " AND c.AgenteId =:agenteId ";
+		if(nroTramite.length()>0)
+			valoresWhereQuery += " AND c.NumeroTramite =:NroTramite ";
+		if(identificacion.length()>0)
+			valoresWhereQuery += " AND c.IdentificacionCliente =:Identificacion ";
+		if(apellidos.length()>0)
+			valoresWhereQuery += " AND c.NombresCliente LIKE :ApellidoCliente ";
+		if(usuarioId.length()>0)
+			valoresWhereQuery += " AND c.UsuarioId =:usuarioId ";
+		if(tieneImpresion.equals("0"))
+			valoresWhereQuery += " AND c.NumeroImpresion =:NumeroImpresion ";
+		else if(tieneImpresion.equals("1"))
+			valoresWhereQuery += " AND NOT (c.NumeroImpresion ='0') ";
+		if(estadoCotizacion.getId() != null)
+			valoresWhereQuery += " AND (c.estadoId =:estadoId or c.estadoId =:estadoId2) ";
+		if(facturacionId.length()>0)
+			valoresWhereQuery += " AND (c.idCotizacion2 =:facturaId) ";
+				
+		stringQuery = stringQuery+valoresWhereQuery;
+		
+		query = getEntityManager().createQuery(stringQuery);	
+		
+		if(estadoCotizacion.getId() != null){
+			query.setParameter("estadoId",new BigInteger(estado.getId()));
+			query.setParameter("estadoId2",new BigInteger(estado2.getId()));
+		}
+		
+		// Agregamos los parametros del buscador
+		if(cotizacionId.length()>0){
+			query.setParameter("cotiID", new BigInteger(cotizacionId.toString()));			
+		}
+		
+		if(movimientos)
+			query.setParameter("Movimiento", "SI");
+
+		if(fInicio.length()>0 && fFinal.length()>0){
+			query.setParameter("startDate", timestamp1);
+			query.setParameter("endDate", timestamp2);
+		}
+		if(fInicioE.length()>0 && fFinalE.length()>0){
+			query.setParameter("startDateE", timestampe1);
+			query.setParameter("endDateE", timestampe2);
+		}
+		if(canalId.length()>0)
+			query.setParameter("CanalId", new BigInteger(canalId));
+		if(puntoVentaId.length()>0){
+			query.setParameter("puntoVenta", new BigInteger(puntoVentaId));
+		}		
+		if(agenteId.length()>0)
+			query.setParameter("agenteId", new BigInteger(agenteId));
+		if(nroTramite.length()>0)
+			query.setParameter("NroTramite", nroTramite);
+		if(identificacion.length()>0)
+			query.setParameter("Identificacion", identificacion);
+		if(apellidos.length()>0)
+			query.setParameter("ApellidoCliente", "%"+apellidos+"%");
+		if(usuarioId.length()>0)
+			query.setParameter("usuarioId", new BigInteger(usuarioId));
+		if(tieneImpresion.equals("0"))
+			query.setParameter("NumeroImpresion", Integer.parseInt(tieneImpresion));
+		if(facturacionId.length()>0)
+			query.setParameter("facturaId",new BigInteger(facturacionId));
+		if(confirmadas)
+			query.setParameter("Confirmado", "CONFIRMADO");	
+		
+		long total = (long) query.getSingleResult();
+		return total;
+	}
+	
+	public List<AgriCotizacionAprobacion> consultarCotizacion(String fInicio,
+			String fFinal, String cotizacionId,
+			String puntoVentaId, String agenteId, String identificacion,
+			String usuarioId, String tieneImpresion,String nroTramite, String apellidos, String canalId, String estadoCotizacion, String tieneObservaciones,int Skip, int Take){ 
+		
+		String f1 = fInicio + " 00:05:00";
+		String f2 = fFinal + " 23:55:00";
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+		java.sql.Timestamp timestamp1 = null;
+		java.sql.Timestamp timestamp2 = null;
+		
+		BigInteger cotiID;
+		
+		// Validacion para cuando se ingrese la fecha en la búsqueda
+		if(fInicio.length()>0 && fFinal.length()>0){
+			java.util.Date parsedDate = null;
+			try {
+				parsedDate = dateFormat.parse(f1);
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+			}
+		    timestamp1 = new java.sql.Timestamp(parsedDate.getTime());
+	
+			try {
+				parsedDate = dateFormat.parse(f2);
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+			}
+			timestamp2 = new java.sql.Timestamp(parsedDate.getTime());			
+		}
+		Estado estado = new Estado();
+		Estado estado2 = new Estado();
+		EstadoDAO estadoDAO = new EstadoDAO();
+		
+		if(estadoCotizacion.equals("CPA"))
+		{
+			estado = estadoDAO.buscarPorNombreClase("Pendiente Aprobar","Cotizacion");
+		}
+		else if(estadoCotizacion.equals("CPE"))
+		{
+			estado = estadoDAO.buscarPorNombreClase("Pendiente de Emitir","Cotizacion");
+			estado2 = estadoDAO.buscarPorNombreClase("Pendiente de Emitir","Cotizacion");
+		}else if(estadoCotizacion.equals("CA"))		{
+			estado = estadoDAO.buscarPorNombreClase("Archivada","Cotizacion");
+			estado2 = estadoDAO.buscarPorNombreClase("Archivada","Cotizacion");
+		}else if(estadoCotizacion.equals("CEPE"))		{
+			estado = estadoDAO.buscarPorNombreClase("Emitido","Cotizacion");
+			estado2 = estadoDAO.buscarPorNombreClase("Pendiente de Emitir","Cotizacion");
+		}else if(estadoCotizacion.equalsIgnoreCase("CE")){
+			estado = estadoDAO.buscarPorNombreClase("Emitido","Cotizacion");
+			estado2 = estadoDAO.buscarPorNombreClase("Emitido","Cotizacion");
+		}
+		
+		//String estadoId = estado.getId();
+		//List<AgriCotizacionAprobacion> results = new ArrayList<AgriCotizacionAprobacion>();
+		TypedQuery<AgriCotizacionAprobacion> query = null;
+		
+		String stringQuery= "SELECT c FROM AgriCotizacionAprobacion c where (c.estadoId =:estadoId or c.estadoId =:estadoId2) ";					
+		String valoresWhereQuery = "";
+		
+		// Agregamos la parte del where las opciones de busqueda
+		if(cotizacionId.length()>0){
+			cotiID = new BigInteger (cotizacionId.toString());
+			//cotiID = cotizacionId;
+			valoresWhereQuery += " AND c.id=:cotiID ";
+			}
+		if(fInicio.length()>0 && fFinal.length()>0)
+			valoresWhereQuery += " AND c.FechaElaboracion BETWEEN :startDate AND :endDate ";
+		if(canalId.length()>0)
+			valoresWhereQuery += " AND c.CanalId =:CanalId ";
+		if(puntoVentaId.length()>0)
+			valoresWhereQuery += " AND c.puntoVentaId =:puntoVenta ";
+		if(agenteId.length()>0)
+			valoresWhereQuery += " AND c.AgenteId =:agenteId ";
+		if(nroTramite.length()>0)
+			valoresWhereQuery += " AND c.NumeroTramite =:NroTramite ";
+		if(identificacion.length()>0)
+			valoresWhereQuery += " AND c.IdentificacionCliente =:Identificacion ";
+		if(apellidos.length()>0)
+			valoresWhereQuery += " AND c.NombresCliente LIKE :ApellidoCliente ";
+		if(usuarioId.length()>0)
+			valoresWhereQuery += " AND c.UsuarioId =:usuarioId ";
+		if(tieneImpresion.equals("0"))
+			valoresWhereQuery += " AND c.NumeroImpresion =:NumeroImpresion ";
+		else if(tieneImpresion.equals("1"))
+			valoresWhereQuery += " AND NOT (c.NumeroImpresion ='0') ";
+		if(tieneObservaciones.equalsIgnoreCase("true"))
+			valoresWhereQuery += " AND (c.ObservacionRegla IS NOT NULL )";
+		
+		/*if(estadoCotizacion.equals("CPE")){
+			valoresWhereQuery += " AND c.FormaNotificacion NOT IN (:formaNotificacion)";
+		}*/
+		stringQuery = stringQuery+valoresWhereQuery+" ORDER BY c.fechaSiembra DESC ";
+		
+		query = getEntityManager().createQuery(stringQuery, AgriCotizacionAprobacion.class);
+		query.setParameter("estadoId",new BigInteger(estado.getId()));
+		query.setParameter("estadoId2",new BigInteger(estado2.getId()));
+		
+		// Agregamos los parametros del buscador
+		if(cotizacionId.length()>0){
+			//cotiID = new BigInteger (cotizacionId);
+			query.setParameter("cotiID", new BigInteger(cotizacionId.toString()));
+			//query.setParameter("cotiID", cotizacionId.toString());
+		}
+		
+		if(fInicio.length()>0 && fFinal.length()>0){
+			query.setParameter("startDate", timestamp1);
+			query.setParameter("endDate", timestamp2);
+		}
+		if(canalId.length()>0)
+			query.setParameter("CanalId", new BigInteger(canalId));
+		if(puntoVentaId.length()>0){
+			query.setParameter("puntoVenta", new BigInteger(puntoVentaId));
+		}
+		
+		if(agenteId.length()>0)
+			query.setParameter("agenteId", new BigInteger(agenteId));
+		if(nroTramite.length()>0)
+			query.setParameter("NroTramite", nroTramite);
+		if(identificacion.length()>0)
+			query.setParameter("Identificacion", identificacion);
+		if(apellidos.length()>0)
+			query.setParameter("ApellidoCliente", "%"+apellidos+"%");
+		if(usuarioId.length()>0)
+			query.setParameter("usuarioId", new BigInteger(usuarioId));
+		if(tieneImpresion.equals("0")){
+			query.setParameter("NumeroImpresion", Integer.parseInt(tieneImpresion));
+		}
+		
+		/*if(estadoCotizacion.equals("CPE")){
+			///Cuan es emsion no se prensenta los de forma de notificacion 
+			/// que sea de sucre
+			int formaNotificacion=2;
+			query.setParameter("formaNotificacion", formaNotificacion);
+		}*/
+		
+		//results = query.setMaxResults(Take).setFirstResult(Skip).getResultList();
+	
+		//results = query.getResultList();
+		return query.setMaxResults(Take).setFirstResult(Skip).getResultList();
+	}	
+	
+	public long consultarCotizacionContador(String fInicio,
+			String fFinal, String cotizacionId,
+			String puntoVentaId, String agenteId, String identificacion,
+			String usuarioId, String tieneImpresion,String nroTramite, String apellidos, String canalId, String estadoCotizacion, String tieneObservaciones,int Skip, int Take){ 
+		
+		String f1 = fInicio + " 00:05:00";
+		String f2 = fFinal + " 23:55:00";
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+		java.sql.Timestamp timestamp1 = null;
+		java.sql.Timestamp timestamp2 = null;
+				
+		// Validacion para cuando se ingrese la fecha en la búsqueda
+		if(fInicio.length()>0 && fFinal.length()>0){
+			java.util.Date parsedDate = null;
+			try {
+				parsedDate = dateFormat.parse(f1);
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+			}
+		    timestamp1 = new java.sql.Timestamp(parsedDate.getTime());
+	
+			try {
+				parsedDate = dateFormat.parse(f2);
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+			}
+			timestamp2 = new java.sql.Timestamp(parsedDate.getTime());			
+		}
+		Estado estado = new Estado();
+		Estado estado2 = new Estado();
+		EstadoDAO estadoDAO = new EstadoDAO();
+		
+		if(estadoCotizacion.equals("CPA"))
+		{
+			estado = estadoDAO.buscarPorNombreClase("Pendiente Aprobar","Cotizacion");
+		}
+		else if(estadoCotizacion.equals("CPE"))
+		{
+			estado = estadoDAO.buscarPorNombreClase("Pendiente de Emitir","Cotizacion");
+			estado2 = estadoDAO.buscarPorNombreClase("Pendiente de Emitir","Cotizacion");
+		}else if(estadoCotizacion.equals("CA"))		{
+			estado = estadoDAO.buscarPorNombreClase("Archivada","Cotizacion");
+			estado2 = estadoDAO.buscarPorNombreClase("Archivada","Cotizacion");
+		}else if(estadoCotizacion.equals("CEPE"))		{
+			estado = estadoDAO.buscarPorNombreClase("Emitido","Cotizacion");
+			estado2 = estadoDAO.buscarPorNombreClase("Pendiente de Emitir","Cotizacion");
+		}else if(estadoCotizacion.equalsIgnoreCase("CE")){
+			estado = estadoDAO.buscarPorNombreClase("Emitido","Cotizacion");
+			estado2 = estadoDAO.buscarPorNombreClase("Emitido","Cotizacion");
+		}
+		
+		Query query = null;
+		
+		String stringQuery= "SELECT count(c.id) FROM AgriCotizacionAprobacion c where (c.estadoId =:estadoId or c.estadoId =:estadoId2) ";
+		
+		String valoresWhereQuery = "";
+		
+		// Agregamos la parte del where las opciones de busqueda
+		if(cotizacionId.length()>0){			
+			valoresWhereQuery += " AND c.id=:cotiID ";
+		}
+		if(fInicio.length()>0 && fFinal.length()>0)
+			valoresWhereQuery += " AND c.FechaElaboracion BETWEEN :startDate AND :endDate ";
+		if(canalId.length()>0)
+			valoresWhereQuery += " AND c.CanalId =:CanalId ";
+		if(puntoVentaId.length()>0)
+			valoresWhereQuery += " AND c.puntoVentaId =:puntoVenta ";
+		if(agenteId.length()>0)
+			valoresWhereQuery += " AND c.AgenteId =:agenteId ";
+		if(nroTramite.length()>0)
+			valoresWhereQuery += " AND c.NumeroTramite =:NroTramite ";
+		if(identificacion.length()>0)
+			valoresWhereQuery += " AND c.IdentificacionCliente =:Identificacion ";
+		if(apellidos.length()>0)
+			valoresWhereQuery += " AND c.NombresCliente LIKE :ApellidoCliente ";
+		if(usuarioId.length()>0)
+			valoresWhereQuery += " AND c.UsuarioId =:usuarioId ";
+		if(tieneImpresion.equals("0"))
+			valoresWhereQuery += " AND c.NumeroImpresion =:NumeroImpresion ";
+		else if(tieneImpresion.equals("1"))
+			valoresWhereQuery += " AND NOT (c.NumeroImpresion ='0') ";
+		if(tieneObservaciones.equalsIgnoreCase("true"))
+			valoresWhereQuery += " AND (c.ObservacionRegla IS NOT NULL )";
+		
+		/*if(estadoCotizacion.equals("CPE")){
+			valoresWhereQuery += " AND c.FormaNotificacion NOT IN (:formaNotificacion)";
+		}*/
+		stringQuery = stringQuery+valoresWhereQuery+" ORDER BY c.fechaSiembra DESC ";
+		
+		query = getEntityManager().createQuery(stringQuery, AgriCotizacionAprobacion.class);
+		query.setParameter("estadoId",new BigInteger(estado.getId()));
+		query.setParameter("estadoId2",new BigInteger(estado2.getId()));
+		
+		// Agregamos los parametros del buscador
+		if(cotizacionId.length()>0){
+			//cotiID = new BigInteger (cotizacionId);
+			query.setParameter("cotiID", new BigInteger(cotizacionId.toString()));
+			//query.setParameter("cotiID", cotizacionId.toString());
+		}
+		
+		if(fInicio.length()>0 && fFinal.length()>0){
+			query.setParameter("startDate", timestamp1);
+			query.setParameter("endDate", timestamp2);
+		}
+		if(canalId.length()>0)
+			query.setParameter("CanalId", new BigInteger(canalId));
+		if(puntoVentaId.length()>0){
+			query.setParameter("puntoVenta", new BigInteger(puntoVentaId));
+		}
+		
+		if(agenteId.length()>0)
+			query.setParameter("agenteId", new BigInteger(agenteId));
+		if(nroTramite.length()>0)
+			query.setParameter("NroTramite", nroTramite);
+		if(identificacion.length()>0)
+			query.setParameter("Identificacion", identificacion);
+		if(apellidos.length()>0)
+			query.setParameter("ApellidoCliente", "%"+apellidos+"%");
+		if(usuarioId.length()>0)
+			query.setParameter("usuarioId", new BigInteger(usuarioId));
+		if(tieneImpresion.equals("0")){
+			query.setParameter("NumeroImpresion", Integer.parseInt(tieneImpresion));
+		}		
+		
+		long results = (long)query.getSingleResult();
+		return results;
+	}	
+	
+	public List<AgriCotizacionAprobacion> consultarCotizacionIdsIN(List ids,int Skip, int Take){ 
+		
+		TypedQuery<AgriCotizacionAprobacion> query = null;
+		
+		String stringQuery= "SELECT c FROM AgriCotizacionAprobacion c where c.id IN :ids";					
+		
+		query = getEntityManager().createQuery(stringQuery, AgriCotizacionAprobacion.class);
+		
+		query.setParameter("ids", ids);
+		
+		return query.setMaxResults(Take).setFirstResult(Skip).getResultList();
+	}
+	
+	public long consultarCotizacionIdsINumero(List ids,int Skip, int Take){ 
+						
+		
+		
+		Query query = null;	
+				
+		String stringQuery= "SELECT count(c.id) FROM AgriCotizacionAprobacion c where c.id IN :ids ";					
+		String valoresWhereQuery = "";
+		
+		query = getEntityManager().createQuery(stringQuery, AgriCotizacionAprobacion.class);
+				
+		query.setParameter("ids", ids);
+			
+		
+		long total = (long) query.getSingleResult();
+		return total;
+	}
+	
+	
+}

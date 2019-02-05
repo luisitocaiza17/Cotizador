@@ -1,0 +1,2021 @@
+package com.qbe.cotizador.servicios.QBE.agricolaSucre;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import com.qbe.cotizador.dao.cotizacion.CotizacionDAO;
+import com.qbe.cotizador.dao.cotizacion.CotizacionDetalleDAO;
+import com.qbe.cotizador.dao.cotizacion.EstadoDAO;
+import com.qbe.cotizador.dao.cotizacion.ProductoXPuntoVentaDAO;
+import com.qbe.cotizador.dao.cotizacion.TipoObjetoDAO;
+import com.qbe.cotizador.dao.cotizacion.UplaDAO;
+import com.qbe.cotizador.dao.cotizacion.VigenciaPolizaDAO;
+import com.qbe.cotizador.dao.entidad.ActividadEconomicaDAO;
+import com.qbe.cotizador.dao.entidad.CantonDAO;
+import com.qbe.cotizador.dao.entidad.CiudadDAO;
+import com.qbe.cotizador.dao.entidad.ClienteDAO;
+import com.qbe.cotizador.dao.entidad.DireccionDAO;
+import com.qbe.cotizador.dao.entidad.EntidadDAO;
+import com.qbe.cotizador.dao.entidad.ParroquiaDAO;
+import com.qbe.cotizador.dao.entidad.ProvinciaDAO;
+import com.qbe.cotizador.dao.entidad.PuntoVentaDAO;
+import com.qbe.cotizador.dao.entidad.TipoDireccionDAO;
+import com.qbe.cotizador.dao.entidad.TipoEntidadDAO;
+import com.qbe.cotizador.dao.entidad.TipoIdentificacionDAO;
+import com.qbe.cotizador.dao.entidad.UsuarioDAO;
+import com.qbe.cotizador.dao.entidad.ZonaDAO;
+import com.qbe.cotizador.dao.producto.agricola.AgriArchivosCotizacionDAO;
+import com.qbe.cotizador.dao.producto.agricola.AgriAuditoriaCotizacionDAO;
+import com.qbe.cotizador.dao.producto.agricola.AgriCicloDAO;
+import com.qbe.cotizador.dao.producto.agricola.AgriCotizacionMaxDAO;
+import com.qbe.cotizador.dao.producto.agricola.AgriObjetoCotizacionDAO;
+import com.qbe.cotizador.dao.producto.agricola.AgriParametroXPuntoVentaDAO;
+import com.qbe.cotizador.dao.producto.agricola.AgriParroquiaDAO;
+import com.qbe.cotizador.dao.producto.agricola.AgriReglaDAO;
+import com.qbe.cotizador.dao.producto.agricola.AgriSubcanalDAO;
+import com.qbe.cotizador.dao.producto.agricola.AgriSucreDetalleDAO;
+import com.qbe.cotizador.dao.producto.agricola.AgriTipoCalculoDAO;
+import com.qbe.cotizador.dao.producto.agricola.AgriTipoCultivoDAO;
+import com.qbe.cotizador.dao.producto.agricola.CotizacionAprobacionDAO;
+import com.qbe.cotizador.dao.producto.vehiculocerrado.GrupoPorProductoDAO;
+import com.qbe.cotizador.dao.seguridad.TipoVariableDAO;
+import com.qbe.cotizador.dao.seguridad.VariableSistemaDAO;
+import com.qbe.cotizador.model.ActividadEconomica;
+import com.qbe.cotizador.model.AgriAuditoriaCotizacion;
+import com.qbe.cotizador.model.AgriCiclo;
+import com.qbe.cotizador.model.AgriCotizacionAprobacion;
+import com.qbe.cotizador.model.AgriCotizacionMax;
+import com.qbe.cotizador.model.AgriObjetoCotizacion;
+import com.qbe.cotizador.model.AgriParametroXPuntoVenta;
+import com.qbe.cotizador.model.AgriParroquia;
+import com.qbe.cotizador.model.AgriRegla;
+import com.qbe.cotizador.model.AgriSubcanal;
+import com.qbe.cotizador.model.AgriSucreAuditoria;
+import com.qbe.cotizador.model.AgriSucreDetalle;
+import com.qbe.cotizador.model.AgriTipoCalculo;
+import com.qbe.cotizador.model.AgriTipoCultivo;
+import com.qbe.cotizador.model.Canton;
+import com.qbe.cotizador.model.Ciudad;
+import com.qbe.cotizador.model.Cliente;
+import com.qbe.cotizador.model.Cotizacion;
+import com.qbe.cotizador.model.CotizacionDetalle;
+import com.qbe.cotizador.model.Direccion;
+import com.qbe.cotizador.model.Entidad;
+import com.qbe.cotizador.model.Estado;
+import com.qbe.cotizador.model.GrupoPorProducto;
+import com.qbe.cotizador.model.Parroquia;
+import com.qbe.cotizador.model.ProductoXPuntoVenta;
+import com.qbe.cotizador.model.Provincia;
+import com.qbe.cotizador.model.PuntoVenta;
+import com.qbe.cotizador.model.TipoIdentificacion;
+import com.qbe.cotizador.model.TipoVariable;
+import com.qbe.cotizador.model.Upla;
+import com.qbe.cotizador.model.VariableSistema;
+import com.qbe.cotizador.servlets.producto.agricola.AgriCotizacionAprobacionController;
+import com.qbe.cotizador.servlets.producto.agricola.AgriSucreNotificacionErrores;
+import com.qbe.cotizador.transaction.cotizacion.CotizacionDetalleTransaction;
+import com.qbe.cotizador.transaction.cotizacion.CotizacionTransaction;
+import com.qbe.cotizador.transaction.cotizacion.UplaTransaction;
+import com.qbe.cotizador.transaction.entidad.ClienteTransaction;
+import com.qbe.cotizador.transaction.entidad.DireccionTransaction;
+import com.qbe.cotizador.transaction.entidad.EntidadTransaction;
+import com.qbe.cotizador.transaction.producto.agricola.AgriAuditoriaCotizacionTransaction;
+import com.qbe.cotizador.transaction.producto.agricola.AgriObjetoCotizacionTransaction;
+import com.qbe.cotizador.transaction.producto.agricola.AgriSucreAuditoriaTransaction;
+import com.qbe.cotizador.transaction.producto.agricola.AgriSucreDetalleTransaction;
+import com.qbe.cotizador.util.Utilitarios;
+
+public class SolicitudAgricola {
+
+	public RespuestaUN01DTO registrarSolicitud(SolicitudUN01DTO in0) {
+		RespuestaUN01DTO respuesta = new RespuestaUN01DTO();
+		AgriSucreAuditoria auditoria = new AgriSucreAuditoria();
+		AgriSucreAuditoriaTransaction procesoAuditoria = new AgriSucreAuditoriaTransaction();
+		auditoria.setTramite("" + in0.getNumeroResolucion());
+		String DatosRecibidos = " SERVICIO WEB-AGRICOLA "
+				+ " NumeroResolucion "
+				+ in0.getNumeroResolucion()
+				+ " Inversion "
+				+ in0.getInversion()
+				+ " CostoProduccion "
+				+ in0.getCostoProduccion()
+				+ " CostoMantenimientoCultivo "
+				+ in0.getCostoMantenimientoCultivo()
+				+ " Canton "
+				+ in0.getCanton()				
+				+ " Provincia "
+				+ in0.getProvincia()
+				+ "ActividadEconomica "
+				+ in0.getActividadEconomica()
+				+ " Apellido1 "
+				+ in0.getApellido1()
+				+ " Apellido2 "
+				+ in0.getApellido2()
+				+ " Cedula "
+				+ in0.getCedula()
+				+ " CodigoAgenciaOSucursal "
+				+ in0.getCodigoAgenciaOSucursal()
+				+ " CodigoFacilitador "
+				+ in0.getCodigoFacilitador()
+				+ " CodigoVariedadCultivo "
+				+ in0.getCodigoVariedadCultivo()
+				+ " CondicionPredio "
+				+ in0.getCondicionPredio()
+				+ " CondicionPredioOtra "
+				+ in0.getCondicionPredioOtra()
+				+ " CostoEstablecimientoCultivo "
+				+ in0.getCostoEstablecimientoCultivo()
+				+ " DireccionNacimiento "
+				+ in0.getDireccionNacimiento()
+				+ " DisponeRiego "
+				+ in0.getDisponeRiego()
+				+ " EstadoCivil "
+				+ in0.getEstadoCivil()
+				+ " EmailContacto "
+				+ in0.getEmailContacto()
+				+ " EstadoSolicitud "
+				+ in0.getEstadoSolicitud()
+				+ " FechaAprobacion "
+				+ in0.getFechaAprobacion()
+				+ " FechaSiembra "
+				+ in0.getFechaSiembra()
+				+ " FechaVencimientoCredito "
+				+ in0.getFechaVencimientoCredito()
+				+ " FuenteIngreso "
+				+ in0.getFuenteIngreso()
+				+ " Genero "
+				+ in0.getGenero()
+				+ " IngresoAnual "
+				+ in0.getIngresoAnual()	
+				+ " Latitud "
+				+ in0.getLatitud()
+				+ " Longitud "
+				+ in0.getLongitud()
+				+ " Lote "
+				+ in0.getLote()
+				+ " LugarNacimiento "
+				+ in0.getLugarNacimiento()
+				+ " MontoRecomendado "
+				+ in0.getMontoRecomendado()
+				+ " Nacionalidad "
+				+ in0.getNacionalidad()
+				+ " NombreContacto "
+				+ in0.getNombreContacto()
+				+ " Nombres "
+				+ in0.getNombres()
+				+ " NumHectAseguradas "
+				+ in0.getNumHectAseguradas()
+				+ " NumHectFinanciadas "
+				+ in0.getNumHectFinanciadas()
+				+ " OtroRiego "
+				+ in0.getOtroRiego()
+				+ " PaqueteTecnologico "
+				+ in0.getPaqueteTecnologico()
+				+ " Parroquia "
+				+ in0.getParroquia()
+				+ " Pep "
+				+ in0.getPep()
+				+ " Recinto "
+				+ in0.getRecinto()
+				+ " Referencia "
+				+ in0.getReferencia()
+				+ " Telfreferencia "
+				+ in0.getTelfreferencia()
+				+ " TerrenoTecnificado "
+				+ in0.getTerrenoTecnificado()
+				+ " TipoCanal "
+				+ in0.getTipoCanal()
+				+ " TipoRiego "
+				+ in0.getTipoRiego()
+				+ " TipoSemilla "
+				+ in0.getTipoSemilla()
+				+ " ValorSubsidio "
+				+ in0.getValorSubsidio()
+				+ " Variedad "
+				+ in0.getVariedad()
+				+ " SubCanal "
+				+ in0.getCodigoSubCanal();
+		
+		auditoria.setObjeto(DatosRecibidos);
+		java.util.Date date2 = new java.util.Date();
+		java.sql.Timestamp sq2 = new java.sql.Timestamp(date2.getTime());
+		SimpleDateFormat formatoDelTexto = new SimpleDateFormat("dd/mm/yy");
+		auditoria.setFecha(sq2);
+		auditoria.setCanal("SUCRE");
+		auditoria.setEstado("Ingreso");
+		try {
+			/* proceso de auditoria almacenamiento de inf. en tabla Agri_Sucre_Auditoria */
+			try {
+				procesoAuditoria.crear(auditoria);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			/* Fin proceso de auditoria */
+			if (in0.getNumeroResolucion() == null)
+				throw new Exception(
+						"Campo Numero de resolucion vacio, el proceso no se puede continuar");
+			
+			Cotizacion ExisteCotizacion = new Cotizacion();
+			CotizacionDAO BusquedaCotizacion = new CotizacionDAO();
+			
+			//variables globales
+			String Observacion = "";
+			String NumeroTramite = in0.getNumeroResolucion().trim();
+			java.util.Date date = new java.util.Date();
+			java.sql.Timestamp sq = new java.sql.Timestamp(date.getTime());
+			
+			ExisteCotizacion = BusquedaCotizacion
+					.buscarPorNumeroTramite(NumeroTramite);
+			
+			if (ExisteCotizacion.getId() == null) {
+				/* PROCESO DE INSTANCIAS CREADO */
+				EntidadDAO entidadDAO = new EntidadDAO();
+				ClienteDAO clienteDAO = new ClienteDAO();
+				TipoEntidadDAO tipoEntidadDAO = new TipoEntidadDAO();
+				PuntoVentaDAO pvDAO = new PuntoVentaDAO();
+				VigenciaPolizaDAO vpDAO = new VigenciaPolizaDAO();
+				GrupoPorProductoDAO grupoPorProductoDAO = new GrupoPorProductoDAO();
+				ProductoXPuntoVentaDAO productoPorPuntoVentaDAO = new ProductoXPuntoVentaDAO();
+				TipoObjetoDAO tipoObjetoDAO = new TipoObjetoDAO();
+				UsuarioDAO usuarioDAO = new UsuarioDAO();
+				EstadoDAO estadoDAO = new EstadoDAO();
+				UplaDAO uplaCliente = new UplaDAO();
+				Upla registroExiste = new Upla();
+				UplaTransaction uplaProceso = new UplaTransaction();
+				TipoIdentificacionDAO tipoIDentificacion = new TipoIdentificacionDAO();
+				CotizacionTransaction cotizacionTransaction = new CotizacionTransaction();
+				CotizacionDetalleTransaction cotizacionDetalleTransaction = new CotizacionDetalleTransaction();
+				EntidadTransaction entidadTransaction = new EntidadTransaction();
+				ClienteTransaction clienteTransaction = new ClienteTransaction();
+				AgriObjetoCotizacionTransaction agriObjetoCotizacionTransaction = new AgriObjetoCotizacionTransaction();
+				Entidad entidad = new Entidad();
+				Cliente cliente = new Cliente();
+				Upla registro = new Upla();
+				AgriTipoCultivoDAO cultivo = new AgriTipoCultivoDAO();
+				AgriTipoCultivo elCutlitvo = new AgriTipoCultivo();
+				Cotizacion cotizacion = new Cotizacion();
+
+				/* Proceso de validacion de campos obligatorios */
+				if (in0.getTipoCanal() == null)
+					throw new Exception(
+							"Error Campo Obligatorio TipoCanal vacio");
+				if (in0.getCodigoFacilitador() == null)
+					throw new Exception(
+							"Error Campo Obligatorio CodigoFacilitador vacio");
+				if (in0.getCodigoAgenciaOSucursal() == null)
+					throw new Exception(
+							"Error Campo Obligatorio CodigoAgenciaOSucursal vacio");
+				if (in0.getNumeroResolucion() == null)
+					throw new Exception(
+							"Error Campo Obligatorio NumeroResolucion vacio");
+				if (in0.getEstadoSolicitud() == null)
+					throw new Exception(
+							"Error Campo Obligatorio EstadoSolicitud vacio");
+				if (in0.getCedula() == null)
+					throw new Exception("Error Campo Obligatorio Cedula vacio");
+				if (in0.getApellido1() == null)
+					throw new Exception(
+							"Error Campo Obligatorio Apellido vacio");
+				if (in0.getApellido2() == null)
+					throw new Exception(
+							"Error Campo Obligatorio Apellido2 vacio");
+				if (in0.getNombres() == null)
+					throw new Exception(
+							"Error Campo Obligatorio Nombres vacio");
+				if (in0.getGenero() == null)
+					throw new Exception("Error Campo Obligatorio Genero vacio");
+				if (in0.getFechaNacimiento() == null)
+					throw new Exception(
+							"Error Campo Obligatorio FechaNacimiento vacio");
+				if (in0.getFechaAprobacion() == null)
+					throw new Exception(
+							"Error Campo Obligatorio FechaAprobacion vacio");
+				if (in0.getFuenteIngreso() == null)
+					throw new Exception(
+							"Error Campo Obligatorio FuenteIngreso vacio");
+				if (in0.getNombreContacto() == null)
+					throw new Exception(
+							"Error Campo Obligatorio NombreContacto vacio");
+				if (in0.getEmailContacto() == null)
+					throw new Exception(
+							"Error Campo Obligatorio EmailContacto vacio");
+				if (in0.getFechaVencimientoCredito() == null)
+					throw new Exception(
+							"Error Campo Obligatorio FechaVencimientoCredito vacio");
+				if (in0.getProvincia() == null)
+					throw new Exception(
+							"Error Campo Obligatorio Provincia vacio");
+				if (in0.getCanton() == null)
+					throw new Exception("Error Campo Obligatorio Canton vacio");
+				if (in0.getParroquia() == null)
+					throw new Exception(
+							"Error Campo Obligatorio Parroquia vacio");
+				if (in0.getRecinto() == null)
+					throw new Exception(
+							"Error Campo Obligatorio Recinto vacio");
+				if (in0.getReferencia() == null)
+					throw new Exception(
+							"Error Campo Obligatorio Referencia vacio");
+				if (in0.getLote() == null)
+					throw new Exception("Error Campos Obligatorio Lote vacio");
+				if (in0.getCondicionPredio() == null)
+					throw new Exception(
+							"Error Campo Obligatorio CondicionPredio vacio");
+				if (in0.getLongitud() == null)
+					throw new Exception(
+							"Error Campo Obligatorio Longitud vacio");
+				if (in0.getDisponeRiego() == null)
+					throw new Exception(
+							"Error Campo Obligatorio DisponeRiego vacio");
+				if (in0.getLatitud() == null)
+					throw new Exception(
+							"Error Campo Obligatorio Latitud vacio");
+				if (in0.getTerrenoTecnificado() == null)
+					throw new Exception(
+							"Error Campo Obligatorio TerrenoTecnificado vacio");
+				if (in0.getCostoProduccion() == null)
+					throw new Exception(
+							"Error Campo Obligatorio CostoProduccion vacio");
+				if (in0.getFechaSiembra() == null)
+					throw new Exception(
+							"Error Campo Obligatorio FechaSiembra vacio");
+				if (in0.getMontoRecomendado() == null)
+					throw new Exception(
+							"Error Campo Obligatorio MontoRecomendado vacio");
+				if (in0.getTipoSemilla() == null)
+					throw new Exception(
+							"Error Campo Obligatorio TipoSemilla vacio");
+				if (in0.getValorSubsidio() == null)
+					throw new Exception(
+							"Error Campo Obligatorio ValorSubsidio vacio");
+				if (in0.getEstadoCivil() == null)
+					throw new Exception(
+							"Error Campo Obligatorio EstadoCivil vacio");
+				if (in0.getNacionalidad() == null)
+					throw new Exception(
+							"Error Campo Obligatorio Nacionalidad vacio");
+				if (in0.getLugarNacimiento() == null)
+					throw new Exception(
+							"Error Campo Obligatorio LugarNacimiento vacio");
+				if (in0.getDireccionNacimiento() == null)
+					throw new Exception(
+							"Error Campo Obligatorio DireccionNacimiento vacio");
+				if (in0.getActividadEconomica() == null)
+					throw new Exception(
+							"Error Campo Obligatorio ActividadEconomica vacio");
+				if (in0.getIngresoAnual() == null)
+					throw new Exception(
+							"Error Campo Obligatorio IngresoAnual vacio");
+				if (in0.getPep() == null)
+					throw new Exception("Error Campo Obligatorio Pep vacio");
+				if (("" + in0.getNumHectFinanciadas()).equals("null"))
+					throw new Exception(
+							"Error Campo Obligatorio NumHectFinanciadas vacio");
+				if (("" + in0.getNumHectAseguradas()).equals("null"))
+					throw new Exception(
+							"Error Campo Obligatorio NumHectAseguradas vacio");
+				else
+					if (("" + in0.getNumHectAseguradas()).equals("0")||("" + in0.getNumHectAseguradas()).equals("0.0")
+							||("" + in0.getNumHectAseguradas()).equals("0.00")
+							||in0.getNumHectAseguradas()==0||in0.getNumHectAseguradas()==0.0)
+						throw new Exception(
+								"Error el numero de hectareas aseguradas no pueden ser 0 imposible continuar");
+					
+				if (("" + in0.getInversion()).equals("null"))
+					throw new Exception(
+							"Error Campos Obligatorio Inversion(Codigo tipo Cultivo) vacio");
+				
+				if(in0.getNumHectAseguradas()==0||("" + in0.getNumHectAseguradas()).equals("0"))
+					throw new Exception(
+							"Error el numero de hectareas aseguradas no pueden ser 0 imposible continuar");
+				
+				if (in0.getTipoCanal() == null)
+					throw new Exception(
+							"Error Campo Obligatorio TipoCanal vacio");
+				if(in0.getTelfreferencia().length()>12){
+					throw new Exception(
+							"Telefono no valido"+in0.getTelfreferencia());
+				}
+				
+				String EntidadId = "";
+				String NumeroCedula = in0.getCedula( ).trim();
+				//verificamos si la entidad existe para actualizarla ó crearla
+				try {
+					entidad = entidadDAO
+							.buscarEntidadPorIdentificacion(NumeroCedula);
+					EntidadId = entidad.getId();
+				} catch (Exception e) {
+					EntidadId = "";
+				}
+				/* PROCESO DE CREACION DE LA ENTIDAD */
+				String nombre = "";
+				String Apellidos = "";
+				entidad.setIdentificacion(NumeroCedula);
+				TipoIdentificacion identificacion = tipoIDentificacion.buscarPorId("3");
+				entidad.setTipoIdentificacion(identificacion);
+				entidad.setTipoEntidad(tipoEntidadDAO.buscarPorId("1"));
+				nombre = in0.getNombres().trim();
+				Apellidos = " " + in0.getApellido1().trim();
+				Apellidos = Apellidos + " " + in0.getApellido2();
+				entidad.setApellidos(Apellidos);
+				entidad.setNombres(nombre);
+				entidad.setNombreCompleto(nombre + " " + Apellidos);
+				entidad.setMail("" + in0.getEmailContacto().trim());
+				entidad.setCelular("" + in0.getCelreferencia().trim());
+				try{
+					entidad.setTelefono("" + in0.getTelfreferencia().trim());
+					
+				}
+				catch (Exception e) {
+					//numero vacio
+				}
+				if (EntidadId == null || EntidadId.equals("")) {
+					entidad = entidadTransaction.crear(entidad);
+				}else{
+					entidad.setId(EntidadId);
+					entidad = entidadTransaction.editar(entidad);
+				}
+				
+				if(entidad.getId()==null)
+					throw new Exception(
+							"No se pudo crear la entidad");
+				
+				/*PROCESO DE CREACION DEL CLIENTE */
+				cliente = clienteDAO.buscarPorEntidadId(entidad);
+				
+				ActividadEconomica actividad = new ActividadEconomica();
+				ActividadEconomicaDAO actividadDAO = new ActividadEconomicaDAO();
+				actividad = actividadDAO.buscarPorNombre("Ninguno");
+				Cliente clienteNuevo = new Cliente();
+				clienteNuevo.setEntidad(entidad);
+				clienteNuevo.setActividadEconomica(actividad);
+				clienteNuevo.setActivo(true);
+				
+				if (cliente.getEntidad() == null) {
+					cliente = clienteTransaction.crear(clienteNuevo);
+				}else{
+					clienteNuevo.setId(cliente.getId());
+					cliente = clienteTransaction.editar(clienteNuevo);
+				}
+				if(cliente.getId()==null)
+					throw new Exception(
+							"No se pudo crear el cliente");
+				
+				/*CREACION DE LA DIRECCION*/
+				
+				Direccion direccion=new Direccion();
+				DireccionDAO direccionDAO=new DireccionDAO();
+				DireccionTransaction direccionTransaction = new DireccionTransaction();
+				ProvinciaDAO laProvincia = new ProvinciaDAO();
+				Provincia provincia = new Provincia();
+				CantonDAO elCanton = new CantonDAO();
+				Canton canton = new Canton();
+				TipoDireccionDAO tipoDireccionDAO = new TipoDireccionDAO();
+				ZonaDAO zonaDAO = new ZonaDAO();
+				AgriParroquiaDAO laParroquia = new AgriParroquiaDAO();
+				AgriParroquia parroquia = new AgriParroquia();
+				
+								
+				if(entidad.getId()!=null){
+					if(direccionDAO.buscarCobroPorEntidadId(entidad).size()>0)
+						direccion=direccionDAO.buscarCobroPorEntidadId(entidad).get(0);
+				}
+				//hallamos la provincia en base al codigo que llega
+				String CodigoSBSProvincia = in0.getProvincia().trim();
+				
+				if (CodigoSBSProvincia.length() == 1)
+					CodigoSBSProvincia = "0" + CodigoSBSProvincia;
+				
+				provincia = laProvincia.buscarPorCodigoSBS(CodigoSBSProvincia);
+				
+				if (provincia.getId() == null)
+					throw new Exception("Error Codigo de Provincia "
+							+ CodigoSBSProvincia + "  no encontrado");
+				
+				//hallamos el canton en base al codigo que llega
+				String CodigoSBSCanton = in0.getCanton().trim();
+				
+				if (CodigoSBSCanton.length() == 1 || CodigoSBSCanton.length() == 3)
+					CodigoSBSCanton = "0" + CodigoSBSCanton;
+				
+				if (CodigoSBSCanton.length() >= 3)
+					CodigoSBSCanton = CodigoSBSCanton.substring(2, 4);
+				
+				canton = elCanton.buscarPorCodigoSBS(CodigoSBSCanton, provincia);
+				
+				if (canton.getId() == null)
+					throw new Exception("Error Codigo de Canton "
+							+ CodigoSBSCanton + " no encontrado en provincia "
+							+ CodigoSBSProvincia);
+				
+				//Proceso de busqueda de parroquias
+				String CodigoSBSParroquia=in0.getParroquia().trim();
+				if(CodigoSBSParroquia.length()<6)
+					CodigoSBSParroquia="0"+CodigoSBSParroquia;
+				if(CodigoSBSParroquia.length()>6)
+					CodigoSBSParroquia=CodigoSBSParroquia.substring(0, 6);
+				
+				
+				//hallamos la parroquien en base al SBS
+				parroquia= laParroquia.BuscarPorSBS(CodigoSBSParroquia);
+								
+				if (parroquia.getParroquiaNombre() == null)
+					throw new Exception("Error Codigo de Parroquia "
+							+ CodigoSBSParroquia + " no encontrado ");
+
+								
+				if(in0.getReferencia()!=null&&!in0.getReferencia().equals(""))
+					direccion.setCallePrincipal(""+in0.getReferencia());
+				
+				if(in0.getLote()!=null&&!in0.getLote().equals("")){
+					direccion.setCalleSecundaria("Lote "+in0.getLote());
+					direccion.setNumero(""+in0.getLote());
+				}
+				
+				if(in0.getLatitud()!=null&&!in0.getLatitud().equals("")||in0.getLongitud()!=null&&!in0.getLongitud().equals(""))
+					direccion.setDatosDeReferencia("Latitud:"+in0.getLatitud()+" Longitud:"+in0.getLongitud());
+				
+				direccion.setEsCobro(true);
+				direccion.setTipoDireccion(tipoDireccionDAO.buscarPorId("3"));
+				
+				 CiudadDAO ciuDAO = new CiudadDAO();
+					Ciudad ciu = ciuDAO.buscarPorId(canton.getProvincia().getCapitalId());
+				direccion.setCiudad(ciu);
+				direccion.setZona(zonaDAO.buscarPorNombre("Rural"));
+				if(entidad!=null&&!entidad.getId().equals(""))
+					direccion.setEntidad(entidad);
+				//se almacena direccion pero si existe algun problema permite continuar
+				try{
+					if(direccion.getId()==null)
+						direccion=direccionTransaction.crear(direccion);
+					else
+						direccion=direccionTransaction.editar(direccion);
+				}catch(Exception e){
+					System.out.println("Problemas al almacenar direccion");
+				}
+				
+				/*PROCESO DE ALMACENAMIENTO DETALLADO DE INF. DEL CLIENTE */
+				
+				registro.setCliente(cliente);
+				registro.setGeneroNatural("" + in0.getGenero().trim());
+				registro.setTipoActividadNatural(""+ in0.getActividadEconomica().trim());
+				Date fechaNacimiento = null;
+				try {
+					fechaNacimiento = formatoDelTexto.parse(""
+							+ in0.getFechaNacimiento().trim());
+				} catch (Exception e) {
+					fechaNacimiento = null;
+				}
+				
+				registro.setFechaNacimientoNatural(fechaNacimiento);
+				
+				if (in0.getTelfreferencia() != null) {
+					registro.setTelefonoNatural(""
+							+ in0.getTelfreferencia().trim());
+				}
+				
+				if (in0.getCelreferencia() != null) {
+					registro.setCelularNatural(""
+							+ in0.getCelreferencia().trim());
+				}
+				
+				try {
+					double valorIngreso = Double.parseDouble(in0.getIngresoAnual().trim());
+					registro.setSalarioMensual(valorIngreso);
+				} catch (Exception e) {
+					//NO SE PUEDE CONVERTIR EL SALARIO
+				}
+				//almacenamos datos especificos,caso de inconveniente, no detiene el proceso.
+				try {
+					registroExiste = uplaCliente.buscarPorCliente(cliente);
+					if (registroExiste.getId() == null)
+						uplaProceso.crear(registro);
+					else {
+						registro.setId(registroExiste.getId());
+						uplaProceso.editar(registro);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+				/*****PROCESO DE COTIZACION*****/
+				
+				AgriParametroXPuntoVenta PPuntoVenta = new AgriParametroXPuntoVenta();
+				AgriParametroXPuntoVentaDAO PPuntoVentaProceso = new AgriParametroXPuntoVentaDAO();
+				
+				//buscamos el punto de venta en base al canal que llega
+				PPuntoVenta = PPuntoVentaProceso.buscarCodigoIntegracion(in0.getCodigoFacilitador().trim());
+				PuntoVenta puntoVenta = new PuntoVenta();
+				puntoVenta = pvDAO.buscarPorId(""
+						+ PPuntoVenta.getPuntoVentaId());
+				GrupoPorProducto grupo = new GrupoPorProducto();
+				grupo = grupoPorProductoDAO.buscarPorNombre("Agricola");
+				GrupoPorProducto grupoPorProducto = grupoPorProductoDAO.buscarPorId(grupo.getId());// AGRICOLA
+				
+				if (puntoVenta != null)
+					cotizacion.setPuntoVenta(puntoVenta);
+				else {
+					throw new Exception("El canal "+in0.getCodigoFacilitador().trim()+ " no existe");
+				}
+				//verifico si existe subCanal para poder tomar la configuracion especifica del mismo
+				ProductoXPuntoVenta pxpv = new ProductoXPuntoVenta();
+				
+				if(in0.getCodigoSubCanal() == null || in0.getCodigoSubCanal().trim().equals("")|| in0.getCodigoSubCanal().trim().equals("null")){
+					pxpv = productoPorPuntoVentaDAO.buscarPorGrupoPuntoVenta(grupoPorProducto, puntoVenta);
+				}
+				else{
+					String codigoSubCanal=in0.getCodigoSubCanal().trim();
+					AgriSubcanalDAO agriSubcanalDAO = new AgriSubcanalDAO();
+					AgriSubcanal subcanales = agriSubcanalDAO.BuscarTodosCanal(PPuntoVenta.getCanalId().toString(),PPuntoVenta.getPuntoVentaId().toString(),codigoSubCanal); 
+					if(subcanales.getPuntoVentaSubCanal()==null)
+						throw new Exception("El Subcanal "+codigoSubCanal+" no existe");
+					else{
+						PPuntoVenta = PPuntoVentaProceso.buscarPorPuntoVentaId(new BigInteger(subcanales.getPuntoVentaSubCanal()));
+						puntoVenta = pvDAO.buscarPorId(""
+								+ PPuntoVenta.getPuntoVentaId());
+						 pxpv = productoPorPuntoVentaDAO.buscarPorGrupoPuntoVenta(grupoPorProducto, puntoVenta);
+						 cotizacion.setPuntoVenta(puntoVenta);
+					}
+					 
+				}
+				if (pxpv.getId() == null)
+					throw new Exception(
+							"Error Producto por Punto de Venta no configurado");
+				try {
+					cotizacion.setProductoXPuntoVentaId(new BigInteger(pxpv
+							.getId()));
+				} catch (Exception e) {
+					// si no existe Producto por punto de venta lo direccionamos a uno por defecto.
+					cotizacion.setProductoXPuntoVentaId(new BigInteger("6537"));
+					Observacion=Observacion+", punto de venta sucre "+ pxpv
+							.getId()+ " no configurado, entra por Id: 6537.";
+				}
+				
+				cotizacion.setVigenciaPoliza(vpDAO.buscarPorId("1"));
+				cotizacion.setAgenteId(new BigInteger("1"));// VERIFICAR
+				cotizacion.setGrupoProductoId(BigInteger.valueOf(Long.valueOf(grupoPorProducto.getGrupoProducto().getId())));
+				cotizacion.setGrupoPorProductoId(BigInteger.valueOf(Long.valueOf(grupoPorProducto.getId())));
+				cotizacion.setProducto(grupoPorProducto.getProducto());
+				cotizacion.setTipoObjeto(tipoObjetoDAO.buscarPorNombre("Agricola"));
+								
+				cotizacion.setUsuario(usuarioDAO.buscarPorLogin("e63_1708971229"));
+				cotizacion.setFechaElaboracion(sq);
+				
+				String codigoTipoCultivo = "" + in0.getInversion();
+				
+				if (codigoTipoCultivo.length() < 2)
+					codigoTipoCultivo = "0" + codigoTipoCultivo;
+
+				double tasa = 0;
+				double costoProduccion = Double.parseDouble(in0.getCostoProduccion().trim());
+				/*double costoMantenimiento=0.0;
+				try{
+					costoMantenimiento=Double.parseDouble(in0.getCostoMantenimientoCultivo().trim());
+				}catch(Exception e){
+					costoMantenimiento=0.0;
+				}
+				
+				//si nos llega el costo de mantenimiento entonces realizamos la busqueda de tipo de cultivo en base a este costo
+				
+				if(costoMantenimiento!=0||costoMantenimiento!=0.0)
+					costoProduccion=costoMantenimiento;
+				*/
+				 String CodigoTipoCultivoProcesado = "";//para tomar el cod.Cultivo una ves verf. costo produccion.
+				
+				//Obtengo el id del tipo de canal
+				AgriTipoCalculo agriTipoCalculo= new AgriTipoCalculo();
+				AgriTipoCalculoDAO agriTipoCalculoDAO = new AgriTipoCalculoDAO();
+				agriTipoCalculo=agriTipoCalculoDAO.BuscarPorId(PPuntoVenta.getTipoCalculoId());
+				
+				/*PROCESO DE BUSQUEDA Y VERIFICACION SI ES PERENNE O NO EN BASE al costo de produccion que nos llegue o no*/
+				//proceso de busqueda de tipo de cultivo en base al costo de produccion
+				AgriTipoCultivoDAO tipoCultivoSucreProceso = new AgriTipoCultivoDAO();
+				List<AgriTipoCultivo> agriSucreQbeCultivo = tipoCultivoSucreProceso.BuscarTodosIntegracionSucre(codigoTipoCultivo);
+				Date dateSiembra=null;
+				SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");//formato de fecha de siembra
+				try{
+					dateSiembra=formatter.parse(in0.getFechaSiembra().trim());
+				}catch(Exception e){
+					throw new Exception(
+							"Error la fecha de siembra "+in0.getFechaSiembra()+ " no esta en el formato dd/MM/yyyy");
+				}
+				
+				String TipoCultivoSinCoincidencias="";//Se crea para que en caso de no referenciar una regla, este sirva de referencia para el costo de produccion.
+				
+				AgriCicloDAO cicloDAO=new AgriCicloDAO();
+				//Se halla el tipo de cultivo en base al costo de produccion, en base a la fecha de siembra, caso contrario se toma el primero que tenga coincidencia
+				if (!agriSucreQbeCultivo.isEmpty()) {
+					bucle1: for (AgriTipoCultivo rs : agriSucreQbeCultivo) {
+						AgriReglaDAO regla = new AgriReglaDAO();
+						List<AgriRegla> reglas = regla.BuscarPorParametros(
+								new BigInteger(provincia.getId()),
+								new BigInteger(canton.getId()),
+										rs.getTipoCultivoId(),agriTipoCalculo.getTipoCalculoId());
+						for (AgriRegla rs2 : reglas) {
+							try {
+								
+								AgriCiclo ciclo = cicloDAO.BuscarPorId(rs2.getClicloId());//tomamos el ciclo para verificar a cual pertenece
+								Date fechafin=ciclo.getFechaFin();//fecha inicio ciclo
+								Date fechaInicio=ciclo.getFechaInicio();//fecha fin ciclo
+								
+								String costoP = ""+rs2.getCostoProduccion();
+								String costoA = ""+costoProduccion;
+								if(costoA.equals(""+rs2.getCostoProduccion())||costoA.equals(rs2.getCostoMantenimiento())){//verificamos que los costos de produccion sean iguales
+									TipoCultivoSinCoincidencias=""+rs2.getTipoCultivoId();//si son iguales le ponemos como temporal, asi si no calza por fechas calsa al menos el cultivo
+									if (costoP.equals(costoA)) {									
+										if(dateSiembra.after(fechaInicio) && dateSiembra.before(fechafin)){
+											CodigoTipoCultivoProcesado = ""
+													+ rs2.getTipoCultivoId();
+											break bucle1;//si se encuentra la busqueda termina										
+										}
+									}else{
+										costoP=""+rs2.getCostoMantenimiento();
+										if(costoP .equals(costoA)){
+											if(dateSiembra.after(fechaInicio) && dateSiembra.before(fechafin)){
+												CodigoTipoCultivoProcesado = ""
+														+ rs2.getTipoCultivoId();
+												break bucle1;//si se encuentra la busqueda termina										
+											}
+										}
+									}
+								}else{
+									TipoCultivoSinCoincidencias=""+rs2.getTipoCultivoId();//si no son iguales los costos de produccion al menos buscame un similar.
+								}
+								
+							} catch (Exception e) {
+								continue;
+							}
+						}
+					}
+				} else {
+					throw new Exception("Error Tipo de cultivo "+ in0.getInversion() + " no existe");
+				}
+				
+				if (CodigoTipoCultivoProcesado.equals("")) {//Si no encontraste tipo de cultivo traeme el que al menos coincida
+					Observacion=" No se encontro ninguna regla de siembra para este tipo de cultivo.";
+					CodigoTipoCultivoProcesado =TipoCultivoSinCoincidencias;
+					if(CodigoTipoCultivoProcesado.equals("")){//si aun asi no encuentra tomamos el primero que coincidir con el codigo de integracion
+						elCutlitvo = cultivo.buscarPorCodIntegracionSucre(codigoTipoCultivo);
+						if (elCutlitvo.getTipoCultivoId() == null)
+							throw new Exception("Error Tipo de cultivo "+ in0.getInversion() + " no existe");
+						CodigoTipoCultivoProcesado = ""+ elCutlitvo.getTipoCultivoId();
+					}					
+				}
+
+				AgriReglaDAO regla = new AgriReglaDAO();
+				List<AgriRegla> tasas = regla.BuscarPorParametros(new BigInteger(provincia.getId()), new BigInteger(
+								canton.getId()), new BigInteger(CodigoTipoCultivoProcesado),agriTipoCalculo.getTipoCalculoId());
+				
+				String nuestroCosto = "0.0";//para verificar si existen diferencias entre costo que llega y que tenemos
+				String idTipoCalculo = "";//para saber en base a que regla se calcularon los datos
+				
+				//ya se tiene el cultivo, la provincia, el canton y el tipo de calculo se busca los costos de produccion
+				for (AgriRegla rs : tasas) {
+					if(rs.getTasa()!=0 || rs.getTasa()!=0.0 ){//si tiene tasa debe tener o costo de produccion o costo de mantenimiento
+						tasa = Double.parseDouble(""+rs.getTasa());
+						if(rs.getCostoProduccion()!=0){
+							nuestroCosto = (""+rs.getCostoProduccion());
+						}else{
+							nuestroCosto = (""+rs.getCostoMantenimiento());
+						}
+						Observacion = Observacion+" " + rs.getObservaciones();
+						idTipoCalculo = "" + rs.getReglaId();
+					}
+				}
+				
+				/* Costos De Produccion llegue o no */
+				double costoProduccionL = 0.0;
+				try {
+					costoProduccionL = costoProduccion;
+				} catch (Exception e) {
+					costoProduccionL =Double.parseDouble(nuestroCosto);
+				}
+				
+				if(!(""+costoProduccion).equals(nuestroCosto)){
+					Observacion=Observacion+" Costos de Produccion Diferentes Costo Sucre: "+costoProduccion+" / Costo QB: E"+ nuestroCosto;
+				}
+				
+				//si no se tuviese la tasa, hallamos en base a la primera regla del cultivo
+				if (tasa==0|| tasa==0.0){
+					AgriTipoCultivoDAO agriTipoCultivoDAO= new AgriTipoCultivoDAO();
+					AgriTipoCultivo agriTipoCultivo=agriTipoCultivoDAO.BuscarPorId(new BigInteger( CodigoTipoCultivoProcesado));
+					tasa = agriTipoCultivo.getTasa();
+				}
+					
+				double NumeroHectareasL = 0.0;
+				
+				try {
+					NumeroHectareasL =in0.getNumHectAseguradas();
+					if(NumeroHectareasL==0.0||NumeroHectareasL==0)
+						throw new Exception("Numero de hectareas 0 imposible continuar");
+				} catch (Exception e) {
+					throw new Exception("Error numero de hectareas"
+							+ in0.getNumHectAseguradas()
+							+ " no se puede procesar");
+				}
+
+				//Verificamos si es perenne o no en base al costo de mantenimiento que llega
+				double valorTotaL = 0.0;
+				try {
+					valorTotaL = costoProduccionL * NumeroHectareasL;
+					BigDecimal T = new BigDecimal(""+valorTotaL);
+					BigDecimal roundOffT = T.setScale(2, BigDecimal.ROUND_HALF_UP);
+					valorTotaL=Double.parseDouble(""+roundOffT);
+				} catch (Exception e) {
+					throw new Exception("Error se puede calcular valor Total");
+				}
+				
+				//Calculo de la Prima = Costo Produccion * tasa * numero Hectareas / 1000
+				
+				String variableControl=auditoria.getObjeto();
+				
+				double valorPrima=valorTotaL * tasa /100;
+				
+				variableControl=variableControl+"|| CALCULOS:  Tasa: "+tasa;	
+				variableControl=variableControl+" NHect: "+NumeroHectareasL;
+				variableControl=variableControl+" CostoP: "+costoProduccionL;
+				
+				BigDecimal a = new BigDecimal(""+valorPrima);
+				BigDecimal roundOff = a.setScale(2, BigDecimal.ROUND_HALF_UP);
+				variableControl=variableControl+" Prima: "+roundOff;				
+				cotizacion.setPrimaNetaTotal(""+roundOff);
+				
+				a=new BigDecimal(""+valorTotaL);
+				roundOff = a.setScale(2, BigDecimal.ROUND_HALF_UP);
+				variableControl=variableControl+" SumaAsegurada: "+roundOff;
+				
+				cotizacion.setSumaAseguradaTotal(Double.parseDouble(""+roundOff));
+				
+				a=new BigDecimal(""+valorPrima);
+				roundOff = a.setScale(2, BigDecimal.ROUND_HALF_UP);
+								
+				cotizacion.setPrimaOrigen(Double.parseDouble(""+roundOff));
+				
+				/* PROCESO DE CALCULO DE COMPONENTES */
+				TipoVariableDAO tipoVariableDao = new TipoVariableDAO();
+				TipoVariable tipoVariable = tipoVariableDao.buscarPorId("3");
+				VariableSistemaDAO variableDAO = new VariableSistemaDAO();
+				List<VariableSistema> variablesistema = variableDAO
+						.buscarTipoVariable(tipoVariable);
+				double valorBase = 0;
+				double valorDerechosEmision = 0;
+				double valorSeguroCampesino = 0;
+				double valorSuperBancos = 0;
+				double valorIva = 0;
+				double valorSubTotal = 0;
+				double valorTotal = 0;
+				if (variablesistema.size() > 0) {
+					for (VariableSistema variable : variablesistema) {
+						if(tasa==0|| tasa==0.0){
+							if (variable.getNombre().equals("TASA_ESTANDAR")) {
+								tasa=Double.parseDouble(variable.getValor());
+								Observacion=Observacion+" Tasa no encontrada, por defecto se envia "+tasa;
+							}
+						}
+						
+						if (variable.getNombre().equals("DERECHOS_EMISION")) {
+							valorBase = Double.parseDouble(variable.getValor())
+									+ valorPrima;
+							// valorDerechosEmision =
+							// Double.parseDouble(variable.getValor());
+							cotizacion
+									.setImpDerechoEmision(valorDerechosEmision);
+						} else if (variable.getNombre().equals(
+								"SEGURO_CAMPESINO")) {
+							valorSeguroCampesino = Math.rint(Double
+									.parseDouble(variable.getValor())
+									* valorPrima / 100 * 100) / 100;
+							valorBase = valorBase + valorSeguroCampesino;
+							cotizacion
+									.setImpSeguroCampesino(valorSeguroCampesino);
+						} else if (variable.getNombre().equals(
+								"SUPER_DE_BANCOS")) {
+							valorSuperBancos = Math.rint(Double
+									.parseDouble(variable.getValor())
+									* valorPrima / 100 * 100) / 100;
+							cotizacion.setImpSuperBancos(valorSuperBancos);
+							valorBase = valorBase + valorSuperBancos;
+						} else if (variable.getNombre().equals("SUBTOTAL")) {
+							valorSubTotal = Math.rint(valorBase * 100) / 100;
+						} else if (variable.getNombre().equals("IVA")) {
+							valorIva = Math.rint(Double.parseDouble(variable
+									.getValor()) * valorSubTotal / 100 * 100) / 100;
+							cotizacion.setImpIva(valorIva);
+						}
+					}
+					valorTotal = Math.rint((valorBase + valorIva) * 100) / 100;
+					cotizacion.setTotalFactura(valorTotal);
+				}
+				cotizacion.setTasaProductoValor(tasa);
+				cotizacion.setEtapaWizard(3);
+				cotizacion.setClienteId(new BigInteger(cliente.getId()));
+				
+				//Busqueda de emision directa por canal y cultivo
+				//nuevo
+				if(PPuntoVenta.getEmisionDirecta()){
+					if(PPuntoVenta.getExcepcionesDirectasCultivos()!=null){
+						String cultivosAEmitir = PPuntoVenta.getExcepcionesDirectasCultivos();
+				        String[] cultivosAEmitirArray = cultivosAEmitir.split(";");
+				        for(String cultivos :cultivosAEmitirArray){
+				        	if(cultivos.equals(codigoTipoCultivo)){
+				        		cotizacion.setEstado(estadoDAO.buscarPorNombre(
+										"Pendiente de Emitir", "Cotizacion"));
+								cotizacion.setFechaEmision(sq);
+								cotizacion.setVigenciaDesde(sq);
+								respuesta.setMontoAprobadoQBE((float)(cotizacion.getSumaAseguradaTotal()));
+								break;
+				        	}else{
+				        		cotizacion.setEstado(estadoDAO.buscarPorNombre(
+										"Pendiente Aprobar", "Cotizacion"));
+				        	}
+				   
+				        }
+					}
+					else{
+						cotizacion.setEstado(estadoDAO.buscarPorNombre(
+								"Pendiente de Emitir", "Cotizacion"));
+						cotizacion.setFechaEmision(sq);
+						cotizacion.setVigenciaDesde(sq);
+						respuesta.setMontoAprobadoQBE((float)(cotizacion.getSumaAseguradaTotal()));
+					}
+				}else{
+					cotizacion.setEstado(estadoDAO.buscarPorNombre(
+							"Pendiente Aprobar", "Cotizacion"));
+				}
+				
+				
+				
+				cotizacion.setAsegurado(entidad);
+				
+				if (cotizacion.getId() != null)
+					cotizacion = cotizacionTransaction.editar(cotizacion);
+				else
+					cotizacion = cotizacionTransaction.crear(cotizacion);
+				
+				/****PROCESO DE CREACION DE AGRI_OBJETO_COTIZACION*****/
+				
+				// Inserta el detalle de la cotización
+				
+				AgriObjetoCotizacion agriObjetoCotizacion = new AgriObjetoCotizacion();
+				agriObjetoCotizacion.setConfirEmiCanal(false);
+				agriObjetoCotizacion.setProvinciaId(new BigInteger(provincia.getId()));
+				agriObjetoCotizacion.setCantonId(new BigInteger(canton.getId()));
+				agriObjetoCotizacion.setCostoProduccionQBE(Float.parseFloat(nuestroCosto));
+				try{
+					agriObjetoCotizacion.setAgriParroquiaId(""+parroquia.getId());
+				}catch(Exception e){
+					//La parroquia no se encuentra en el catalogo.
+				}
+				
+				agriObjetoCotizacion.setTipoCultivoId(new BigInteger(CodigoTipoCultivoProcesado));
+				
+				if (in0.getCodigoVariedadCultivo() != null)
+					agriObjetoCotizacion.setVariedad(in0.getVariedad().trim());
+				
+				String tieneRiego = in0.getDisponeRiego().trim();
+				
+				if (tieneRiego.equals("0") || tieneRiego.equals("")
+						|| tieneRiego.equals("no") || tieneRiego.equals("n"))
+					agriObjetoCotizacion.setDisponeRiego(false);
+				else
+					agriObjetoCotizacion.setDisponeRiego(true);
+				
+				String terrenoTecnificado = in0.getTerrenoTecnificado().trim();
+				
+				if (terrenoTecnificado.equals("0")
+						|| terrenoTecnificado.equals("no")
+						|| terrenoTecnificado.equals("n") 
+						|| terrenoTecnificado.equals("NO")
+						|| terrenoTecnificado.equals("N"))
+					agriObjetoCotizacion.setAgricultorTecnificado(false);
+				else
+					agriObjetoCotizacion.setAgricultorTecnificado(true);
+				
+				agriObjetoCotizacion.setDireccionSiembra("Recinto:"+in0.getRecinto()+"/"+in0.getReferencia().trim());
+				agriObjetoCotizacion.setTipoSeguro(0);
+				agriObjetoCotizacion.setHectareasLote(Float.parseFloat(""+in0.getNumHectFinanciadas()));
+				agriObjetoCotizacion.setLatitud(Float.parseFloat(""+in0.getLatitud()));
+				agriObjetoCotizacion.setLongitud(Float.parseFloat(in0.getLongitud()));
+				agriObjetoCotizacion.setHectareasAsegurables(Float.parseFloat(""+in0.getNumHectAseguradas()));
+				try{
+					agriObjetoCotizacion.setMontoCredito(Float.parseFloat(in0.getMontoRecomendado()));
+				}catch(Exception e){
+					//error monto asegurado
+				}
+				
+				Date fechaAprobacion = null;
+				try {
+					fechaAprobacion = formatoDelTexto.parse(in0.getFechaAprobacion().trim());
+				} catch (ParseException e) {
+					fechaAprobacion = null;
+				}
+				
+				agriObjetoCotizacion.setFechaCredito(fechaAprobacion);
+				agriObjetoCotizacion.setFechaSiembra(dateSiembra);
+				
+				agriObjetoCotizacion.setTipoOrigen("SUCRE");
+				if (!Observacion.equals("")||!Observacion.equals(" ")) {
+					agriObjetoCotizacion.setObservacion(Observacion);
+				}
+				agriObjetoCotizacion.setTipoCalculo(idTipoCalculo);
+				agriObjetoCotizacion.setCostoProduccion(Float.parseFloat(""+costoProduccionL));
+				
+				/***Proceso de creacion de las IdCotizaciones para facturacion***/
+				
+				AgriCotizacionMaxDAO busquedaMax = new AgriCotizacionMaxDAO();
+				AgriCotizacionMax numMaximo=busquedaMax.buscarTodos();
+				int numeroActual=numMaximo.getMaximo().intValue();
+				
+				agriObjetoCotizacion.setIdCotizacion2(new BigInteger(""+(numeroActual+1)));
+				agriObjetoCotizacion = agriObjetoCotizacionTransaction.crear(agriObjetoCotizacion);
+				
+				/*** PROCESO DE CREACION DE LAS COTIZACIONES DETALLE ***/
+				
+				CotizacionDetalle nuevoCotizacionDetalle = new CotizacionDetalle();
+				nuevoCotizacionDetalle.setCotizacion(cotizacion);
+				nuevoCotizacionDetalle.setNecesitaInspeccion(false);
+				nuevoCotizacionDetalle.setTipoObjetoId(tipoObjetoDAO
+						.buscarPorNombre("Agricola").getId());
+				nuevoCotizacionDetalle.setObjetoId(agriObjetoCotizacion
+						.getObjetoCotizacionId().toString());
+				nuevoCotizacionDetalle.setSumaAseguradaItem(cotizacion
+						.getSumaAseguradaTotal());
+				nuevoCotizacionDetalle.setPrimaNetaItem(Double
+						.parseDouble(cotizacion.getPrimaNetaTotal()));
+				nuevoCotizacionDetalle.setTasa(tasa);
+				
+				cotizacionDetalleTransaction.crear(nuevoCotizacionDetalle);
+				
+				/* Proceso de almacenamiento y verificacion de la informacion (Informacion adicional que recibimos)*/
+				AgriSucreDetalle detalleSucre = new AgriSucreDetalle();
+				AgriSucreDetalleDAO detalle = new AgriSucreDetalleDAO();
+				detalleSucre.setAgriObjetoCotizacion(""+ agriObjetoCotizacion.getObjetoCotizacionId());
+				detalleSucre.setEntidadId(entidad.getId());
+				detalleSucre.setNumeroResolucion("" + in0.getNumeroResolucion());
+				detalleSucre.setEstadoSolicitud(in0.getEstadoSolicitud());
+				detalleSucre.setCondicionPredio(in0.getCondicionPredio());
+				if (in0.getCondicionPredioOtra() != null)
+					detalleSucre.setCondicionPrediootra(in0
+							.getCondicionPredioOtra().trim());
+				detalleSucre.setValorSubsidio(in0.getValorSubsidio().trim());
+				if (in0.getPaqueteTecnologico() != null)
+					detalleSucre.setPaquetetecnologico(in0
+							.getPaqueteTecnologico().trim());
+				detalleSucre.setTipoCanal(in0.getTipoCanal().trim());
+				detalleSucre.setLote(in0.getLote().trim());
+				if (in0.getTipoRiego() != null)
+					detalleSucre.setTipoRiesgo(in0.getTipoRiego().trim());
+				if (in0.getOtroRiego() != null)
+					detalleSucre.setOtroRiesgo(in0.getOtroRiego().trim());
+				if (in0.getCostoEstablecimientoCultivo() != null)
+					detalleSucre.setCostoEstablecimientoCultivo(in0
+							.getCostoEstablecimientoCultivo().trim());
+				if (in0.getCostoMantenimientoCultivo() != null)
+					detalleSucre.setCostoMantenimientoCultivo(in0
+							.getCostoMantenimientoCultivo().trim());
+
+				AgriSucreDetalle detalleSucre2 = new AgriSucreDetalle();
+				detalleSucre2 = detalle.buscarPorObjetoId(""+ agriObjetoCotizacion.getObjetoCotizacionId());
+				AgriSucreDetalleTransaction agriSucreProceso = new AgriSucreDetalleTransaction();
+				
+				try{
+					if (detalleSucre2 == null)
+						agriSucreProceso.crear(detalleSucre);
+					else {
+						detalleSucre.setId(detalleSucre.getId());
+						agriSucreProceso.editar(detalleSucre);
+					}
+				}catch(Exception e){
+					//permitimos que continue en caso de suceder algun problema
+				}
+				
+				/* PROCESO DE ADAPTACION AL OBJETO DE RESPUESTA*/
+				
+				respuesta.setPrima(Float.parseFloat(cotizacion.getPrimaNetaTotal()));
+				String Estado = "" + cotizacion.getEstado().getNombre();
+				if (Estado.equals("Pendiente de Emitir")){
+					Estado = "Aprobado";
+					respuesta.setFechaAprobacion(cotizacion.getFechaEmision());
+				}					
+				else {
+					if (Estado.equals("Anulado"))
+						Estado = "Rechazado";
+					else
+						Estado = "Pendiente";
+				}
+				respuesta.setEstado(Estado);
+				respuesta.setAutorizacion(Integer.parseInt(""+ cotizacion.getId()));
+				respuesta.setObservacion("");
+				respuesta.setNumeroCotizacion("" + cotizacion.getId());
+				respuesta.setAutorizacion(Integer.parseInt(""+ cotizacion.getId()));
+				respuesta.setMontoRecomendadoQBE((float)(cotizacion.getSumaAseguradaTotal()));
+				
+				cotizacion.setNumeroTramite(NumeroTramite);
+				cotizacion = cotizacionTransaction.editar(cotizacion);
+				auditoria.setObjeto(variableControl);
+				/*Almacenamiento en auditoria*/
+				String EstadoAuditoria = "" + cotizacion.getEstado().getNombre();
+				if (EstadoAuditoria.equals("Pendiente de Emitir")){
+					AgriAuditoriaCotizacion agriAuditoriaCotizacion = new AgriAuditoriaCotizacion();
+					AgriAuditoriaCotizacionTransaction agriAuditoriaCotizacionTransaction = new AgriAuditoriaCotizacionTransaction();
+					agriAuditoriaCotizacion.setCotizacionId(new BigInteger(cotizacion.getId()));
+					agriAuditoriaCotizacion.setFecha(sq);
+					agriAuditoriaCotizacion.setTipoActividad("APROBADO REVISION");
+					agriAuditoriaCotizacion.setUsuarioId(new BigInteger("0"));
+					agriAuditoriaCotizacionTransaction.crear(agriAuditoriaCotizacion);
+				}
+				
+				try{
+					auditoria.setEstado(Estado);
+					procesoAuditoria.editar(auditoria);
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+			} else {
+				String IdCotizacion = ExisteCotizacion.getId();
+				Cotizacion ExisteCotizacion2 = new Cotizacion();
+				ExisteCotizacion2 = BusquedaCotizacion
+						.buscarPorId(IdCotizacion);
+				String Estado = "" + ExisteCotizacion2.getEstado().getNombre();
+				if (Estado.equals("Pendiente de Emitir")){
+					Estado = "Aprobado";
+				    respuesta.setMontoAprobadoQBE((float)(ExisteCotizacion2.getSumaAseguradaTotal()));
+				    AgriAuditoriaCotizacion agriAuditoriaCotizacion = new AgriAuditoriaCotizacion();
+					AgriAuditoriaCotizacionDAO agriAuditoriaCotizacionDAO = new AgriAuditoriaCotizacionDAO();
+					agriAuditoriaCotizacion=agriAuditoriaCotizacionDAO.BuscarPorCotizacinId(new BigInteger(IdCotizacion));
+					respuesta.setFechaAprobacion(agriAuditoriaCotizacion.getFecha());
+				}
+				else {
+					if (Estado.equals("Anulado"))
+						Estado = "Rechazado";
+					else{
+						if (Estado.equals("Revocado Sucre"))
+							Estado = "Revocado";
+						else
+							Estado = "Pendiente";
+					}
+				}
+				try{
+					auditoria.setEstado(Estado);
+					procesoAuditoria.editar(auditoria);
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+				
+				respuesta.setEstado(Estado);
+				respuesta.setNumeroCotizacion(ExisteCotizacion.getId());
+				respuesta.setAutorizacion(Integer.parseInt(ExisteCotizacion.getId()));
+				respuesta.setPrima(Float.parseFloat(ExisteCotizacion2.getPrimaNetaTotal()));
+				respuesta.setMontoRecomendadoQBE(Float.parseFloat(""+ExisteCotizacion2.getSumaAseguradaTotal()));
+				respuesta.setObservacion("");
+			}
+
+		} catch (Exception e) {
+			
+			
+			List<String> usuario = new ArrayList<>();
+			usuario.add("luis.caiza@smartwork.com.ec");
+			String asunto="Error en Proceso de Cotizacion Sucre";
+			/*String cuerpo="<p>Estimado Usuario:  El n&uacute;mero de tr&aacute;mite Sucre:  "+in0.getNumeroResolucion()
+					+ " No a podido ser procesado por el cotizador Agricola, por la siguiente raz&oacute;n:</p>"+e.getMessage();
+			*/
+			AgriSucreNotificacionErrores notificacionErrores= new AgriSucreNotificacionErrores();
+			String Html=notificacionErrores.GeneradorHtml(in0.getNumeroResolucion(), e.getMessage(), "");
+			
+			for(String receptor:usuario){
+				//Utilitarios.envioMail(receptor, asunto, cuerpo);
+				Utilitarios.envioMail(receptor, asunto, Html);
+			}
+			respuesta.setEstado("Error");
+			respuesta.setObservacion("Error: " + e.getMessage());
+			
+			try{
+				auditoria.setEstado("Error" + e.getMessage());
+				procesoAuditoria.editar(auditoria);
+				}catch(Exception e1){
+					e1.printStackTrace();
+				}
+			e.printStackTrace();
+		}
+		return respuesta;
+	}
+
+	
+	/*
+	 * Metodo que permite registrar la emisión de un trámite que ha pasado por
+	 * la evaluación de autorización registrada
+	 */
+
+	public RespuestaEMIDTO registrarEmision(SolicitudEMIDTO in0) {
+		RespuestaEMIDTO respuesta = new RespuestaEMIDTO();
+		/* Proceso de validacion de campos obligatorios */
+		
+		/*PROCESO DE AUDITORIA */
+		AgriSucreAuditoria auditoria = new AgriSucreAuditoria();
+		AgriSucreAuditoriaTransaction procesoAuditoria = new AgriSucreAuditoriaTransaction();
+		auditoria.setTramite(in0.getNumeroResolucion());
+		auditoria.setObjeto("Tramite : "+in0.getNumeroResolucion()+" Anexo : "+in0.getAnexo()+" Apellido1 : "+in0.getApellido1()+" Apellido2 : "+in0.getApellido2()
+				+" Canton : "+in0.getCanton()+" Cedula : "+in0.getCedula()+ " CodigoFacilitador : "+in0.getCodigoFacilitador()+" CodigoFacilitado : "+in0.getCodigoFacilitador()
+				+" FechaEmision : "+in0.getFechaEmision()+" FechaPago : "+in0.getFechaPago()+" FechaSiembra "+in0.getFechaSiembra()+" Inversion : "+in0.getInversion()+
+				" Lote : "+in0.getLote()+ " MontoAsegurado : "+in0.getMontoAsegurado()+ " Nombres : "+in0.getNombres()+" NumeroFactura : "+in0.getNumeroFactura()
+				+" NumHectAseguradas "+in0.getNumHectAseguradas()+" NumHectFnanciadas  "+in0.getNumHectFnanciadas()+" OrdenPago : " +in0.getOrdenPago()
+				+" Parroquia : "+in0.getParroquia()+" Poliza : "+in0.getPoliza()+" Provincia : "+in0.getProvincia()+" Recinto : "+in0.getRecinto()+" Referencia : "+in0.getReferencia()
+				+" TerrenoTecnificado : "+in0.getTerrenoTecnificado()+ " Variedad : "+in0.getVariedad()+" MontoPago : "+in0.getMontoPago()+" PrimaCalculada : "+in0.getPrimaCalculada());
+		
+		java.util.Date date2 = new java.util.Date();
+		java.sql.Timestamp sq2 = new java.sql.Timestamp(date2.getTime());
+		SimpleDateFormat formatoDelTexto = new SimpleDateFormat("dd/MM/yyyy");
+		auditoria.setFecha(sq2);
+		auditoria.setCanal("SUCRE EMISION");
+		try{
+			auditoria=procesoAuditoria.crear(auditoria);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		try {
+			
+			  /*PROCESO DE VALIDACION DE CAMPOS ENTREGADOS AL SERVICIO*/
+			  if(in0.getNumeroResolucion()==null) throw new Exception
+			  ("Error valor nulo campo NumeroResolucion");
+			  if(in0.getNumeroFactura()==null) throw new Exception
+			  ("Error valor nulo campo NumeroFactura");
+			  if(in0.getFechaEmision()==null) throw new Exception
+			  ("Error valor nulo campo FechaEmision");
+			  if(in0.getPoliza()==null) throw new Exception
+			  ("Error valor nulo campo Poliza"); if(in0.getAnexo()==null) throw
+			  new Exception ("Error valor nulo campo Anexo");
+			  if(in0.getOrdenPago()==null) throw new Exception
+			  ("Error valor nulo campo OrdenPago");
+			  if(in0.getFechaSiembra()==null) throw new Exception
+			  ("Error valor nulo campo FechaSiembra");
+			  if(in0.getCodigoFacilitador()==null) throw new Exception
+			  ("Error valor nulo campo CodigoFacilitador");
+			  if(in0.getProvincia()==null) throw new Exception
+			  ("Error valor nulo campo Provincia"); if(in0.getCanton()==null)
+			  throw new Exception ("Error valor nulo campo Canton");
+			  if(in0.getInversion()==null) throw new Exception
+			  ("Error valor nulo campo Inversion"); if(in0.getCedula()==null)
+			  throw new Exception ("Error valor nulo campo Cedula");
+			  if(in0.getNombres()==null) throw new Exception
+			  ("Error valor nulo campo Nombres"); if(in0.getApellido1()==null)
+			  throw new Exception ("Error valor nulo campo Apellido1");
+			  if(in0.getApellido2()==null) throw new Exception
+			  ("Error valor nulo campo Apellido2"); if(in0.getRecinto()==null)
+			  throw new Exception ("Error valor nulo campo Recinto");
+			  if(in0.getReferencia()==null) throw new Exception
+			  ("Error valor nulo campo Referencia"); if(in0.getLote()==null)
+			  throw new Exception ("Error valor nulo campo Lote");
+			  if(in0.getTerrenoTecnificado()==null) throw new Exception
+			  ("Error valor nulo campo TerrenoTecnificado");
+			  if(in0.getMontoAsegurado()==null) throw new Exception
+			  ("Error valor nulo campo MontoAsegurado");
+			  if((""+in0.getMontoPago()).equals("null")) throw new Exception
+			  ("Error valor nulo campo MontoPago");
+			  if((""+in0.getNumHectFnanciadas()).equals("null")) throw new
+			  Exception ("Error valor nulo campo NumHectFinanciadas");
+			  if((""+in0.getNumHectAseguradas()).equals("null")) throw new
+			  Exception ("Error valor nulo campo NumHectAseguradas");
+			  
+			  
+			  
+			  String NumeroTramite = in0.getNumeroResolucion().trim();
+			  	Cotizacion ExisteCotizacion = new Cotizacion();
+				CotizacionDAO BusquedaCotizacion = new CotizacionDAO();
+				ExisteCotizacion = BusquedaCotizacion
+						.buscarPorNumeroTramite(NumeroTramite.trim());
+				CotizacionDetalleDAO cotizacionDetalleDAO= new CotizacionDetalleDAO();
+				
+				CotizacionDetalle cotizacionDetalle = cotizacionDetalleDAO.buscarCotizacionDetallePorCotizacion(ExisteCotizacion).get(0);
+				AgriObjetoCotizacionDAO agriObjetoCotizacionDAO= new AgriObjetoCotizacionDAO();
+				AgriObjetoCotizacion agriObjetoCotizacion= agriObjetoCotizacionDAO.buscarPorId(new BigInteger(cotizacionDetalle.getObjetoId()));
+				
+				//variables globales
+				String Observacion = "";
+				
+				java.util.Date date = new java.util.Date();
+				java.sql.Timestamp sq = new java.sql.Timestamp(date.getTime());
+				
+				
+				
+				if (ExisteCotizacion.getId() != null) {
+					
+					if(agriObjetoCotizacion.getConfirEmiCanal()){
+						throw new
+						  Exception ("Error la cotizacion con el numero de tramite "+NumeroTramite.trim()+" ya fue emitida con anterioridad");
+					}
+					
+					if(ExisteCotizacion.getEstado().getNombre().equals("Anulado")
+							||ExisteCotizacion.getEstado().getNombre().equals("Revocado Sucre")||ExisteCotizacion.getEstado().getNombre().equals("Revocado")){
+						throw new
+						  Exception ("Error la cotizacion con el numero de tramite "+NumeroTramite.trim()+" fue revocada no se puede continuar con el proceso");
+					}
+					
+					
+					try{
+						//se verifica que la cotizacion este aprobada para poder ser emitida
+						if(!ExisteCotizacion.getEstado().getNombre().equals("Pendiente de Emitir")){
+							throw new
+							  Exception ("Error la cotizacion debe ser aprobada para poder ser emitida");
+						}
+						
+						auditoria.setEstado(ExisteCotizacion.getEstado().getNombre());
+						procesoAuditoria.editar(auditoria);
+						
+						
+						agriObjetoCotizacion.setNumeroOperacion(in0.getOrdenPago());
+						agriObjetoCotizacion.setConfirEmiCanal(true);
+						//verificamos el formato de la fecha
+						try{
+							Date fechaPagoI=formatoDelTexto.parse(in0.getFechaPago().trim());
+							agriObjetoCotizacion.setFechaDesembolso(fechaPagoI);
+						}catch(Exception e){
+							throw new
+							  Exception ("Error fecha "+in0.getFechaPago().trim()+" con formato erroneo, formato esperado: dd/MM/yyyy");
+						}
+						
+						
+						agriObjetoCotizacion.setValorDesembolso(in0.getMontoPago());
+						agriObjetoCotizacion.setAnexo(in0.getNumeroFactura());
+						
+						Observacion=agriObjetoCotizacion.getObservacionCotizacion();
+						Observacion=Observacion+" || Poliza : "+ExisteCotizacion.getId()+" Esta confirmada";
+						//verificamos que los montos son iguales o distintos 
+						Double valorCancelar=ExisteCotizacion.getTotalFactura();
+						Double ValorPagado=(double)in0.getMontoPago();
+						if(valorCancelar!=ValorPagado){
+							Observacion=Observacion+"|| montos distintos monto sucre:"+ValorPagado+" valor esperado QBE: "+valorCancelar;
+						}
+						
+						agriObjetoCotizacion.setObservacionCotizacion(Observacion);
+						AgriObjetoCotizacionTransaction agriObjetoCotizacionTransaction = new AgriObjetoCotizacionTransaction();
+						agriObjetoCotizacionTransaction.editar(agriObjetoCotizacion);
+						
+						EstadoDAO estadoDAO= new EstadoDAO();
+						Estado estado =estadoDAO.buscarPorNombre("Pendiente de Emitir", "Cotizacion");
+						ExisteCotizacion.setEstado(estado);
+						CotizacionTransaction cotizacionTransaction = new CotizacionTransaction();
+						cotizacionTransaction.editar(ExisteCotizacion);
+						respuesta.setEstado("OK");
+						respuesta.setObservacion(Observacion);
+						
+					}catch(Exception e){
+						auditoria.setEstado("Error");
+						procesoAuditoria.editar(auditoria);
+						throw new
+						  Exception ("Error en Proceso de notificacion de Emision : "+e);
+					}
+					
+				}else{
+					auditoria.setEstado("Error");
+					procesoAuditoria.editar(auditoria);
+					throw new
+					  Exception ("El número de tramite "+in0.getNumeroResolucion()+" para proceso de emision no existe");
+				}
+			  
+		} catch (Exception e) {
+			List<String> usuario = new ArrayList<>();
+			usuario.add("luis.caiza@smartwork.com.ec");
+			String asunto="Error en Proceso de Cotizacion Sucre";
+			/*String cuerpo="<p>Estimado Usuario:  El n&uacute;mero de tr&aacute;mite Sucre:  "+in0.getNumeroResolucion()
+					+ " No a podido ser procesado por el cotizador Agricola, por la siguiente raz&oacute;n:</p>"+e.getMessage();
+			*/
+			AgriSucreNotificacionErrores notificacionErrores= new AgriSucreNotificacionErrores();
+			String Html=notificacionErrores.GeneradorHtml(in0.getNumeroResolucion(), e.getMessage(), "");
+			
+			for(String receptor:usuario){
+				//Utilitarios.envioMail(receptor, asunto, cuerpo);
+				Utilitarios.envioMail(receptor, asunto, Html);
+			}
+			respuesta.setEstado("Error");
+			respuesta.setObservacion("Error: " + e.getMessage());
+			
+			try{
+				auditoria.setEstado("Error");
+				procesoAuditoria.editar(auditoria);
+				}catch(Exception e1){
+					e1.printStackTrace();
+				}
+			e.printStackTrace();
+		}
+		return respuesta;
+	}
+	
+	/*metodo para actualizar las fechas de siembra en base a la fecha de Siembra f*/
+	
+	public RespuestaCambio solicitudCambioFecha(String tramite, String fechaSiembra){
+		RespuestaCambio respuesta = new RespuestaCambio();
+		
+		/*PROCESO DE AUDITORIA */
+		AgriSucreAuditoria auditoria = new AgriSucreAuditoria();
+		AgriSucreAuditoriaTransaction procesoAuditoria = new AgriSucreAuditoriaTransaction();
+		auditoria.setTramite(tramite);
+		auditoria.setObjeto("tramite: "+tramite+" fecha Siembra: "+fechaSiembra );
+		java.util.Date date2 = new java.util.Date();
+		java.sql.Timestamp sq2 = new java.sql.Timestamp(date2.getTime());
+		SimpleDateFormat formatoDelTexto = new SimpleDateFormat("dd/MM/yyyy");
+		auditoria.setFecha(sq2);
+		auditoria.setCanal("SUCRE CAMBIO FECHA");
+		try{
+			auditoria=procesoAuditoria.crear(auditoria);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		/*FIN DE PROCESO*/
+		
+		/*PROCESO DE ACTUALIZACION DE FECHA DE SIEMBRA*/
+		try{
+			/*Proceso de validacion de campos*/
+			if(tramite.equals("")||tramite==null){
+				throw new Exception("Error el numero de tramite no puede ser null o vacio");
+			}
+			
+			
+			if(fechaSiembra.equals("")||fechaSiembra==null){
+				throw new Exception("Error el numero de tramite no puede ser null o vacio");
+			}
+			Date FechaNuevaSiembra= new Date();
+			try{
+				FechaNuevaSiembra=formatoDelTexto.parse(fechaSiembra.trim());
+			}catch(Exception e){
+				throw new Exception("Error fecha: "+fechaSiembra+" formato de fecha erroneo, formato sugerido dd/MM/yyyy");
+			}
+			
+			CotizacionDAO cotizacionDAO = new CotizacionDAO();
+			Cotizacion cotizacion=cotizacionDAO.buscarPorNumeroTramite(tramite.trim());
+			
+			if(cotizacion.getId()==null){
+				throw new Exception("El numero de tramite : "+tramite+" no existe.");
+			}
+			
+			CotizacionDetalleDAO cotizacionDetalleDAO= new CotizacionDetalleDAO();
+			CotizacionDetalle cotizacionDetalle = cotizacionDetalleDAO.buscarCotizacionDetallePorCotizacion(cotizacion).get(0);
+			AgriObjetoCotizacionDAO agriObjetoCotizacionDAO= new AgriObjetoCotizacionDAO();
+			AgriObjetoCotizacion agriObjetoCotizacion= agriObjetoCotizacionDAO.buscarPorId(new BigInteger(cotizacionDetalle.getObjetoId()));
+			/*Proceso de auditoria de estados anteriores*/
+			String fechaAnterior=""+auditoria.getObjeto();
+			String fechaAnteriorSiembra="";
+			try{
+				fechaAnteriorSiembra=formatoDelTexto.format(agriObjetoCotizacion.getFechaSiembra());
+			}catch(Exception e){
+				fechaAnteriorSiembra="Sin fecha";
+			}
+			fechaAnterior =fechaAnterior+" fecha anterior: "+fechaAnteriorSiembra;
+			agriObjetoCotizacion.setFechaSiembra(FechaNuevaSiembra);
+			AgriObjetoCotizacionTransaction agriObjetoCotizacionTransaction = new AgriObjetoCotizacionTransaction();
+			agriObjetoCotizacionTransaction.editar(agriObjetoCotizacion);
+			cotizacion.setFechaElaboracion(sq2);
+			CotizacionTransaction cotizacionTransaction= new CotizacionTransaction();
+			cotizacionTransaction.editar(cotizacion);
+			
+			respuesta.setEstado("OK");
+			respuesta.setObservacion("PROCESO CORRECTO");
+			respuesta.setTramite(tramite);
+			String fechaCambio= formatoDelTexto.format(date2);
+			respuesta.setFechaCambio(""+fechaCambio);
+			
+			auditoria.setObjeto(fechaAnterior);
+			auditoria.setEstado("ok");
+			try{
+				auditoria=procesoAuditoria.editar(auditoria);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			
+			try{
+				procesoAuditoria.editar(auditoria);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			
+		}catch(Exception e){
+			//SI EXISTE ERROR ENVIAR UN MENSAJE DE ERROR
+			List<String> usuario = new ArrayList<>();
+			usuario.add("luis.caiza@smartwork.com.ec");
+			String asunto="Error en Proceso de Cotizacion Sucre";
+			AgriSucreNotificacionErrores notificacionErrores= new AgriSucreNotificacionErrores();
+			String Html=notificacionErrores.GeneradorHtml(tramite, e.getMessage(), "");
+			
+			for(String receptor:usuario){
+				//Utilitarios.envioMail(receptor, asunto, cuerpo);
+				Utilitarios.envioMail(receptor, asunto, Html);
+			}
+			respuesta.setEstado("Error");
+			respuesta.setObservacion("Error: " + e.getMessage());
+			respuesta.setTramite(tramite);
+			try{
+				auditoria.setEstado("Error");
+				procesoAuditoria.editar(auditoria);
+			}catch(Exception e1){
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		}
+		
+		return respuesta;
+	}
+	
+	/*metodo para actualizar las lugares de siembra*/
+	
+	public RespuestaCambio solicitudCambiolugarSiembra(String tramite, String codProvincia,String codCanton,String codParroquia,String direccionSiembra,String latitud,String longitud){
+		RespuestaCambio respuesta = new RespuestaCambio();
+		/*PROCESO DE AUDITORIA */
+		AgriSucreAuditoria auditoria = new AgriSucreAuditoria();
+		AgriSucreAuditoriaTransaction procesoAuditoria = new AgriSucreAuditoriaTransaction();
+		auditoria.setTramite(tramite);
+		auditoria.setObjeto("tramite : "+ tramite+ " Provincia : "+codProvincia+" Canton : "+codCanton+ " Parroquia : "+codParroquia+ " direccionSiembra : "+ direccionSiembra+" latitud : "+latitud+" longitud : "+longitud);
+		java.util.Date date2 = new java.util.Date();
+		java.sql.Timestamp sq2 = new java.sql.Timestamp(date2.getTime());
+		SimpleDateFormat formatoDelTexto = new SimpleDateFormat("dd/MM/yyyy");
+		auditoria.setFecha(sq2);
+		auditoria.setCanal("SUCRE CAMBIO LUGAR");
+		try{
+			auditoria=procesoAuditoria.crear(auditoria);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		/*FIN DE PROCESO*/
+		
+		/*PROCESO DE ACTUALIZACION DE FECHA DE SIEMBRA*/
+		try{
+			/*Proceso de validacion de campos*/
+			if(tramite.equals("")||tramite==null){
+				throw new Exception("Error el numero de tramite no puede ser null o vacio");
+			}
+			
+			
+			if(codProvincia.equals("")||codProvincia==null){
+				throw new Exception("Error la provincia no puede ser null o vacio");
+			}
+			
+			if(codCanton.equals("")||codCanton==null){
+				throw new Exception("Error la Canton  no puede ser null o vacio");
+			}
+			
+			if(codParroquia.equals("")||codParroquia==null){
+				throw new Exception("Error la Parroquias no puede ser null o vacio");
+			}
+			
+			if(direccionSiembra.equals("")||direccionSiembra==null){
+				throw new Exception("Error el sitioDeCultivo no puede ser null o vacio");
+			}
+			
+			/*Proceso de verificacion de lugares de Cultivo*/
+			
+			/*CREACION DE LA DIRECCION*/
+			
+			ProvinciaDAO laProvincia = new ProvinciaDAO();
+			Provincia provincia = new Provincia();
+			CantonDAO elCanton = new CantonDAO();
+			Canton canton = new Canton();
+			TipoDireccionDAO tipoDireccionDAO = new TipoDireccionDAO();
+			AgriParroquiaDAO laParroquia = new AgriParroquiaDAO();
+			AgriParroquia parroquia = new AgriParroquia();
+			
+			//hallamos la provincia en base al codigo que llega
+			String CodigoSBSProvincia = codProvincia.trim();
+			
+			if (CodigoSBSProvincia.length() == 1)
+				CodigoSBSProvincia = "0" + CodigoSBSProvincia;
+			
+			provincia = laProvincia.buscarPorCodigoSBS(CodigoSBSProvincia);
+			
+			if (provincia.getId() == null)
+				throw new Exception("Error Codigo de Provincia "
+						+ CodigoSBSProvincia + "  no encontrado");
+			
+			//hallamos el canton en base al codigo que llega
+			String CodigoSBSCanton = codCanton.trim();
+			
+			if (CodigoSBSCanton.length() == 1 || CodigoSBSCanton.length() == 3)
+				CodigoSBSCanton = "0" + CodigoSBSCanton;
+			
+			if (CodigoSBSCanton.length() >= 3)
+				CodigoSBSCanton = CodigoSBSCanton.substring(2, 4);
+			
+			canton = elCanton.buscarPorCodigoSBS(CodigoSBSCanton, provincia);
+			
+			if (canton.getId() == null)
+				throw new Exception("Error Codigo de Canton "
+						+ CodigoSBSCanton + " no encontrado en provincia "
+						+ CodigoSBSProvincia);
+			
+			//Proceso de busqueda de parroquias
+			String CodigoSBSParroquia=codParroquia.trim();
+			if(CodigoSBSParroquia.length()<6)
+				CodigoSBSParroquia="0"+CodigoSBSParroquia;
+			if(CodigoSBSParroquia.length()>6)
+				CodigoSBSParroquia=CodigoSBSParroquia.substring(0, 6);
+			
+			//hallamos la parroquien en base al SBS
+			parroquia= laParroquia.BuscarPorSBS(CodigoSBSParroquia);
+			if (parroquia.getParroquiaNombre() == null)
+				throw new Exception("Error Codigo de Parroquia "
+						+ CodigoSBSParroquia + " no encontrado ");
+			
+			
+			
+			CotizacionDAO cotizacionDAO = new CotizacionDAO();
+			Cotizacion cotizacion=cotizacionDAO.buscarPorNumeroTramite(tramite.trim());
+			CotizacionDetalleDAO cotizacionDetalleDAO= new CotizacionDetalleDAO();
+			CotizacionDetalle cotizacionDetalle = cotizacionDetalleDAO.buscarCotizacionDetallePorCotizacion(cotizacion).get(0);
+			AgriObjetoCotizacionDAO agriObjetoCotizacionDAO= new AgriObjetoCotizacionDAO();
+			AgriObjetoCotizacion agriObjetoCotizacion= agriObjetoCotizacionDAO.buscarPorId(new BigInteger(cotizacionDetalle.getObjetoId()));
+			
+			if(cotizacion.getId()==null){
+				throw new Exception("El numero de tramite : "+tramite+" no existe.");
+			}
+			
+			String temporal=auditoria.getObjeto()+ "|||| ProvinciaAnterior : "+agriObjetoCotizacion.getProvinciaId()+ " CantonIdAnterior : "+agriObjetoCotizacion.getCantonId()+" ParroquiaIdAnterior : "+agriObjetoCotizacion.getParroquiaId()
+					+" DireccionSiembraAnterior : "+agriObjetoCotizacion.getDireccionSiembra()+" latitudAnterior : "+agriObjetoCotizacion.getLatitud()+" longitudAnterior : "+agriObjetoCotizacion.getLongitud();
+			
+			/*Proceso de auditoria de estados anteriores*/
+			agriObjetoCotizacion.setProvinciaId(new BigInteger(provincia.getId()));
+			agriObjetoCotizacion.setCantonId(new BigInteger(canton.getId()));
+			agriObjetoCotizacion.setAgriParroquiaId(""+parroquia.getId());
+			agriObjetoCotizacion.setDireccionSiembra(direccionSiembra);
+			if(!latitud.trim().equals("")){
+				try{
+					float milatitud=Float.parseFloat(latitud);
+					agriObjetoCotizacion.setLatitud(milatitud);
+				}catch(Exception e){
+					throw new Exception("la Longitud "+latitud+" debe ser un numero");
+				}				
+			}
+			
+			AgriObjetoCotizacionTransaction agriObjetoCotizacionTransaction = new AgriObjetoCotizacionTransaction();
+			agriObjetoCotizacionTransaction.editar(agriObjetoCotizacion);
+			cotizacion.setFechaElaboracion(sq2);
+			CotizacionTransaction cotizacionTransaction= new CotizacionTransaction();
+			cotizacionTransaction.editar(cotizacion);
+			
+			respuesta.setEstado("OK");
+			respuesta.setObservacion("PROCESO CORRECTO");
+			respuesta.setTramite(tramite);
+			String fechaCambio= formatoDelTexto.format(date2);
+			respuesta.setFechaCambio(""+fechaCambio);
+			
+			auditoria.setObjeto(temporal);
+			auditoria.setEstado("ok");
+			try{
+				auditoria=procesoAuditoria.editar(auditoria);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			
+			try{
+				procesoAuditoria.editar(auditoria);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			
+		}catch(Exception e){
+			//SI EXISTE ERROR ENVIAR UN MENSAJE DE ERROR
+			List<String> usuario = new ArrayList<>();
+			usuario.add("luis.caiza@smartwork.com.ec");
+			String asunto="Error en Proceso de Cotizacion Sucre";
+			AgriSucreNotificacionErrores notificacionErrores= new AgriSucreNotificacionErrores();
+			String Html=notificacionErrores.GeneradorHtml(tramite, e.getMessage(), "");
+			
+			for(String receptor:usuario){
+				//Utilitarios.envioMail(receptor, asunto, cuerpo);
+				Utilitarios.envioMail(receptor, asunto, Html);
+			}
+			respuesta.setEstado("Error");
+			respuesta.setObservacion("Error: " + e.getMessage());
+			respuesta.setTramite(tramite);
+			try{
+				auditoria.setEstado("Error");
+				procesoAuditoria.editar(auditoria);
+			}catch(Exception e1){
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		}
+		
+		return respuesta;
+	}
+	
+/*metodo para notificar el cambio de estado de las solicitudes*/
+	
+	public RespuestaCambio notificacionRevocado(String tramite, String Causa){
+		RespuestaCambio respuesta = new RespuestaCambio();
+		
+		/*PROCESO DE AUDITORIA */
+		AgriSucreAuditoria auditoria = new AgriSucreAuditoria();
+		AgriSucreAuditoriaTransaction procesoAuditoria = new AgriSucreAuditoriaTransaction();
+		auditoria.setTramite(tramite);
+		auditoria.setObjeto("tramite: "+tramite+" Causa de revocado: "+Causa );
+		java.util.Date date2 = new java.util.Date();
+		java.sql.Timestamp sq2 = new java.sql.Timestamp(date2.getTime());
+		SimpleDateFormat formatoDelTexto = new SimpleDateFormat("dd/MM/yyyy");
+		auditoria.setFecha(sq2);
+		auditoria.setCanal("SUCRE NOTIFICACION DE REVOCADOS");
+		try{
+			auditoria=procesoAuditoria.crear(auditoria);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		/*FIN DE PROCESO*/
+		
+		/*PROCESO DE ACTUALIZACION DE FECHA DE SIEMBRA*/
+		try{
+			/*Proceso de validacion de campos*/
+			if(tramite.equals("")||tramite==null){
+				throw new Exception("Error el numero de tramite no puede ser null o vacio");
+			}
+			
+			if(Causa.equals("")||Causa==null){
+				throw new Exception("Error la causa de revocacion no puede ser null o vacio");
+			}
+			
+			CotizacionDAO cotizacionDAO = new CotizacionDAO();
+			Cotizacion cotizacion=cotizacionDAO.buscarPorNumeroTramite(tramite.trim());
+			
+			if(cotizacion.getId()==null){
+				throw new Exception("El numero de tramite : "+tramite+" no existe.");
+			}
+			
+			if(cotizacion.getEstado().getNombre().equals("Emitido Sucre")){
+				throw new
+				  Exception ("Error la cotizacion con el numero de tramite "+tramite+" ya fue emitida con anterioridad no se puede revocar");
+			}
+			
+			
+			CotizacionDetalleDAO cotizacionDetalleDAO= new CotizacionDetalleDAO();
+			CotizacionDetalle cotizacionDetalle = cotizacionDetalleDAO.buscarCotizacionDetallePorCotizacion(cotizacion).get(0);
+			AgriObjetoCotizacionDAO agriObjetoCotizacionDAO= new AgriObjetoCotizacionDAO();
+			AgriObjetoCotizacion agriObjetoCotizacion= agriObjetoCotizacionDAO.buscarPorId(new BigInteger(cotizacionDetalle.getObjetoId()));
+			agriObjetoCotizacion.setObservacionCotizacion(Causa);
+			AgriObjetoCotizacionTransaction agriObjetoCotizacionTransaction = new AgriObjetoCotizacionTransaction();
+			agriObjetoCotizacion.setConfirEmiCanal(false);
+			agriObjetoCotizacionTransaction.editar(agriObjetoCotizacion);
+			
+			
+			/*Proceso de auditoria de estados anteriores*/
+			String estadoAnterior=""+auditoria.getObjeto();
+			estadoAnterior =estadoAnterior+" Estado anterior: "+cotizacion.getEstado().getNombre();
+			
+			EstadoDAO estadoDAO = new EstadoDAO();
+			Estado estado=estadoDAO.buscarPorNombre("RevocadoCanal", "Cotizacion");
+			
+			cotizacion.setEstado(estado);
+			cotizacion.setFechaElaboracion(sq2);
+			CotizacionTransaction cotizacionTransaction= new CotizacionTransaction();
+			cotizacionTransaction.editar(cotizacion);
+			
+			respuesta.setEstado("OK");
+			respuesta.setObservacion("PROCESO CORRECTO");
+			respuesta.setTramite(tramite);
+			String fechaCambio= formatoDelTexto.format(date2);
+			respuesta.setFechaCambio(""+fechaCambio);
+			
+			auditoria.setObjeto(estadoAnterior);
+			auditoria.setEstado("ok");
+			try{
+				auditoria=procesoAuditoria.editar(auditoria);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			
+			try{
+				procesoAuditoria.editar(auditoria);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			
+		}catch(Exception e){
+			//SI EXISTE ERROR ENVIAR UN MENSAJE DE ERROR
+			List<String> usuario = new ArrayList<>();
+			usuario.add("luis.caiza@smartwork.com.ec");
+			String asunto="Error en Proceso de Cotizacion Sucre";
+			AgriSucreNotificacionErrores notificacionErrores= new AgriSucreNotificacionErrores();
+			String Html=notificacionErrores.GeneradorHtml(tramite, e.getMessage(), "");
+			
+			for(String receptor:usuario){
+				//Utilitarios.envioMail(receptor, asunto, cuerpo);
+				Utilitarios.envioMail(receptor, asunto, Html);
+			}
+			respuesta.setEstado("Error");
+			respuesta.setObservacion("Error: " + e.getMessage());
+			respuesta.setTramite(tramite);
+			
+			try{
+				auditoria.setEstado("Error");
+				procesoAuditoria.editar(auditoria);
+			}catch(Exception e1){
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		}
+		
+		return respuesta;
+	}
+	
+	//Proceso de conciliacion se toma las solicitudes de tramite, las confirmaciones y los rechazos y se compara con los que QBE cuenta
+	
+	/*public RespuestaCambio procesoConciliacion(CotizacionObject[] solicitudesCotizacion,CotizacionObject[] confirmacionEmision,CotizacionObject[] confirmacionCancelacion,String fechaInicio, String fechaFin){
+		RespuestaCambio respuesta = new RespuestaCambio();
+		
+		PROCESO DE AUDITORIA 
+		AgriSucreAuditoria auditoria = new AgriSucreAuditoria();
+		AgriSucreAuditoriaTransaction procesoAuditoria = new AgriSucreAuditoriaTransaction();
+		auditoria.setTramite("Conciliacion Solicitudes");
+		String cadenaSolicitudCotizaciones="";
+		
+		for(int i=0; i<solicitudesCotizacion.length;i++){
+			cadenaSolicitudCotizaciones=cadenaSolicitudCotizaciones+";"+solicitudesCotizacion[i].getTramite()+":"+solicitudesCotizacion[i].getValor();
+		}
+		
+		auditoria.setObjeto(cadenaSolicitudCotizaciones);
+		
+		java.util.Date date2 = new java.util.Date();
+		java.sql.Timestamp sq2 = new java.sql.Timestamp(date2.getTime());
+		SimpleDateFormat formatoDelTexto = new SimpleDateFormat("dd/MM/yyyy");
+		auditoria.setFecha(sq2);
+		auditoria.setCanal("SUCRE CONCILIACION SOLICITUDES");
+		try{
+			auditoria=procesoAuditoria.crear(auditoria);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		Auditoria Tramites Emitidos confirmados
+		
+		AgriSucreAuditoria auditoria2 = new AgriSucreAuditoria();
+		auditoria2.setTramite("Conciliacion Emitidos");
+		cadenaSolicitudCotizaciones="";
+		
+		for(int i=0; i<confirmacionEmision.length;i++){
+			cadenaSolicitudCotizaciones=cadenaSolicitudCotizaciones+";"+confirmacionEmision[i].getTramite()+":"+confirmacionEmision[i].getValor();
+		}
+		
+		auditoria2.setObjeto(cadenaSolicitudCotizaciones);
+		auditoria2.setFecha(sq2);
+		auditoria2.setCanal("SUCRE CONCILIACION SOLICITUDES");
+		try{
+			auditoria=procesoAuditoria.crear(auditoria2);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		Auditoria Tramites Cancelados("revocados")
+		
+		AgriSucreAuditoria auditoria3 = new AgriSucreAuditoria();
+		auditoria3.setTramite("Conciliacion Cancelados");
+		cadenaSolicitudCotizaciones="";
+		
+		for(int i=0; i<confirmacionCancelacion.length;i++){
+			cadenaSolicitudCotizaciones=cadenaSolicitudCotizaciones+";"+confirmacionCancelacion[i].getTramite()+":"+confirmacionCancelacion[i].getValor();
+		}
+		
+		auditoria3.setObjeto(cadenaSolicitudCotizaciones);
+		auditoria3.setFecha(sq2);
+		auditoria3.setCanal("SUCRE CONCILIACION SOLICITUDES");
+		try{
+			auditoria3=procesoAuditoria.crear(auditoria3);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		FIN DE PROCESO
+		
+		try{
+			//Proceso de transformacion de los array a listas para poder ir revisando las coincidencias
+			ArrayList<CotizacionObject> ListaSolicitudes= new ArrayList<CotizacionObject>();
+					
+			for(int i=0; i<solicitudesCotizacion.length;i++){
+				CotizacionObject cotizacionObject = new CotizacionObject();
+				cotizacionObject.setTramite(solicitudesCotizacion[i].getTramite());
+				cotizacionObject.setValor(solicitudesCotizacion[i].getValor());
+				ListaSolicitudes.add(cotizacionObject);
+			}
+			
+			ArrayList<CotizacionObject> ListaEmision= new ArrayList<CotizacionObject>();
+			
+			for(int i=0; i<confirmacionEmision.length;i++){
+				CotizacionObject cotizacionObject = new CotizacionObject();
+				cotizacionObject.setTramite(confirmacionEmision[i].getTramite());
+				cotizacionObject.setValor(confirmacionEmision[i].getValor());
+				ListaEmision.add(cotizacionObject);
+			}
+			
+			ArrayList<CotizacionObject> ListaCancelaciones = new ArrayList<CotizacionObject>();
+			
+			for(int i=0; i<confirmacionCancelacion.length;i++){
+				CotizacionObject cotizacionObject = new CotizacionObject();
+				cotizacionObject.setTramite(confirmacionCancelacion[i].getTramite());
+				cotizacionObject.setValor(confirmacionCancelacion[i].getValor());
+				ListaCancelaciones.add(cotizacionObject);
+			}
+			
+			//Proceso de comparacion con listas de cotizaciones en base a las fechas a partir de las cuales se 
+			//piensa hacer la conciliacion
+			
+			if(fechaInicio.equals("")||fechaInicio==null){
+				throw new Exception("Error la fecha de inicio de la conciliacion es obligatoria");
+			}
+			
+			if(fechaFin.equals("")||fechaFin==null){
+				throw new Exception("Error la fecha de fin de la conciliacion es obligatoria");
+			}
+			
+			Date dateInicio=null;
+			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");//formato de fecha de siembra
+			try{
+				dateInicio=formatter.parse(fechaInicio.trim());
+			}catch(Exception e){
+				throw new Exception(
+						"Error la fecha de inicio "+fechaInicio+ " no esta en el formato dd/MM/yyyy");
+			}
+			
+			Date dateFin=null;
+			try{
+				dateFin=formatter.parse(fechaFin.trim());
+			}catch(Exception e){
+				throw new Exception(
+						"Error la fecha de fin "+fechaFin+ " no esta en el formato dd/MM/yyyy");
+			}
+			
+			
+			SimpleDateFormat formatterFecha = new SimpleDateFormat("dd-MM-yyyy");//formato de fecha de siembra
+			String fechaInicioFormato=formatterFecha.format(dateInicio);
+			String fechaFinFormato=formatterFecha.format(dateFin);
+			
+			Estado estado = new Estado();
+			EstadoDAO estadoDAO = new EstadoDAO();
+			estado = estadoDAO.buscarPorId("");
+
+			
+			CotizacionAprobacionDAO cotizacionAprobacionDAO = new CotizacionAprobacionDAO(); 
+			List<AgriCotizacionAprobacion> agriCotizacionAprobacion=cotizacionAprobacionDAO.consultarPorEstado(
+					fechaInicioFormato,fechaFinFormato,"","","","","","","","","1",estado,1,1000);
+			
+			//Listas de cotizaciones solicitudes vs listado de solicitudes//
+			int i=0;
+			for(AgriCotizacionAprobacion solitudesQBE:agriCotizacionAprobacion){
+				//recorremos de una en una y si la encontramos verificamos los valores y luego lo retiramos de la lista
+				Sucre: for(CotizacionObject solicitudesSUCRE:ListaSolicitudes){
+					int j=0;
+					if(solitudesQBE.getNumeroTramite().equals(solicitudesSUCRE.getTramite())){
+						//quitamos a las cotizaciones de las listas
+						float totalSucre= (float)solicitudesSUCRE.getValor();
+						if(solitudesQBE.getTotalFactura()==totalSucre){
+							agriCotizacionAprobacion.remove(i);
+							ListaSolicitudes.remove(j);
+							break Sucre;
+						}
+					}
+					j++;
+				}
+				i++;
+			}
+			
+			for(AgriCotizacionAprobacion solitudesQBE:agriCotizacionAprobacion){
+				System.out.println("Tramites QBE : "+solitudesQBE.getNumeroTramite()+ " valor : "+solitudesQBE.getTotalFactura());
+			}
+			
+			for(CotizacionObject solicitudesSUCRE:ListaSolicitudes){
+				System.out.println("Tramites SUCRE : "+solicitudesSUCRE.getTramite()+ " valor : "+solicitudesSUCRE.getValor());
+			}
+			
+			respuesta.setEstado("ok");
+			respuesta.setObservacion("Proceso Correcto");
+			respuesta.setTramite("Proceso de Conciliancion");			
+			
+		}catch(Exception e){
+			//SI EXISTE ERROR ENVIAR UN MENSAJE DE ERROR
+			List<String> usuario = new ArrayList<>();
+			usuario.add("luis.caiza@smartwork.com.ec");
+			String asunto="Error en Proceso de Cotizacion Sucre";
+			AgriSucreNotificacionErrores notificacionErrores= new AgriSucreNotificacionErrores();
+			String Html=notificacionErrores.GeneradorHtml("Conciliación Sucre", e.getMessage(), "");
+			
+			for(String receptor:usuario){
+				//Utilitarios.envioMail(receptor, asunto, cuerpo);
+				Utilitarios.envioMail(receptor, asunto, Html);
+			}
+			respuesta.setEstado("Error");
+			respuesta.setObservacion("Error: " + e.getMessage());
+			respuesta.setTramite("Proceso de Conciliacion");
+			
+			try{
+				auditoria.setEstado("Error");
+				procesoAuditoria.editar(auditoria);
+			}catch(Exception e1){
+				e1.printStackTrace();
+			}
+			
+		}
+		return respuesta;
+		
+	}*/
+	
+}

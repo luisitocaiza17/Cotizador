@@ -1,0 +1,22 @@
+diff --git a/WebContent/static/js/agricola/metodos.agricola.js b/WebContent/static/js/agricola/metodos.agricola.js
+--- a/WebContent/static/js/agricola/metodos.agricola.js
++++ b/WebContent/static/js/agricola/metodos.agricola.js
+@@ -2739,6 +2739,7 @@
+ 			"tipoSeguro" : tipoSeguro,
+ 			"sucursalCanalId" : $("#sucursal_canal").val(),
+ 			"aniosCultivo" : $("#anios_cultivo").val(),
++			"previaId" : $("#previaId").val(),
+ 		},
+ 		type : 'post',
+ 		async : false,
+diff --git a/src/com/qbe/cotizador/servicios/QBE/archivoPlano/GeneradorReporte.java b/src/com/qbe/cotizador/servicios/QBE/archivoPlano/GeneradorReporte.java
+--- a/src/com/qbe/cotizador/servicios/QBE/archivoPlano/GeneradorReporte.java
++++ b/src/com/qbe/cotizador/servicios/QBE/archivoPlano/GeneradorReporte.java
+@@ -252,6 +252,7 @@
+ 			ex.printStackTrace();
+ 		}
+ 		
++		
+ 	   EndosoBeneficiarioDAO endosoBeneficiarioDAO = new EndosoBeneficiarioDAO();
+ 	   EndosoBeneficiario endosoBeneficiario=	endosoBeneficiarioDAO.buscarPorCotizacion(cotizacion);
+ 	  

@@ -1,0 +1,371 @@
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionReporte.java
+@@ -345,7 +345,7 @@
+ 		//Numero de contenedor
+ 		
+ 		//Armado Final de parametros a mostrar en la poliza
+-		parametersHeader.put("NumeroPoliza", agriParametroXCanal.getContenedorEnsuranceId()+"-"+detalleCotizacion.getId().toString());
++		parametersHeader.put("NumeroPoliza", agriParametroXCanal.getContenedorNumero()+"-"+detalleCotizacion.getId().toString());
+ 		//buscamos el cliente
+ 		Cliente cliente = new Cliente();
+ 		ClienteDAO clienteDAO = new ClienteDAO();
+diff --git a/WebContent/dashboard/ResumenCotizaciones.jsp b/WebContent/dashboard/ResumenCotizaciones.jsp
+--- a/WebContent/dashboard/ResumenCotizaciones.jsp
++++ b/WebContent/dashboard/ResumenCotizaciones.jsp
+@@ -350,7 +350,9 @@
+ 				{ field: "ObservacionRegla", title: "Observación", width: "160px"},
+ 				{ field: "ObservacionQBE", title: "ObservacionQBE", width: "160px"},
+ 				{ field: "Confirmacion", title: "Confirmación Canal", width: "160px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+-				{ field: "EstadoCotizacion", title: "Estado", width: "100px"}, 
++				{ field: "EstadoCotizacion", title: "Estado", width: "100px"},
++				{ field: "polizaNumero", title: "Poliza Numero", width: "100px"},
++				{ field: "polizaFechaVencimiento", title: "Poliza Fecha", width: "100px"},
+ 				{ field: "usuarioCotizador", title: "Usuario Offline", width: "80px", hidden: true, exportar: true},
+                       { command: { text: "Ver Detalle", click: fnEventoClick }, title: " ", width: "100px"}],
+                 height: 500,
+diff --git a/WebContent/dashboard/SeguimientoTramites.jsp b/WebContent/dashboard/SeguimientoTramites.jsp
+--- a/WebContent/dashboard/SeguimientoTramites.jsp
++++ b/WebContent/dashboard/SeguimientoTramites.jsp
+@@ -67,5 +67,6 @@
+ 		var agenteList = "";
+ 		
+ 		$(document).ready(function() {
+-				activarMenu("agriVariable");
++			
++				activarMenu("SeguimientoTramites");
+ 				
+@@ -71,4 +72,6 @@
+ 				
++				$("#cotizacionTitulo").hide();
++	    	 	$("#detalleTitulo").hide();
+ 				$("#loading").hide();
+ 				
+ 	    	 	$(".text_Currency").kendoNumericTextBox({
+@@ -84,5 +87,7 @@
+ 			    });		 
+ 				
+ 	    	 	$("#ConsultaBtn").click(function(){
+-	    	 		Cargar();
++	    	 		cargaPrincipal();
++	    	 		$("#cotizacionTitulo").show();
++		    	 	$("#detalleTitulo").show();
+ 	    	 		$('#grid').show();
+@@ -88,3 +93,4 @@
+ 	    	 		$('#grid').show();
++	    	 		$('#grid2').show();
+ 	    	 	});			
+ 							
+@@ -89,5 +95,6 @@
+ 	    	 	});			
+ 							
++	    	 	
+ 				$('#LimpiarBtn').click(function(){	    	 	
+ 		    	 	$("#nombre").val("");
+ 		    	 	$("#cotizacion_id").val("");
+@@ -97,8 +104,10 @@
+ 		    	 	$("#dp2").val("");
+ 		    	 	$("#punto_venta_session").val("");
+ 		    	 	$("#sucursal_canal").val("");
++		    	 	$("#cotizacionTitulo").hide();
++		    	 	$("#detalleTitulo").hide();
+ 		    	 	
+ 		    	 	if ($('#grid').data().kendoGrid){
+ 		    			$('#grid').data().kendoGrid.destroy();
+ 		    			$('#grid').empty();
+ 		    		}
+@@ -100,7 +109,7 @@
+ 		    	 	
+ 		    	 	if ($('#grid').data().kendoGrid){
+ 		    			$('#grid').data().kendoGrid.destroy();
+ 		    			$('#grid').empty();
+ 		    		}
+-		 			$('#grid1').hide();
++		 			$('#grid').hide();
+ 		 			
+@@ -106,5 +115,5 @@
+ 		 			
+-		 			if ($('#grid1').data().kendoGrid){
+-		    			$('#grid1').data().kendoGrid.destroy();
+-		    			$('#grid1').empty();
++		 			if ($('#grid2').data().kendoGrid){
++		    			$('#grid2').data().kendoGrid.destroy();
++		    			$('#grid2').empty();
+ 		    		}
+@@ -110,5 +119,5 @@
+ 		    		}
+-		 			$('#grid1').hide();
++		 			$('#grid2').hide();
+ 		    	 });
+ 				
+ 				$("#punto_venta_session").kendoMultiSelect({
+@@ -151,4 +160,5 @@
+ 							
+ 							enviarDatos(tipoConsulta);
+ 				      }
++					 cargaPrincipal();
+ 					 
+@@ -154,5 +164,4 @@
+ 					 
+-					 Cargar();
+ 					}
+ 				});
+ 				
+@@ -333,7 +342,10 @@
+ 					      { field: "AgricultorTecnificado", title: "Agricultor es Tecnificado", width: "50px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 					      { field: "ObservacionRegla", title: "Observación", width: "160px"},
+ 					      { field: "EstadoCotizacion", title: "Estado", width: "100px", hidden: true, exportar: true}, 
+-					      { field: "usuarioCotizador", title: "Usuario Offline", width: "80px", hidden: true, exportar: true}
++					      { field: "usuarioCotizador", title: "Usuario Offline", width: "80px", hidden: true, exportar: true},
++					      { field: "EstadoCotizacion", title: "Estado", width: "100px"},
++						  { field: "polizaNumero", title: "Poliza Numero", width: "100px"},
++						  { field: "polizaFechaVencimiento", title: "Poliza Fecha", width: "100px"}
+ 	      				],
+ 	      				height: 300,
+ 	                selectable: true,
+@@ -348,7 +360,7 @@
+ 	                },
+ 	            }); 
+ 			
+-			
++			Cargar();
+ 			var exportFlag=false;
+ 			$("#grid2").data("kendoGrid").bind("excelExport", function (e) {
+ 				var columns = e.sender.columns;
+@@ -380,8 +392,6 @@
+ 		
+ 		function Cargar() {	
+ 			
+-			cargaPrincipal();
+-			
+ 			var cotizacionId = $("#cotizacion_id").val();
+ 			cotizacionId = $.trim(cotizacionId);
+ 			var NroTramite = $("#nro_tramite").val();
+@@ -585,6 +595,7 @@
+ 
+ 	<!-- ventana consulta -->
+ 	<div class="row crud-nav-bar">	
++	
+ 	<div class="well">
+ 			<table class="table">
+ 				<thead>
+@@ -692,7 +703,7 @@
+ <!-- Table -->
+ 	
+ 	
+-	<H3> &nbsp; &nbsp;  COTIZACIONES</H3>
++	<H3 id="cotizacionTitulo"> &nbsp; &nbsp;  COTIZACIONES</H3>
+ 	<div id="grid2">
+ 		
+ 	</div>
+@@ -701,7 +712,7 @@
+ 	<br>
+ 	<br>
+ 	<br>
+-	<H3> &nbsp; &nbsp;  DETALLES DE MOVIMIENTO DE COTIZACIONES</H3>
++	<H3 id="detalleTitulo"> &nbsp; &nbsp;  DETALLES DE MOVIMIENTO DE COTIZACIONES</H3>
+ 	<div id="grid">
+ 		
+ 	</div>
+diff --git a/src/com/qbe/cotizador/dao/producto/agricola/AgriReglaDAO.java b/src/com/qbe/cotizador/dao/producto/agricola/AgriReglaDAO.java
+--- a/src/com/qbe/cotizador/dao/producto/agricola/AgriReglaDAO.java
++++ b/src/com/qbe/cotizador/dao/producto/agricola/AgriReglaDAO.java
+@@ -51,7 +51,7 @@
+ 	}
+ 	
+ 	public List<AgriRegla> BuscarPorParametros(BigInteger provinciaId, BigInteger cantonId, BigInteger tipoCultivoId){
+-		return getEntityManager().createNamedQuery("AgriRegla.obtenerPorParametros")
++		return getEntityManager().createNamedQuery("AgriRegla.obtenerPorParametros").setParameter("estado", 1)
+ 				.setParameter("provinciaId", provinciaId)
+ 				.setParameter("cantonId", cantonId)
+ 				.setParameter("tipoCultivoId", tipoCultivoId).getResultList();
+@@ -62,7 +62,8 @@
+ 				.setParameter("provinciaId", provinciaId)
+ 				.setParameter("cantonId", cantonId)
+ 				.setParameter("tipoCultivoId", tipoCultivoId)
+-				.setParameter("tipoCalculoId", tipoCalculoId).getResultList();
++				.setParameter("tipoCalculoId", tipoCalculoId)
++				.setParameter("estado", 1).getResultList();
+ 	}
+ 	 public List<AgriRegla> BuscarPorTipoCalculoNombre(String TipoCalculoNombre){
+ 			List<AgriRegla>results = new ArrayList<AgriRegla>();
+@@ -72,8 +73,8 @@
+ 			TypedQuery<AgriRegla>query = null;
+ 			String stringQuery= "SELECT c FROM AgriRegla c where (c.tipoCalculoId =:tipoCalculoId)";					
+ 			query = getEntityManager().createQuery(stringQuery, AgriRegla.class);
+-			query.setParameter("tipoCalculoId",tipoCalculoId);
++			query.setParameter("tipoCalculoId",tipoCalculoId).setParameter("estado", 1);
+ 			results = query.getResultList();
+ 			return results;
+ 		}
+ 	 public List<AgriRegla> obtenerPorTipoCultivo(BigInteger tipoCultivoId,BigInteger tipoCalculoId){
+@@ -76,8 +77,8 @@
+ 			results = query.getResultList();
+ 			return results;
+ 		}
+ 	 public List<AgriRegla> obtenerPorTipoCultivo(BigInteger tipoCultivoId,BigInteger tipoCalculoId){
+-			return getEntityManager().createNamedQuery("AgriRegla.obtenerPorTipoCultivo")
++			return getEntityManager().createNamedQuery("AgriRegla.obtenerPorTipoCultivo").setParameter("estado", 1)
+ 					.setParameter("tipoCultivoId", tipoCultivoId)
+ 					.setParameter("tipoCalculoId", tipoCalculoId).getResultList();
+ 		}
+diff --git a/src/com/qbe/cotizador/model/AgriCotizacionAprobacion.java b/src/com/qbe/cotizador/model/AgriCotizacionAprobacion.java
+--- a/src/com/qbe/cotizador/model/AgriCotizacionAprobacion.java
++++ b/src/com/qbe/cotizador/model/AgriCotizacionAprobacion.java
+@@ -209,4 +209,10 @@
+ 	
+ 	@Column(name = "cliente_id")
+ 	private String clienteId;
++	
++	@Column(name = "POLIZA_NUMERO")
++	private String polizaNumero;
++	
++	@Column(name = "POLIZA_FECHA_VENCIMIENTO")
++	private String polizaFechaVencimiento;
+ 		
+@@ -212,4 +218,20 @@
+ 		
++	public String getPolizaNumero() {
++		return polizaNumero;
++	}
++
++	public void setPolizaNumero(String polizaNumero) {
++		this.polizaNumero = polizaNumero;
++	}
++
++	public String getPolizaFechaVencimiento() {
++		return polizaFechaVencimiento;
++	}
++
++	public void setPolizaFechaVencimiento(String polizaFechaVencimiento) {
++		this.polizaFechaVencimiento = polizaFechaVencimiento;
++	}
++
+ 	public String getClienteId() {
+ 		return clienteId;
+ 	}
+diff --git a/src/com/qbe/cotizador/model/AgriRegla.java b/src/com/qbe/cotizador/model/AgriRegla.java
+--- a/src/com/qbe/cotizador/model/AgriRegla.java
++++ b/src/com/qbe/cotizador/model/AgriRegla.java
+@@ -14,10 +14,10 @@
+ @Table(name="AGRI_REGLA")
+ @NamedQueries({
+ 	@NamedQuery(name="AgriRegla.findAll", query="SELECT a FROM AgriRegla a"),
+-	@NamedQuery(name="AgriRegla.obtenerPorId", query="SELECT a FROM AgriRegla a where a.reglaId=:reglaId"),
+-	@NamedQuery(name="AgriRegla.obtenerPorParametros", query="SELECT a FROM AgriRegla a where a.cantonId=:cantonId and a.provinciaId=:provinciaId and a.tipoCultivoId=:tipoCultivoId"),
+-	@NamedQuery(name="AgriRegla.obtenerPorParametros2", query="SELECT a FROM AgriRegla a where a.cantonId=:cantonId and a.provinciaId=:provinciaId and a.tipoCultivoId=:tipoCultivoId and a.tipoCalculoId=:tipoCalculoId"),
+-	@NamedQuery(name="AgriRegla.obtenerPorTipoCultivo", query="SELECT a FROM AgriRegla a where  a.tipoCultivoId=:tipoCultivoId and a.tipoCalculoId=:tipoCalculoId")
++	@NamedQuery(name="AgriRegla.obtenerPorId", query="SELECT a FROM AgriRegla a where a.reglaId=:reglaId and a.estado=:estado"),
++	@NamedQuery(name="AgriRegla.obtenerPorParametros", query="SELECT a FROM AgriRegla a where a.cantonId=:cantonId and a.provinciaId=:provinciaId and a.tipoCultivoId=:tipoCultivoId and a.estado=:estado"),
++	@NamedQuery(name="AgriRegla.obtenerPorParametros2", query="SELECT a FROM AgriRegla a where a.cantonId=:cantonId and a.provinciaId=:provinciaId and a.tipoCultivoId=:tipoCultivoId and a.tipoCalculoId=:tipoCalculoId and a.estado=:estado"),
++	@NamedQuery(name="AgriRegla.obtenerPorTipoCultivo", query="SELECT a FROM AgriRegla a where  a.tipoCultivoId=:tipoCultivoId and a.tipoCalculoId=:tipoCalculoId and a.estado=:estado")
+ 	
+ })
+ public class AgriRegla implements Serializable {
+@@ -45,6 +45,7 @@
+ 	@Column(name="COSTO_PRODUCCION")
+ 	private float costoProduccion;
+ 
++	@Column(name="ESTADO")
+ 	private int estado;
+ 
+ 	private String observaciones;
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionAprobacionController.java
+@@ -1443,7 +1443,7 @@
+ 								// cotizacionC =
+ 								// cotizacionTransaction.editar(cotizacionC);
+ 								// /TODO Generar cadena para el archivo
+-								String row = cotizacionC.getNumeroFactura()+ "," + cotizacionC.getTotalFactura()+ "\r\n";
++								String row = cotizacionC.getNumeroFactura()+ " , " + cotizacionC.getTotalFactura()+ "\r\n";
+ 								cadenaArchivo = cadenaArchivo + row;
+ 								
+ 								//registro el detalle de la cotizacion
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionDetalleProcesos.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionDetalleProcesos.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionDetalleProcesos.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriCotizacionDetalleProcesos.java
+@@ -97,4 +97,83 @@
+ 		/**FIN DE REGISTRO DE ENDOSO**/
+ 	}
+ 	
++	public void creardetalleCotizacionTemporal(Cotizacion cotizacion,String proceso){
++		/**PROCESO DE CREACION DEL DETALLE DE LA COTIZACION ENDOSO***/
++		AgriCotizacionAprobacion agriCotizacionAprobacion = new AgriCotizacionAprobacion();
++		CotizacionAprobacionDAO cotizacionAprobacionDAO = new CotizacionAprobacionDAO();
++		agriCotizacionAprobacion=cotizacionAprobacionDAO.buscarPorId(cotizacion.getId());
++		//llenamos el objeto
++		AgriObjetoDetalle agriObjetoDetalle = new AgriObjetoDetalle();
++		agriObjetoDetalle.setCotizacionId(agriCotizacionAprobacion.getId());
++		agriObjetoDetalle.setAgricolaId(agriCotizacionAprobacion.getIdCotizacion2());
++		agriObjetoDetalle.setPeriodoId(new BigInteger(agriCotizacionAprobacion.getCicloId()));
++		agriObjetoDetalle.setCanalId(agriCotizacionAprobacion.getCanalId());
++		agriObjetoDetalle.setPuntoVentaId(agriCotizacionAprobacion.getPuntoVentaId());
++		agriObjetoDetalle.setNumeroTramite(agriCotizacionAprobacion.getNumeroTramite());
++		
++		try{
++			agriObjetoDetalle.setVigenciaDias(Double.parseDouble(agriCotizacionAprobacion.getVigenciaDias().toString()));
++		}catch(Exception e){
++			System.out.println("no se guardo los dias de vigencia");
++		}
++		
++		if(cotizacion.getEstado().getNombre().equals(("Pendiente de Emitir"))){
++			
++			CotizacionDetalleDAO cotizacionDetalleDAO = new CotizacionDetalleDAO();
++			CotizacionDetalle cotizacionDetalle= cotizacionDetalleDAO.buscarCotizacionDetallePorCotizacion(cotizacion).get(0);
++			
++			AgriObjetoCotizacionDAO agriObjetoCotizacionDAO = new AgriObjetoCotizacionDAO();
++			AgriObjetoCotizacion agriObjetoCotizacion = agriObjetoCotizacionDAO.buscarPorId(new BigInteger(cotizacionDetalle.getObjetoId())); 
++			
++			agriObjetoDetalle.setVigenciaDesde(agriObjetoCotizacion.getFechaSiembra());
++			
++			Date fechaFin=new Date();
++			try{
++			Calendar calendar = Calendar.getInstance();
++			calendar.setTime(agriObjetoCotizacion.getFechaSiembra());
++			calendar.add(Calendar.DAY_OF_YEAR, Integer.parseInt(agriCotizacionAprobacion.getVigenciaDias().toString()));
++			fechaFin=calendar.getTime();
++			}catch(Exception e){
++				e.printStackTrace();
++			}					
++			agriObjetoDetalle.setVigenciaHasta(fechaFin);
++		}
++		agriObjetoDetalle.setCantonId(agriCotizacionAprobacion.getCantonId());
++		agriObjetoDetalle.setClienteId(new BigInteger(agriCotizacionAprobacion.getClienteId()));
++		agriObjetoDetalle.setCultivoId(agriCotizacionAprobacion.getTipoCultivoId());
++		agriObjetoDetalle.setProvinciaId(agriCotizacionAprobacion.getParroquiaId());
++		agriObjetoDetalle.setCanalId(agriCotizacionAprobacion.getCantonId());
++		agriObjetoDetalle.setParroquiaId(agriCotizacionAprobacion.getParroquiaId());
++		agriObjetoDetalle.setSitioInversion(agriCotizacionAprobacion.getDireccionSiembra());
++		agriObjetoDetalle.setTelefono(agriCotizacionAprobacion.getTelefono());
++		agriObjetoDetalle.setHectareasAseguradas(Double.parseDouble(""+agriCotizacionAprobacion.getHectareasAsegurables()));
++		agriObjetoDetalle.setHectareasLote(Double.parseDouble(""+agriCotizacionAprobacion.getHectareasLote()));
++		
++		Date date = new Date(agriCotizacionAprobacion.getFechaSiembra().getTime());
++		
++		agriObjetoDetalle.setFechaSiembra(date);
++		agriObjetoDetalle.setMontoAsegurado(Double.parseDouble(""+agriCotizacionAprobacion.getSumaAseguradaTotal()));
++		agriObjetoDetalle.setCostoProduccion(Double.parseDouble(""+agriCotizacionAprobacion.getCostoProduccion()));
++		agriObjetoDetalle.setTasa(Double.parseDouble(""+agriCotizacionAprobacion.getTasa()));
++		agriObjetoDetalle.setSuperBancos(Double.parseDouble(""+agriCotizacionAprobacion.getSeguroBancos()));
++		agriObjetoDetalle.setDerechoEmision(Double.parseDouble(""+agriCotizacionAprobacion.getDerechoEmision()));
++		agriObjetoDetalle.setIva(Double.parseDouble(""+agriCotizacionAprobacion.getIva()));
++		agriObjetoDetalle.setPrimaTotal(Double.parseDouble(""+agriCotizacionAprobacion.getTotalFactura()));
++		agriObjetoDetalle.setPrimaNeta(Double.parseDouble(""+agriCotizacionAprobacion.getPrimaNetaTotal()));
++		agriObjetoDetalle.setLongitud(""+agriCotizacionAprobacion.getLongitud());
++		agriObjetoDetalle.setLatitud(""+agriCotizacionAprobacion.getLatitud());
++		agriObjetoDetalle.setDisponeAsistencia(agriCotizacionAprobacion.getDisponeAsistencia());
++		agriObjetoDetalle.setDisponeRiego(agriCotizacionAprobacion.getDisponeRiego());
++		agriObjetoDetalle.setAgricultorTecnificado(agriCotizacionAprobacion.getAgricultorTecnificado());
++		agriObjetoDetalle.setObservacion(proceso);
++		agriObjetoDetalle.setObservacionQbe(agriCotizacionAprobacion.getObservacionQBE());
++		agriObjetoDetalle.setEstado(agriCotizacionAprobacion.getEstadoCotizacion());
++		agriObjetoDetalle.setUsuarioOffline(agriCotizacionAprobacion.getUsuarioOffline());
++		
++		AgriObjetoDetalleTransaction agriObjetoDetalleTransaction = new AgriObjetoDetalleTransaction();
++		agriObjetoDetalleTransaction.crear(agriObjetoDetalle);
++		
++		/**FIN DE REGISTRO DE ENDOSO**/
++	}
++	
+ }

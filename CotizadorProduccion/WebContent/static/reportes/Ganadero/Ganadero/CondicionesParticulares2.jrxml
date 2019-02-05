@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CondicionesParticulares2_A4" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="c6b0b914-037b-45bc-b4e8-257508240a4f">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="COTIZADOR"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="cot_Id" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT DISTINCT COT.ID AS COTIZACIONID, ENT.ID, COT.AGENTE_ID, ENT.NOMBRE_COMPLETO,
+VIGP.NOMBRE, COT.TASA_PRODUCTO_VALOR, COT.SUMA_ASEGURADA_TOTAL, VIGP.ID AS VIGENCIA
+FROM ENTIDAD ENT INNER JOIN CLIENTE CLI
+ON ENT.ID = CLI.entidad_id INNER JOIN COTIZACION COT
+ON CLI.ID = COT.CLIENTE_ID INNER JOIN AGENTE AGE
+ON COT.AGENTE_ID = AGE.ID INNER JOIN VIGENCIA_POLIZA VIGP
+ON COT.VIGENCIA_POLIZA_ID = VIGP.ID
+AND COT.ID = $P{cot_Id}]]>
+	</queryString>
+	<field name="COTIZACIONID" class="java.lang.Long"/>
+	<field name="ID" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="AGENTE_ID" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="NOMBRE_COMPLETO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="NOMBRE" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TASA_PRODUCTO_VALOR" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="SUMA_ASEGURADA_TOTAL" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="VIGENCIA" class="java.lang.Long"/>
+	<detail>
+		<band height="742" splitType="Stretch">
+			<staticText>
+				<reportElement x="40" y="40" width="300" height="20" uuid="426b3d68-3361-4e00-a03d-548ef8db6648"/>
+				<textElement>
+					<font fontName="Calibri" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ARTÍCULO N° 3: UNIDAD DE RIESGO ASEGURADA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="80" width="450" height="30" uuid="e9d4273b-b3c0-4927-a940-400a1138e54e"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[La Unidad de riesgo asegurada está conformada por el animal o los animales incluidos en el detalle del certificado, perteneciente a la póliza abierta.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="130" width="170" height="20" uuid="4817b229-3280-44af-ad72-0b3a2c4d3814"/>
+				<textElement>
+					<font fontName="Calibri" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ARTÍCULO N° 4: GARANTIAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="170" width="450" height="60" uuid="9e574a96-45cb-451f-b707-eb5921af26d8"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Calibri" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Para obtener la cobertura del Seguro Ganadero se debe cumplir con lo siguiente:
+
+1. Se pueden asegurar animales desde los seis meses hasta los ocho años de edad, en explotaciones ganaderas que cumplan con las siguientes condiciones, y en apego al procedimiento detallado a continuación:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="250" width="450" height="50" uuid="bd78b6f5-87ec-4a4c-b7bd-6dc3132d5d4f"/>
+				<textElement>
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<text><![CDATA[2. Todo ganado  nacional debe poseer  las vacunas contra Aftosa (2 veces al año), Brucella (1 vez en la vida), Leptospirosis (1 vez al año), Triple (1 vez al año), DVB Diarrea Viral Bovina e IBR Rinotraqueitis (1 a 2 veces al año). ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="320" width="450" height="81" uuid="32ae7700-8e2e-4ac3-a296-dda4c806b957"/>
+				<textElement>
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<text><![CDATA[3. Para ganado importado es requisito poseer las vacunas anteriormente citadas, pero existirá un tiempo perentorio para realizar dichas vacunaciones, el cual deberá estar dentro del período de cuarentena.  En caso de ganado a asegurar en la zona oriental debe poseer la vacuna antirrábica.  Se debe anexar el certificado de vacunación y la factura de compra de dichas vacunas, así como el calendario de vacunaciones. ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="420" width="450" height="81" uuid="9ca0225d-c439-4d16-abf3-3121794991f9"/>
+				<textElement>
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<text><![CDATA[4. En zonas de valles cálidos de sierra, trópico y subtrópico se deberá prevenir la infestación por garrapatas, para lo cual sugerimos el plan de control de garrapatas estipulado en el manual de buenas prácticas ganaderas de Agrocalidad   para evitar muertes por piroplasmosis y anaplasmosis.  En caso de suceder siniestros que se sospeche como causa las enfermedades anteriormente citadas, se requerirá que el ganadero realice un examen de sangre, para confirmar la causa de la muerte, si es positivo, este evento se considerará negligencia.  ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="520" width="450" height="81" uuid="5741c86e-c03c-49c8-a024-b2c792e34c11"/>
+				<textElement>
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<text><![CDATA[5. Como cuidados pre-parto se requiere que el personal al cuidado del hato realice un monitoreo constante de los animales próximos al parto con el fin de informar si es necesaria la presencia del veterinario. Se sugiere ingresar al animal a un potrerillo de maternidad por lo menos 10 días antes del parto para observación y ayuda en el alumbramiento. (Opcional para ganado de carne). ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="620" width="450" height="81" uuid="0d2aa388-5a55-469b-9e76-c59d2ccd6c91"/>
+				<textElement>
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<text><![CDATA[6. En caso de enfermedades metabólicas asociadas al parto como: Fiebre de Leche (Hipocalcemia), Cetosis (Acetonemia), Hígado Graso (Síndrome de la vaca obesa), Tetania por Hipomagnesemia, Hemoglobinuria post-parto, etc., pudiendo causar la muerte, si no son atendidas adecuadamente, recomendamos que adicional a los primeros auxilios un veterinario atienda estos casos.]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<summary>
+		<band height="56">
+			<subreport>
+				<reportElement x="40" y="0" width="510" height="50" uuid="fb4b4146-7d28-43ac-8d72-e44144f2bdb6"/>
+				<subreportParameter name="cot_Id">
+					<subreportParameterExpression><![CDATA[$P{cot_Id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["Ganadero/CondicionesParticulares3.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

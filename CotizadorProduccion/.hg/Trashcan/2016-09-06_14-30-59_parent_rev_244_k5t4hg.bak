@@ -1,0 +1,28 @@
+diff --git a/WebContent/static/js/agricola/metodos.agricolaArchivoPlano.js b/WebContent/static/js/agricola/metodos.agricolaArchivoPlano.js
+--- a/WebContent/static/js/agricola/metodos.agricolaArchivoPlano.js
++++ b/WebContent/static/js/agricola/metodos.agricolaArchivoPlano.js
+@@ -894,4 +894,5 @@
+ function generarReporteCotizacion() {
+ 	$("#descargar_FichaCotizacion").show();
+ 	$("#wizard .actions a[href='#finish']").hide();
++	alert("Por favor una vez descargada la poliza, presionar el boton Finalizar para que la cotización sea valida.");
+ 	window.open('../AgriCotizacionReporte?tipoConsulta=generarReporte&codigoCotizacion=' + $("#cotizacion_id").text());
+@@ -897,5 +898,5 @@
+ 	window.open('../AgriCotizacionReporte?tipoConsulta=generarReporte&codigoCotizacion=' + $("#cotizacion_id").text());
+-	
++	alert("Por favor precionar boton finalizar en la ventana de cotización");
+ }
+ function cargarDireccionFactura(formulario, datos) {
+ 	if (datos != null) {
+@@ -3559,4 +3560,5 @@
+ 	});*/
+ 	$("#wizard .actions a[href='#finish']").show();
+ 	$("#descargar_FichaCotizacion").hide();
++	alert("Por favor una vez descargada la poliza, presionar el boton Finalizar para que la cotización sea valida.");	
+ 	window.open('../AgriCotizacionReporte?tipoConsulta=generarReporte&codigoCotizacion=' + $("#cotizacion_id").text()+'&IsCotizacion_=true');
+@@ -3562,4 +3564,5 @@
+ 	window.open('../AgriCotizacionReporte?tipoConsulta=generarReporte&codigoCotizacion=' + $("#cotizacion_id").text()+'&IsCotizacion_=true');
++	alert("Por favor precionar boton finalizar en la ventana de cotización");
+ }
+ 
+ function guardarPago(valor) {

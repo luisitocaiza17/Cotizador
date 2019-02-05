@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cavecera" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="11d09327-ef61-4238-8312-2579e1038994">
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="COTIZADOR"/>
+	<parameter name="cot_Id" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[SELECT DISTINCT COT.ID AS SOLICITUD, ENT.ID AS ENTIDAD, CLI.ID, COT.FECHA_ELABORACION, IFNULL(ENT.IDENTIFICACION,'') AS IDENTIFICACION, 
+CONCAT(IFNULL(ENT.APELLIDOS, '') , ' ' , IFNULL(ENT.NOMBRES,'')) AS NOMBRESCOMPLETOS, 
+CONCAT( IFNULL(DIR.CALLE_PRINCIPAL,''),' y ', IFNULL(DIR.CALLE_SECUNDARIA,''), ' N°. ', IFNULL(DIR.NUMERO,'')) AS DIRECCION, 
+IFNULL(ENT.TELEFONO,'') AS TELEFONO, IFNULL(ENT.MAIL,'') AS MAIL
+FROM COTIZACION COT INNER JOIN CLIENTE CLI
+ON COT.CLIENTE_ID = CLI.ID INNER JOIN ENTIDAD ENT
+ON CLI.ENTIDAD_ID = ENT.ID INNER JOIN DIRECCION DIR 
+ON ENT.ID = DIR.ENTIDAD_ID 
+AND DIR.ES_COBRO = 1
+AND COT.ID =  $P{cot_Id}]]>
+	</queryString>
+	<field name="ID" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="FECHA_ELABORACION" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="IDENTIFICACION" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ENTIDAD" class="java.lang.Long"/>
+	<field name="TELEFONO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="MAIL" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="NOMBRESCOMPLETOS" class="java.lang.String"/>
+	<field name="SOLICITUD" class="java.lang.Long"/>
+	<field name="DIRECCION" class="java.lang.String"/>
+	<title>
+		<band height="75">
+			<staticText>
+				<reportElement x="188" y="30" width="280" height="45" uuid="fc024e23-0ea9-4304-8fbc-179cd47ac064"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<text><![CDATA[• Quito: Av. Eloy Alfaro N.40-270 y Jose Quero Telf. (593 2) 398 9700 / 398 9800  Fa. Ext 2213 /2220     
+• Guayaquil: Av. Miguel H. Alcivar Edif. Torres del Norte Torre B  Of. 301 – 308   pisos  # 3. Teléfs: 688 313/15/16/20/25/26. Fax: 688314
+• Cuenca: Av. Federico Malo 170 y Av. 12 de Abril. Teléfonos: 841 285, 840 758, 842 876. Fax: 838 732
+• Riobamba: Calle Vargas Torre s/n entre Primera Constituyente y Veloz  Telfs: 940 863. Fax: 940 864 
+• Ambato: Ficoa Av. De los Guaytambos No. 04-102, Teléfono: 824 496/823495/820571]]></text>
+			</staticText>
+			<image>
+				<reportElement x="20" y="30" width="160" height="30" uuid="13dd4fe8-fd55-4d68-b918-25868e06c991"/>
+				<imageExpression><![CDATA["imagenes/logo_qbe.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<detail>
+		<band height="572" splitType="Stretch">
+			<staticText>
+				<reportElement x="395" y="150" width="34" height="21" uuid="199cc9b5-997d-4435-a146-512906495c03"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="80" y="40" width="400" height="22" uuid="6e57fc09-19b6-4ff1-8378-2719343a06cb"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SOLICITUD PARA SEGURO GANADERO - VACUNO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="19" y="150" width="58" height="21" uuid="03963951-c64f-4f01-b8b4-c031784b9a9d"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Solicitud No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="19" y="242" width="32" height="21" uuid="52c2425a-7ba5-4903-b9b9-182ecc5daf5d">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Email:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="19" y="173" width="63" height="21" uuid="86fd0e18-16ae-459e-882a-7347af2e7e8f">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Identificación: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="404" y="219" width="44" height="21" uuid="80770de9-e040-4fef-b9a0-714d9093ad46"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Teléfono:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="77" y="80" width="400" height="30" uuid="d73f491c-8108-42a5-974d-79b66304a8da"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TITULAR DE LA POLIZA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="19" y="196" width="102" height="21" uuid="7a7ca8f4-ab68-4fa1-aa85-ba40af0d5211">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Nombre del solicitante:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="19" y="219" width="48" height="21" uuid="7ea50613-5c51-46f9-9784-f36d7aaa6b3b"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Dirección:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="434" y="150" width="114" height="20" uuid="37098fef-85c8-4d4f-8c70-1de2e69eac93"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{FECHA_ELABORACION}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="83" y="173" width="100" height="20" uuid="c0967f84-fd98-4df0-bbfe-1c3fa4c2f037"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{IDENTIFICACION}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="196" width="425" height="20" uuid="c7377472-f7e3-41e4-81b8-844fc482ad58">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NOMBRESCOMPLETOS}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="129" y="306" width="419" height="21" uuid="05981ff5-0d04-43fc-bbb5-ff06ce8e20b5"/>
+				<subreportParameter name="cot_Id">
+					<subreportParameterExpression><![CDATA[$P{cot_Id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["Ganadero/Beneficiario.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement x="20" y="332" width="528" height="240" uuid="e9732c02-3b82-406a-872e-7450f60dbf4e"/>
+				<subreportParameter name="cot_Id">
+					<subreportParameterExpression><![CDATA[$P{cot_Id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["Ganadero/solicitudvacas1.jasper"]]></subreportExpression>
+			</subreport>
+			<textField>
+				<reportElement x="53" y="242" width="344" height="20" uuid="17d301e1-da10-4bb8-8e14-479da62758f5"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MAIL}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="448" y="219" width="100" height="20" uuid="e5d1947c-e135-4489-8da0-cf98a55fcaa6"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TELEFONO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="19" y="306" width="110" height="21" uuid="cbc5b42c-b31a-4925-8e4f-e13461abe25c"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Nombre del beneficiario:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="84" y="272" width="400" height="30" uuid="124bdbe5-60cb-4cdc-b0b2-3eb50f3cde45"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[BENEFICIARIO]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="79" y="150" width="203" height="20" uuid="3da2daba-e697-4002-bb1f-c95a9ea2238e"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SOLICITUD}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="68" y="219" width="328" height="20" uuid="91f515ac-c067-4fe4-a49d-2726fb10536f"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DIRECCION}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,299 @@
+﻿<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+    <title></title>
+</head>
+<body>
+    <table cellspacing='2' cellpadding='2' width='100%'>
+        <tr>
+            <td colspan="4">
+                <table width="100%">
+                    <tr>
+                        <td>
+                            <span style="font-family: Arial; font-weight: bold; font-size: larger">Nro. P&oacute;liza:
+                                [CotizacionId]</span>
+                            <br />
+                            <br />
+                            <span style="font-family: Arial; font-size: 10pt">Fecha: [FechaCotizacion] </span>
+                        </td>
+                        <td colspan='3' style='text-align: right; font-family: Arial'>
+                            <img alt="" src=[Logo]
+                                style="height: 100px; width: 254px" />
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td style='background-color: #192C65; font-family: Arial; font-size: medium; font-weight: bold;
+                color: White; height: 30px' colspan='4'>
+                <strong>INFORMACI&Oacute;N GENERAL</strong>
+            </td>
+        </tr>
+        <tr>
+            <td style='font-family: Arial; font-size: 10pt; font-weight: bold; width: 30%;'>
+                Punto de Venta:
+            </td>
+            <td colspan='3' style='font-family: Arial; font-size: 10pt; width: 70%;'>
+                [PuntoVenta]
+            </td>
+        </tr>
+        <tr>
+            <td style='font-family: Arial; font-size: 10pt; font-weight: bold; width: 30%;'>
+                Cliente:
+            </td>
+            <td colspan='3' style='font-family: Arial; font-size: 10pt;'>
+                [ClienteNombre]
+            </td>
+        </tr>
+        <tr>
+            <td style='font-family: Arial; font-size: 10pt; font-weight: bold; width: 30%;'>
+                Tel&eacute;fono:
+            </td>
+            <td colspan='3' style='font-family: Arial; font-size: 10pt;'>
+                [TelefonoCliente]
+            </td>
+        </tr>
+        <tr>
+            <td style='font-family: Arial; font-size: 10pt; font-weight: bold; width: 30%;'>
+                Broker:
+            </td>
+            <td colspan='3' style='font-family: Arial; font-size: 10pt;'>
+                [BrokerNombre]
+            </td>
+        </tr>
+        <tr>
+            <td style='font-family: Arial; font-size: 10pt; font-weight: bold; width: 30%;'>
+                Vigencia Desde:
+            </td>
+            <td colspan='3' style='font-family: Arial; font-size: 10pt;'>
+                [VigenciaDesde]&nbsp;&nbsp;&nbsp;&nbsp;<strong>Hasta: </strong>[VigenciaHasta]
+            </td>
+        </tr>
+        <tr>
+            <td style='background-color: #192C65; font-family: Arial; font-size: medium; font-weight: bold;
+                color: White; height: 30px' colspan='4'>
+                INFORMACI&Oacute;N DEL RIESGO
+            </td>
+        </tr>
+        <tr>
+            <td style='font-family: Arial; font-size: 10pt;' colspan="4">
+                DIRECCI&Oacute;N OBJETO ASEGURADO
+            </td>
+        </tr>
+        <tr>
+            <td colspan='4' style='font-family: Arial; font-size: 10pt'>
+                [DireccionesAseguradas]
+            </td>
+        </tr>
+        <tr>
+            <td colspan='4' style='font-family: Arial; font-size: 10pt'>
+                &nbsp;&nbsp;
+            </td>
+        </tr>
+        <tr>
+            <td colspan='4' style='text-align: justify; font-family: Arial; font-size: 10pt;'>
+                <table>
+                    <tr>
+                        <td style='background-color: #192C65; font-family: Arial; font-size: 10pt; font-weight: bold;
+                            color: White; width: 50%'>
+                            P&Oacute;LIZA MULTIRIESGO QUE INCLUYE
+                        </td>
+                        <td style='background-color: #192C65; font-family: Arial; font-size: 10pt; font-weight: bold;
+                            color: White; width: 25%'>
+                            VALORES
+                            <br />
+                            ASEGURADOS
+                        </td>
+                        <td style='background-color: #192C65; font-family: Arial; font-size: 10pt; font-weight: bold;
+                            color: White; width: 25%'>
+                            COSTOS
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan='3' style='font-family: Arial; font-size: 10pt;'>
+                            [ValoresCoberturas]
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan='3' style='border: thin none #CEE9EF'>
+                            <br />
+                            <br />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan='3' style='border: thin none #CEE9EF'>
+                            <table>
+                                <tr>
+                                    <td colspan="2" style='background-color: #192C65; font-family: Arial; font-size: medium;
+                                        font-weight: bold; color: White; vertical-align: middle; height: 30px'>
+                                        DESGLOSE DE VALORES
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style='width: 90%; font-family: Arial; font-weight: bold; font-size: medium; border-style: none none solid none;
+                                        border-width: medium; border-color: #00ACEF;'>
+                                        PRIMAS :
+                                    </td>
+                                    <td style='border-style: none none solid none; font-family: Arial; border-width: medium; border-color: #00ACEF;
+                                        text-align: right; font-weight: bold; font-size: medium;'>
+                                        [ValorPrimaNeta]
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style='border-style: none none solid none; font-family: Arial; border-width: thin; border-color: #D2D2D2;'>
+                                        Superintendencia de Bancos 3.50% :
+                                    </td>
+                                    <td style='border-style: none none solid none; font-family: Arial; border-width: thin; border-color: #D2D2D2;
+                                        text-align: right'>
+                                        [ValorSuperintendenciaBancos]
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style='border-style: none none solid none; font-family: Arial; border-width: thin; border-color: #D2D2D2;'>
+                                        Seguro Campesino 0.50% :
+                                    </td>
+                                    <td style='border-style: none none solid none; font-family: Arial; border-width: thin; border-color: #D2D2D2;
+                                        text-align: right'>
+                                        [ValorSeguroCampesino]
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style='border-style: none none solid none; font-family: Arial; border-width: thin; border-color: #D2D2D2;'>
+                                        Derechos de Emisi&oacute;n :
+                                    </td>
+                                    <td style='border-style: none none solid none; font-family: Arial; border-width: thin; border-color: #D2D2D2;
+                                        text-align: right'>
+                                        [ValorDerechos]
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style='border-style: none none solid none; font-family: Arial; border-width: thin; border-color: #D2D2D2;'>
+                                        Subtotal :
+                                    </td>
+                                    <td style='border-style: none none solid none; font-family: Arial; border-width: thin; border-color: #D2D2D2;
+                                        text-align: right'>
+                                        [ValorSubtotal]
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style='border-style: none none solid none; border-width: thin; border-color: #D2D2D2;'>
+                                        IVA [PorcetajeIva]% :
+                                    </td>
+                                    <td style='border-style: none none solid none; border-width: thin; border-color: #D2D2D2;
+                                                        text-align: right'>
+                                        [ValorIva]
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style='border-style: none none solid none; border-width: thin; border-color: #D2D2D2;'>
+                                        Compensaci&oacute;n del IVA [PorcetajeCompensacion]% :
+                                    </td>
+                                    <td style='border-style: none none solid none; border-width: thin; border-color: #D2D2D2;
+                                                        text-align: right'>
+                                        [ValorCompensacionIva]
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style='border-style: solid solid solid solid; font-family: Arial; border-width: medium; border-color: #00ACEF;
+                                        background-color: #00ACEF; color: White; font-weight: bold'>
+                                        TOTAL :
+                                    </td>
+                                    <td style='border-style: solid solid solid solid; font-family: Arial; border-width: medium; border-color: #00ACEF;
+                                        background-color: #00ACEF; border-style: none none none none; text-align: right;
+                                        font-weight: bold; color: White'>
+                                        [ValorTotal]
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan='3' style='border: thin none #CEE9EF'>
+                            &nbsp;
+                        </td>
+                    </tr>
+                    <!-- <yahp:pb /> -->
+                    <tr>
+                        <td colspan='3' style='border: medium solid #000000'>
+                            <table width='100%'>
+                                <tr>
+                                    <td>
+                                        <table width='100%'>
+                                            <tr>
+                                                <td colspan='2' style='font-family: Arial; font-size: 10pt;'>
+                                                    [HtmlCoberturas]
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <br />
+                                                </td>
+                                            </tr>
+                                            <tr>
+									            <td style='text-align: left; font-family: Arial; font-size: 10pt; font-weight: bold' colspan='3'>
+									                Beneficios Adicionales:
+									            </td>
+									        </tr>
+									        <tr>
+									            <td style='text-align: left; font-family: Arial; font-size: 10pt;' colspan='3'>
+									                [AsistenciasAdicionales]
+									            </td>
+									        </tr>
+									        <tr>
+                                                <td>
+                                                    <br />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                    <td style='font-family: Arial; font-size: 10pt;'>
+                                                        [SucursalNombre], [FechaActual]</td>
+                                                </tr>
+                                            <tr>
+                                                <td>
+                                                    <br />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <table width='100%'>
+                                                        <tr>
+                                                            <td style='width: 50%; text-align: center'>
+                                                            </td>
+                                                            <td style='width: 50%; text-align: center'>
+                                                                <img width='192' height='64' src=[Firma] />
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style='width: 50%; text-align: center; font-weight: bold;'>
+                                                                EL ASEGURADO
+                                                            </td>
+                                                            <td style='width: 50%; text-align: center; font-weight: bold;'>
+                                                                LA COMPA&Ntilde;IA
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <br />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <br />
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

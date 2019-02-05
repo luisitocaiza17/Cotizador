@@ -1,0 +1,190 @@
+diff --git a/WebContent/WEB-INF/server-config.wsdd b/WebContent/WEB-INF/server-config.wsdd
+--- a/WebContent/WEB-INF/server-config.wsdd
++++ b/WebContent/WEB-INF/server-config.wsdd
+@@ -45,9 +45,6 @@
+   <ns1:operation name="obtenerParroquiasPorCiudad" qname="ns9:obtenerParroquiasPorCiudad" returnQName="ns9:obtenerParroquiasPorCiudadReturn" returnType="ns9:Parroquias" soapAction="" xmlns:ns9="http://ganadero.QBE.servicios.cotizador.qbe.com">
+    <ns1:parameter qname="ns9:ciudadId" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+   </ns1:operation>
+-  <ns1:parameter name="allowedMethods" value="generarCotizacion obtenerTiposGanadoVacuno obtenerProvincias obtenerParroquiasPorCiudad obtenerRazas generarVariasCotizacion consultarEstadoCotizacion obtenerCiudadesPorProvincia consultarEstadoCotizacion2"/>
+-  <ns1:parameter name="typeMappingVersion" value="1.2"/>
+-  <ns1:parameter name="wsdlPortType" value="CotizacionGanderoQBE"/>
+-  <ns1:parameter name="className" value="com.qbe.cotizador.servicios.QBE.ganadero.CotizacionGanderoQBE"/>
++  <ns1:parameter name="sendMultiRefs" value="false"/>
+   <ns1:parameter name="wsdlServicePort" value="CotizacionGanderoQBE"/>
+   <ns1:parameter name="schemaQualified" value="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
+@@ -52,3 +49,8 @@
+   <ns1:parameter name="wsdlServicePort" value="CotizacionGanderoQBE"/>
+   <ns1:parameter name="schemaQualified" value="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
++  <ns1:parameter name="className" value="com.qbe.cotizador.servicios.QBE.ganadero.CotizacionGanderoQBE"/>
++  <ns1:parameter name="typeMappingVersion" value="1.2"/>
++  <ns1:parameter name="allowedMethods" value="generarCotizacion obtenerTiposGanadoVacuno obtenerProvincias obtenerParroquiasPorCiudad obtenerRazas generarVariasCotizacion consultarEstadoCotizacion obtenerCiudadesPorProvincia consultarEstadoCotizacion2"/>
++  <ns1:parameter name="wsdlPortType" value="CotizacionGanderoQBE"/>
++  <ns1:parameter name="wsdlServiceElement" value="CotizacionGanderoQBEService"/>
+   <ns1:parameter name="wsdlTargetNamespace" value="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
+@@ -54,5 +56,5 @@
+   <ns1:parameter name="wsdlTargetNamespace" value="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
+-  <ns1:parameter name="wsdlServiceElement" value="CotizacionGanderoQBEService"/>
++  <ns1:parameter name="sendXsiTypes" value="false"/>
+   <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns10:ResultadoOBJ" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.ganadero.ResultadoOBJ" xmlns:ns10="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
+   <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns11:Ciudades" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.ganadero.Ciudades" xmlns:ns11="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
+   <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns12:SolicitanteOBJ" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.ganadero.SolicitanteOBJ" xmlns:ns12="http://ganadero.QBE.servicios.cotizador.qbe.com"/>
+@@ -89,9 +91,15 @@
+   <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns30:AgriCotizaciones" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.model.AgriCotizaciones" xmlns:ns30="http://model.cotizador.qbe.com"/>
+  </ns1:service>
+  <ns1:service name="SolicitudAgricola" provider="java:RPC" style="wrapped" use="literal">
+-  <ns1:operation name="registrarSolicitud" qname="ns31:registrarSolicitud" returnQName="ns31:registrarSolicitudReturn" returnType="ns31:RespuestaUN01DTO" soapAction="" xmlns:ns31="http://agricolaSucre.QBE.servicios.cotizador.qbe.com">
+-   <ns1:parameter qname="ns31:in0" type="ns31:SolicitudUN01DTO"/>
++  <ns1:operation name="solicitudCambiolugarSiembra" qname="ns31:solicitudCambiolugarSiembra" returnQName="ns31:solicitudCambiolugarSiembraReturn" returnType="ns31:RespuestaCambio" soapAction="" xmlns:ns31="http://agricolaSucre.QBE.servicios.cotizador.qbe.com">
++   <ns1:parameter qname="ns31:tramite" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++   <ns1:parameter qname="ns31:codProvincia" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++   <ns1:parameter qname="ns31:codCanton" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++   <ns1:parameter qname="ns31:codParroquia" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++   <ns1:parameter qname="ns31:direccionSiembra" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++   <ns1:parameter qname="ns31:latitud" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++   <ns1:parameter qname="ns31:longitud" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+   </ns1:operation>
+   <ns1:operation name="registrarEmision" qname="ns32:registrarEmision" returnQName="ns32:registrarEmisionReturn" returnType="ns32:RespuestaEMIDTO" soapAction="" xmlns:ns32="http://agricolaSucre.QBE.servicios.cotizador.qbe.com">
+    <ns1:parameter qname="ns32:in0" type="ns32:SolicitudEMIDTO"/>
+   </ns1:operation>
+@@ -94,6 +102,18 @@
+   </ns1:operation>
+   <ns1:operation name="registrarEmision" qname="ns32:registrarEmision" returnQName="ns32:registrarEmisionReturn" returnType="ns32:RespuestaEMIDTO" soapAction="" xmlns:ns32="http://agricolaSucre.QBE.servicios.cotizador.qbe.com">
+    <ns1:parameter qname="ns32:in0" type="ns32:SolicitudEMIDTO"/>
+   </ns1:operation>
+-  <ns1:parameter name="allowedMethods" value="registrarSolicitud registrarEmision"/>
++  <ns1:operation name="registrarSolicitud" qname="ns33:registrarSolicitud" returnQName="ns33:registrarSolicitudReturn" returnType="ns33:RespuestaUN01DTO" soapAction="" xmlns:ns33="http://agricolaSucre.QBE.servicios.cotizador.qbe.com">
++   <ns1:parameter qname="ns33:in0" type="ns33:SolicitudUN01DTO"/>
++  </ns1:operation>
++  <ns1:operation name="solicitudCambioFecha" qname="ns34:solicitudCambioFecha" returnQName="ns34:solicitudCambioFechaReturn" returnType="ns34:RespuestaCambio" soapAction="" xmlns:ns34="http://agricolaSucre.QBE.servicios.cotizador.qbe.com">
++   <ns1:parameter qname="ns34:tramite" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++   <ns1:parameter qname="ns34:fechaSiembra" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++  </ns1:operation>
++  <ns1:operation name="notificacionRevocado" qname="ns35:notificacionRevocado" returnQName="ns35:notificacionRevocadoReturn" returnType="ns35:RespuestaCambio" soapAction="" xmlns:ns35="http://agricolaSucre.QBE.servicios.cotizador.qbe.com">
++   <ns1:parameter qname="ns35:tramite" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++   <ns1:parameter qname="ns35:Causa" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++  </ns1:operation>
++  <ns1:parameter name="allowedMethods" value="registrarSolicitud notificacionRevocado registrarEmision solicitudCambiolugarSiembra solicitudCambioFecha"/>
++  <ns1:parameter name="wsdlPortType" value="SolicitudAgricola"/>
+   <ns1:parameter name="typeMappingVersion" value="1.2"/>
+@@ -99,3 +119,4 @@
+   <ns1:parameter name="typeMappingVersion" value="1.2"/>
+-  <ns1:parameter name="wsdlPortType" value="SolicitudAgricola"/>
++  <ns1:parameter name="schemaQualified" value="http://agricolaSucre.QBE.servicios.cotizador.qbe.com"/>
++  <ns1:parameter name="wsdlServicePort" value="SolicitudAgricola"/>
+   <ns1:parameter name="className" value="com.qbe.cotizador.servicios.QBE.agricolaSucre.SolicitudAgricola"/>
+@@ -101,5 +122,3 @@
+   <ns1:parameter name="className" value="com.qbe.cotizador.servicios.QBE.agricolaSucre.SolicitudAgricola"/>
+-  <ns1:parameter name="wsdlServicePort" value="SolicitudAgricola"/>
+-  <ns1:parameter name="schemaQualified" value="http://agricolaSucre.QBE.servicios.cotizador.qbe.com"/>
+   <ns1:parameter name="wsdlTargetNamespace" value="http://agricolaSucre.QBE.servicios.cotizador.qbe.com"/>
+   <ns1:parameter name="wsdlServiceElement" value="SolicitudAgricolaService"/>
+@@ -104,6 +123,3 @@
+   <ns1:parameter name="wsdlTargetNamespace" value="http://agricolaSucre.QBE.servicios.cotizador.qbe.com"/>
+   <ns1:parameter name="wsdlServiceElement" value="SolicitudAgricolaService"/>
+-  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns33:RespuestaEMIDTO" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.agricolaSucre.RespuestaEMIDTO" xmlns:ns33="http://agricolaSucre.QBE.servicios.cotizador.qbe.com"/>
+-  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns34:SolicitudUN01DTO" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.agricolaSucre.SolicitudUN01DTO" xmlns:ns34="http://agricolaSucre.QBE.servicios.cotizador.qbe.com"/>
+-  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns35:RespuestaUN01DTO" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.agricolaSucre.RespuestaUN01DTO" xmlns:ns35="http://agricolaSucre.QBE.servicios.cotizador.qbe.com"/>
+   <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns36:SolicitudEMIDTO" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.agricolaSucre.SolicitudEMIDTO" xmlns:ns36="http://agricolaSucre.QBE.servicios.cotizador.qbe.com"/>
+@@ -109,3 +125,7 @@
+   <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns36:SolicitudEMIDTO" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.agricolaSucre.SolicitudEMIDTO" xmlns:ns36="http://agricolaSucre.QBE.servicios.cotizador.qbe.com"/>
++  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns37:RespuestaEMIDTO" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.agricolaSucre.RespuestaEMIDTO" xmlns:ns37="http://agricolaSucre.QBE.servicios.cotizador.qbe.com"/>
++  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns38:RespuestaCambio" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.agricolaSucre.RespuestaCambio" xmlns:ns38="http://agricolaSucre.QBE.servicios.cotizador.qbe.com"/>
++  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns39:SolicitudUN01DTO" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.agricolaSucre.SolicitudUN01DTO" xmlns:ns39="http://agricolaSucre.QBE.servicios.cotizador.qbe.com"/>
++  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns40:RespuestaUN01DTO" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.agricolaSucre.RespuestaUN01DTO" xmlns:ns40="http://agricolaSucre.QBE.servicios.cotizador.qbe.com"/>
+  </ns1:service>
+  <ns1:service name="EndpointQBEAgricola" provider="java:RPC" style="wrapped" use="literal">
+@@ -110,6 +130,6 @@
+  </ns1:service>
+  <ns1:service name="EndpointQBEAgricola" provider="java:RPC" style="wrapped" use="literal">
+-  <ns1:operation name="consultarPrepoliza" qname="ns37:consultarPrepoliza" returnQName="ns37:consultarPrepolizaReturn" returnType="ns37:PrepolizaSeguroAgricolaResponseDTO" soapAction="" xmlns:ns37="http://bancaComunal.QBE.servicios.cotizador.qbe.com">
+-   <ns1:parameter qname="ns37:codigoEntidadFinanciera" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+-   <ns1:parameter qname="ns37:numeroResolucion" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++  <ns1:operation name="consultarPrepoliza" qname="ns41:consultarPrepoliza" returnQName="ns41:consultarPrepolizaReturn" returnType="ns41:PrepolizaSeguroAgricolaResponseDTO" soapAction="" xmlns:ns41="http://bancaComunal.QBE.servicios.cotizador.qbe.com">
++   <ns1:parameter qname="ns41:codigoEntidadFinanciera" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++   <ns1:parameter qname="ns41:numeroResolucion" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+   </ns1:operation>
+@@ -115,4 +135,4 @@
+   </ns1:operation>
+-  <ns1:operation name="generarDesenbolos" qname="ns38:generarDesenbolos" returnQName="ns38:generarDesenbolosReturn" returnType="xsd:string" soapAction="" xmlns:ns38="http://bancaComunal.QBE.servicios.cotizador.qbe.com" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+-   <ns1:parameter qname="ns38:solicitud" type="ns38:DesembolsoDTO"/>
++  <ns1:operation name="generarDesenbolos" qname="ns42:generarDesenbolos" returnQName="ns42:generarDesenbolosReturn" returnType="xsd:string" soapAction="" xmlns:ns42="http://bancaComunal.QBE.servicios.cotizador.qbe.com" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
++   <ns1:parameter qname="ns42:solicitud" type="ns42:DesembolsoDTO"/>
+   </ns1:operation>
+@@ -118,4 +138,4 @@
+   </ns1:operation>
+-  <ns1:operation name="generarPrepoliza" qname="ns39:generarPrepoliza" returnQName="ns39:generarPrepolizaReturn" returnType="xsd:string" soapAction="" xmlns:ns39="http://bancaComunal.QBE.servicios.cotizador.qbe.com" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+-   <ns1:parameter qname="ns39:in0" type="ns39:PrepolizaSeguroAgricolaDTO"/>
++  <ns1:operation name="generarPrepoliza" qname="ns43:generarPrepoliza" returnQName="ns43:generarPrepolizaReturn" returnType="xsd:string" soapAction="" xmlns:ns43="http://bancaComunal.QBE.servicios.cotizador.qbe.com" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
++   <ns1:parameter qname="ns43:in0" type="ns43:PrepolizaSeguroAgricolaDTO"/>
+   </ns1:operation>
+@@ -121,3 +141,8 @@
+   </ns1:operation>
++  <ns1:parameter name="sendMultiRefs" value="false"/>
++  <ns1:parameter name="wsdlServicePort" value="EndpointQBEAgricola"/>
++  <ns1:parameter name="schemaQualified" value="http://bancaComunal.QBE.servicios.cotizador.qbe.com"/>
++  <ns1:parameter name="className" value="com.qbe.cotizador.servicios.QBE.bancaComunal.EndpointQBEAgricola"/>
++  <ns1:parameter name="typeMappingVersion" value="1.2"/>
+   <ns1:parameter name="allowedMethods" value="consultarPrepoliza generarPrepoliza generarDesenbolos"/>
+   <ns1:parameter name="wsdlPortType" value="EndpointQBEAgricola"/>
+@@ -122,7 +147,4 @@
+   <ns1:parameter name="allowedMethods" value="consultarPrepoliza generarPrepoliza generarDesenbolos"/>
+   <ns1:parameter name="wsdlPortType" value="EndpointQBEAgricola"/>
+-  <ns1:parameter name="typeMappingVersion" value="1.2"/>
+-  <ns1:parameter name="schemaQualified" value="http://bancaComunal.QBE.servicios.cotizador.qbe.com"/>
+-  <ns1:parameter name="wsdlServicePort" value="EndpointQBEAgricola"/>
+-  <ns1:parameter name="className" value="com.qbe.cotizador.servicios.QBE.bancaComunal.EndpointQBEAgricola"/>
++  <ns1:parameter name="wsdlServiceElement" value="EndpointQBEAgricolaService"/>
+   <ns1:parameter name="wsdlTargetNamespace" value="http://bancaComunal.QBE.servicios.cotizador.qbe.com"/>
+@@ -128,8 +150,8 @@
+   <ns1:parameter name="wsdlTargetNamespace" value="http://bancaComunal.QBE.servicios.cotizador.qbe.com"/>
+-  <ns1:parameter name="wsdlServiceElement" value="EndpointQBEAgricolaService"/>
+-  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns40:DesembolsoDTO" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.bancaComunal.DesembolsoDTO" xmlns:ns40="http://bancaComunal.QBE.servicios.cotizador.qbe.com"/>
+-  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns41:PrepolizaSeguroAgricolaDTO" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.bancaComunal.PrepolizaSeguroAgricolaDTO" xmlns:ns41="http://bancaComunal.QBE.servicios.cotizador.qbe.com"/>
+-  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns42:PrepolizaSeguroAgricolaResponseDTO" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.bancaComunal.PrepolizaSeguroAgricolaResponseDTO" xmlns:ns42="http://bancaComunal.QBE.servicios.cotizador.qbe.com"/>
++  <ns1:parameter name="sendXsiTypes" value="false"/>
++  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns44:DesembolsoDTO" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.bancaComunal.DesembolsoDTO" xmlns:ns44="http://bancaComunal.QBE.servicios.cotizador.qbe.com"/>
++  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns45:PrepolizaSeguroAgricolaDTO" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.bancaComunal.PrepolizaSeguroAgricolaDTO" xmlns:ns45="http://bancaComunal.QBE.servicios.cotizador.qbe.com"/>
++  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns46:PrepolizaSeguroAgricolaResponseDTO" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.bancaComunal.PrepolizaSeguroAgricolaResponseDTO" xmlns:ns46="http://bancaComunal.QBE.servicios.cotizador.qbe.com"/>
+  </ns1:service>
+  <ns1:service name="AdminService" provider="java:MSG">
+   <ns1:parameter name="allowedMethods" value="AdminService"/>
+@@ -137,4 +159,19 @@
+   <ns1:parameter name="className" value="org.apache.axis.utils.Admin"/>
+   <ns1:namespace>http://xml.apache.org/axis/wsdd/</ns1:namespace>
+  </ns1:service>
++ <ns1:service name="ImportarCotizaciones" provider="java:RPC" style="wrapped" use="literal">
++  <ns1:operation name="importarCotizaciones" qname="ns47:importarCotizaciones" returnQName="ns47:importarCotizacionesReturn" returnType="ns47:ObjetosRespuesta" soapAction="" xmlns:ns47="http://archivoPlano.QBE.servicios.cotizador.qbe.com">
++   <ns1:parameter qname="ns47:textoJson" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++   <ns1:parameter qname="ns47:correo" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++  </ns1:operation>
++  <ns1:parameter name="allowedMethods" value="importarCotizaciones"/>
++  <ns1:parameter name="typeMappingVersion" value="1.2"/>
++  <ns1:parameter name="wsdlPortType" value="ImportarCotizaciones"/>
++  <ns1:parameter name="className" value="com.qbe.cotizador.servicios.QBE.archivoPlano.ImportarCotizaciones"/>
++  <ns1:parameter name="wsdlServicePort" value="ImportarCotizaciones"/>
++  <ns1:parameter name="schemaQualified" value="http://archivoPlano.QBE.servicios.cotizador.qbe.com"/>
++  <ns1:parameter name="wsdlTargetNamespace" value="http://archivoPlano.QBE.servicios.cotizador.qbe.com"/>
++  <ns1:parameter name="wsdlServiceElement" value="ImportarCotizacionesService"/>
++  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns48:ObjetosRespuesta" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.archivoPlano.ObjetosRespuesta" xmlns:ns48="http://archivoPlano.QBE.servicios.cotizador.qbe.com"/>
++ </ns1:service>
+  <ns1:service name="MidpointTagh" provider="java:RPC" style="wrapped" use="literal">
+@@ -140,7 +177,7 @@
+  <ns1:service name="MidpointTagh" provider="java:RPC" style="wrapped" use="literal">
+-  <ns1:operation name="consultarPolizas" qname="ns43:consultarPolizas" returnQName="ns43:consultarPolizasReturn" returnType="ns43:DatosTagh" soapAction="" xmlns:ns43="http://tagh.QBE.servicios.cotizador.qbe.com">
+-   <ns1:parameter qname="ns43:token" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+-   <ns1:parameter qname="ns43:identificacion" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++  <ns1:operation name="consultarPolizas" qname="ns49:consultarPolizas" returnQName="ns49:consultarPolizasReturn" returnType="ns49:DatosTagh" soapAction="" xmlns:ns49="http://tagh.QBE.servicios.cotizador.qbe.com">
++   <ns1:parameter qname="ns49:token" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
++   <ns1:parameter qname="ns49:identificacion" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+   </ns1:operation>
+   <ns1:parameter name="sendMultiRefs" value="false"/>
+   <ns1:parameter name="wsdlServicePort" value="MidpointTagh"/>
+@@ -152,7 +189,7 @@
+   <ns1:parameter name="wsdlServiceElement" value="MidpointTaghService"/>
+   <ns1:parameter name="wsdlTargetNamespace" value="http://tagh.QBE.servicios.cotizador.qbe.com"/>
+   <ns1:parameter name="sendXsiTypes" value="false"/>
+-  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns44:DatosTagh" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.tagh.DatosTagh" xmlns:ns44="http://tagh.QBE.servicios.cotizador.qbe.com"/>
++  <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns50:DatosTagh" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:com.qbe.cotizador.servicios.QBE.tagh.DatosTagh" xmlns:ns50="http://tagh.QBE.servicios.cotizador.qbe.com"/>
+  </ns1:service>
+  <ns1:service name="Version" provider="java:RPC">
+   <ns1:parameter name="allowedMethods" value="getVersion"/>

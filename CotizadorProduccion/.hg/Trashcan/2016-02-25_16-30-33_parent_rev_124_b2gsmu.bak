@@ -1,0 +1,78 @@
+diff --git a/WebContent/dashboard/AgriAprobadosObservaciones.jsp b/WebContent/dashboard/AgriAprobadosObservaciones.jsp
+--- a/WebContent/dashboard/AgriAprobadosObservaciones.jsp
++++ b/WebContent/dashboard/AgriAprobadosObservaciones.jsp
+@@ -308,7 +308,8 @@
+                 }
+             },
+             columns: [
+-						{ field: "id", title: "Id.", width: "60px"},
++						{ field: "id", title: "Id Cotización", width: "60px"},
++						{ field: "idCotizacion2", title: "Id Agricola.", width: "60px"},
+ 						{ field: "Ciclo", title: "Periodo" , width: "160px"},
+ 						{ field: "FechaElaboracion", title: "Fecha Elaboración",format: "{0:yyyy/MM/dd}", width: "100px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 						{ field: "IdentificacionCliente", title: "Identificación Cliente", width: "90px",headerAttributes: { style: "white-space: normal"}},
+diff --git a/src/com/qbe/cotizador/model/AgriCotizacionAprobacion.java b/src/com/qbe/cotizador/model/AgriCotizacionAprobacion.java
+--- a/src/com/qbe/cotizador/model/AgriCotizacionAprobacion.java
++++ b/src/com/qbe/cotizador/model/AgriCotizacionAprobacion.java
+@@ -195,8 +195,11 @@
+ 	@Column(name = "costo_produccionQBE")
+ 	private float costoProduccionQBE;
+ 	
++	@Column(name = "ID_COTIZACION_2")
++	private BigInteger idCotizacion2;
++	
+ 	
+ 	
+ 	//	@Column(name = "porcentajeComision")
+ 	//	private float PorcentajeComision;
+ 	
+@@ -198,8 +201,16 @@
+ 	
+ 	
+ 	//	@Column(name = "porcentajeComision")
+ 	//	private float PorcentajeComision;
+ 	
++	public BigInteger getIdCotizacion2() {
++		return idCotizacion2;
++	}
++
++	public void setIdCotizacion2(BigInteger idCotizacion2) {
++		this.idCotizacion2 = idCotizacion2;
++	}
++
+ 	public float getCostoProduccionQBE() {
+ 		return costoProduccionQBE;
+ 	}
+diff --git a/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java b/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java
+--- a/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java
++++ b/src/com/qbe/cotizador/servicios/QBE/bancaComunal/EndpointQBEAgricola.java
+@@ -30,6 +30,7 @@
+ import com.qbe.cotizador.dao.entidad.TipoIdentificacionDAO;
+ import com.qbe.cotizador.dao.entidad.UsuarioDAO;
+ import com.qbe.cotizador.dao.entidad.ZonaDAO;
++import com.qbe.cotizador.dao.producto.agricola.AgriCotizacionMaxDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriObjetoCotizacionDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriParametroXPuntoVentaDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriParroquiaDAO;
+@@ -41,6 +42,7 @@
+ import com.qbe.cotizador.dao.seguridad.TipoVariableDAO;
+ import com.qbe.cotizador.dao.seguridad.VariableSistemaDAO;
+ import com.qbe.cotizador.model.ActividadEconomica;
++import com.qbe.cotizador.model.AgriCotizacionMax;
+ import com.qbe.cotizador.model.AgriObjetoCotizacion;
+ import com.qbe.cotizador.model.AgriParametroXPuntoVenta;
+ import com.qbe.cotizador.model.AgriParroquia;
+@@ -555,6 +557,13 @@
+ 				}
+ 				agriObjetoCotizacion.setCostoProduccion(Float.parseFloat(""+CostoProduccionLLega));
+ 				agriObjetoCotizacion.setTipoCalculo(idTipoCalculo);
++				/***Proceso de creacion de las IdCotizaciones para facturacion***/
++				
++				AgriCotizacionMaxDAO busquedaMax = new AgriCotizacionMaxDAO();
++				AgriCotizacionMax numMaximo=busquedaMax.buscarTodos();
++				int numeroActual=numMaximo.getMaximo().intValue();
++				
++				agriObjetoCotizacion.setIdCotizacion2(new BigInteger(""+(numeroActual+1)));
+ 				agriObjetoCotizacion=agriObjetoCotizacionTransaction.crear(agriObjetoCotizacion);			
+ 				//FIN AGRIOBJETOCOTIZACION 
+ 				CotizacionDetalle nuevoCotizacionDetalle=new CotizacionDetalle();

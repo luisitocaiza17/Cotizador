@@ -1,0 +1,320 @@
+diff --git a/WebContent/dashboard/ConsultaCanal.jsp b/WebContent/dashboard/ConsultaCanal.jsp
+--- a/WebContent/dashboard/ConsultaCanal.jsp
++++ b/WebContent/dashboard/ConsultaCanal.jsp
+@@ -50,6 +50,7 @@
+     results = regex.exec(location.search);
+     return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+ 	}
++	var canalId=GetQueryStringByParameter('Canal');
+ 	var estadoConsulta="CEPE";//GetQueryStringByParameter('State');
+ 	var codigo = "";
+ 	var tipoConsulta = "";
+@@ -179,7 +180,8 @@
+ 		$.ajax({
+ 			url : '../AgriCanalController',
+ 			data : {				
+-				"tipoConsulta" : "encontrarTodos"
++				"tipoConsulta" : "encontrarPorCanalId",
++				"canalId" : canalId
+ 			},
+ 			async : false,
+ 			type : 'post',
+@@ -289,9 +291,9 @@
+ 						{ field: "hectareasAsegurables", title: "Has. Aseg", width: "50px",headerAttributes: { style: "white-space: normal"}},
+ 						{ field: "sumaAseguradaTotal", title: "Monto Asegurado", width: "70px",headerAttributes: { style: "white-space: normal"}},
+ 						{ field: "fechaSiembra", title: "Fecha Siembra",format: "{0:yyyy/MM/dd}", width: "100px",headerAttributes: { style: "white-space: normal"}},
+-						{ field: "primaNetaTotal", title: "Prima Total", width: "70px",headerAttributes: { style: "white-space: normal"}},
++						{ field: "primaNetaTotal", title: "Prima Neta", width: "70px",headerAttributes: { style: "white-space: normal"}},
+ 						{ field: "costoProduccion", title: "Costo de Producción", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 						{ field: "seguroBancos", title: "Super Bancos", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 						{ field: "seguroCampesino", title: "Seguro Campesino", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 						{ field: "derechoEmision", title: "Derecho de Emisión", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 						{ field: "iva", title: "IVA", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+@@ -293,9 +295,9 @@
+ 						{ field: "costoProduccion", title: "Costo de Producción", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 						{ field: "seguroBancos", title: "Super Bancos", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 						{ field: "seguroCampesino", title: "Seguro Campesino", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 						{ field: "derechoEmision", title: "Derecho de Emisión", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 						{ field: "iva", title: "IVA", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+-						{ field: "totalFactura", title: "Total Factura", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},                      
++						{ field: "totalFactura", title: "Prima Total", width: "70px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},                      
+ 						{ field: "hectareasLote", title: "Has. Lote", width: "50px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true},
+ 						{ field: "Longitud", title: "Longitud", width: "50px",headerAttributes: { style: "white-space: normal"}, hidden: true, exportar: true },
+ 						{ field: "Latitud", title: "Latitud", width: "50px",headerAttributes: { style: "white-space: normal"},hidden: true, exportar: true},                      
+diff --git a/WebContent/dashboard/CotizacionPymesCerrados.jsp b/WebContent/dashboard/CotizacionPymesCerrados.jsp
+--- a/WebContent/dashboard/CotizacionPymesCerrados.jsp
++++ b/WebContent/dashboard/CotizacionPymesCerrados.jsp
+@@ -36,8 +36,8 @@
+ <script src="../static/js/bootstrap-datepicker.js"></script>
+ 
+ <!-- KENDO -->
+-<!-- <link rel="stylesheet" href="http://kendo.cdn.telerik.com/2015.1.225/styles/kendo.mobile.all.min.css"> -->
++<link rel="stylesheet" href="http://kendo.cdn.telerik.com/2015.1.225/styles/kendo.mobile.all.min.css">
+ <link rel="stylesheet" href="../static/css/Kendo/kendo.common.min.css" />
+ <link rel="stylesheet" href="../static/css/Kendo/kendo.blueopal.min.css" />
+ <script src="../static/js/Kendo/kendo.all.min.js"></script>
+ <script src="../static/js/Kendo/kendo.web.min.js"></script>
+@@ -40,8 +40,8 @@
+ <link rel="stylesheet" href="../static/css/Kendo/kendo.common.min.css" />
+ <link rel="stylesheet" href="../static/css/Kendo/kendo.blueopal.min.css" />
+ <script src="../static/js/Kendo/kendo.all.min.js"></script>
+ <script src="../static/js/Kendo/kendo.web.min.js"></script>
+-<!-- <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css"> -->
++<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
+ 
+ 
+ 
+diff --git a/src/com/qbe/cotizador/dao/producto/agricola/UsuariosOfflineDAO.java b/src/com/qbe/cotizador/dao/producto/agricola/UsuariosOfflineDAO.java
+--- a/src/com/qbe/cotizador/dao/producto/agricola/UsuariosOfflineDAO.java
++++ b/src/com/qbe/cotizador/dao/producto/agricola/UsuariosOfflineDAO.java
+@@ -1,4 +1,6 @@
+ package com.qbe.cotizador.dao.producto.agricola;
+ 
++import com.qbe.cotizador.entitymanagerfactory.EntityManagerFactoryDAO;
++import com.qbe.cotizador.model.UsuariosOffline;
+ import java.math.BigInteger;
+ import java.util.List;
+@@ -3,8 +5,6 @@
+ import java.math.BigInteger;
+ import java.util.List;
+-
+-import javax.naming.Context;
+ import javax.naming.InitialContext;
+ import javax.naming.NamingException;
+ import javax.persistence.EntityManager;
+ import javax.persistence.PersistenceContext;
+@@ -7,5 +7,6 @@
+ import javax.naming.InitialContext;
+ import javax.naming.NamingException;
+ import javax.persistence.EntityManager;
+ import javax.persistence.PersistenceContext;
++import javax.persistence.Query;
+ 
+@@ -11,5 +12,6 @@
+ 
+-import com.qbe.cotizador.entitymanagerfactory.EntityManagerFactoryDAO;
+-import com.qbe.cotizador.model.AgriCiclo;
+-import com.qbe.cotizador.model.UsuariosOffline;
++public class UsuariosOfflineDAO
++extends EntityManagerFactoryDAO<UsuariosOffline> {
++    @PersistenceContext(name="CotizadorWebPC", unitName="CotizadorWebPU")
++    private EntityManager em;
+ 
+@@ -15,47 +17,52 @@
+ 
+-public class UsuariosOfflineDAO extends EntityManagerFactoryDAO<UsuariosOffline> {
+-	@PersistenceContext(name="CotizadorWebPC", unitName = "CotizadorWebPU" )	
+-	private EntityManager em;
+-	
+-	@Override
+-	protected EntityManager getEntityManager() {
+-		if(em == null){
+-			Context initCtx = null;
+-			try {
+-				initCtx = new InitialContext();
+-				em = (javax.persistence.EntityManager) initCtx.lookup("java:comp/env/CotizadorWebPC");
+-			} catch (NamingException e) { 
+-				e.printStackTrace();
+-			}		
+-		}
+-		return em;
+-	}
+-	public UsuariosOfflineDAO (){
+-		super(UsuariosOffline.class);
+-	}
+-	
+-	public UsuariosOffline BuscarPorId(BigInteger id)
+-	{
+-		UsuariosOffline usuarioOffline = new UsuariosOffline();
+-		List<UsuariosOffline> result = getEntityManager().createNamedQuery("UsuariosOffline.buscarPorId").setParameter("id", id).getResultList();
+-		if (result.size()>0)
+-			usuarioOffline=result.get(0);
+-		return usuarioOffline;
+-	}
+-	
+-	public  UsuariosOffline BuscarUsuario(String usuario, String clave)
+-	{
+-		UsuariosOffline usuarioOffline = new UsuariosOffline();
+-		List<UsuariosOffline> result = getEntityManager().createNamedQuery("UsuariosOffline.buscarUsuario").setParameter("usuario", usuario).setParameter("clave", clave).getResultList();
+-		if (result.size()>0)
+-			usuarioOffline=result.get(0);
+-		return usuarioOffline;
+-	}
+-	
+-	public  List<UsuariosOffline> BuscarTodos()
+-	{
+-		UsuariosOffline usuarioOffline = new UsuariosOffline();
+-		List<UsuariosOffline> result = getEntityManager().createNamedQuery("UsuariosOffline.buscarTodos").getResultList();
+-		return result;
+-	}
+-}
++    protected EntityManager getEntityManager() {
++        if (this.em == null) {
++            InitialContext initCtx = null;
++            try {
++                initCtx = new InitialContext();
++                this.em = (EntityManager)initCtx.lookup("java:comp/env/CotizadorWebPC");
++            }
++            catch (NamingException e) {
++                e.printStackTrace();
++            }
++        }
++        return this.em;
++    }
++
++    public UsuariosOfflineDAO() {
++        super((Class)UsuariosOffline.class);
++    }
++
++    public UsuariosOffline BuscarPorId(BigInteger id) {
++        UsuariosOffline usuarioOffline = new UsuariosOffline();
++        List result = this.getEntityManager().createNamedQuery("UsuariosOffline.buscarPorId").setParameter("id", (Object)id).getResultList();
++        if (result.size() > 0) {
++            usuarioOffline = (UsuariosOffline)result.get(0);
++        }
++        return usuarioOffline;
++    }
++
++    public UsuariosOffline BuscarUsuario(String usuario, String clave) {
++        UsuariosOffline usuarioOffline = new UsuariosOffline();
++        List result = this.getEntityManager().createNamedQuery("UsuariosOffline.buscarUsuario").setParameter("usuario", (Object)usuario).setParameter("clave", (Object)clave).getResultList();
++        if (result.size() > 0) {
++            usuarioOffline = (UsuariosOffline)result.get(0);
++        }
++        return usuarioOffline;
++    }
++
++    public List<UsuariosOffline> BuscarTodos() {
++        UsuariosOffline usuarioOffline = new UsuariosOffline();
++        List result = this.getEntityManager().createNamedQuery("UsuariosOffline.buscarTodos").getResultList();
++        return result;
++    }
++
++    public UsuariosOffline BuscarNombre(String nombres) {
++        UsuariosOffline usuarioOffline = new UsuariosOffline();
++        List result = this.getEntityManager().createNamedQuery("UsuariosOffline.buscarNombre").setParameter("nombres", (Object)nombres).getResultList();
++        if (result.size() > 0) {
++            usuarioOffline = (UsuariosOffline)result.get(0);
++        }
++        return usuarioOffline;
++    }
++}
+\ No newline at end of file
+diff --git a/src/com/qbe/cotizador/model/AgriCultivoCanal.java b/src/com/qbe/cotizador/model/AgriCultivoCanal.java
+--- a/src/com/qbe/cotizador/model/AgriCultivoCanal.java
++++ b/src/com/qbe/cotizador/model/AgriCultivoCanal.java
+@@ -17,7 +17,7 @@
+ @NamedQueries
+ ({
+ 	@NamedQuery(name="AgriCultivoCanal.findAll", query="SELECT a FROM AgriCultivoCanal a"),
+-	@NamedQuery(name="AgriCultivoCanal.buscarTipoCalculo", query="SELECT a FROM AgriCultivoCanal a WHERE a.tipoCalculoId=:tipoCalculoId ")
++	@NamedQuery(name="AgriCultivoCanal.buscarTipoCalculo", query="SELECT a FROM AgriCultivoCanal a WHERE a.tipoCalculoId=:tipoCalculoId ORDER BY A.nombre")
+ })
+ public class AgriCultivoCanal implements Serializable {
+ 	private static final long serialVersionUID = 1L;
+diff --git a/src/com/qbe/cotizador/servicios/QBE/archivoPlano/GeneradorReporte.java b/src/com/qbe/cotizador/servicios/QBE/archivoPlano/GeneradorReporte.java
+--- a/src/com/qbe/cotizador/servicios/QBE/archivoPlano/GeneradorReporte.java
++++ b/src/com/qbe/cotizador/servicios/QBE/archivoPlano/GeneradorReporte.java
+@@ -312,7 +312,7 @@
+ 		}
+ 		parametersHeader.put("Prima",""+ detalleCotizacion.getTotalFactura());
+ 		parametersHeader.put("Tasa",""+""+ detalleCotizacion.getTasa());
+-		if(cotizacion.getPuntoVenta().getNombre().equals("PRONACA")){
++		if(cotizacion.getPuntoVenta().getNombre().equals("COOPROGRESO")){
+ 			parametersHeader.put("Endoso", "FIDEICOMISO AGROINVERSIONES DOS");
+ 		}
+ 		else{
+diff --git a/src/com/qbe/cotizador/servlets/producto/agricola/AgriEmisionPoliza.java b/src/com/qbe/cotizador/servlets/producto/agricola/AgriEmisionPoliza.java
+--- a/src/com/qbe/cotizador/servlets/producto/agricola/AgriEmisionPoliza.java
++++ b/src/com/qbe/cotizador/servlets/producto/agricola/AgriEmisionPoliza.java
+@@ -27,6 +27,8 @@
+ import com.qbe.cotizador.dao.producto.agricola.AgriParametroXCanalDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriParametroXPuntoVentaDAO;
+ import com.qbe.cotizador.dao.producto.agricola.AgriTipoCultivoDAO;
++import com.qbe.cotizador.dao.seguridad.TipoVariableDAO;
++import com.qbe.cotizador.dao.seguridad.VariableSistemaDAO;
+ import com.qbe.cotizador.model.Agente;
+ import com.qbe.cotizador.model.AgriAuditoriaCotizacion;
+ import com.qbe.cotizador.model.AgriCanal;
+@@ -49,6 +51,8 @@
+ import com.qbe.cotizador.model.ProductoXPuntoVenta;
+ import com.qbe.cotizador.model.PuntoVenta;
+ import com.qbe.cotizador.model.TipoDireccion;
++import com.qbe.cotizador.model.TipoVariable;
++import com.qbe.cotizador.model.VariableSistema;
+ import com.qbe.cotizador.model.Zona;
+ import com.qbe.cotizador.transaction.cotizacion.CotizacionRespuestaTransaction;
+ import com.qbe.cotizador.transaction.cotizacion.CotizacionTransaction;
+@@ -533,6 +537,41 @@
+ 		}*/
+ 		
+ 		
++		/*PARA EL ENVIO DE LOS EMAIL*/
++		/*PROCESO DE CALCULO DE COMPONENTES*/
++		TipoVariableDAO tipoVariableDao = new TipoVariableDAO();
++        TipoVariable tipoVariable = tipoVariableDao.buscarPorId("3");
++        VariableSistemaDAO variableDAO= new VariableSistemaDAO();
++        List<VariableSistema> variablesistema = variableDAO.buscarTipoVariable(tipoVariable);
++        String CorreoElectronico="";
++        String variableS="";
++        if(parametroXPV.getCanalId().toString().equals("2")){
++        	variableS="CORREO_PRONACA";
++        }
++        if(parametroXPV.getCanalId().toString().equals("5")){
++        	variableS="CORREO_COPROGRESO";
++        }
++        if(parametroXPV.getCanalId().toString().equals("3")){
++        	variableS="CORREO_PICHINCHA";
++        }
++        
++        if(variablesistema.size() > 0) {
++        	for(VariableSistema variable : variablesistema) {
++        		
++        		if(variable.getNombre().equals(variableS)){
++        			CorreoElectronico=variable.getValor();//%COMISION DE AGENTE
++        		}
++        	}
++        }
++        String agricultorTecnificado="";
++        
++        if(objetoCotizacion.getAgricultorTecnificado()){
++        	agricultorTecnificado="Si";
++        }else{
++        	agricultorTecnificado="No";
++        }
++		
++		
+ 		StringBuilder xml=new StringBuilder("<superObjetoXML><detallesPoliza><identificador>").append(cotizacion.getId()).append("</identificador>")
+ 		.append("<login>WS_AGRICOLA</login>")
+ 		.append("<pass>5sMCNw4JQhUyIENa</pass>")
+@@ -578,8 +617,8 @@
+ 		.append("<valorAsegurado>").append(cotizacion.getSumaAseguradaTotal()).append("</valorAsegurado>")
+ 		.append("<numeroHectareas>").append(objetoCotizacion.getHectareasLote()).append("</numeroHectareas>")
+ 		.append("<valorPorHectarea>").append(objetoCotizacion.getCostoProduccion()).append("</valorPorHectarea>")
+-		.append("<gpsLoteX>0</gpsLoteX>")
+-		.append("<gpsLoteY>0</gpsLoteY>")
++		.append("<gpsLoteX>").append(objetoCotizacion.getLatitud()).append("</gpsLoteX>")
++		.append("<gpsLoteY>").append(objetoCotizacion.getLongitud()).append("</gpsLoteY>")
+ 		.append("<tasa>").append(cotizacion.getTasaProductoValor()).append("</tasa>")
+ 		.append("<tipoCultivoId>").append(tipoCultivo.getCodEnsurance()).append("</tipoCultivoId>")
+ 		.append("<diasVigencia>").append(tipoCultivo.getVigenciaDias()).append("</diasVigencia>")
+@@ -589,7 +628,7 @@
+ 		//.append("<finVigenciaCultivo>").append("06/02/2016").append("</finVigenciaCultivo>")
+ 		.append("<variedad>").append(objetoCotizacion.getVariedad()).append("</variedad>")
+ 		.append("<numeroHectareasAsegurables>").append(objetoCotizacion.getHectareasAsegurables()).append("</numeroHectareasAsegurables>")
+-		.append("<esTecnificado>Si</esTecnificado>")
++		.append("<esTecnificado>").append(agricultorTecnificado).append("</esTecnificado>")
+ 		//.append("<fechaTentativaSiembra>").append("06/11/2015").append("</fechaTentativaSiembra>")
+ 		.append("<fechaTentativaSiembra>").append(objetoCotizacion.getFechaSiembra()).append("</fechaTentativaSiembra>")
+ 		.append("<propiedadId>-1</propiedadId>")
+@@ -607,8 +646,8 @@
+ 		.append("<tipoEntidadId>").append(cliente.getEntidad().getTipoEntidad().getId()).append("</tipoEntidadId>")
+ 		.append("<identificacion>").append(cliente.getEntidad().getIdentificacion()).append("</identificacion>");
+ 		Entidad entidadBeneficiario=entidadDAO.buscarEntidadPorIdEnsurance(endosoBeneficiario.getBeneficiario().getCodigoEnsurance().toString());
+-		if(entidadBeneficiario.getMail() != null)
+-			xml.append("<email>").append(entidadBeneficiario.getMail()).append("</email>");
++		if(!CorreoElectronico.trim().equalsIgnoreCase(""))
++			xml.append("<email>").append(CorreoElectronico).append("</email>");
+ 		else
+ 			xml.append("<email>").append(cliente.getEntidad().getMail()).append("</email>");
+ 		xml.append("<genero>f</genero>")
